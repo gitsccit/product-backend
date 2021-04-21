@@ -1,0 +1,29 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "This is the e-commerce project of Source Code Corporation.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "watch": "babel --watch webroot/js/components --out-dir webroot/js/__generated__ --presets @babel/preset-react",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitsccit/e-commerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gitsccit/e-commerce/issues"
+  },
+  "homepage": "https://github.com/gitsccit/e-commerce#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/cli": "^7.11.6",
+    "@babel/preset-react": "^7.10.4"
+  }
+}

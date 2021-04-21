@@ -1,0 +1,30 @@
+{
+    "name": "gitsccit/product-backend",
+    "description": "ProductBackend plugin for CakePHP",
+    "type": "cakephp-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Chen",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "cakephp/cakephp": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ProductBackend\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ProductBackend\\Test\\": "tests/",
+            "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
+        }
+    }
+}
