@@ -1,7 +1,7 @@
 {
-  "name": "e-commerce",
+  "name": "product-backend",
   "version": "1.0.0",
-  "description": "This is the e-commerce project of Source Code Corporation.",
+  "description": "This is the product backend project of Source Code Corporation.",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gitsccit/e-commerce.git"
+    "url": "git+https://github.com/gitsccit/product-backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gitsccit/e-commerce/issues"
+    "url": "https://github.com/gitsccit/product-backend/issues"
   },
-  "homepage": "https://github.com/gitsccit/e-commerce#readme",
+  "homepage": "https://github.com/gitsccit/product-backend#readme",
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/cli": "^7.11.6",
