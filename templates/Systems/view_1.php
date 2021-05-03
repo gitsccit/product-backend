@@ -8,6 +8,14 @@ $this->Breadcrumbs->add($breadcrumbs);
 
 $system['price'] = $this->Number->currency($system['price']);
 $system['image'] = $this->apiHandler->getFileUrl($system['image_id'], 200, 200);
+
+foreach ($system['buckets'] as &$bucket) {
+    foreach ($bucket['groups'] as &$group) {
+        foreach ($group['group_items'] as &$groupItem) {
+            $groupItem['image'] = $groupItem['image_id'] ? $this->apiHandler->getFileUrl($groupItem['image_id'], 100, 100) : null;
+        }
+    }
+}
 ?>
 
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
