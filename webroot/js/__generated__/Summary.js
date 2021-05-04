@@ -57,7 +57,7 @@ class Summary extends React.Component {
     }, /*#__PURE__*/React.createElement("th", {
       className: "col-3"
     }, /*#__PURE__*/React.createElement("h3", {
-      className: "mb-0 font-weight-bold"
+      className: "mb-0 fw-bold"
     }, this.props.system['name'])), /*#__PURE__*/React.createElement("th", {
       className: "col-9"
     }, /*#__PURE__*/React.createElement("div", {
@@ -80,7 +80,7 @@ class Summary extends React.Component {
     }, "View Specs")))))), /*#__PURE__*/React.createElement("tbody", null, selectedSpecs.map(([bucketCategory, spec]) => /*#__PURE__*/React.createElement("tr", {
       className: "d-flex"
     }, /*#__PURE__*/React.createElement("td", {
-      className: "col-3 font-weight-bold"
+      className: "col-3 fw-bold"
     }, bucketCategory), /*#__PURE__*/React.createElement("td", {
       className: "col-9",
       dangerouslySetInnerHTML: {
@@ -102,7 +102,7 @@ class Summary extends React.Component {
     }, /*#__PURE__*/React.createElement("div", {
       className: "h5"
     }, /*#__PURE__*/React.createElement("span", null, "Configured Price: "), /*#__PURE__*/React.createElement("span", {
-      className: "h4 font-weight-bold"
+      className: "h4 fw-bold"
     }, this.props.system['price'])), /*#__PURE__*/React.createElement("div", {
       className: "h5"
     }, /*#__PURE__*/React.createElement("label", {
@@ -123,7 +123,7 @@ class Summary extends React.Component {
     }), /*#__PURE__*/React.createElement("div", {
       className: "h5"
     }, /*#__PURE__*/React.createElement("span", null, "Grand Total: "), /*#__PURE__*/React.createElement("span", {
-      className: "h4 font-weight-bold"
+      className: "h4 fw-bold"
     }, this.state.grandTotal))), /*#__PURE__*/React.createElement("a", {
       className: "btn btn-primary py-2"
     }, /*#__PURE__*/React.createElement("span", {

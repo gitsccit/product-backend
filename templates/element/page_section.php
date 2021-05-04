@@ -10,7 +10,7 @@
 <div class="container d-flex flex-column align-items-center py-5">
     <!-- Title -->
     <?php if (isset($title)) : ?>
-        <h1 class="text-center font-weight-bold mb-3"><?= $title ?></h1>
+        <h1 class="text-center fw-bold mb-3"><?= $title ?></h1>
     <?php endif; ?>
 
     <!-- Description -->

@@ -136,7 +136,7 @@ class StorageSetup extends React.Component {
       return carry.concat(this.props.currentConfig[bucket['id']].filter(item => item['selected_at'] != null));
     }, []);
     return /*#__PURE__*/React.createElement(React.Fragment, null, unassignedDrives.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", {
-      className: "font-weight-bold"
+      className: "fw-bold"
     }, "Unassigned Drives"), /*#__PURE__*/React.createElement("div", {
       className: "row -m-2"
     }, unassignedDrives.map(unassignedDrive => {
@@ -147,7 +147,7 @@ class StorageSetup extends React.Component {
       }, /*#__PURE__*/React.createElement("div", {
         className: "d-flex bg-white p-3 shadow-sm h-100"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "d-flex justify-content-center align-items-center bg-white mr-3",
+        className: "d-flex justify-content-center align-items-center bg-white me-3",
         style: {
           width: 50,
           height: 50
@@ -156,22 +156,22 @@ class StorageSetup extends React.Component {
         className: "mw-100 mh-100",
         src: unassignedDrive['image']
       })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-        className: "font-weight-bold"
+        className: "fw-bold"
       }, unassignedDrive['name']), /*#__PURE__*/React.createElement("div", {
         className: "d-flex align-items-center"
       }, [...Array(availableQuantity).keys()].map(_ => /*#__PURE__*/React.createElement("div", {
-        className: "bg-primary mr-1",
+        className: "bg-primary me-1",
         style: {
           width: 10,
           height: 10
         }
       })), /*#__PURE__*/React.createElement("div", {
-        className: 'ml-1 ' + (unassignedDrive['quantity'] > 0 ? 'text-success' : 'text-muted')
+        className: 'ms-1 ' + (unassignedDrive['quantity'] > 0 ? 'text-success' : 'text-muted')
       }, availableQuantity, " Available")))));
     }))), unassignedDrives.length > 0 && controllers.length > 0 && /*#__PURE__*/React.createElement("hr", {
       className: "my-5"
     }), controllers.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", {
-      className: "font-weight-bold"
+      className: "fw-bold"
     }, "Controllers"), /*#__PURE__*/React.createElement("div", {
       className: "item-group-vertical"
     }, Object.values(controllers).map(controller => {
@@ -208,19 +208,19 @@ class StorageSetup extends React.Component {
         className: "mw-100 mh-100",
         src: controller['image']
       })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-        className: "font-weight-bold"
+        className: "fw-bold"
       }, controller['name']), /*#__PURE__*/React.createElement("div", null, raidLevels ? `Supports: ${raidLevels.join(', ')}` : controller['specs'].map(spec => spec['value']).join(' ')), /*#__PURE__*/React.createElement("div", {
         className: "d-flex align-items-center"
       }, [...Array(totalPorts).keys()].map(index => /*#__PURE__*/React.createElement("div", {
-        className: 'mr-1 ' + (index < availablePorts ? 'bg-primary' : 'bg-4'),
+        className: 'me-1 ' + (index < availablePorts ? 'bg-primary' : 'bg-4'),
         style: {
           width: 10,
           height: 10
         }
       })), /*#__PURE__*/React.createElement("div", {
-        className: 'ml-1 ' + (availablePorts > 0 ? 'text-success' : 'text-muted')
+        className: 'ms-1 ' + (availablePorts > 0 ? 'text-success' : 'text-muted')
       }, availablePorts, " Port(s) Available"))), dropdownButtons.length > 0 && /*#__PURE__*/React.createElement("div", {
-        className: "ml-auto"
+        className: "ms-auto"
       }, /*#__PURE__*/React.createElement("div", {
         className: "item-group align-items-center"
       }, dropdownButtons.map(volumeType => {
@@ -246,13 +246,13 @@ class StorageSetup extends React.Component {
           className: "bg-black text-white icon-cancel",
           "aria-hidden": "true"
         }))), /*#__PURE__*/React.createElement("div", {
-          className: "font-weight-bold mb-3"
+          className: "fw-bold mb-3"
         }, controller['name']), /*#__PURE__*/React.createElement("table", {
           className: "w-100"
         }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Drive"), /*#__PURE__*/React.createElement("th", null, "Qty"), /*#__PURE__*/React.createElement("th", null, "Action"))), /*#__PURE__*/React.createElement("tbody", null, unassignedDrives.map(unassignedDrive => /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
           className: "w-100"
         }, unassignedDrive['name']), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("select", {
-          className: "form-control form-control-sm w-auto mr-3",
+          className: "form-control form-control-sm w-auto me-3",
           id: `add-drive-${unassignedDrive['id']}-quantity`
         }, Array.from({
           length: Math.min(availablePorts, this._getAvailableQuantityOfDrive(unassignedDrive['id']))
@@ -266,9 +266,9 @@ class StorageSetup extends React.Component {
       })))), controller['id'] in this.state.storageConfig && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
         colSpan: "3"
       }), /*#__PURE__*/React.createElement("th", {
-        className: "font-weight-bold"
+        className: "fw-bold"
       }, "Quantity"), /*#__PURE__*/React.createElement("th", {
-        className: "font-weight-bold"
+        className: "fw-bold"
       }, "Action"))), /*#__PURE__*/React.createElement("tbody", null, this.state.storageConfig?.[controller['id']]?.['volumes'] != null && this.state.storageConfig[controller['id']]['volumes'].map((assignedDrive, volumeIndex) => /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
         className: "d-flex justify-content-center align-items-center bg-white",
         style: {
@@ -281,7 +281,7 @@ class StorageSetup extends React.Component {
       }))), /*#__PURE__*/React.createElement("td", {
         className: "border-right px-3 text-nowrap"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "font-weight-bold"
+        className: "fw-bold"
       }, "Volume #", volumeIndex + 1), /*#__PURE__*/React.createElement("div", null, "Data Volume")), /*#__PURE__*/React.createElement("td", {
         className: "px-3 py-2 w-100"
       }, /*#__PURE__*/React.createElement("div", null, assignedDrive['name']), /*#__PURE__*/React.createElement("div", {
@@ -294,9 +294,9 @@ class StorageSetup extends React.Component {
       }, "None"), raidLevels.map(raidLevel => /*#__PURE__*/React.createElement("option", {
         value: raidLevel
       }, isNaN(raidLevel) ? raidLevel : `RAID ${raidLevel}`))), /*#__PURE__*/React.createElement("span", {
-        className: "ml-2"
+        className: "ms-2"
       }, "Individual disks"))), /*#__PURE__*/React.createElement("td", {
-        className: "pr-3"
+        className: "pe-3"
       }, /*#__PURE__*/React.createElement("select", {
         className: "form-control form-control-sm w-auto",
         value: assignedDrive['quantity'],
@@ -321,11 +321,11 @@ class StorageSetup extends React.Component {
       }))), /*#__PURE__*/React.createElement("td", {
         className: "border-right px-3 text-nowrap"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "font-weight-bold"
+        className: "fw-bold"
       }, "Global Hot ", /*#__PURE__*/React.createElement("br", null), " Spare")), /*#__PURE__*/React.createElement("td", {
         className: "px-3 py-2 w-100"
       }, this.state.storageConfig[controller['id']]['globalHotSpare']['name']), /*#__PURE__*/React.createElement("td", {
-        className: "pr-3"
+        className: "pe-3"
       }, /*#__PURE__*/React.createElement("select", {
         value: "1",
         disabled: true

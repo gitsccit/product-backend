@@ -16,7 +16,7 @@ $url = $this->Url->build("/product/$card[url]");
             </a>
             <label class="mt-3 my-2 d-flex align-items-center" for="compare">
                 <input class="product-compare" type="checkbox" name="<?= $card['id'] ?>">
-                <a class="ml-1 text-dark" href="#compare" data-toggle="modal" data-target="#compare-modal"
+                <a class="ms-1 text-dark" href="#compare" data-bs-toggle="modal" data-bs-target="#compare-modal"
                    onclick="product_compare(<?= $card['id'] ?>)">Compare</a>
             </label>
         </div>
@@ -24,7 +24,7 @@ $url = $this->Url->build("/product/$card[url]");
             <div class="row py-3 h-100">
                 <div class="col-lg-8">
                     <div class="d-flex flex-column justify-content-between h-100">
-                        <a class="h5 text-black text-on-hover-primary text-decoration-none font-weight-bold"
+                        <a class="h5 text-black text-on-hover-primary text-decoration-none fw-bold"
                            href="<?= $url ?>"><?= $card['name'] ?></a>
                         <p class="text-small"><?= $card['specs_overview'] ?></p>
                         <?php if ($manufacturer = $card['manufacturer']) : ?>
@@ -36,9 +36,9 @@ $url = $this->Url->build("/product/$card[url]");
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex flex-column justify-content-center h-100">
-                        <p class="h5 font-weight-bold"><?= $this->Number->currency($card['price']) ?></p>
+                        <p class="h5 fw-bold"><?= $this->Number->currency($card['price']) ?></p>
                         <div class="d-flex flex-wrap">
-                            <p class="font-weight-bold">Availability:&nbsp;</p>
+                            <p class="fw-bold">Availability:&nbsp;</p>
                             <p><?= $card['status'] ?></p>
                         </div>
                         <input class="form-control mb-3" style="width: 4rem" type="number" name="quantity"

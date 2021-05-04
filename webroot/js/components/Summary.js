@@ -61,7 +61,7 @@ class Summary extends React.Component {
           <thead>
           <tr className="d-flex">
             <th className="col-3">
-              <h3 className="mb-0 font-weight-bold">{this.props.system['name']}</h3>
+              <h3 className="mb-0 fw-bold">{this.props.system['name']}</h3>
             </th>
             <th className="col-9">
               <div className="item-group justify-content-end">
@@ -85,7 +85,7 @@ class Summary extends React.Component {
           {
             selectedSpecs.map(([bucketCategory, spec]) => (
               <tr className="d-flex">
-                <td className="col-3 font-weight-bold">
+                <td className="col-3 fw-bold">
                   {bucketCategory}
                 </td>
                 <td className="col-9" dangerouslySetInnerHTML={{__html: spec}}>
@@ -106,7 +106,7 @@ class Summary extends React.Component {
               <div className="h5">
                 <span>Configured Price: </span>
                 <span
-                  className="h4 font-weight-bold">{this.props.system['price']}</span>
+                  className="h4 fw-bold">{this.props.system['price']}</span>
               </div>
               <div className="h5">
                 <label htmlFor="quantity">Quantity: </label>
@@ -118,7 +118,7 @@ class Summary extends React.Component {
               <div className="h5">
                 <span>Grand Total: </span>
                 <span
-                  className="h4 font-weight-bold">{this.state.grandTotal}</span>
+                  className="h4 fw-bold">{this.state.grandTotal}</span>
               </div>
             </div>
             <a className="btn btn-primary py-2"><span className="h5 icon-plus-circled"></span>Add To

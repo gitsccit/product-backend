@@ -199,7 +199,7 @@ class Configurator extends React.Component {
             <div className="item-group -mx-4">
               {tabs.map((tab, index) => (
                 <a
-                  className={'text-decoration-none font-weight-bold py-2 mx-4 ' + (this.state.currentTab === index ? 'text-black border-2 border-bottom border-primary' : 'text-muted')}
+                  className={'text-decoration-none fw-bold py-2 mx-4 ' + (this.state.currentTab === index ? 'text-black border-2 border-bottom border-primary' : 'text-muted')}
                   href={`#step-${index + 1}`} onClick={() => this._changeTab(index)}>
                   Step {`${index + 1}: ${tab['name']}`}
                 </a>
@@ -209,7 +209,7 @@ class Configurator extends React.Component {
           <div className="py-5">
             {tabs.map((tab, index) => (
               <div className={'fade ' + (this.state.currentTab === index ? 'show' : 'd-none')}>
-                <div className="h2 font-weight-bold">
+                <div className="h2 fw-bold">
                   Step {`${index + 1}: ${tab['name']}`}
                 </div>
                 <p className="mb-5">{tab['description']}</p>
@@ -219,12 +219,12 @@ class Configurator extends React.Component {
           </div>
           <div className="d-flex justify-content-between">
             <a className="text-decoration-none" href="#back" onClick={() => this._back()}>
-              <span className="bg-primary text-white p-1 icon-left-open mr-2"></span>
+              <span className="bg-primary text-white p-1 icon-left-open me-2"></span>
               Go Back
             </a>
             <a className="text-decoration-none" href="#continue" onClick={() => this._continue()}>
               Continue
-              <span className="bg-primary text-white p-1 icon-right-open ml-2"></span>
+              <span className="bg-primary text-white p-1 icon-right-open ms-2"></span>
             </a>
           </div>
         </div>

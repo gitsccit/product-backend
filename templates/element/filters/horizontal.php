@@ -7,7 +7,7 @@ $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', 
 ?>
 <?= $this->Form->create(null, ['method' => 'GET']) ?>
 <div class="row bg-secondary align-items-center p-3">
-    <span class="text-white font-weight-bold">FILTER</span>
+    <span class="text-white fw-bold">FILTER</span>
     <?php foreach ($tagCategories as $tagCategory): ?>
         <div class="col-2 px-2">
             <?php foreach ($tagCategory['tags'] as $tag): ?>

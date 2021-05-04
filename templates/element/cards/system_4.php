@@ -11,7 +11,7 @@ $url = $this->Url->build("/system/$card[url]");
         <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($card['image_id'], 100) ?>"
              alt="<?= $card['name'] ?>">
     </a>
-    <p class="font-weight-bold mb-1"><?= $card['name'] ?></p>
+    <p class="fw-bold mb-1"><?= $card['name'] ?></p>
     <p class="mb-1">Starting Price: <?= $this->Number->currency($card['price']) ?></p>
     <a class="text-primary text-nowrap" href="<?= $url ?>">Configure &#10095;</a>
 </div>

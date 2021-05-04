@@ -15,7 +15,7 @@
             </li>
         <?php endforeach; ?>
     </ul>
-    <ul class="pagination ml-auto">
+    <ul class="pagination ms-auto">
         <?= $this->Paginator->prev('Previous') ?>
         <?= $this->Paginator->numbers(['modulus' => 2, 'first' => 1, 'last' => 1]) ?>
         <?= $this->Paginator->next( 'Next', ['escape' => false]) ?>

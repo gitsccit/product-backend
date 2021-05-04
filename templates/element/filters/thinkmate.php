@@ -37,7 +37,7 @@ $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', 
                     }
                     ?>
                     <div class="d-flex align-items-center my-1">
-                        <input class="mr-2" type="checkbox" onclick="window.location.assign('<?= $link ?>')"
+                        <input class="me-2" type="checkbox" onclick="window.location.assign('<?= $link ?>')"
                             <?= $optionSelected ? ' checked' : '' ?>>
                         <span>
                             <?= "$option[name] ($option[count])" ?>

@@ -81,7 +81,7 @@ switch (count($products)) {
         <?php foreach ($sections as $groupName => $section) : ?>
             <?php if (is_string($groupName)) : ?>
                 <tr class="d-flex">
-                    <td class="col-3 bg-black text-white font-weight-bold"><?= $groupName ?></td>
+                    <td class="col-3 bg-black text-white fw-bold"><?= $groupName ?></td>
                     <?php foreach ($products as $product) : ?>
                         <td class="col-<?= $col ?> bg-black"></td>
                     <?php endforeach; ?>
@@ -104,7 +104,7 @@ switch (count($products)) {
             <a class="w-100 btn btn-primary">Print</a>
         </div>
         <div class="col-3">
-            <a class="w-100 btn btn-black" href="#close-modal" data-dismiss="modal" aria-label="Close">Close</a>
+            <a class="w-100 btn btn-black" href="#close-modal" data-bs-dismiss="modal" aria-label="Close">Close</a>
         </div>
     </div>
 </div>

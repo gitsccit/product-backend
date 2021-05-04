@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-md-4 p-3 bg-3">
                     <div class="d-flex justify-content-end">
-                        <a href="#close-modal" data-dismiss="modal" aria-label="Close">
+                        <a href="#close-modal" data-bs-dismiss="modal" aria-label="Close">
                             <span class="bg-black text-white icon-cancel" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -35,7 +35,7 @@
                         <?php foreach ($images as $index => $image): ?>
                             <li class="col-6 p-2">
                                 <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $index === 0 ? ' active' : '' ?>"
-                                   id="modal-image-<?= $image['id'] ?>-tab" data-toggle="tab"
+                                   id="modal-image-<?= $image['id'] ?>-tab" data-bs-toggle="tab"
                                    href="#modal-image-<?= $image['id'] ?>" role="tab" style="height: 60px">
                                     <img class="mw-100 mh-100"
                                          src="<?= $this->apiHandler->getFileUrl($image['file_id'], 300, 200) ?>">

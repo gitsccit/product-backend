@@ -148,7 +148,7 @@ class StorageSetup extends React.Component {
         {
           unassignedDrives.length > 0 &&
           <>
-            <h3 className="font-weight-bold">
+            <h3 className="fw-bold">
               Unassigned Drives
             </h3>
             <div className="row -m-2">
@@ -159,22 +159,22 @@ class StorageSetup extends React.Component {
                   return (
                     <div className="col-lg-4 col-md-6 p-2">
                       <div className="d-flex bg-white p-3 shadow-sm h-100">
-                        <div className="d-flex justify-content-center align-items-center bg-white mr-3"
+                        <div className="d-flex justify-content-center align-items-center bg-white me-3"
                              style={{width: 50, height: 50}}>
                           <img className="mw-100 mh-100" src={unassignedDrive['image']}/>
                         </div>
                         <div>
-                          <div className="font-weight-bold">
+                          <div className="fw-bold">
                             {unassignedDrive['name']}
                           </div>
                           <div className="d-flex align-items-center">
                             {
                               [...Array(availableQuantity).keys()].map(_ => (
-                                <div className="bg-primary mr-1" style={{width: 10, height: 10}}/>
+                                <div className="bg-primary me-1" style={{width: 10, height: 10}}/>
                               ))
                             }
                             <div
-                              className={'ml-1 ' + (unassignedDrive['quantity'] > 0 ? 'text-success' : 'text-muted')}>{availableQuantity} Available
+                              className={'ms-1 ' + (unassignedDrive['quantity'] > 0 ? 'text-success' : 'text-muted')}>{availableQuantity} Available
                             </div>
                           </div>
                         </div>
@@ -193,7 +193,7 @@ class StorageSetup extends React.Component {
         {
           controllers.length > 0 &&
           <>
-            <h3 className="font-weight-bold">
+            <h3 className="fw-bold">
               Controllers
             </h3>
             <div className="item-group-vertical">
@@ -224,7 +224,7 @@ class StorageSetup extends React.Component {
                           <img className="mw-100 mh-100" src={controller['image']}/>
                         </div>
                         <div>
-                          <div className="font-weight-bold">
+                          <div className="fw-bold">
                             {controller['name']}
                           </div>
                           <div>
@@ -233,18 +233,18 @@ class StorageSetup extends React.Component {
                           <div className="d-flex align-items-center">
                             {
                               [...Array(totalPorts).keys()].map(index => (
-                                <div className={'mr-1 ' + (index < availablePorts ? 'bg-primary' : 'bg-4')}
+                                <div className={'me-1 ' + (index < availablePorts ? 'bg-primary' : 'bg-4')}
                                      style={{width: 10, height: 10}}/>
                               ))
                             }
-                            <div className={'ml-1 ' + (availablePorts > 0 ? 'text-success' : 'text-muted')}>
+                            <div className={'ms-1 ' + (availablePorts > 0 ? 'text-success' : 'text-muted')}>
                               {availablePorts} Port(s) Available
                             </div>
                           </div>
                         </div>
                         {
                           dropdownButtons.length > 0 &&
-                          <div className="ml-auto">
+                          <div className="ms-auto">
                             <div className="item-group align-items-center">
                               {
                                 dropdownButtons.map(volumeType => {
@@ -266,7 +266,7 @@ class StorageSetup extends React.Component {
                                             <span className="bg-black text-white icon-cancel" aria-hidden="true"></span>
                                           </a>
                                         </div>
-                                        <div className="font-weight-bold mb-3">{controller['name']}</div>
+                                        <div className="fw-bold mb-3">{controller['name']}</div>
                                         <table className="w-100">
                                           <thead>
                                           <tr>
@@ -283,7 +283,7 @@ class StorageSetup extends React.Component {
                                                   {unassignedDrive['name']}
                                                 </td>
                                                 <td>
-                                                  <select className="form-control form-control-sm w-auto mr-3"
+                                                  <select className="form-control form-control-sm w-auto me-3"
                                                           id={`add-drive-${unassignedDrive['id']}-quantity`}>
                                                     {
                                                       Array.from({length: Math.min(availablePorts, this._getAvailableQuantityOfDrive(unassignedDrive['id']))}, (_, i) => i + 1).map(quantity => (
@@ -320,10 +320,10 @@ class StorageSetup extends React.Component {
                             <thead>
                             <tr>
                               <th colSpan="3"></th>
-                              <th className="font-weight-bold">
+                              <th className="fw-bold">
                                 Quantity
                               </th>
-                              <th className="font-weight-bold">
+                              <th className="fw-bold">
                                 Action
                               </th>
                             </tr>
@@ -340,7 +340,7 @@ class StorageSetup extends React.Component {
                                     </div>
                                   </td>
                                   <td className="border-right px-3 text-nowrap">
-                                    <div className="font-weight-bold">Volume #{volumeIndex + 1}</div>
+                                    <div className="fw-bold">Volume #{volumeIndex + 1}</div>
                                     <div>Data Volume</div>
                                   </td>
                                   <td className="px-3 py-2 w-100">
@@ -360,11 +360,11 @@ class StorageSetup extends React.Component {
                                         }
                                       </select>
                                       {
-                                        <span className="ml-2">Individual disks</span>
+                                        <span className="ms-2">Individual disks</span>
                                       }
                                     </div>
                                   </td>
-                                  <td className="pr-3">
+                                  <td className="pe-3">
                                     <select className="form-control form-control-sm w-auto"
                                             value={assignedDrive['quantity']}
                                             onChange={(e) => this._updateVolumeDriveQuantity(controller['id'], volumeIndex, parseInt(e.target.value))}>
@@ -394,12 +394,12 @@ class StorageSetup extends React.Component {
                                   </div>
                                 </td>
                                 <td className="border-right px-3 text-nowrap">
-                                  <div className="font-weight-bold">Global Hot <br/> Spare</div>
+                                  <div className="fw-bold">Global Hot <br/> Spare</div>
                                 </td>
                                 <td className="px-3 py-2 w-100">
                                   {this.state.storageConfig[controller['id']]['globalHotSpare']['name']}
                                 </td>
-                                <td className="pr-3">
+                                <td className="pe-3">
                                   <select value="1" disabled>
                                     {
                                       <option value="1">1</option>

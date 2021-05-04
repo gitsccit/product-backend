@@ -6,7 +6,7 @@
 ?>
 
 <div class="py-3">
-    <div class="h4 font-weight-bold"><?= $category['name'] ?></div>
+    <div class="h4 fw-bold"><?= $category['name'] ?></div>
     <div class="row">
         <?php foreach ($category['children'] as $subCategory): ?>
             <?php $categoryUrl = \Cake\Routing\Router::url($this->request->getPath() . (isset($category['url']) ? "/$category[url]" : '') . "/$subCategory[url]") ?>
@@ -20,7 +20,7 @@
                              alt="<?= $subCategory['name'] ?>">
                     </a>
                     <div class="d-flex justify-content-between align-items-center p-2">
-                        <a class="text-primary font-weight-bold" href="<?= $categoryUrl ?>">
+                        <a class="text-primary fw-bold" href="<?= $categoryUrl ?>">
                             <?= $this->Text->truncate($subCategory['name'], 30, ['exact' => false]) ?>
                         </a>
                         <div>

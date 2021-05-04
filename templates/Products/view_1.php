@@ -37,14 +37,14 @@ $this->Breadcrumbs->add($breadcrumbs);
     <ul class="nav nav-tabs" id="product-nav-tab" role="tablist">
         <?php if ($product['description']) : ?>
             <li class="nav-item">
-                <a class="nav-link text-black active" id="overview-tab" data-toggle="tab" href="#overview" role="tab">
+                <a class="nav-link text-black active" id="overview-tab" data-bs-toggle="tab" href="#overview" role="tab">
                     Overview
                 </a>
             </li>
         <?php endif; ?>
         <li class="nav-item">
             <a class="nav-link text-black<?= $product['description'] ? '' : ' active' ?>"
-               id="tech-specs-tab" data-toggle="tab" href="#tech-specs" role="tab">Tech Specs</a>
+               id="tech-specs-tab" data-bs-toggle="tab" href="#tech-specs" role="tab">Tech Specs</a>
         </li>
     </ul>
     <div class="tab-content py-3" id="product-content">
@@ -70,7 +70,7 @@ $this->Breadcrumbs->add($breadcrumbs);
                     <tbody>
                     <?php foreach ($specificationGroup as $specification) : ?>
                         <tr>
-                            <td class="font-weight-bold"><?= $specification['name'] ?></td>
+                            <td class="fw-bold"><?= $specification['name'] ?></td>
                             <td><?= $specification['text_value'] ?></td>
                         </tr>
                     <?php endforeach; ?>

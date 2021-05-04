@@ -287,12 +287,12 @@ class Configure extends React.Component {
         {
           !standaloneBucket && (currentBucket['minqty'] || currentBucket['maxqty'] || currentBucket['compare']) &&
           <div
-            className="item-group align-items-center justify-content-end font-weight-bold text-muted mb-3">
+            className="item-group align-items-center justify-content-end fw-bold text-muted mb-3">
             {currentBucket['minqty'] && <span>MIN QUANTITY: {currentBucket['minqty']}</span>}
             {currentBucket['maxqty'] && <span>MAX QUANTITY: {currentBucket['maxqty']}</span>}
             {
               currentBucket['compare'] &&
-              <a className="btn btn-primary" href='#compare' data-toggle="modal" data-target="#compare-modal"
+              <a className="btn btn-primary" href='#compare' data-bs-toggle="modal" data-bs-target="#compare-modal"
                  onClick={() => this._compareProducts(currentBucket)}>Compare</a>
             }
           </div>
@@ -397,7 +397,7 @@ class Configure extends React.Component {
                             {
                               filters.slice(0, 4).map(([filterGroup, options]) => (
                                 <div className="col-6 col-lg-3 px-2">
-                                  <div className="font-weight-bold mb-3 text-nowrap">{filterGroup}</div>
+                                  <div className="fw-bold mb-3 text-nowrap">{filterGroup}</div>
                                   <select className="form-control form-control-sm"
                                           value={this.state.selectedFilters[bucket['id']][filterGroup]}
                                           onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
@@ -411,7 +411,7 @@ class Configure extends React.Component {
                               ))
                             }
                           </div>
-                          <a className="text-primary text-decoration-none text-nowrap ml-3" href="#clear-filters"
+                          <a className="text-primary text-decoration-none text-nowrap ms-3" href="#clear-filters"
                              onClick={() => this._clearFilters(bucket['id'])}>
                             Clear Filters
                           </a>
@@ -444,7 +444,7 @@ class Configure extends React.Component {
                               {
                                 group['name'] &&
                                 <>
-                                  <div className="font-weight-bold">{group['name']}</div>
+                                  <div className="fw-bold">{group['name']}</div>
                                   <hr/>
                                 </>
                               }
@@ -500,9 +500,9 @@ class Configure extends React.Component {
                                           <span className="icon-cancel text-muted"/>
                                         </>
                                       }
-                                      <label className={'my-0' + (checked ? ' font-weight-bold' : '')}>
+                                      <label className={'my-0' + (checked ? ' fw-bold' : '')}>
                                         <input
-                                          className="mr-1"
+                                          className="me-1"
                                           type={isMultiSelect ? 'checkbox' : 'radio'}
                                           value={itemQuantity}
                                           checked={checked}

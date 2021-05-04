@@ -255,12 +255,12 @@ class Configure extends React.Component {
         __html: this.state.compareProductHTML
       }
     })), !standaloneBucket && (currentBucket['minqty'] || currentBucket['maxqty'] || currentBucket['compare']) && /*#__PURE__*/React.createElement("div", {
-      className: "item-group align-items-center justify-content-end font-weight-bold text-muted mb-3"
+      className: "item-group align-items-center justify-content-end fw-bold text-muted mb-3"
     }, currentBucket['minqty'] && /*#__PURE__*/React.createElement("span", null, "MIN QUANTITY: ", currentBucket['minqty']), currentBucket['maxqty'] && /*#__PURE__*/React.createElement("span", null, "MAX QUANTITY: ", currentBucket['maxqty']), currentBucket['compare'] && /*#__PURE__*/React.createElement("a", {
       className: "btn btn-primary",
       href: "#compare",
-      "data-toggle": "modal",
-      "data-target": "#compare-modal",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#compare-modal",
       onClick: () => this._compareProducts(currentBucket)
     }, "Compare")), /*#__PURE__*/React.createElement("div", {
       className: "row"
@@ -350,7 +350,7 @@ class Configure extends React.Component {
       }, filters.slice(0, 4).map(([filterGroup, options]) => /*#__PURE__*/React.createElement("div", {
         className: "col-6 col-lg-3 px-2"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "font-weight-bold mb-3 text-nowrap"
+        className: "fw-bold mb-3 text-nowrap"
       }, filterGroup), /*#__PURE__*/React.createElement("select", {
         className: "form-control form-control-sm",
         value: this.state.selectedFilters[bucket['id']][filterGroup],
@@ -358,7 +358,7 @@ class Configure extends React.Component {
       }, options.map(([option, count]) => /*#__PURE__*/React.createElement("option", {
         value: option
       }, option + (count > 0 ? ` (${count})` : ''))))))), /*#__PURE__*/React.createElement("a", {
-        className: "text-primary text-decoration-none text-nowrap ml-3",
+        className: "text-primary text-decoration-none text-nowrap ms-3",
         href: "#clear-filters",
         onClick: () => this._clearFilters(bucket['id'])
       }, "Clear Filters")), /*#__PURE__*/React.createElement("div", {
@@ -393,7 +393,7 @@ class Configure extends React.Component {
       }, /*#__PURE__*/React.createElement("div", {
         className: 'bg-white p-4 shadow-sm'
       }, group['name'] && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-        className: "font-weight-bold"
+        className: "fw-bold"
       }, group['name']), /*#__PURE__*/React.createElement("hr", null)), group['group_items'].map(item => {
         let itemIndexInBucket = itemsInBucket.indexOf(item);
         let itemInConfiguration = itemsInBucket[itemIndexInBucket];
@@ -436,9 +436,9 @@ class Configure extends React.Component {
         }, quantity))) : /*#__PURE__*/React.createElement("span", null, bucket['quantity'][0]), /*#__PURE__*/React.createElement("span", {
           className: "icon-cancel text-muted"
         })), /*#__PURE__*/React.createElement("label", {
-          className: 'my-0' + (checked ? ' font-weight-bold' : '')
+          className: 'my-0' + (checked ? ' fw-bold' : '')
         }, /*#__PURE__*/React.createElement("input", {
-          className: "mr-1",
+          className: "me-1",
           type: isMultiSelect ? 'checkbox' : 'radio',
           value: itemQuantity,
           checked: checked,

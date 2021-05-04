@@ -12,7 +12,7 @@
             <div class="tab-pane fade<?= $index === 0 ? ' show active' : '' ?>" id="image-<?= $image['id'] ?>"
                  role="tabpanel">
                 <a class="d-flex justify-content-center align-items-center bg-white p-5 image-tab"
-                   style="height: 240px" data-toggle="modal" data-target="#modal-gallery">
+                   style="height: 240px" data-bs-toggle="modal" data-bs-target="#modal-gallery">
                     <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
                 </a>
             </div>
@@ -22,7 +22,7 @@
         <?php foreach (array_slice($images, 0, 6) as $index => $image): ?>
             <li class="col-2 px-1 py-2">
                 <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $index === 0 ? ' active' : '' ?>"
-                   id="image-<?= $image['id'] ?>-tab" data-toggle="tab" href="#image-<?= $image['id'] ?>" role="tab"
+                   id="image-<?= $image['id'] ?>-tab" data-bs-toggle="tab" href="#image-<?= $image['id'] ?>" role="tab"
                    style="height: 60px">
                     <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
                 </a>
@@ -30,8 +30,8 @@
         <?php endforeach; ?>
     </ul>
     <a class="align-self-center p-1 text-primary"
-       id="see-all-images-tab" data-toggle="modal" href="#see-all-images" role="tab"
-       data-target="#modal-gallery">
+       id="see-all-images-tab" data-bs-toggle="modal" href="#see-all-images" role="tab"
+       data-bs-target="#modal-gallery">
         View Image Gallery
     </a>
 </div>

@@ -16,25 +16,25 @@ $url = $this->Url->build("/product/$card[url]");
         <div class="d-flex flex-row bg-4 justify-content-center align-items-center">
             <label class="my-2 d-flex align-items-center" for="compare">
                 <input class="product-compare" type="checkbox" name="<?= $card['id'] ?>">
-                <a class="ml-1 text-dark" href="#compare" data-toggle="modal" data-target="#compare-modal"
+                <a class="ms-1 text-dark" href="#compare" data-bs-toggle="modal" data-bs-target="#compare-modal"
                    onclick="product_compare(<?= $card['id'] ?>)">Compare</a>
             </label>
         </div>
     </div>
     <div class="d-flex flex-column flex-fill p-4">
-        <a class="h5 text-black text-decoration-none text-on-hover-primary font-weight-bold mb-3" href="<?= $url ?>">
+        <a class="h5 text-black text-decoration-none text-on-hover-primary fw-bold mb-3" href="<?= $url ?>">
             <?= $card['name'] ?>
         </a>
         <div class="d-flex flex-column flex-fill justify-content-between">
             <p class="text-small"><?= str_replace('<br>', ', ', $card['specs_overview']) ?></p>
             <div class="d-flex flex-column justify-content-between">
                 <div class="d-flex">
-                    <p class="font-weight-bold">Availability:&nbsp;</p>
+                    <p class="fw-bold">Availability:&nbsp;</p>
                     <p><?= $card['status'] ?></p>
                 </div>
-                <p class="h4 font-weight-bold mb-3"><?= $this->Number->currency($card['price']) ?></p>
-                <a class="btn btn-primary text-nowrap" href="#add-to-order" data-target="#cart-modal"
-                   data-toggle="modal">
+                <p class="h4 fw-bold mb-3"><?= $this->Number->currency($card['price']) ?></p>
+                <a class="btn btn-primary text-nowrap" href="#add-to-order" data-bs-target="#cart-modal"
+                   data-bs-toggle="modal">
                     Add To Order
                 </a>
             </div>

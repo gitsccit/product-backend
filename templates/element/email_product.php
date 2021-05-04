@@ -9,31 +9,29 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content bg-3 p-4">
             <div class="d-flex justify-content-end">
-                <a href="#close-modal" data-dismiss="modal" aria-label="Close">
+                <a href="#close-modal" data-bs-dismiss="modal" aria-label="Close">
                     <span class="bg-black text-white icon-cancel" aria-hidden="true"></span>
                 </a>
             </div>
-            <h4 class="font-weight-bold mb-3">Email a link to this product</h4>
+            <h4 class="fw-bold mb-3">Email a link to this product</h4>
             <?= $this->Form->create(null,
                 ['url' => ['controller' => 'Email', 'action' => 'products', 'plugin' => null, $product->id]]); ?>
-            <div class="form-group">
+            <div class="mb-3">
                 <?= $this->Form->control('name', ['required' => true, 'label' => 'Your Name']); ?>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <?= $this->Form->control('email', ['type' => 'email', 'required' => true, 'label' => 'Your Email']); ?>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <?= $this->Form->control('email2', ['type' => 'email', 'label' => 'Additional Email']); ?>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <?= $this->Form->control('comments', ['type' => 'textarea']); ?>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <?= $this->element('captcha'); ?>
             </div>
-            <div class="form-group">
-                <?= $this->Form->submit('Send Email', ['class' => 'btn btn-primary']); ?>
-            </div>
+            <?= $this->Form->submit('Send Email', ['class' => 'btn btn-primary']); ?>
             <?= $this->Form->end(); ?>
         </div>
     </div>
