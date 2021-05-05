@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/gitsccit/product-backend#readme",
   "devDependencies": {
-    "@babel/core": "^7.11.6",
     "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
     "@babel/preset-react": "^7.10.4"
   }
 }

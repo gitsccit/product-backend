@@ -70,7 +70,8 @@ class Configure extends React.Component {
   }
 
   _sendConfiguration(newConfig) {
-    this.props.validateConfiguration(newConfig, 1, (result) => {
+    let system = Object.assign({}, this.state.system);
+    this.props.validateConfiguration(this.state.system, newConfig, 1, (result) => {
       system['price'] = result['price'];
       let validConfiguration = result['errors'].length === 0;
 
@@ -146,13 +147,6 @@ class Configure extends React.Component {
     })
   }
 
-  _getBaseUrl() {
-    let url = window.location.href;
-    let index = url.indexOf('/system');
-
-    return url.substr(0, index);
-  }
-
   _compareProducts(bucket) {
     let filteredGroups = this._filterBucketGroups(bucket);
     let productIDs = [];
@@ -163,7 +157,7 @@ class Configure extends React.Component {
       })
     })
 
-    let url = this._getBaseUrl() + '/hardware/compare/' + productIDs.join('/');
+    let url = this.props.baseUrl + '/hardware/compare/' + productIDs.join('/');
 
     this.setState({
       compareProductHTML: `<div class="spinner-border text-primary align-self-center" role="status"><span class="sr-only">Loading...</span></div>`,

@@ -30,6 +30,7 @@ class Configurator extends React.Component {
       baseConfig[bucket['id']] = bucketItems;
     });
 
+    this.validateConfiguration = this.validateConfiguration.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
 
     this.state = {
@@ -59,8 +60,14 @@ class Configurator extends React.Component {
     });
   }
 
-  validateConfiguration(newConfig, quantity, callback) {
-    let system = Object.assign({}, this.state.system);
+  _getBaseUrl() {
+    let url = window.location.href;
+    let index = url.indexOf('/system');
+
+    return url.substr(0, index);
+  }
+
+  validateConfiguration(system, newConfig, quantity, callback) {
     let selectedBucketObjects = Object.entries(this.state.currentConfig).map(([bucketID, items]) => {
       let selectedItems = items.filter(item => {
         return item['selected_at'] != null;
@@ -120,7 +127,8 @@ class Configurator extends React.Component {
         name: 'Configure',
         description: 'Configure you system by selecting the desired item or items from each required category below.',
         content: <Configure system={systemWithoutStandaloneBuckets} currentConfig={this.state.currentConfig}
-                            csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}/>,
+                            csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
+                            baseUrl={this._getBaseUrl()}/>,
       },
       {
         name: 'Storage Setup',
