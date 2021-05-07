@@ -115,6 +115,7 @@ class Configurator extends React.Component {
         currentConfig: this.state.currentConfig,
         csrf: this.props.csrf,
         validateConfiguration: this.validateConfiguration,
+        updateSystem: this.updateSystem,
         baseUrl: this._getBaseUrl()
       })
     }, {

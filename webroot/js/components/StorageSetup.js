@@ -258,7 +258,7 @@ class StorageSetup extends React.Component {
                                       </a>
                                       <div
                                         id={`dropdown-${controller['id']}-${dasherizedType}`}
-                                        className="position-absolute zindex-dropdown right-0 bg-white border shadow-sm mt-1 p-3 d-none"
+                                        className="position-absolute zindex-dropdown end-0 bg-white border shadow-sm mt-1 p-3 d-none"
                                         style={{'minWidth': '50rem'}}>
                                         <div className="d-flex justify-content-end">
                                           <a href="#close-dropdown"
