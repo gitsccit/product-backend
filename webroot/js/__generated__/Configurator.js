@@ -131,6 +131,7 @@ class Configurator extends React.Component {
       content: /*#__PURE__*/React.createElement(Configure, {
         system: systemWithOnlyStandaloneBuckets,
         currentConfig: this.state.currentConfig,
+        updateSystem: this.updateSystem,
         csrf: this.props.csrf,
         validateConfiguration: this.validateConfiguration
       })
