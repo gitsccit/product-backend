@@ -408,7 +408,7 @@ class KitsTable extends Table
             ->extract('product_id')
             ->toArray();
 
-        $rules = FactoryLocator::get('Table')->get('ProductRules')
+        $rules = FactoryLocator::get('Table')->get('ProductBackend.ProductRules')
             ->find()
             ->contain('Products')
             ->formatResults(function (CollectionInterface $results) {
