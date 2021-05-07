@@ -65,7 +65,7 @@ class Configure extends React.Component {
 
   _sendConfiguration(newConfig) {
     let system = Object.assign({}, this.state.system);
-    this.props.validateConfiguration(this.state.system, newConfig, 1, result => {
+    this.props.validateConfiguration(system, newConfig, 1, result => {
       system['price'] = result['price'];
       let validConfiguration = result['errors'].length === 0;
       this.setState({
@@ -75,7 +75,7 @@ class Configure extends React.Component {
         errors: result['errors'],
         additionalItems: result['additionalItems']
       }, () => {
-        this.props.updateHandler(system, validConfiguration);
+        this.props.updateSystem(system, validConfiguration);
       });
     });
   }

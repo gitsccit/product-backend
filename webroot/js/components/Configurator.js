@@ -128,7 +128,7 @@ class Configurator extends React.Component {
         description: 'Configure you system by selecting the desired item or items from each required category below.',
         content: <Configure system={systemWithoutStandaloneBuckets} currentConfig={this.state.currentConfig}
                             csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
-                            baseUrl={this._getBaseUrl()}/>,
+                            updateSystem={this.updateSystem} baseUrl={this._getBaseUrl()}/>,
       },
       {
         name: 'Storage Setup',
