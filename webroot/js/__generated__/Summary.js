@@ -49,7 +49,7 @@ class Summary extends React.Component {
       className: "mb-4"
     }, description), /*#__PURE__*/React.createElement("a", {
       className: "btn btn-primary py-2 px-5 mt-auto",
-      href: "#"
+      href: "javascript:void(0)"
     }, button))))), /*#__PURE__*/React.createElement("table", {
       className: "table table-bordered my-5"
     }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
@@ -66,17 +66,17 @@ class Summary extends React.Component {
       className: "h5 mb-0 icon-floppy"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none",
-      href: "#"
+      href: "javascript:void(0)"
     }, "Save Configuration")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "h5 mb-0 icon-mail"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none",
-      href: "#"
+      href: "javascript:void(0)"
     }, "Email Configuration")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "h5 mb-0 icon-print"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none",
-      href: "#"
+      href: "javascript:void(0)"
     }, "View Specs")))))), /*#__PURE__*/React.createElement("tbody", null, selectedSpecs.map(([bucketCategory, spec]) => /*#__PURE__*/React.createElement("tr", {
       className: "d-flex"
     }, /*#__PURE__*/React.createElement("td", {
@@ -125,7 +125,8 @@ class Summary extends React.Component {
     }, /*#__PURE__*/React.createElement("span", null, "Grand Total: "), /*#__PURE__*/React.createElement("span", {
       className: "h4 fw-bold"
     }, this.state.grandTotal))), /*#__PURE__*/React.createElement("a", {
-      className: "btn btn-primary py-2"
+      className: "btn btn-primary py-2",
+      href: "javascript:void(0)"
     }, /*#__PURE__*/React.createElement("span", {
       className: "h5 icon-plus-circled"
     }), "Add To Order"))));

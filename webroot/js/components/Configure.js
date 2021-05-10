@@ -71,7 +71,7 @@ class Configure extends React.Component {
 
   _sendConfiguration(newConfig) {
     let system = Object.assign({}, this.state.system);
-    this.props.validateConfiguration(system, newConfig, 1, (result) => {
+    this.props.validateConfiguration(this.state.system, newConfig, 1, (result) => {
       system['price'] = result['price'];
       let validConfiguration = result['errors'].length === 0;
 
@@ -286,8 +286,8 @@ class Configure extends React.Component {
             {currentBucket['maxqty'] && <span>MAX QUANTITY: {currentBucket['maxqty']}</span>}
             {
               currentBucket['compare'] &&
-              <a className="btn btn-primary" href='#compare' data-bs-toggle="modal" data-bs-target="#compare-modal"
-                 onClick={() => this._compareProducts(currentBucket)}>Compare</a>
+              <a className="btn btn-primary" href="javascript:void(0)" data-bs-toggle="modal"
+                 data-bs-target="#compare-modal" onClick={() => this._compareProducts(currentBucket)}>Compare</a>
             }
           </div>
         }
@@ -311,7 +311,7 @@ class Configure extends React.Component {
                     return (
                       <a
                         className={`p-2 border-3 border-right bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted')}
-                        href={`#${bucket['category']}`}
+                        href="javascript:void(0)"
                         onClick={() => this._changeTab(index)}>
                         {bucket['category']}
                       </a>
@@ -405,7 +405,7 @@ class Configure extends React.Component {
                               ))
                             }
                           </div>
-                          <a className="text-primary text-decoration-none text-nowrap ms-3" href="#clear-filters"
+                          <a className="text-primary text-decoration-none text-nowrap ms-3" href="javascript:void(0)"
                              onClick={() => this._clearFilters(bucket['id'])}>
                             Clear Filters
                           </a>

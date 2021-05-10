@@ -139,8 +139,7 @@ class Configurator extends React.Component {
         name: 'Select Warranty',
         description: 'Select the warranty.',
         content: <Configure system={systemWithOnlyStandaloneBuckets} currentConfig={this.state.currentConfig}
-                            updateSystem={this.updateSystem} csrf={this.props.csrf}
-                            validateConfiguration={this.validateConfiguration}/>,
+                            csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}/>,
       },
       {
         name: 'Summary',
@@ -209,7 +208,7 @@ class Configurator extends React.Component {
               {tabs.map((tab, index) => (
                 <a
                   className={'text-decoration-none fw-bold py-2 mx-4 ' + (this.state.currentTab === index ? 'text-black border-2 border-bottom border-primary' : 'text-muted')}
-                  href={`#step-${index + 1}`} onClick={() => this._changeTab(index)}>
+                  href="javascript:void(0)" onClick={() => this._changeTab(index)}>
                   Step {`${index + 1}: ${tab['name']}`}
                 </a>
               ))}
@@ -227,11 +226,11 @@ class Configurator extends React.Component {
             ))}
           </div>
           <div className="d-flex justify-content-between">
-            <a className="text-decoration-none" href="#back" onClick={() => this._back()}>
+            <a className="text-decoration-none" href="javascript:void(0)" onClick={() => this._back()}>
               <span className="bg-primary text-white p-1 icon-left-open me-2"></span>
               Go Back
             </a>
-            <a className="text-decoration-none" href="#continue" onClick={() => this._continue()}>
+            <a className="text-decoration-none" href="javascript:void(0)" onClick={() => this._continue()}>
               Continue
               <span className="bg-primary text-white p-1 icon-right-open ms-2"></span>
             </a>

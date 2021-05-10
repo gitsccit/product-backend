@@ -229,18 +229,18 @@ class StorageSetup extends React.Component {
           className: "dropdown"
         }, /*#__PURE__*/React.createElement("a", {
           className: "btn btn-primary btn-sm",
-          href: `#${dasherizedType}`,
+          href: "javascript:void(0)",
           onClick: () => this._openDropdown(`dropdown-${controller['id']}-${dasherizedType}`)
         }, volumeType), /*#__PURE__*/React.createElement("div", {
           id: `dropdown-${controller['id']}-${dasherizedType}`,
-          className: "position-absolute zindex-dropdown end-0 bg-white border shadow-sm mt-1 p-3 d-none",
+          className: "position-absolute zindex-dropdown right-0 bg-white border shadow-sm mt-1 p-3 d-none",
           style: {
             'minWidth': '50rem'
           }
         }, /*#__PURE__*/React.createElement("div", {
           className: "d-flex justify-content-end"
         }, /*#__PURE__*/React.createElement("a", {
-          href: "#close-dropdown",
+          href: "javascript:void(0)",
           onClick: () => this._closeCurrentlyOpenDropdown()
         }, /*#__PURE__*/React.createElement("span", {
           className: "bg-black text-white icon-cancel",
@@ -260,7 +260,7 @@ class StorageSetup extends React.Component {
           value: quantity
         }, quantity)))), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
           className: "btn btn-primary btn-sm",
-          href: `#${dasherizedType}`,
+          href: "javascript:void(0)",
           onClick: () => volumeType === 'Global Hot Spare' ? this._createGlobalHotSpare(controller['id'], unassignedDrive) : this._createVolume(controller['id'], unassignedDrive)
         }, "Add"))))))));
       })))), controller['id'] in this.state.storageConfig && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
@@ -307,7 +307,7 @@ class StorageSetup extends React.Component {
         value: quantity
       }, quantity)))), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
         className: "text-decoration-none",
-        href: "#remove-volume",
+        href: "javascript:void(0)",
         onClick: () => this._removeVolume(controller['id'], volumeIndex)
       }, "Remove")))), this.state.storageConfig?.[controller['id']]?.['globalHotSpare'] != null && /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
         className: "d-flex justify-content-center align-items-center bg-white",
@@ -333,7 +333,7 @@ class StorageSetup extends React.Component {
         value: "1"
       }, "1"))), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
         className: "text-decoration-none",
-        href: "#remove-global-hot-spare",
+        href: "javascript:void(0)",
         onClick: () => this._removeGlobalHotSpare(controller['id'])
       }, "Remove")))))));
     }))));

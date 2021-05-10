@@ -252,16 +252,16 @@ class StorageSetup extends React.Component {
 
                                   return (
                                     <div className="dropdown">
-                                      <a className="btn btn-primary btn-sm" href={`#${dasherizedType}`}
+                                      <a className="btn btn-primary btn-sm" href="javascript:void(0)"
                                          onClick={() => this._openDropdown(`dropdown-${controller['id']}-${dasherizedType}`)}>
                                         {volumeType}
                                       </a>
                                       <div
                                         id={`dropdown-${controller['id']}-${dasherizedType}`}
-                                        className="position-absolute zindex-dropdown end-0 bg-white border shadow-sm mt-1 p-3 d-none"
+                                        className="position-absolute zindex-dropdown right-0 bg-white border shadow-sm mt-1 p-3 d-none"
                                         style={{'minWidth': '50rem'}}>
                                         <div className="d-flex justify-content-end">
-                                          <a href="#close-dropdown"
+                                          <a href="javascript:void(0)"
                                              onClick={() => this._closeCurrentlyOpenDropdown()}>
                                             <span className="bg-black text-white icon-cancel" aria-hidden="true"></span>
                                           </a>
@@ -293,7 +293,7 @@ class StorageSetup extends React.Component {
                                                   </select>
                                                 </td>
                                                 <td>
-                                                  <a className="btn btn-primary btn-sm" href={`#${dasherizedType}`}
+                                                  <a className="btn btn-primary btn-sm" href="javascript:void(0)"
                                                      onClick={() => (volumeType === 'Global Hot Spare' ? this._createGlobalHotSpare(controller['id'], unassignedDrive) : this._createVolume(controller['id'], unassignedDrive))}>
                                                     Add
                                                   </a>
@@ -376,7 +376,7 @@ class StorageSetup extends React.Component {
                                     </select>
                                   </td>
                                   <td>
-                                    <a className="text-decoration-none" href="#remove-volume"
+                                    <a className="text-decoration-none" href="javascript:void(0)"
                                        onClick={() => this._removeVolume(controller['id'], volumeIndex)}>
                                       Remove
                                     </a>
@@ -407,7 +407,7 @@ class StorageSetup extends React.Component {
                                   </select>
                                 </td>
                                 <td>
-                                  <a className="text-decoration-none" href="#remove-global-hot-spare"
+                                  <a className="text-decoration-none" href="javascript:void(0)"
                                      onClick={() => this._removeGlobalHotSpare(controller['id'])}>
                                     Remove
                                   </a>

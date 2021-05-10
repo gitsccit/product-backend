@@ -65,7 +65,7 @@ class Configure extends React.Component {
 
   _sendConfiguration(newConfig) {
     let system = Object.assign({}, this.state.system);
-    this.props.validateConfiguration(system, newConfig, 1, result => {
+    this.props.validateConfiguration(this.state.system, newConfig, 1, result => {
       system['price'] = result['price'];
       let validConfiguration = result['errors'].length === 0;
       this.setState({
@@ -253,7 +253,7 @@ class Configure extends React.Component {
       className: "item-group align-items-center justify-content-end fw-bold text-muted mb-3"
     }, currentBucket['minqty'] && /*#__PURE__*/React.createElement("span", null, "MIN QUANTITY: ", currentBucket['minqty']), currentBucket['maxqty'] && /*#__PURE__*/React.createElement("span", null, "MAX QUANTITY: ", currentBucket['maxqty']), currentBucket['compare'] && /*#__PURE__*/React.createElement("a", {
       className: "btn btn-primary",
-      href: "#compare",
+      href: "javascript:void(0)",
       "data-bs-toggle": "modal",
       "data-bs-target": "#compare-modal",
       onClick: () => this._compareProducts(currentBucket)
@@ -276,7 +276,7 @@ class Configure extends React.Component {
 
       return /*#__PURE__*/React.createElement("a", {
         className: `p-2 border-3 border-right bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted'),
-        href: `#${bucket['category']}`,
+        href: "javascript:void(0)",
         onClick: () => this._changeTab(index)
       }, bucket['category']);
     }))), /*#__PURE__*/React.createElement("div", {
@@ -354,7 +354,7 @@ class Configure extends React.Component {
         value: option
       }, option + (count > 0 ? ` (${count})` : ''))))))), /*#__PURE__*/React.createElement("a", {
         className: "text-primary text-decoration-none text-nowrap ms-3",
-        href: "#clear-filters",
+        href: "javascript:void(0)",
         onClick: () => this._clearFilters(bucket['id'])
       }, "Clear Filters")), /*#__PURE__*/React.createElement("div", {
         className: "d-flex justify-content-center align-items-center p-3 bg-white border",

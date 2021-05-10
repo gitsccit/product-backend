@@ -131,7 +131,6 @@ class Configurator extends React.Component {
       content: /*#__PURE__*/React.createElement(Configure, {
         system: systemWithOnlyStandaloneBuckets,
         currentConfig: this.state.currentConfig,
-        updateSystem: this.updateSystem,
         csrf: this.props.csrf,
         validateConfiguration: this.validateConfiguration
       })
@@ -187,7 +186,7 @@ class Configurator extends React.Component {
       className: "item-group -mx-4"
     }, tabs.map((tab, index) => /*#__PURE__*/React.createElement("a", {
       className: 'text-decoration-none fw-bold py-2 mx-4 ' + (this.state.currentTab === index ? 'text-black border-2 border-bottom border-primary' : 'text-muted'),
-      href: `#step-${index + 1}`,
+      href: "javascript:void(0)",
       onClick: () => this._changeTab(index)
     }, "Step ", `${index + 1}: ${tab['name']}`)))), /*#__PURE__*/React.createElement("div", {
       className: "py-5"
@@ -201,13 +200,13 @@ class Configurator extends React.Component {
       className: "d-flex justify-content-between"
     }, /*#__PURE__*/React.createElement("a", {
       className: "text-decoration-none",
-      href: "#back",
+      href: "javascript:void(0)",
       onClick: () => this._back()
     }, /*#__PURE__*/React.createElement("span", {
       className: "bg-primary text-white p-1 icon-left-open me-2"
     }), "Go Back"), /*#__PURE__*/React.createElement("a", {
       className: "text-decoration-none",
-      href: "#continue",
+      href: "javascript:void(0)",
       onClick: () => this._continue()
     }, "Continue", /*#__PURE__*/React.createElement("span", {
       className: "bg-primary text-white p-1 icon-right-open ms-2"
