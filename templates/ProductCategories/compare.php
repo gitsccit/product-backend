@@ -25,13 +25,14 @@ foreach ($products as $product) {
 $section = [];
 foreach ($products as $index => $product) {
     $url = $this->Url->build("/product/$product[url]");
+    $image = \ProductBackend\Core\Utility::getFileUrl($product['image_id'], 200, 100);
     $section['Product'][] = "
     <div class='d-flex flex-column justify-content-between h-100'>
         <a class='mb-3 text-black' href='$url'>
             {$this->Text->truncate($product['name'], 100, ['exact' => false])}
         </a>
         <a class='d-flex justify-content-center align-items-center bg-white p-1' style='height: 100px' href='$url'>
-            <img class='mw-100 mh-100' src='{$this->apiHandler->getFileUrl($product['image_id'], 200, 100)}'>
+            <img class='mw-100 mh-100' src='$image'>
         </a>
     </div>";
     $checked = $index === 0 ? 'checked' : '';

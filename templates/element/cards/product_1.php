@@ -11,12 +11,14 @@ $url = $this->Url->build("/product/$card[url]");
         <div class="col-lg-3 d-flex flex-column align-items-center px-0 bg-white">
             <a class="d-flex align-items-center justify-content-center p-5 w-100" href="<?= $url ?>"
                style="height: 150px">
-                <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
+                <img class="mw-100 mh-100"
+                     src="<?= \ProductBackend\Core\Utility::getFileUrl($card['image_id'], 100, 70) ?>"
                      alt="<?= $card['name'] ?>">
             </a>
             <label class="mt-3 my-2 d-flex align-items-center" for="compare">
                 <input class="product-compare" type="checkbox" name="<?= $card['id'] ?>">
-                <a class="ms-1 text-dark" href="#compare" data-bs-toggle="modal" data-bs-target="#compare-modal"
+                <a class="ms-1 text-dark" href="javascript:void(0)" data-bs-toggle="modal"
+                   data-bs-target="#compare-modal"
                    onclick="product_compare(<?= $card['id'] ?>)">Compare</a>
             </label>
         </div>

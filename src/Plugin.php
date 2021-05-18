@@ -6,7 +6,6 @@ namespace ProductBackend;
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Http\MiddlewareQueue;
-use Cake\Routing\RouteBuilder;
 
 /**
  * Plugin for ProductBackend
@@ -24,6 +23,7 @@ class Plugin extends BasePlugin
      */
     public function bootstrap(PluginApplicationInterface $app): void
     {
+        parent::bootstrap($app);
     }
 
     /**

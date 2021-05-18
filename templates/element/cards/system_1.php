@@ -15,11 +15,13 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
                href="<?= $url ?>">
                 <div class="d-flex justify-content-between h6 fw-bold text-black w-100 mb-3">
                     <span class="col-8 p-0"><?= $card['name'] ?></span>
-                    <span class="p-0" data-bs-toggle="tooltip" data-placement="bottom" title="<?= $card['support_badge_info'] ?? '' ?>">
+                    <span class="p-0" data-bs-toggle="tooltip" data-placement="bottom"
+                          title="<?= $card['support_badge_info'] ?? '' ?>">
                         <?= $card['support_badge'] ?? '' ?>
                     </span>
                 </div>
-                <img class="mw-100 my-2" src="<?= $this->apiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
+                <img class="mw-100 my-2"
+                     src="<?= \ProductBackend\Core\Utility::getFileUrl($card['image_id'], 100, 70) ?>"
                      style="height: 70px" alt="<?= $card['name'] ?>">
             </a>
         </div>
@@ -35,12 +37,13 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
                                         <div class="d-flex align-items-center">
                                             <div style="width:20px; height: 20px"
                                                  class="d-flex justify-content-center align-items-center me-1">
-                                                <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($tag['image_id']) ?>">
+                                                <img class="mw-100 mh-100"
+                                                     src="<?= \ProductBackend\Core\Utility::getFileUrl($tag['image_id']) ?>">
                                             </div>
                                             <div class="text-small">
                                                 <?php if ($tag['value']): ?>
                                                     <span
-                                                        class="text-primary fw-bold"><?= $tag['value'] ?></span>
+                                                            class="text-primary fw-bold"><?= $tag['value'] ?></span>
                                                 <?php endif; ?>
                                                 <?= $tag['name'] ?>
                                             </div>

@@ -15,7 +15,7 @@ $this->Breadcrumbs->add($breadcrumbs);
                 <h4 class="mb-3"><?= $product['name'] ?></h4>
                 <?php if ($manufacturer = $product['manufacturer']) : ?>
                     <div class="mb-3">
-                        <img src="<?= $this->apiHandler->getFileUrl($manufacturer['image_id'], 100, 70) ?>"
+                        <img src="<?= \ProductBackend\Core\Utility::getFileUrl($manufacturer['image_id'], 100, 70) ?>"
                              style="height: 60px">
                     </div>
                     <div>

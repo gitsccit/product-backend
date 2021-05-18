@@ -7,12 +7,13 @@ $this->Html->script(['react@16.13.1.development', 'react-dom@16.13.1.development
 $this->Breadcrumbs->add($breadcrumbs);
 
 $system['price'] = $this->Number->currency($system['price']);
-$system['image'] = $this->apiHandler->getFileUrl($system['image_id'], 200, 200);
+$system['image'] = \ProductBackend\Core\Utility::getFileUrl($system['image_id'], 200, 200);
 
 foreach ($system['buckets'] as &$bucket) {
     foreach ($bucket['groups'] as &$group) {
         foreach ($group['group_items'] as &$groupItem) {
-            $groupItem['image'] = $groupItem['image_id'] ? $this->apiHandler->getFileUrl($groupItem['image_id'], 100, 100) : null;
+            $groupItem['image'] = $groupItem['image_id'] ? \ProductBackend\Core\Utility::getFileUrl($groupItem['image_id'],
+                100, 100) : null;
         }
     }
 }

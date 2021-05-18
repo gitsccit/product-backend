@@ -8,7 +8,7 @@ $url = $this->Url->build("/system/$card[url]");
 ?>
 <div class="d-flex flex-column align-items-center p-4 bg-white text-center">
     <a class="d-flex align-items-center justify-content-center p-3" href="<?= $url ?>" style="height: 100px">
-        <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($card['image_id'], 100) ?>"
+        <img class="mw-100 mh-100" src="<?= \ProductBackend\Core\Utility::getFileUrl($card['image_id'], 100) ?>"
              alt="<?= $card['name'] ?>">
     </a>
     <p class="fw-bold mb-1"><?= $card['name'] ?></p>

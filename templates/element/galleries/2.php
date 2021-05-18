@@ -13,7 +13,7 @@
                  role="tabpanel">
                 <a class="d-flex justify-content-center align-items-center bg-white p-5 image-tab" style="height: 240px"
                    data-bs-toggle="modal" data-bs-target="#modal-gallery">
-                    <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                    <img class="mw-100 mh-100" src="<?= \ProductBackend\Core\Utility::getFileUrl($image['file_id'], 300, 200) ?>">
                 </a>
             </div>
         <?php endforeach; ?>
@@ -24,7 +24,7 @@
                 <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $index === 0 ? ' active' : '' ?>"
                    id="image-<?= $image['id'] ?>-tab" data-bs-toggle="tab" href="#image-<?= $image['id'] ?>" role="tab"
                    style="height: 60px">
-                    <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                    <img class="mw-100 mh-100" src="<?= \ProductBackend\Core\Utility::getFileUrl($image['file_id'], 300, 200) ?>">
                 </a>
             </li>
         <?php endforeach; ?>

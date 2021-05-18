@@ -14,7 +14,7 @@
                             <li class="col-6 p-2">
                                 <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $index === 0 ? ' active' : '' ?>"
                                    id="modal-image-<?= $image['id'] ?>-tab" data-bs-toggle="tab" href="#modal-image-<?= $image['id'] ?>" role="tab" style="height: 60px">
-                                    <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                                    <img class="mw-100 mh-100" src="<?= \ProductBackend\Core\Utility::getFileUrl($image['file_id'], 300, 200) ?>">
                                 </a>
                             </li>
                         <?php endforeach; ?>
@@ -34,7 +34,7 @@
                                      id="modal-image-<?= $image['id'] ?>" role="tabpanel">
                                     <div class="d-flex justify-content-center align-items-center bg-white image-tab p-5"
                                          style="height: 300px">
-                                        <img class="mw-100 mh-100" src="<?= $this->apiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                                        <img class="mw-100 mh-100" src="<?= \ProductBackend\Core\Utility::getFileUrl($image['file_id'], 300, 200) ?>">
                                     </div>
                                 </div>
                             <?php endforeach; ?>
