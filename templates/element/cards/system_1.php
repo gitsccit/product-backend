@@ -8,9 +8,9 @@ $url = $this->Url->build("/system/$card[url]");
 
 $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('category')->toArray();
 ?>
-<div class="d-flex flex-wrap py-2">
-    <div class="d-flex flex-wrap bg-3 flex-fill shadow">
-        <div class="col-md-3 d-flex flex-column align-items-center px-0">
+<div class="bg-3 my-3 shadow">
+    <div class="row">
+        <div class="col-md-3 d-flex flex-column align-items-center">
             <a class="d-flex p-3 bg-white text-decoration-none d-flex flex-column align-items-center w-100 h-100"
                href="<?= $url ?>">
                 <div class="d-flex justify-content-between h6 fw-bold text-black w-100 mb-3">
@@ -26,7 +26,7 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
             </a>
         </div>
         <div class="col-md-9">
-            <div class="row py-3 h-100">
+            <div class="row p-3 ps-md-0 h-100">
                 <div class="col-md-9">
                     <div class="row align-items-stretch h-100">
                         <?php foreach (array_slice($card['tags'], 0, 4) as $tagCategory => $tags): ?>
@@ -42,8 +42,7 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
                                             </div>
                                             <div class="text-small">
                                                 <?php if ($tag['value']): ?>
-                                                    <span
-                                                            class="text-primary fw-bold"><?= $tag['value'] ?></span>
+                                                    <span class="text-primary fw-bold"><?= $tag['value'] ?></span>
                                                 <?php endif; ?>
                                                 <?= $tag['name'] ?>
                                             </div>
