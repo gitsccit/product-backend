@@ -5,7 +5,7 @@
  */
 ?>
 <div class="d-flex flex-column">
-    <?= $this->element('galleries/modal_' . $this->request->getSession()->read('options.store.layout.gallery'),
+    <?= $this->element('ProductBackend.galleries/modal_' . $this->request->getSession()->read('options.store.layout.gallery'),
         compact('images')) ?>
     <div class="tab-content" id="gallery-content">
         <?php foreach (array_slice($images, 0, 6) as $index => $image): ?>

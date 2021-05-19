@@ -9,7 +9,7 @@ $this->Breadcrumbs->add($breadcrumbs);
 ?>
 <div class="container py-5">
     <?php if ($subCategories): ?>
-        <?= $this->element('cards/category_3', [
+        <?= $this->element('ProductBackend.cards/category_3', [
             'category' => [
                 'name' => humanize(end($subCategories)),
                 'children' => $systemCategories,
@@ -17,7 +17,7 @@ $this->Breadcrumbs->add($breadcrumbs);
         ]) ?>
     <?php else: ?>
         <?php foreach ($systemCategories as $category): ?>
-            <?= $this->element('cards/category_3', compact('category')) ?>
+            <?= $this->element('ProductBackend.cards/category_3', compact('category')) ?>
         <?php endforeach; ?>
     <?php endif; ?>
 </div>

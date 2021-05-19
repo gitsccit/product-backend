@@ -5,7 +5,7 @@
  */
 ?>
 <div class="row" style="margin-left: -.25rem; margin-right: -.25rem">
-    <?= $this->element('galleries/modal_' . $this->request->getSession()->read('options.store.layout.gallery'),
+    <?= $this->element('ProductBackend.galleries/modal_' . $this->request->getSession()->read('options.store.layout.gallery'),
         compact('images')) ?>
     <ul class="col-3 px-1 item-group-vertical d-flex flex-column nav" id="gallery-nav-bar" role="tablist">
         <?php foreach ((count($images) > 5 ? array_slice($images, 0, 4) : $images) as $index => $image): ?>

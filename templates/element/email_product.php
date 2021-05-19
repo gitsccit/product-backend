@@ -29,7 +29,7 @@
                 <?= $this->Form->control('comments', ['type' => 'textarea']); ?>
             </div>
             <div class="mb-3">
-                <?= $this->element('captcha'); ?>
+                <?= $this->element('ProductBackend.captcha'); ?>
             </div>
             <?= $this->Form->submit('Send Email', ['class' => 'btn btn-primary']); ?>
             <?= $this->Form->end(); ?>

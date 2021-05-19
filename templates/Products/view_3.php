@@ -8,7 +8,7 @@ $this->Breadcrumbs->add($breadcrumbs);
 <div class="container py-5">
     <div class="row">
         <div class="col-lg-5">
-            <?= $this->element('galleries/2', ['images' => $product->gallery->gallery_images]) ?>
+            <?= $this->element('ProductBackend.galleries/2', ['images' => $product->gallery->gallery_images]) ?>
         </div>
         <div class="col-lg-4">
             <div class="d-flex flex-column justify-content-around">
@@ -26,12 +26,12 @@ $this->Breadcrumbs->add($breadcrumbs);
             </div>
         </div>
         <div class="col-lg-3">
-            <?= $this->element('cards/product_checkout', ['card' => $product]) ?>
+            <?= $this->element('ProductBackend.cards/product_checkout', ['card' => $product]) ?>
         </div>
     </div>
 </div>
 <?php if ($product['show_related_systems'] && $product['related_systems']) : ?>
-    <?= $this->element('configured_systems', ['systems' => $product['related_systems']]) ?>
+    <?= $this->element('ProductBackend.configured_systems', ['systems' => $product['related_systems']]) ?>
 <?php endif; ?>
 <div class="container py-4">
     <ul class="nav nav-tabs" id="product-nav-tab" role="tablist">

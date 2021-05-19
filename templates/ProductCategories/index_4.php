@@ -7,7 +7,7 @@ $this->Breadcrumbs->add($breadcrumbs);
 ?>
 
 <div class="container py-5">
-    <?= $this->element('cards/category_4', [
+    <?= $this->element('ProductBackend.cards/category_4', [
         'category' => [
             'name' => 'Hardware',
             'children' => $productCategories,
