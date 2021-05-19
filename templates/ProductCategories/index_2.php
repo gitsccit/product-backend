@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ProductCategory[]|\Cake\Collection\CollectionInterface $productCategories
  */
-$this->Breadcrumbs->add($breadcrumbs);
+$this->Breadcrumbs->add($breadcrumbs ?? []);
 ?>
 
 <div class="container py-5">

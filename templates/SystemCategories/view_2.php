@@ -5,7 +5,7 @@
  * @var \App\Model\Entity\System[] $systems
  * @var array $tagCategories
  */
-$this->Breadcrumbs->add($breadcrumbs);
+$this->Breadcrumbs->add($breadcrumbs ?? []);
 ?>
 <div class="container py-5">
     <h1 class="mb-5">Browse & <span class="text-primary">Configure</span></h1>

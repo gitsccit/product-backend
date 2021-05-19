@@ -5,7 +5,7 @@
  * @var \App\Model\Entity\Product[] $products
  * @var array $specifications
  */
-$this->Breadcrumbs->add($breadcrumbs);
+$this->Breadcrumbs->add($breadcrumbs ?? []);
 ?>
 <div class="container py-5">
     <?= $this->element('ProductBackend.compare') ?>

@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Product $product
  */
-$this->Breadcrumbs->add($breadcrumbs);
+$this->Breadcrumbs->add($breadcrumbs ?? []);
 ?>
 <div class="container py-5">
     <div class="row">

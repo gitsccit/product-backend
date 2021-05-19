@@ -5,7 +5,7 @@
  */
 
 $subCategories = $this->request->getParam('pass');
-$this->Breadcrumbs->add($breadcrumbs);
+$this->Breadcrumbs->add($breadcrumbs ?? []);
 ?>
 <div class="container py-5">
     <?php if ($subCategories): ?>
