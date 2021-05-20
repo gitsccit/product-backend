@@ -88,7 +88,8 @@ class Configurator extends React.Component {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'X-CSRF-Token': this.props.csrf
+          'X-CSRF-Token': this.props.csrf,
+          'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify(payload)
       }).then(response => response.json()).then(callback);

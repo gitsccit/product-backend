@@ -162,7 +162,11 @@ class Configure extends React.Component {
     this.setState({
       compareProductHTML: `<div class="spinner-border text-primary align-self-center" role="status"><span class="sr-only">Loading...</span></div>`,
     }, () => {
-      fetch(url)
+      fetch(url, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        }
+      })
         .then(response => response.text())
         .then((result) => {
           this.setState({
