@@ -34,6 +34,7 @@ function product_compare(currentProduct, check = true) {
     };
 
     request.open('GET', url);
+    request.setRequestHeader('X-Requested-With','XMLHttpRequest');
     request.send();
 
     return false;

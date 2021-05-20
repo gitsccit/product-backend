@@ -17,6 +17,7 @@ function add_to_order(category, currentProduct) {
     };
 
     request.open('GET', url);
+    request.setRequestHeader('X-Requested-With','XMLHttpRequest');
     request.send();
 
     return false;
