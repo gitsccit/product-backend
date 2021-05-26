@@ -23,6 +23,8 @@ class Plugin extends BasePlugin
      */
     public function bootstrap(PluginApplicationInterface $app): void
     {
+        $app->addPlugin('Authentication');
+
         parent::bootstrap($app);
     }
 
