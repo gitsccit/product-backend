@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ProductBackend\Model\Table;
 
 use Cake\Collection\CollectionInterface;
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -102,27 +103,32 @@ class GroupItemsTable extends Table
         return $rules;
     }
 
-
-   public function findConfiguration(Query $query, array $options = [])
+    public function findConfiguration(Query $query, array $options = [])
     {
         return $query
             ->formatResults(function (CollectionInterface $result) {
-                $products = $this->Products
-                    ->find('basic')
-                    ->find('image')
-                    ->contain('Specifications', function (Query $q) {
-                        return $q->find('specifications');
-                    })
-                    ->whereInList('Products.id', $result->extract('product_id')->toList())
-                    ->indexBy('id')
-                    ->toArray();
+                $products = $systems = [];
 
-                $systems = $this->Systems
-                    ->find('basic')
-                    ->find('image')
-                    ->whereInList('Systems.id', $result->extract('system_id')->toList())
-                    ->indexBy('id')
-                    ->toArray();
+                if ($productIDs = $result->extract('product_id')->toList()) {
+                    $products = $this->Products
+                        ->find('basic')
+                        ->find('image')
+                        ->contain('Specifications', function (Query $q) {
+                            return $q->find('specifications');
+                        })
+                        ->whereInList('Products.id', $productIDs)
+                        ->indexBy('id')
+                        ->toArray();
+                }
+
+                if ($systemIDs = $result->extract('system_id')->toList()) {
+                    $systems = $this->Systems
+                        ->find('basic')
+                        ->find('image')
+                        ->whereInList('Systems.id', $systemIDs)
+                        ->indexBy('id')
+                        ->toArray();
+                }
 
                 return $result->map(function ($groupItem) use ($products, $systems) {
                     $item = $products[$groupItem['product_id']] ?? $systems[$groupItem['system_id']];
@@ -137,6 +143,10 @@ class GroupItemsTable extends Table
                     $unifiedItem['warning'] = $item['warning'];
                     $unifiedItem['price'] = $item['price'];
                     $unifiedItem['specs'] = $item['specifications'];
+
+                    if (Configure::read('ProductBackend.showCost')) {
+                        $unifiedItem['cost'] = $item['cost'];
+                    }
 
                     return $unifiedItem;
                 });

@@ -514,9 +514,9 @@ class KitsTable extends Table
                     'Barebones' => 638,
                 ];
 
-                $specsTable->find()->where([
-                    '' => '',
-                ]);
+//                $specsTable->find()->where([
+//                    '' => '',
+//                ]);
 
             }
         }

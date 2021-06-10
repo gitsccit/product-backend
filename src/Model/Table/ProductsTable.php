@@ -5,6 +5,7 @@ namespace ProductBackend\Model\Table;
 
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\Core\Configure;
 use Cake\Http\Session;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -315,6 +316,12 @@ class ProductsTable extends Table
         $session = new Session();
         $perspectiveId = $options['perspective'] ?? $session->read('options.store.perspective');
         $priceLevelId = $options['priceLevel'] ?? $session->read('options.store.price-level');
+
+        if (Configure::read('ProductBackend.showCost')) {
+            $query->select([
+                'Products.cost',
+            ]);
+        }
 
         return $query
             ->select([

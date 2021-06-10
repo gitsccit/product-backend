@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ProductBackend\Controller;
 
+use Cake\Core\Configure;
 use Cake\Datasource\FactoryLocator;
-use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\Number;
 
@@ -16,12 +16,6 @@ use Cake\I18n\Number;
  */
 class SystemsController extends AppController
 {
-    public function beforeFilter(EventInterface $event)
-    {
-        parent::beforeFilter($event);
-
-        $this->Authentication->addUnauthenticatedActions(['validate']);
-    }
 
     /**
      * Index method
@@ -81,14 +75,19 @@ class SystemsController extends AppController
             [$kitRuleWarnings, $kitRuleErrors] = $this->Systems->Kits->validateKitRules($kitID, $configuration);
             [$productRuleWarnings, $productRuleErrors] = $this->Systems->Kits->validateProductRules($kitID,
                 $configuration);
-//            [$productRuleWarnings, $productRuleErrors] = $this->Systems->Kits->validateGlobalSpecRules($kitID, $configuration);
-            [, $additionalPrice, $additionalItems] = $this->Systems->Kits->validateSkuRules($configuration);
-            [, $price] = $this->Systems->getConfigurationCostAndPrice($data['system'], $configuration);
-            $warnings = array_merge($kitRuleWarnings, $productRuleWarnings);
-            $errors = array_merge($errors, $kitRuleErrors, $productRuleErrors);
+            [$globalSpecRuleWarnings, $globalSpecRuleErrors] = $this->Systems->Kits->validateGlobalSpecRules($kitID, $configuration);
+            [$additionalCost, $additionalPrice, $additionalItems] = $this->Systems->Kits->validateSkuRules($configuration);
+            [$cost, $price] = $this->Systems->getConfigurationCostAndPrice($data['system'], $configuration);
+            $warnings = array_merge($kitRuleWarnings, $productRuleWarnings, $globalSpecRuleWarnings);
+            $errors = array_merge($errors, $kitRuleErrors, $productRuleErrors, $globalSpecRuleErrors);
+            $cost = Number::currency(($cost + $additionalCost) * $quantity);
             $price = Number::currency(($price + $additionalPrice) * $quantity);
 
             $result = compact('price', 'warnings', 'errors', 'additionalItems');
+
+            if (Configure::read('ProductBackend.showCost')) {
+                $result['cost'] = $cost;
+            }
 
             return $this->response->withStringBody(json_encode($result))->withType('application/json');
         }

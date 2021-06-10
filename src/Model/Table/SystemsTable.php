@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace ProductBackend\Model\Table;
 
 use Cake\Collection\Collection;
+use Cake\Core\Configure;
 use Cake\Http\Session;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -74,11 +76,6 @@ class SystemsTable extends Table
         $this->hasMany('SystemPriceLevels', [
             'foreignKey' => 'system_id',
             'className' => 'ProductBackend.SystemPriceLevels',
-        ]);
-        $this->belongsToMany('BaseConfigurationItems', [
-            'foreignKey' => 'system_id',
-            'targetForeignKey' => 'item_id',
-            'joinTable' => 'product_backend.system_groups',
         ]);
     }
 
@@ -190,26 +187,51 @@ class SystemsTable extends Table
         return $rules;
     }
 
+    public function findPrice(Query $query, array $options)
+    {
+        $session = new Session();
+        $priceLevelId = $session->read('options.store.price-level');
+
+        return $query
+            ->select([
+                'price' => 'SystemPriceLevels.price',
+            ])
+            ->innerJoinWith('SystemPriceLevels', function (Query $q) use ($priceLevelId) {
+                return $q->where(['SystemPriceLevels.price_level_id' => $priceLevelId]);
+            });
+    }
+
     public function findBasic(Query $query, array $options)
     {
         $session = new Session();
         $perspectiveId = $session->read('options.store.perspective');
-        $priceLevelId = $session->read('options.store.price-level');
+
+        if (Configure::read('ProductBackend.showCost')) {
+            $query
+                ->contain('SystemItems.GroupItems', function ($query) {
+                    return $query->find('configuration');
+                })
+                ->formatResults(function ($result) {
+                    return $result->each(function ($system) {
+                        $system->cost = 0;
+                        foreach ($system->system_items as $systemItem) {
+                            $system->cost += $systemItem['group_item']['cost'] * $systemItem['quantity'];
+                        }
+                    });
+                });
+        }
 
         return $query
+            ->find('price')
             ->select([
                 'Systems.id',
                 'Systems.kit_id',
                 'Systems.system_category_id',
                 'url' => 'IFNULL(SystemPerspectives.url, Systems.url)',
                 'name' => 'IFNULL(SystemPerspectives.name, Systems.name)',
-                'price' => 'SystemPriceLevels.price',
             ])
             ->leftJoinWith('SystemPerspectives', function (Query $q) use ($perspectiveId) {
                 return $q->where(['SystemPerspectives.perspective_id' => $perspectiveId]);
-            })
-            ->innerJoinWith('SystemPriceLevels', function (Query $q) use ($priceLevelId) {
-                return $q->where(['SystemPriceLevels.price_level_id' => $priceLevelId]);
             })
             ->group(['Systems.id'])
             ->order([
@@ -321,7 +343,8 @@ class SystemsTable extends Table
                 return $result->map(function ($system) {
                     $system->noise_level = $system->noise_level === 'yes';
                     $system->power_estimate = $system->power_estimate === 'yes';
-                    $system->buckets = $this->Kits->Buckets->find('configuration', ['kitID' => $system->kit_id])->find('filters')->toList();
+                    $system->buckets = $this->Kits->Buckets->find('configuration',
+                        ['kitID' => $system->kit_id])->find('filters')->toList();
 
                     return $system;
                 });
@@ -332,12 +355,15 @@ class SystemsTable extends Table
     {
         $selectedItemsQuantities = array_replace(...$configuration);
 
-        $selectedItems = $this->GroupItems->find('configuration')->whereInList('GroupItems.id', array_keys($selectedItemsQuantities));
-        $system = $this->find('basic')->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
+        $selectedItems = $this->GroupItems->find('configuration')->whereInList('GroupItems.id',
+            array_keys($selectedItemsQuantities));
+        $system = $this->find('price')->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
         $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
-                return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
-            }, $system['fpa']);
-        $cost = 0;
+            return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
+        }, $system['fpa']);
+        $cost = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
+            return $carry + $item['cost'] * $selectedItemsQuantities[$item['id']];
+        }, 0);
 
         return [$cost, $price];
     }
