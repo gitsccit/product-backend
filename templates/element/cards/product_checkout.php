@@ -8,7 +8,7 @@ $this->Html->script('order', ['block' => true]);
 
 <?= $this->element('ProductBackend.cart') ?>
 <div class="p-4 bg-3 d-flex flex-column justify-content-between">
-    <p class="h4 fw-bold mb-3"><?= $this->Number->currency($card['price']) ?></p>
+    <p class="h4 fw-bold mb-3"><?= $card['price'] ?></p>
     <div class="d-flex">
         <span class="fw-bold">Availability:&nbsp;</span>
         <p><?= $card['status'] ?></p>

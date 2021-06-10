@@ -45,7 +45,7 @@ $url = $this->Url->build("/system/$card[url]");
         <div class="d-flex flex-grow-1 justify-content-center flex-column py-1 px-3" style="background-color: black">
             <div class="p-0 text-white text-nowrap">STARTING PRICE</div>
             <div class="fw-bold" style="color: #ff9900">
-                <?= $this->Number->currency($card['price']) ?>
+                <?= $card['price'] ?>
             </div>
         </div>
         <a class="d-flex align-items-center btn btn-primary fw-bold text-nowrap p-3"

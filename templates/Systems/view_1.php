@@ -6,7 +6,6 @@
 $this->Html->script(['react@16.13.1.development', 'react-dom@16.13.1.development'], ['block' => true]);
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 
-$system['price'] = $this->Number->currency($system['price']);
 $system['image'] = \ProductBackend\Core\Utility::getFileUrl($system['image_id'], 200, 200);
 
 foreach ($system['buckets'] as &$bucket) {

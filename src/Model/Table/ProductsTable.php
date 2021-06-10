@@ -7,6 +7,7 @@ use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Session;
+use Cake\I18n\Number;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -347,7 +348,12 @@ class ProductsTable extends Table
             ->order([
                 'Products.sort' => 'ASC',
                 'IFNULL(ProductPerspectives.name, Products.name)' => 'ASC',
-            ]);
+            ])
+            ->formatResults(function ($result) {
+                return $result->each(function ($product) {
+                    $product->price = Number::currency($product->price);
+                });
+            });
     }
 
     public function findActive(Query $query, array $options)
