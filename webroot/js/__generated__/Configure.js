@@ -111,22 +111,22 @@ class Configure extends React.Component {
     });
   }
 
-  _priceDiff(bucketID, itemIndexInBucket, isMultiSelect) {
+  _priceDiff(bucketID, itemIndexInBucket, isMultiSelect, type = 'price') {
     let priceDiff;
     let currentItem = this.state.currentConfig[bucketID][itemIndexInBucket];
     let selected = currentItem['selected_at'];
 
     if (isMultiSelect) {
-      priceDiff = (selected ? -1 : 1) * currentItem['price'] * currentItem['quantity'];
+      priceDiff = (selected ? -1 : 1) * currentItem[type] * currentItem['quantity'];
     } else if (selected) {
       priceDiff = 0;
     } else {
       let selectedItem = this.state.currentConfig[bucketID].find(item => item['selected_at']);
-      priceDiff = currentItem['price'] * currentItem['quantity'] - selectedItem['price'] * selectedItem['quantity'];
+      priceDiff = currentItem[type] * currentItem['quantity'] - selectedItem[type] * selectedItem['quantity'];
     }
 
     if (priceDiff === 0) {
-      return '';
+      return priceDiff.toFixed(2);
     }
 
     return (priceDiff > 0 ? '+' : '') + priceDiff.toFixed(2);
@@ -421,7 +421,9 @@ class Configure extends React.Component {
           itemInConfiguration['quantity'] = options[0];
         }
 
-        let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect);
+        let costDifference = 'cost' in item ? this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'cost') : null;
+
+        let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'price');
 
         return /*#__PURE__*/React.createElement("div", {
           className: "item-group align-items-center my-1"
@@ -443,7 +445,7 @@ class Configure extends React.Component {
           checked: checked,
           disabled: isMultiSelect && !checked && reachedMaxQuantity,
           onChange: () => this._selectItem(bucket['id'], itemIndexInBucket)
-        }), item['name']), priceDifference !== '' && /*#__PURE__*/React.createElement("span", null, "[ ", priceDifference, " ]"), (item['warning'] || item['status_text']) && /*#__PURE__*/React.createElement("span", {
+        }), item['name']), costDifference === null ? /*#__PURE__*/React.createElement("span", null, "[ ", priceDifference, " ]") : /*#__PURE__*/React.createElement("span", null, "[ ", costDifference, " | ", priceDifference, " ]"), (item['warning'] || item['status_text']) && /*#__PURE__*/React.createElement("span", {
           className: "bg-warning px-1",
           title: item['status_text']
         }, item['status']));
