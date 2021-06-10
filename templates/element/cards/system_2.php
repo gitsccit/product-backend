@@ -31,7 +31,7 @@ $url = $this->Url->build("/system/$card[url]");
         </div>
         <div class="d-flex flex-column justify-content-around mt-auto">
             STARTING PRICE
-            <h4 class="mb-3 fw-bold"><?= $card['price'] ?></h4>
+            <h4 class="mb-3 fw-bold"><?= $this->Number->currency($card['price']) ?></h4>
             <a class="btn btn-primary text-nowrap" href="<?= $url ?>">Configure</a>
         </div>
     </div>

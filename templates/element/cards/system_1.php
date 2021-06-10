@@ -57,7 +57,7 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
                     <div class="d-flex flex-column h-100">
                         STARTING PRICE
                         <div class="d-flex flex-column justify-content-center flex-fill">
-                            <p class="h5 fw-bold"><?= $card['price'] ?></p>
+                            <p class="h5 fw-bold"><?= $this->Number->currency($card['price']) ?></p>
                             <a class="btn btn-primary text-nowrap" href="<?= $url ?>">Configure</a>
                         </div>
                     </div>

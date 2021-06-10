@@ -41,7 +41,7 @@ $url = $this->Url->build("/product/$card[url]");
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex flex-column justify-content-center h-100">
-                        <p class="h5 fw-bold"><?= $card['price'] ?></p>
+                        <p class="h5 fw-bold"><?= $this->Number->currency($card['price']) ?></p>
                         <div class="d-flex flex-wrap">
                             <p class="fw-bold">Availability:&nbsp;</p>
                             <p><?= $card['status'] ?></p>

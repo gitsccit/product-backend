@@ -6,10 +6,10 @@ namespace ProductBackend\Model\Table;
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\Http\Session;
-use Cake\I18n\Number;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -198,11 +198,6 @@ class SystemsTable extends Table
             ])
             ->innerJoinWith('SystemPriceLevels', function (Query $q) use ($priceLevelId) {
                 return $q->where(['SystemPriceLevels.price_level_id' => $priceLevelId]);
-            })
-            ->formatResults(function ($result) {
-                return $result->each(function ($system) {
-                    $system->price = Number::currency($system->price);
-                });
             });
     }
 
@@ -222,7 +217,6 @@ class SystemsTable extends Table
                         foreach ($system->system_items as $systemItem) {
                             $system->cost += $systemItem['group_item']['cost'] * $systemItem['quantity'];
                         }
-                        $system->cost = Number::currency($system->cost);
                     });
                 });
         }

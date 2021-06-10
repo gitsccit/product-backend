@@ -39,7 +39,7 @@ foreach ($products as $index => $product) {
 //    $table['Remove'][] = "<a href='#' onclick='product_compare($product[id], false)'><span class='icon-cancel'></span></a>";
     $section[$emptyFieldValue][] = "<a class='btn btn-primary' href='#$product[id]'>Add To Order</a>";
     $section['Base Model'][] = "<input type='radio' name='$product[id]' $checked onchange='product_compare($product[id])'>";
-    $section['Price'][] = $product['price'];
+    $section['Price'][] = $this->Number->currency($product['price']);
     $section['Status'][] = $product['status'];
     $section['Manufacturer'][] = $product['manufacturer'] ? $product['manufacturer']['name'] : $emptyFieldValue;
     $section['Part Number'][] = $product['part_number'] ?? $emptyFieldValue;
