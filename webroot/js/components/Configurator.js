@@ -194,7 +194,15 @@ class Configurator extends React.Component {
                   CONFIGURED PRICE:
                 </div>
                 <h1 className="text-primary">
-                  {this.state.validConfiguration ? this.state.system['price'] : 'Invalid Configuration'}
+                  {
+                    this.state.validConfiguration ?
+                      (
+                        'cost' in this.state.system ?
+                          `${this.state.system['cost']} | ${this.state.system['price']}` :
+                          this.state.system['price']
+                      ) :
+                      'Invalid Configuration'
+                  }
                 </h1>
                 <div className="text-muted">
                   From {this.state.system['price']}/mo

@@ -73,6 +73,9 @@ class Configure extends React.Component {
     let system = Object.assign({}, this.state.system);
     this.props.validateConfiguration(this.state.system, newConfig, 1, (result) => {
       system['price'] = result['price'];
+      if ('cost' in result) {
+        system['cost'] = result['cost'];
+      }
       let validConfiguration = result['errors'].length === 0;
 
       this.setState({
@@ -509,6 +512,10 @@ class Configure extends React.Component {
                                           onChange={() => this._selectItem(bucket['id'], itemIndexInBucket)}/>
                                         {item['name']}
                                       </label>
+                                      {
+                                        'availableQuantity' in item &&
+                                        <span {item['availableQuantity'] <= 0 && 'className="text-danger"'}>[qty: {item['availableQuantity']}]</span>
+                                      }
                                       {
                                         costDifference === null ?
                                           <span>[ {priceDifference} ]</span> :

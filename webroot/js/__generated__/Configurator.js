@@ -177,7 +177,7 @@ class Configurator extends React.Component {
       className: "h4 text-muted"
     }, "CONFIGURED PRICE:"), /*#__PURE__*/React.createElement("h1", {
       className: "text-primary"
-    }, this.state.validConfiguration ? this.state.system['price'] : 'Invalid Configuration'), /*#__PURE__*/React.createElement("div", {
+    }, this.state.validConfiguration ? 'cost' in this.state.system ? `${this.state.system['cost']} | ${this.state.system['price']}` : this.state.system['price'] : 'Invalid Configuration'), /*#__PURE__*/React.createElement("div", {
       className: "text-muted"
     }, "From ", this.state.system['price'], "/mo"))))), /*#__PURE__*/React.createElement("div", {
       className: "container py-5"
