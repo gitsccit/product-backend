@@ -56,9 +56,12 @@ class ProductsController extends AppController
             throw new NotFoundException();
         }
 
-        $breadcrumbs = $product->getBreadcrumbs();
+        if (!$this->request->is('ajax')) {
+            $breadcrumbs = $product->getBreadcrumbs();
+            $this->set(compact('breadcrumbs'));
+        }
 
-        $this->set(compact('product', 'breadcrumbs'));
+        $this->set(compact('product'));
 
         $layout = $this->request->getSession()->read('options.store.layout.product');
         $this->viewBuilder()->setTemplate("view_$layout");

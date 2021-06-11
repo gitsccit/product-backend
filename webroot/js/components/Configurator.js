@@ -152,6 +152,13 @@ class Configurator extends React.Component {
 
     return (
       <>
+        {/*<select className="form-control form-control-sm" name="priceLevel">*/}
+        {/*  {*/}
+        {/*    Object.fromEntries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => (*/}
+        {/*      <option selected={id === parseInt(this.props.currentPriceLevel)} value={id}>{priceLevel}</option>*/}
+        {/*    ))*/}
+        {/*  }*/}
+        {/*</select>*/}
         <div className="bg-white">
           <div className="container py-5">
             <div className="row">

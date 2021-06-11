@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Datasource\FactoryLocator;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\Number;
+use Cake\ORM\TableRegistry;
 
 /**
  * Systems Controller
@@ -54,10 +55,31 @@ class SystemsController extends AppController
             throw new NotFoundException();
         }
 
-        $breadcrumbs = $system->getBreadcrumbs();
         $tabs = FactoryLocator::get('Table')->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
 
-        $this->set(compact('system', 'tabs', 'breadcrumbs'));
+        if (Configure::read('ProductBackend.showStock')) {
+            // TODO: load warehouse codes
+        }
+
+        if (Configure::read('ProductBackend.showCost')) {
+            $priceLevels = TableRegistry::getTableLocator()->get('ProductBackend.PriceLevels')
+                ->find()->select(['id', 'name'])
+                ->innerJoinWith('PriceLevelPerspectives')
+                ->where([
+                    'PriceLevelPerspectives.perspective_id' => $this->request->getSession()->read('options.store.perspective'),
+                    'PriceLevelPerspectives.active' => 'yes'
+                ])
+                ->orderAsc('sort')
+                ->all();
+            $this->set(compact('priceLevels'));
+        }
+
+        if (!$this->request->is('ajax')) {
+            $breadcrumbs = $system->getBreadcrumbs();
+            $this->set(compact('breadcrumbs'));
+        }
+
+        $this->set(compact('system', 'tabs'));
 
         $layout = $this->request->getSession()->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");

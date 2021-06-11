@@ -24,6 +24,9 @@ foreach ($system['buckets'] as &$bucket) {
 
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
+     data-price-levels='<?= json_encode($priceLevels, JSON_HEX_APOS) ?>'
+     data-current-price-level='<?= $this->request->getQuery('priceLevel',
+         $this->request->getSession()->read('options.store.price-level')) ?>'
      data-csrf='<?= $this->request->getCookie('csrfToken') ?>'></div>
 <?= $this->Html->script('ProductBackend.__generated__/ConditionalWrapper'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Configure'); ?>
