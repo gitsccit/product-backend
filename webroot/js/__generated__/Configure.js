@@ -450,7 +450,9 @@ class Configure extends React.Component {
           checked: checked,
           disabled: isMultiSelect && !checked && reachedMaxQuantity,
           onChange: () => this._selectItem(bucket['id'], itemIndexInBucket)
-        }), item['name']), costDifference === null ? /*#__PURE__*/React.createElement("span", null, "[ ", priceDifference, " ]") : /*#__PURE__*/React.createElement("span", null, "[ ", costDifference, " | ", priceDifference, " ]"), (item['warning'] || item['status_text']) && /*#__PURE__*/React.createElement("span", {
+        }), item['name']), 'availableQuantity' in item && /*#__PURE__*/React.createElement("span", {
+          className: item['availableQuantity'] <= 0 ? 'text-danger' : ''
+        }, "[qty: ", item['availableQuantity'], "]"), costDifference === null ? /*#__PURE__*/React.createElement("span", null, "[ ", priceDifference, " ]") : /*#__PURE__*/React.createElement("span", null, "[ ", costDifference, " | ", priceDifference, " ]"), (item['warning'] || item['status_text']) && /*#__PURE__*/React.createElement("span", {
           className: "bg-warning px-1",
           title: item['status_text']
         }, item['status']));

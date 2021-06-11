@@ -148,6 +148,10 @@ class GroupItemsTable extends Table
                         $unifiedItem['cost'] = $item['cost'];
                     }
 
+                    if (Configure::read('ProductBackend.showStock') && isset($item['sage_itemcode'])) {
+                        $unifiedItem['sage_itemcode'] = $item['sage_itemcode'];
+                    }
+
                     return $unifiedItem;
                 });
             });

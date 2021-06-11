@@ -514,7 +514,9 @@ class Configure extends React.Component {
                                       </label>
                                       {
                                         'availableQuantity' in item &&
-                                        <span {item['availableQuantity'] <= 0 && 'className="text-danger"'}>[qty: {item['availableQuantity']}]</span>
+                                        <span className={item['availableQuantity'] <= 0 ? 'text-danger' : ''}>
+                                          [qty: {item['availableQuantity']}]
+                                        </span>
                                       }
                                       {
                                         costDifference === null ?

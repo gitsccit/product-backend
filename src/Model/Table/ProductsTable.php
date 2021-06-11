@@ -323,6 +323,12 @@ class ProductsTable extends Table
             ]);
         }
 
+        if (Configure::read('ProductBackend.showStock')) {
+            $query->select([
+                'Products.sage_itemcode',
+            ]);
+        }
+
         return $query
             ->select([
                 'Products.id',

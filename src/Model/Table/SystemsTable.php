@@ -5,6 +5,7 @@ namespace ProductBackend\Model\Table;
 
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
+use Cake\Http\Client;
 use Cake\Http\Session;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -345,6 +346,34 @@ class SystemsTable extends Table
                     $system->power_estimate = $system->power_estimate === 'yes';
                     $system->buckets = $this->Kits->Buckets->find('configuration',
                         ['kitID' => $system->kit_id])->find('filters')->toList();
+
+                    if (Configure::read('ProductBackend.showStock')) {
+                        $thinkAPI = Client::createFromUrl(Configure::read('Urls.thinkAPI'));
+                        $thinkAPI->setConfig([
+                            'headers' => [
+                                'scctoken' => Configure::read('Security.thinkAPI_token'),
+                            ],
+                            'ssl_verify_peer' => false,
+                        ]);
+                        $session = new Session();
+                        $warehouseCode = $session->read('options.store.warehouse', '000');
+                        $itemCodes = array_values(array_unique(Hash::extract($system->buckets,
+                            '{n}.groups.{n}.group_items.{n}.sage_itemcode')));
+                        $result = $thinkAPI->post("/sage100/items/availability.json?warehousecode=$warehouseCode",
+                            json_encode($itemCodes));
+                        $itemCodesAvaiability = Hash::combine($result->getJson()['items'], '{n}.ItemCode',
+                            '{n}.Warehouses.{n}.Available');
+                        foreach ($system->buckets as &$bucket) {
+                            foreach ($bucket->groups as &$group) {
+                                foreach ($group->group_items as &$groupItem) {
+                                    if (isset($itemCodesAvaiability[$groupItem['sage_itemcode']])) {
+                                        $groupItem['availableQuantity'] = $itemCodesAvaiability[$groupItem['sage_itemcode']];
+                                    }
+                                    unset($groupItem['sage_itemcode']);
+                                }
+                            }
+                        }
+                    }
 
                     return $system;
                 });
