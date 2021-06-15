@@ -152,13 +152,30 @@ class Configurator extends React.Component {
 
     return (
       <>
-        {/*<select className="form-control form-control-sm" name="priceLevel">*/}
-        {/*  {*/}
-        {/*    Object.fromEntries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => (*/}
-        {/*      <option selected={id === parseInt(this.props.currentPriceLevel)} value={id}>{priceLevel}</option>*/}
-        {/*    ))*/}
-        {/*  }*/}
-        {/*</select>*/}
+        <form method="get">
+          <div className="row">
+            <div className="col-lg-3">
+              <label>Warehouse:</label>
+              <select className="form-control form-control-sm" name="warehouse" onChange={() => this.form.submit()}>
+                {
+                  Object.entries(JSON.parse(this.props.warehouses)).map(([id, warehouse]) => (
+                    <option selected={id === this.props.currentWarehouse} value={id}>{warehouse}</option>
+                  ))
+                }
+              </select>
+            </div>
+            <div className="col-lg-3">
+              <label>Price Level:</label>
+              <select className="form-control form-control-sm" name="priceLevel" onChange={() => this.form.submit()}>
+                {
+                  Object.entries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => (
+                    <option selected={id === this.props.currentPriceLevel} value={id}>{priceLevel}</option>
+                  ))
+                }
+              </select>
+            </div>
+          </div>
+        </form>
         <div className="bg-white">
           <div className="container py-5">
             <div className="row">

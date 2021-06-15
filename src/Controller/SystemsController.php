@@ -5,9 +5,11 @@ namespace ProductBackend\Controller;
 
 use Cake\Core\Configure;
 use Cake\Datasource\FactoryLocator;
+use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\Number;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Hash;
 
 /**
  * Systems Controller
@@ -44,8 +46,16 @@ class SystemsController extends AppController
     {
         $url = str_replace(' ', '+', $url);
 
+        $options = [];
+        if ($priceLevel = $this->request->getQuery('priceLevel')) {
+            $options['priceLevel'] = $priceLevel;
+        }
+        if ($warehouse = $this->request->getQuery('warehouse')) {
+            $options['warehouse'] = $warehouse;
+        }
+
         $system = $this->Systems
-            ->find('details')
+            ->find('details', $options)
             ->where([
                 'IFNULL(SystemPerspectives.url, Systems.url) =' => $url,
             ])
@@ -57,21 +67,35 @@ class SystemsController extends AppController
 
         $tabs = FactoryLocator::get('Table')->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
 
-        if (Configure::read('ProductBackend.showStock')) {
-            // TODO: load warehouse codes
-        }
-
         if (Configure::read('ProductBackend.showCost')) {
             $priceLevels = TableRegistry::getTableLocator()->get('ProductBackend.PriceLevels')
-                ->find()->select(['id', 'name'])
+                ->find()
+                ->select(['id', 'name'])
                 ->innerJoinWith('PriceLevelPerspectives')
                 ->where([
                     'PriceLevelPerspectives.perspective_id' => $this->request->getSession()->read('options.store.perspective'),
                     'PriceLevelPerspectives.active' => 'yes'
                 ])
                 ->orderAsc('sort')
-                ->all();
+                ->combine('id', 'name')
+                ->toArray();
             $this->set(compact('priceLevels'));
+        }
+
+        if (Configure::read('ProductBackend.showStock')) {
+            $thinkAPI = Client::createFromUrl(Configure::read('Urls.thinkAPI'));
+            $thinkAPI->setConfig([
+                'headers' => [
+                    'scctoken' => Configure::read('Security.thinkAPI_token'),
+                    'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
+                        ->find()->where(['store_id' => $this->request->getSession()->read('store', 4)])
+                        ->first()->company_code,
+                ],
+                'ssl_verify_peer' => false,
+            ]);
+            $result = $thinkAPI->get('/sage100/warehouses/list.json?warehousestatus=eq:A&limit=999');
+            $warehouses = Hash::combine($result->getJson()['warehouses'], '{n}.WarehouseCode', '{n}.WarehouseDesc');
+            $this->set(compact('warehouses'));
         }
 
         if (!$this->request->is('ajax')) {

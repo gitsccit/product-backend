@@ -144,7 +144,29 @@ class Configurator extends React.Component {
         validateConfiguration: this.validateConfiguration
       })
     }];
-    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("form", {
+      method: "get"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "row"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "col-lg-3"
+    }, /*#__PURE__*/React.createElement("label", null, "Warehouse:"), /*#__PURE__*/React.createElement("select", {
+      className: "form-control form-control-sm",
+      name: "warehouse",
+      onChange: () => this.form.submit()
+    }, Object.entries(JSON.parse(this.props.warehouses)).map(([id, warehouse]) => /*#__PURE__*/React.createElement("option", {
+      selected: id === this.props.currentWarehouse,
+      value: id
+    }, warehouse)))), /*#__PURE__*/React.createElement("div", {
+      className: "col-lg-3"
+    }, /*#__PURE__*/React.createElement("label", null, "Price Level:"), /*#__PURE__*/React.createElement("select", {
+      className: "form-control form-control-sm",
+      name: "priceLevel",
+      onChange: () => this.form.submit()
+    }, Object.entries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => /*#__PURE__*/React.createElement("option", {
+      selected: id === this.props.currentPriceLevel,
+      value: id
+    }, priceLevel)))))), /*#__PURE__*/React.createElement("div", {
       className: "bg-white"
     }, /*#__PURE__*/React.createElement("div", {
       className: "container py-5"

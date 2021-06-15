@@ -191,7 +191,7 @@ class SystemsTable extends Table
     public function findPrice(Query $query, array $options)
     {
         $session = new Session();
-        $priceLevelId = $session->read('options.store.price-level');
+        $priceLevelId = $options['priceLevel'] ?? $session->read('options.store.price-level');
 
         return $query
             ->select([
@@ -205,7 +205,7 @@ class SystemsTable extends Table
     public function findBasic(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveId = $session->read('options.store.perspective');
+        $perspectiveId = $options['perspective'] ?? $session->read('options.store.perspective');
 
         if (Configure::read('ProductBackend.showCost')) {
             $query
@@ -223,7 +223,7 @@ class SystemsTable extends Table
         }
 
         return $query
-            ->find('price')
+            ->find('price', $options)
             ->select([
                 'Systems.id',
                 'Systems.kit_id',
@@ -244,7 +244,7 @@ class SystemsTable extends Table
     public function findActive(Query $query, array $options)
     {
         return $query
-            ->find('basic')
+            ->find('basic', $options)
             ->where([
                 'IFNULL(SystemPerspectives.active, Systems.active) =' => 'yes',
             ]);
@@ -257,8 +257,8 @@ class SystemsTable extends Table
                 'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
                 'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
             ])
-            ->find('active')
-            ->find('supportBadge')
+            ->find('active', $options)
+            ->find('supportBadge', $options)
             ->find('image', ['type' => 'Browse'])
             ->contain([
                 'Kits.Tags' => function (Query $query) {
@@ -326,7 +326,7 @@ class SystemsTable extends Table
     public function findDetails(Query $query, array $options)
     {
         return $query
-            ->find('active')
+            ->find('active', $options)
             ->find('image', ['type' => 'System'])
             ->find('baseConfiguration')
             ->select([
@@ -340,8 +340,8 @@ class SystemsTable extends Table
                 'power_estimate' => 'Kits.power_estimate',
             ])
             ->innerJoinWith('Kits')
-            ->formatResults(function ($result) {
-                return $result->map(function ($system) {
+            ->formatResults(function ($result) use ($options) {
+                return $result->map(function ($system) use ($options) {
                     $system->noise_level = $system->noise_level === 'yes';
                     $system->power_estimate = $system->power_estimate === 'yes';
                     $system->buckets = $this->Kits->Buckets->find('configuration',
@@ -356,7 +356,7 @@ class SystemsTable extends Table
                             'ssl_verify_peer' => false,
                         ]);
                         $session = new Session();
-                        $warehouseCode = $session->read('options.store.warehouse', '000');
+                        $warehouseCode = $options['warehouse'] ?? $session->read('options.store.warehouse');
                         $itemCodes = array_values(array_unique(Hash::extract($system->buckets,
                             '{n}.groups.{n}.group_items.{n}.sage_itemcode')));
                         $result = $thinkAPI->post("/sage100/items/availability.json?warehousecode=$warehouseCode",

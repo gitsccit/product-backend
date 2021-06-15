@@ -27,6 +27,9 @@ foreach ($system['buckets'] as &$bucket) {
      data-price-levels='<?= json_encode($priceLevels, JSON_HEX_APOS) ?>'
      data-current-price-level='<?= $this->request->getQuery('priceLevel',
          $this->request->getSession()->read('options.store.price-level')) ?>'
+     data-warehouses='<?= json_encode($warehouses, JSON_HEX_APOS) ?>'
+     data-current-warehouse='<?= $this->request->getQuery('warehouse',
+         $this->request->getSession()->read('options.store.warehouse')) ?>'
      data-csrf='<?= $this->request->getCookie('csrfToken') ?>'></div>
 <?= $this->Html->script('ProductBackend.__generated__/ConditionalWrapper'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Configure'); ?>
