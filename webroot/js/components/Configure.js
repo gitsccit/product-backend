@@ -317,6 +317,7 @@ class Configure extends React.Component {
 
                     return (
                       <a
+                        key={bucket['id']}
                         className={`p-2 border-3 border-right bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted')}
                         href="javascript:void(0)"
                         onClick={() => this._changeTab(index)}>
@@ -388,6 +389,7 @@ class Configure extends React.Component {
 
                 return (
                   <div
+                    key={bucket['id']}
                     className={'item-group-vertical fade ' + (this.state.currentTab === bucketIndex ? 'show' : 'd-none')}>
                     {
                       !standaloneBucket &&
@@ -404,7 +406,9 @@ class Configure extends React.Component {
                                           onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
                                     {
                                       options.map(([option, count]) => (
-                                        <option value={option}>{option + (count > 0 ? ` (${count})` : '')}</option>
+                                        <option key={option} value={option}>
+                                          {option + (count > 0 ? ` (${count})` : '')}
+                                        </option>
                                       ))
                                     }
                                   </select>
@@ -494,7 +498,7 @@ class Configure extends React.Component {
                                                       onChange={(event) => this._changeQuantity(bucket['id'], itemIndexInBucket, event)}>
                                                 {
                                                   options.map(quantity => (
-                                                    <option value={quantity}>{quantity}</option>))
+                                                    <option key={quantity} value={quantity}>{quantity}</option>))
                                                 }
                                               </select> :
                                               <span>{bucket['quantity'][0]}</span>

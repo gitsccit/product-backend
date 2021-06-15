@@ -58,6 +58,10 @@ class Configurator extends React.Component {
     return url.substr(0, index);
   }
 
+  _handleSubmit(event) {
+    event.target.form.submit();
+  }
+
   validateConfiguration(system, newConfig, quantity, callback) {
     let selectedBucketObjects = Object.entries(this.state.currentConfig).map(([bucketID, items]) => {
       let selectedItems = items.filter(item => {
@@ -153,18 +157,20 @@ class Configurator extends React.Component {
     }, /*#__PURE__*/React.createElement("label", null, "Warehouse:"), /*#__PURE__*/React.createElement("select", {
       className: "form-control form-control-sm",
       name: "warehouse",
-      onChange: () => this.form.submit()
+      defaultValue: this.props.currentWarehouse,
+      onChange: event => this._handleSubmit(event)
     }, Object.entries(JSON.parse(this.props.warehouses)).map(([id, warehouse]) => /*#__PURE__*/React.createElement("option", {
-      selected: id === this.props.currentWarehouse,
+      key: id,
       value: id
     }, warehouse)))), /*#__PURE__*/React.createElement("div", {
       className: "col-lg-3"
     }, /*#__PURE__*/React.createElement("label", null, "Price Level:"), /*#__PURE__*/React.createElement("select", {
       className: "form-control form-control-sm",
       name: "priceLevel",
-      onChange: () => this.form.submit()
+      defaultValue: this.props.currentPriceLevel,
+      onChange: event => this._handleSubmit(event)
     }, Object.entries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => /*#__PURE__*/React.createElement("option", {
-      selected: id === this.props.currentPriceLevel,
+      key: id,
       value: id
     }, priceLevel)))))), /*#__PURE__*/React.createElement("div", {
       className: "bg-white"

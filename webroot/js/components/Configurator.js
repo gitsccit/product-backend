@@ -67,6 +67,10 @@ class Configurator extends React.Component {
     return url.substr(0, index);
   }
 
+  _handleSubmit(event) {
+    event.target.form.submit();
+  }
+
   validateConfiguration(system, newConfig, quantity, callback) {
     let selectedBucketObjects = Object.entries(this.state.currentConfig).map(([bucketID, items]) => {
       let selectedItems = items.filter(item => {
@@ -156,20 +160,24 @@ class Configurator extends React.Component {
           <div className="row">
             <div className="col-lg-3">
               <label>Warehouse:</label>
-              <select className="form-control form-control-sm" name="warehouse" onChange={() => this.form.submit()}>
+              <select className="form-control form-control-sm" name="warehouse"
+                      defaultValue={this.props.currentWarehouse}
+                      onChange={(event) => this._handleSubmit(event)}>
                 {
                   Object.entries(JSON.parse(this.props.warehouses)).map(([id, warehouse]) => (
-                    <option selected={id === this.props.currentWarehouse} value={id}>{warehouse}</option>
+                    <option key={id} value={id}>{warehouse}</option>
                   ))
                 }
               </select>
             </div>
             <div className="col-lg-3">
               <label>Price Level:</label>
-              <select className="form-control form-control-sm" name="priceLevel" onChange={() => this.form.submit()}>
+              <select className="form-control form-control-sm" name="priceLevel"
+                      defaultValue={this.props.currentPriceLevel}
+                      onChange={(event) => this._handleSubmit(event)}>
                 {
                   Object.entries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => (
-                    <option selected={id === this.props.currentPriceLevel} value={id}>{priceLevel}</option>
+                    <option key={id} value={id}>{priceLevel}</option>
                   ))
                 }
               </select>

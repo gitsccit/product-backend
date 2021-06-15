@@ -284,6 +284,7 @@ class Configure extends React.Component {
       }
 
       return /*#__PURE__*/React.createElement("a", {
+        key: bucket['id'],
         className: `p-2 border-3 border-right bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted'),
         href: "javascript:void(0)",
         onClick: () => this._changeTab(index)
@@ -344,6 +345,7 @@ class Configure extends React.Component {
         return [filterGroup, options];
       });
       return /*#__PURE__*/React.createElement("div", {
+        key: bucket['id'],
         className: 'item-group-vertical fade ' + (this.state.currentTab === bucketIndex ? 'show' : 'd-none')
       }, !standaloneBucket && /*#__PURE__*/React.createElement("div", {
         className: "item-group flex-lg-nowrap"
@@ -360,6 +362,7 @@ class Configure extends React.Component {
         value: this.state.selectedFilters[bucket['id']][filterGroup],
         onChange: event => this._updateFilter(bucket['id'], filterGroup, event)
       }, options.map(([option, count]) => /*#__PURE__*/React.createElement("option", {
+        key: option,
         value: option
       }, option + (count > 0 ? ` (${count})` : ''))))))), /*#__PURE__*/React.createElement("a", {
         className: "text-primary text-decoration-none text-nowrap ms-3",
@@ -438,6 +441,7 @@ class Configure extends React.Component {
           value: itemQuantity,
           onChange: event => this._changeQuantity(bucket['id'], itemIndexInBucket, event)
         }, options.map(quantity => /*#__PURE__*/React.createElement("option", {
+          key: quantity,
           value: quantity
         }, quantity))) : /*#__PURE__*/React.createElement("span", null, bucket['quantity'][0]), /*#__PURE__*/React.createElement("span", {
           className: "icon-cancel text-muted"
