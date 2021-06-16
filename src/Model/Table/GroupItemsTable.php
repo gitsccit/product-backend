@@ -106,12 +106,12 @@ class GroupItemsTable extends Table
     public function findConfiguration(Query $query, array $options = [])
     {
         return $query
-            ->formatResults(function (CollectionInterface $result) {
+            ->formatResults(function (CollectionInterface $result) use ($options) {
                 $products = $systems = [];
 
                 if ($productIDs = $result->extract('product_id')->toList()) {
                     $products = $this->Products
-                        ->find('basic')
+                        ->find('basic', $options)
                         ->find('image')
                         ->contain('Specifications', function (Query $q) {
                             return $q->find('specifications');
@@ -123,7 +123,7 @@ class GroupItemsTable extends Table
 
                 if ($systemIDs = $result->extract('system_id')->toList()) {
                     $systems = $this->Systems
-                        ->find('basic')
+                        ->find('basic', $options)
                         ->find('image')
                         ->whereInList('Systems.id', $systemIDs)
                         ->indexBy('id')

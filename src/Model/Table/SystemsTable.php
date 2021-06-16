@@ -209,8 +209,8 @@ class SystemsTable extends Table
 
         if (Configure::read('ProductBackend.showCost')) {
             $query
-                ->contain('SystemItems.GroupItems', function ($query) {
-                    return $query->find('configuration');
+                ->contain('SystemItems.GroupItems', function ($query) use ($options) {
+                    return $query->find('configuration', $options);
                 })
                 ->formatResults(function ($result) {
                     return $result->each(function ($system) {
@@ -384,7 +384,7 @@ class SystemsTable extends Table
     {
         $selectedItemsQuantities = array_replace(...$configuration);
 
-        $selectedItems = $this->GroupItems->find('configuration')->whereInList('GroupItems.id',
+        $selectedItems = $this->GroupItems->find('configuration', $options)->whereInList('GroupItems.id',
             array_keys($selectedItemsQuantities));
         $system = $this->find('price', $options)->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
         $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
