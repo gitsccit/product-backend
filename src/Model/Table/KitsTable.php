@@ -524,7 +524,7 @@ class KitsTable extends Table
         return [$warnings, $errors];
     }
 
-    public function validateSkuRules(array $configuration)
+    public function validateSkuRules(array $configuration, $options = [])
     {
         $additionalItems = [];
         $cost = 0;
@@ -595,8 +595,8 @@ AND srgs.sage_itemcode IN ($sageItemCodePlaceholders)", array_merge([$rule['id']
             } // do not apply this rule
 
             $session = new Session();
-            $perspectiveID = $session->read('options.store.perspective');
-            $priceLevelID = $session->read('options.store.price-level');
+            $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
+            $priceLevelID = $options['priceLevel'] ?? $session->read('options.store.price-level');
             $stm = $this->getConnection()->execute("SELECT sras.*,IFNULL(pp.name,p.name) AS name,p.cost,ppl.price
 FROM sku_rule_additional_skus sras
 INNER JOIN products p ON p.sage_itemcode = sras.sage_itemcode

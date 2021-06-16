@@ -116,14 +116,21 @@ class SystemsController extends AppController
             $kitID = $data['kit'];
             $configuration = $data['configuration'];
             $quantity = $data['quantity'] ?? 1;
+            $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('options.store.price-level');
 
             $errors = $this->Systems->Kits->validateBucketItems($kitID, $configuration);
             [$kitRuleWarnings, $kitRuleErrors] = $this->Systems->Kits->validateKitRules($kitID, $configuration);
             [$productRuleWarnings, $productRuleErrors] = $this->Systems->Kits->validateProductRules($kitID,
                 $configuration);
-            [$globalSpecRuleWarnings, $globalSpecRuleErrors] = $this->Systems->Kits->validateGlobalSpecRules($kitID, $configuration);
-            [$additionalCost, $additionalPrice, $additionalItems] = $this->Systems->Kits->validateSkuRules($configuration);
-            [$cost, $price] = $this->Systems->getConfigurationCostAndPrice($data['system'], $configuration);
+            [$globalSpecRuleWarnings, $globalSpecRuleErrors] = $this->Systems->Kits->validateGlobalSpecRules($kitID,
+                $configuration);
+            [
+                $additionalCost,
+                $additionalPrice,
+                $additionalItems
+            ] = $this->Systems->Kits->validateSkuRules($configuration, compact('priceLevel'));
+            [$cost, $price] = $this->Systems->getConfigurationCostAndPrice($data['system'], $configuration,
+                compact('priceLevel'));
             $warnings = array_merge($kitRuleWarnings, $productRuleWarnings, $globalSpecRuleWarnings);
             $errors = array_merge($errors, $kitRuleErrors, $productRuleErrors, $globalSpecRuleErrors);
             $cost = Number::currency(($cost + $additionalCost) * $quantity);

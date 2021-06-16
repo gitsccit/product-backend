@@ -7,7 +7,7 @@ class Summary extends React.Component {
   }
 
   _updateQuantity(event) {
-    this.props.validateConfiguration(this.props.currentConfig, parseInt(event.target.value), result => {
+    this.props.validateConfiguration(this.props.system, this.props.currentConfig, parseInt(event.target.value), result => {
       this.setState({
         grandTotal: result['price']
       });
@@ -30,7 +30,7 @@ class Summary extends React.Component {
       let selectedItems = this.props.currentConfig[bucket['id']].filter(item => item['selected_at'] != null).map(item => item['quantity'] > 1 ? `${item['quantity']} x ${item['name']}` : item['name']);
       return [bucket['category'], selectedItems.join('<br>')];
     });
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React.createElement("div", null, !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", {
       className: "row"
     }, cards.map(({
       image,

@@ -380,13 +380,13 @@ class SystemsTable extends Table
             });
     }
 
-    public function getConfigurationCostAndPrice($systemID, $configuration)
+    public function getConfigurationCostAndPrice($systemID, $configuration, $options = [])
     {
         $selectedItemsQuantities = array_replace(...$configuration);
 
         $selectedItems = $this->GroupItems->find('configuration')->whereInList('GroupItems.id',
             array_keys($selectedItemsQuantities));
-        $system = $this->find('price')->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
+        $system = $this->find('price', $options)->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
         $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
             return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
         }, $system['fpa']);

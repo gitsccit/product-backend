@@ -80,8 +80,14 @@ class Configurator extends React.Component {
     let payload = {
       system: system['id'],
       kit: system['kit_id'],
-      configuration: configuration
+      configuration: configuration,
+      quantity: quantity
     };
+
+    if ('currentPriceLevel' in this.props) {
+      payload['priceLevel'] = this.props['currentPriceLevel'];
+    }
+
     let url = this._getBaseUrl() + '/system/validate';
     this.setState({
       currentConfig: newConfig,

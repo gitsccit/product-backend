@@ -8,7 +8,7 @@ class Summary extends React.Component {
   }
 
   _updateQuantity(event) {
-    this.props.validateConfiguration(this.props.currentConfig, parseInt(event.target.value), (result) => {
+    this.props.validateConfiguration(this.props.system, this.props.currentConfig, parseInt(event.target.value), (result) => {
       this.setState({
         grandTotal: result['price'],
       });
@@ -43,20 +43,23 @@ class Summary extends React.Component {
 
     return (
       <div>
-        <div className="row">
-          {
-            cards.map(({image, title, description, button}) => (
-              <div className="col-md-6 mb-3 mb-md-0">
-                <div className="d-flex flex-column align-items-center text-center bg-white p-5 h-100">
-                  <img src={image}/>
-                  <h3 className="mb-4">{title}</h3>
-                  <p className="mb-4">{description}</p>
-                  <a className="btn btn-primary py-2 px-5 mt-auto" href="javascript:void(0)">{button}</a>
+        {
+          !('cost' in this.props.system) &&
+          <div className="row">
+            {
+              cards.map(({image, title, description, button}) => (
+                <div className="col-md-6 mb-3 mb-md-0">
+                  <div className="d-flex flex-column align-items-center text-center bg-white p-5 h-100">
+                    <img src={image}/>
+                    <h3 className="mb-4">{title}</h3>
+                    <p className="mb-4">{description}</p>
+                    <a className="btn btn-primary py-2 px-5 mt-auto" href="javascript:void(0)">{button}</a>
+                  </div>
                 </div>
-              </div>
-            ))
-          }
-        </div>
+              ))
+            }
+          </div>
+        }
         <table className="table table-bordered my-5">
           <thead>
           <tr className="d-flex">
