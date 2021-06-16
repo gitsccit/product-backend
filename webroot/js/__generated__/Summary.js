@@ -2,17 +2,28 @@ class Summary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      grandTotal: props.system['price']
+      comments: '',
+      grandTotal: props.system['price'],
+      totalCost: props.system['cost'] ?? undefined
     };
+  }
+
+  _updateComments(event) {
+    this.setState({
+      comments: event.target.value
+    });
   }
 
   _updateQuantity(event) {
     this.props.validateConfiguration(this.props.system, this.props.currentConfig, parseInt(event.target.value), result => {
       this.setState({
+        totalCost: result['cost'] ?? undefined,
         grandTotal: result['price']
       });
     });
   }
+
+  _addToOrder() {}
 
   render() {
     let cards = [{
@@ -92,10 +103,9 @@ class Summary extends React.Component {
       className: "col-lg-8 col-md-6"
     }, /*#__PURE__*/React.createElement("h4", null, "System Comments"), /*#__PURE__*/React.createElement("p", null, "Please leave any further notes or comments pertaining to your system configuration below."), /*#__PURE__*/React.createElement("textarea", {
       className: "form-control",
-      name: "comments",
-      id: "comments",
+      onChange: event => this._updateComments(event),
       rows: 5
-    })), /*#__PURE__*/React.createElement("div", {
+    }, this.state.comments)), /*#__PURE__*/React.createElement("div", {
       className: "col-lg-4 col-md-6 d-flex flex-column justify-content-between"
     }, /*#__PURE__*/React.createElement("div", {
       className: "text-md-right"
@@ -103,7 +113,11 @@ class Summary extends React.Component {
       className: "h5"
     }, /*#__PURE__*/React.createElement("span", null, "Configured Price: "), /*#__PURE__*/React.createElement("span", {
       className: "h4 fw-bold"
-    }, this.props.system['price'])), /*#__PURE__*/React.createElement("div", {
+    }, this.props.system['price'])), 'cost' in this.props.system && /*#__PURE__*/React.createElement("div", {
+      className: "h5"
+    }, /*#__PURE__*/React.createElement("span", null, "Cost: "), /*#__PURE__*/React.createElement("span", {
+      className: "h4 fw-bold"
+    }, this.props.system['cost'])), /*#__PURE__*/React.createElement("div", {
       className: "h5"
     }, /*#__PURE__*/React.createElement("label", {
       htmlFor: "quantity"
@@ -124,9 +138,14 @@ class Summary extends React.Component {
       className: "h5"
     }, /*#__PURE__*/React.createElement("span", null, "Grand Total: "), /*#__PURE__*/React.createElement("span", {
       className: "h4 fw-bold"
-    }, this.state.grandTotal))), /*#__PURE__*/React.createElement("a", {
+    }, this.state.grandTotal)), this.state.totalCost !== undefined && /*#__PURE__*/React.createElement("div", {
+      className: "h5"
+    }, /*#__PURE__*/React.createElement("span", null, "Total Cost: "), /*#__PURE__*/React.createElement("span", {
+      className: "h4 fw-bold"
+    }, this.state.totalCost))), /*#__PURE__*/React.createElement("a", {
       className: "btn btn-primary py-2",
-      href: "javascript:void(0)"
+      href: "javascript:void(0)",
+      onClick: () => this._addToOrder()
     }, /*#__PURE__*/React.createElement("span", {
       className: "h5 icon-plus-circled"
     }), "Add To Order"))));

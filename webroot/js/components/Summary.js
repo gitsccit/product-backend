@@ -3,16 +3,29 @@ class Summary extends React.Component {
     super(props);
 
     this.state = {
+      comments: '',
       grandTotal: props.system['price'],
+      totalCost: props.system['cost'] ?? undefined,
     };
+  }
+
+  _updateComments(event) {
+    this.setState({
+      comments: event.target.value,
+    });
   }
 
   _updateQuantity(event) {
     this.props.validateConfiguration(this.props.system, this.props.currentConfig, parseInt(event.target.value), (result) => {
       this.setState({
+        totalCost: result['cost'] ?? undefined,
         grandTotal: result['price'],
       });
     });
+  }
+
+  _addToOrder() {
+
   }
 
   render() {
@@ -102,7 +115,9 @@ class Summary extends React.Component {
           <div className="col-lg-8 col-md-6">
             <h4>System Comments</h4>
             <p>Please leave any further notes or comments pertaining to your system configuration below.</p>
-            <textarea className="form-control" name="comments" id="comments" rows={5}></textarea>
+            <textarea className="form-control" onChange={event => this._updateComments(event)} rows={5}>
+              {this.state.comments}
+            </textarea>
           </div>
           <div className="col-lg-4 col-md-6 d-flex flex-column justify-content-between">
             <div className="text-md-right">
@@ -111,6 +126,14 @@ class Summary extends React.Component {
                 <span
                   className="h4 fw-bold">{this.props.system['price']}</span>
               </div>
+              {
+                'cost' in this.props.system &&
+                <div className="h5">
+                  <span>Cost: </span>
+                  <span
+                    className="h4 fw-bold">{this.props.system['cost']}</span>
+                </div>
+              }
               <div className="h5">
                 <label htmlFor="quantity">Quantity: </label>
                 <input id="quantity" className="d-inline-block form-control" type="number"
@@ -123,8 +146,16 @@ class Summary extends React.Component {
                 <span
                   className="h4 fw-bold">{this.state.grandTotal}</span>
               </div>
+              {
+                this.state.totalCost !== undefined &&
+                <div className="h5">
+                  <span>Total Cost: </span>
+                  <span
+                    className="h4 fw-bold">{this.state.totalCost}</span>
+                </div>
+              }
             </div>
-            <a className="btn btn-primary py-2" href="javascript:void(0)">
+            <a className="btn btn-primary py-2" href="javascript:void(0)" onClick={() => this._addToOrder()}>
               <span className="h5 icon-plus-circled"></span>Add To Order
             </a>
           </div>

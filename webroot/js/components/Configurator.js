@@ -56,7 +56,7 @@ class Configurator extends React.Component {
 
   _continue() {
     this.setState({
-      currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1),
+      currentTab: Math.min(this.state.tabs.length, this.state.currentTab + 1),
     });
   }
 
@@ -227,23 +227,39 @@ class Configurator extends React.Component {
                 </p>
               </div>
               <div className="col-md-4 d-flex flex-column justify-content-center">
-                <div className="h4 text-muted">
-                  CONFIGURED PRICE:
-                </div>
-                <h1 className="text-primary">
-                  {
-                    this.state.validConfiguration ?
-                      (
-                        'cost' in this.state.system ?
-                          `${this.state.system['cost']} | ${this.state.system['price']}` :
-                          this.state.system['price']
-                      ) :
-                      'Invalid Configuration'
-                  }
-                </h1>
-                <div className="text-muted">
-                  From {this.state.system['price']}/mo
-                </div>
+                {
+                  this.state.validConfiguration ?
+                    (
+                      <>
+                        {
+                          'cost' in this.state.system ?
+                            [['CONFIGURED PRICE', this.state.system['price']], ['COST', this.state.system['cost']],
+                              ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) =>
+                              <>
+                                <h6 className="text-muted">
+                                  {title}:
+                                </h6>
+                                <h3 className="text-primary">
+                                  {value}
+                                </h3>
+                              </>
+                            ) :
+                            <>
+                              <div className="h4 text-muted">
+                                CONFIGURED PRICE:
+                              </div>
+                              <h1 className="text-primary">
+                                {this.state.system['price']}
+                              </h1>
+                            </>
+                        }
+                        <div className="text-muted">
+                          From {this.state.system['price']}/mo
+                        </div>
+                      </>
+                    ) :
+                    'Invalid Configuration'
+                }
               </div>
             </div>
           </div>

@@ -48,7 +48,7 @@ class Configurator extends React.Component {
 
   _continue() {
     this.setState({
-      currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1)
+      currentTab: Math.min(this.state.tabs.length, this.state.currentTab + 1)
     });
   }
 
@@ -207,13 +207,17 @@ class Configurator extends React.Component {
       className: "h4 mb-0 icon-flash"
     }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, "Noise Level"), /*#__PURE__*/React.createElement("div", null, this.state.system['nose_level'])))), /*#__PURE__*/React.createElement("p", null, "Configure your system by selecting the desired item or items from each required parts category below.")), /*#__PURE__*/React.createElement("div", {
       className: "col-md-4 d-flex flex-column justify-content-center"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, this.state.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, 'cost' in this.state.system ? [['CONFIGURED PRICE', this.state.system['price']], ['COST', this.state.system['cost']], ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h6", {
+      className: "text-muted"
+    }, title, ":"), /*#__PURE__*/React.createElement("h3", {
+      className: "text-primary"
+    }, value))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "h4 text-muted"
     }, "CONFIGURED PRICE:"), /*#__PURE__*/React.createElement("h1", {
       className: "text-primary"
-    }, this.state.validConfiguration ? 'cost' in this.state.system ? `${this.state.system['cost']} | ${this.state.system['price']}` : this.state.system['price'] : 'Invalid Configuration'), /*#__PURE__*/React.createElement("div", {
+    }, this.state.system['price'])), /*#__PURE__*/React.createElement("div", {
       className: "text-muted"
-    }, "From ", this.state.system['price'], "/mo"))))), /*#__PURE__*/React.createElement("div", {
+    }, "From ", this.state.system['price'], "/mo")) : 'Invalid Configuration')))), /*#__PURE__*/React.createElement("div", {
       className: "container py-5"
     }, /*#__PURE__*/React.createElement("div", {
       className: "border-bottom"
