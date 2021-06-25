@@ -238,7 +238,7 @@ class Configure extends React.Component {
         {
           Object.keys(prompts).length > 0 &&
           <div
-            className="item-group-vertical position-fixed zindex-fixed bottom-0 right-0 col-xl-3 col-lg-4 col-md-6 px-0 -my-1">
+            className="item-group-vertical position-fixed zindex-fixed bottom-0 end-0 col-xl-3 col-lg-4 col-md-6 px-0 -my-1">
             {
               Object.entries(prompts).map(([promptType, content]) => {
                 return content.map(prompt => {

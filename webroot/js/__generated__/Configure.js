@@ -223,7 +223,7 @@ class Configure extends React.Component {
     }
 
     return /*#__PURE__*/React.createElement(React.Fragment, null, Object.keys(prompts).length > 0 && /*#__PURE__*/React.createElement("div", {
-      className: "item-group-vertical position-fixed zindex-fixed bottom-0 right-0 col-xl-3 col-lg-4 col-md-6 px-0 -my-1"
+      className: "item-group-vertical position-fixed zindex-fixed bottom-0 end-0 col-xl-3 col-lg-4 col-md-6 px-0 -my-1"
     }, Object.entries(prompts).map(([promptType, content]) => {
       return content.map(prompt => {
         let bgColor = promptType === 'errors' ? 'bg-danger' : promptType === 'warnings' ? 'bg-warning' : 'bg-6';

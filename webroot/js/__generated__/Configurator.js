@@ -154,13 +154,16 @@ class Configurator extends React.Component {
         validateConfiguration: this.validateConfiguration
       })
     }];
-    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("form", {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {
+      className: "mb-3",
       method: "get"
     }, /*#__PURE__*/React.createElement("div", {
       className: "row"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, 'currentWarehouse' in this.props && /*#__PURE__*/React.createElement("div", {
       className: "col-lg-3"
-    }, /*#__PURE__*/React.createElement("label", null, "Warehouse:"), /*#__PURE__*/React.createElement("select", {
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "fw-bold"
+    }, "Warehouse:"), /*#__PURE__*/React.createElement("select", {
       className: "form-control form-control-sm",
       name: "warehouse",
       defaultValue: this.props.currentWarehouse,
@@ -168,9 +171,11 @@ class Configurator extends React.Component {
     }, Object.entries(JSON.parse(this.props.warehouses)).map(([id, warehouse]) => /*#__PURE__*/React.createElement("option", {
       key: id,
       value: id
-    }, warehouse)))), /*#__PURE__*/React.createElement("div", {
+    }, warehouse)))), 'currentPriceLevel' in this.props && /*#__PURE__*/React.createElement("div", {
       className: "col-lg-3"
-    }, /*#__PURE__*/React.createElement("label", null, "Price Level:"), /*#__PURE__*/React.createElement("select", {
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "fw-bold"
+    }, "Price Level:"), /*#__PURE__*/React.createElement("select", {
       className: "form-control form-control-sm",
       name: "priceLevel",
       defaultValue: this.props.currentPriceLevel,
@@ -183,7 +188,7 @@ class Configurator extends React.Component {
     }, /*#__PURE__*/React.createElement("div", {
       className: "container py-5"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "row"
+      className: "row gx-5"
     }, /*#__PURE__*/React.createElement("div", {
       className: "col-md-4"
     }, /*#__PURE__*/React.createElement("div", {
@@ -193,7 +198,7 @@ class Configurator extends React.Component {
       src: this.state.system['image']
     }))), /*#__PURE__*/React.createElement("div", {
       className: "col-md-4 d-flex flex-column justify-content-center"
-    }, /*#__PURE__*/React.createElement("h1", {
+    }, /*#__PURE__*/React.createElement("h2", {
       className: "text-black mb-3"
     }, this.state.system['name']), /*#__PURE__*/React.createElement("div", {
       className: "item-group mb-3"
@@ -207,13 +212,15 @@ class Configurator extends React.Component {
       className: "h4 mb-0 icon-flash"
     }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, "Noise Level"), /*#__PURE__*/React.createElement("div", null, this.state.system['nose_level'])))), /*#__PURE__*/React.createElement("p", null, "Configure your system by selecting the desired item or items from each required parts category below.")), /*#__PURE__*/React.createElement("div", {
       className: "col-md-4 d-flex flex-column justify-content-center"
-    }, this.state.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, 'cost' in this.state.system ? [['CONFIGURED PRICE', this.state.system['price']], ['COST', this.state.system['cost']], ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h6", {
-      className: "text-muted"
-    }, title, ":"), /*#__PURE__*/React.createElement("h3", {
+    }, this.state.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, 'cost' in this.state.system ? [['CONFIGURED PRICE', this.state.system['price']], ['COST', this.state.system['cost']], ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) => /*#__PURE__*/React.createElement("div", {
+      className: "mb-1"
+    }, /*#__PURE__*/React.createElement("h6", {
+      className: "text-muted mb-0"
+    }, title, ":"), /*#__PURE__*/React.createElement("h4", {
       className: "text-primary"
-    }, value))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-      className: "h4 text-muted"
-    }, "CONFIGURED PRICE:"), /*#__PURE__*/React.createElement("h1", {
+    }, value))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h5", {
+      className: "text-muted"
+    }, "CONFIGURED PRICE:"), /*#__PURE__*/React.createElement("h2", {
       className: "text-primary"
     }, this.state.system['price'])), /*#__PURE__*/React.createElement("div", {
       className: "text-muted"

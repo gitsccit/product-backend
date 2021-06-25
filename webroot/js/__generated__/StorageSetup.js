@@ -233,7 +233,7 @@ class StorageSetup extends React.Component {
           onClick: () => this._openDropdown(`dropdown-${controller['id']}-${dasherizedType}`)
         }, volumeType), /*#__PURE__*/React.createElement("div", {
           id: `dropdown-${controller['id']}-${dasherizedType}`,
-          className: "position-absolute zindex-dropdown right-0 bg-white border shadow-sm mt-1 p-3 d-none",
+          className: "position-absolute zindex-dropdown end-0 bg-white border shadow-sm mt-1 p-3 d-none",
           style: {
             'minWidth': '50rem'
           }

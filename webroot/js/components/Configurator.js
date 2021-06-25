@@ -161,44 +161,53 @@ class Configurator extends React.Component {
 
     return (
       <>
-        <form method="get">
-          <div className="row">
-            <div className="col-lg-3">
-              <label>Warehouse:</label>
-              <select className="form-control form-control-sm" name="warehouse"
-                      defaultValue={this.props.currentWarehouse}
-                      onChange={(event) => this._handleSubmit(event)}>
-                {
-                  Object.entries(JSON.parse(this.props.warehouses)).map(([id, warehouse]) => (
-                    <option key={id} value={id}>{warehouse}</option>
-                  ))
-                }
-              </select>
+        {
+          ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) &&
+          <form className="mb-3" method="get">
+            <div className="row">
+              {
+                'currentWarehouse' in this.props &&
+                <div className="col-lg-3">
+                  <label className="fw-bold">Warehouse:</label>
+                  <select className="form-control form-control-sm" name="warehouse"
+                          defaultValue={this.props.currentWarehouse}
+                          onChange={(event) => this._handleSubmit(event)}>
+                    {
+                      Object.entries(JSON.parse(this.props.warehouses)).map(([id, warehouse]) => (
+                        <option key={id} value={id}>{warehouse}</option>
+                      ))
+                    }
+                  </select>
+                </div>
+              }
+              {
+                'currentPriceLevel' in this.props &&
+                <div className="col-lg-3">
+                  <label className="fw-bold">Price Level:</label>
+                  <select className="form-control form-control-sm" name="priceLevel"
+                          defaultValue={this.props.currentPriceLevel}
+                          onChange={(event) => this._handleSubmit(event)}>
+                    {
+                      Object.entries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => (
+                        <option key={id} value={id}>{priceLevel}</option>
+                      ))
+                    }
+                  </select>
+                </div>
+              }
             </div>
-            <div className="col-lg-3">
-              <label>Price Level:</label>
-              <select className="form-control form-control-sm" name="priceLevel"
-                      defaultValue={this.props.currentPriceLevel}
-                      onChange={(event) => this._handleSubmit(event)}>
-                {
-                  Object.entries(JSON.parse(this.props.priceLevels)).map(([id, priceLevel]) => (
-                    <option key={id} value={id}>{priceLevel}</option>
-                  ))
-                }
-              </select>
-            </div>
-          </div>
-        </form>
+          </form>
+        }
         <div className="bg-white">
           <div className="container py-5">
-            <div className="row">
+            <div className="row gx-5">
               <div className="col-md-4">
                 <div className="d-flex justify-content-center align-items-center p-5 h-100">
                   <img className="mw-100 mh-100" src={this.state.system['image']}/>
                 </div>
               </div>
               <div className="col-md-4 d-flex flex-column justify-content-center">
-                <h1 className="text-black mb-3">{this.state.system['name']}</h1>
+                <h2 className="text-black mb-3">{this.state.system['name']}</h2>
                 <div className="item-group mb-3">
                   {
                     this.state.system['power_estimate'] &&
@@ -235,22 +244,22 @@ class Configurator extends React.Component {
                           'cost' in this.state.system ?
                             [['CONFIGURED PRICE', this.state.system['price']], ['COST', this.state.system['cost']],
                               ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) =>
-                              <>
-                                <h6 className="text-muted">
+                              <div className="mb-1">
+                                <h6 className="text-muted mb-0">
                                   {title}:
                                 </h6>
-                                <h3 className="text-primary">
+                                <h4 className="text-primary">
                                   {value}
-                                </h3>
-                              </>
+                                </h4>
+                              </div>
                             ) :
                             <>
-                              <div className="h4 text-muted">
+                              <h5 className="text-muted">
                                 CONFIGURED PRICE:
-                              </div>
-                              <h1 className="text-primary">
+                              </h5>
+                              <h2 className="text-primary">
                                 {this.state.system['price']}
-                              </h1>
+                              </h2>
                             </>
                         }
                         <div className="text-muted">

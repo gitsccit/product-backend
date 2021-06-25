@@ -3,6 +3,9 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\System $system
  */
+
+use Cake\Core\Configure;
+
 $this->Html->script(['react@16.13.1.development', 'react-dom@16.13.1.development'], ['block' => true]);
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 
@@ -20,16 +23,20 @@ foreach ($system['buckets'] as &$bucket) {
         }
     }
 }
+$priceLevels = json_encode($priceLevels, JSON_HEX_APOS);
+$currentPriceLevel = $this->request->getQuery('priceLevel',
+    $this->request->getSession()->read('options.store.price-level'));
+$warehouses = json_encode($warehouses, JSON_HEX_APOS);
+$currentWarehouse = $this->request->getQuery('warehouse',
+    $this->request->getSession()->read('options.store.warehouse'));
 ?>
 
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
-     data-price-levels='<?= json_encode($priceLevels, JSON_HEX_APOS) ?>'
-     data-current-price-level='<?= $this->request->getQuery('priceLevel',
-         $this->request->getSession()->read('options.store.price-level')) ?>'
-     data-warehouses='<?= json_encode($warehouses, JSON_HEX_APOS) ?>'
-     data-current-warehouse='<?= $this->request->getQuery('warehouse',
-         $this->request->getSession()->read('options.store.warehouse')) ?>'
+    <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>
+    <?= Configure::read('ProductBackend.showCost') ? "data-current-price-level='$currentPriceLevel'" : '' ?>
+    <?= Configure::read('ProductBackend.showStock') ? "data-warehouses='$warehouses'" : '' ?>
+    <?= Configure::read('ProductBackend.showStock') ? "data-current-warehouse='$currentWarehouse'" : '' ?>
      data-csrf='<?= $this->request->getCookie('csrfToken') ?>'></div>
 <?= $this->Html->script('ProductBackend.__generated__/ConditionalWrapper'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Configure'); ?>
