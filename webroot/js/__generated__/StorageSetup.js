@@ -263,11 +263,13 @@ class StorageSetup extends React.Component {
           href: "javascript:void(0)",
           onClick: () => volumeType === 'Global Hot Spare' ? this._createGlobalHotSpare(controller['id'], unassignedDrive) : this._createVolume(controller['id'], unassignedDrive)
         }, "Add"))))))));
-      })))), controller['id'] in this.state.storageConfig && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+      })))), controller['id'] in this.state.storageConfig && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("hr", {
+        className: "-mx-3"
+      }), /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
         colSpan: "3"
       }), /*#__PURE__*/React.createElement("th", {
         className: "fw-bold"
-      }, "Quantity"), /*#__PURE__*/React.createElement("th", {
+      }, "Qty"), /*#__PURE__*/React.createElement("th", {
         className: "fw-bold"
       }, "Action"))), /*#__PURE__*/React.createElement("tbody", null, this.state.storageConfig?.[controller['id']]?.['volumes'] != null && this.state.storageConfig[controller['id']]['volumes'].map((assignedDrive, volumeIndex) => /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
         className: "d-flex justify-content-center align-items-center bg-white",

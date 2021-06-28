@@ -25,6 +25,7 @@ class Configurator extends React.Component {
     });
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
+    this.prepareConfiguration = this.prepareConfiguration.bind(this);
     this.state = {
       system: system,
       tabs: JSON.parse(props.tabs),
@@ -62,7 +63,7 @@ class Configurator extends React.Component {
     event.target.form.submit();
   }
 
-  validateConfiguration(system, newConfig, quantity, callback) {
+  prepareConfiguration() {
     let selectedBucketObjects = Object.entries(this.state.currentConfig).map(([bucketID, items]) => {
       let selectedItems = items.filter(item => {
         return item['selected_at'] != null;
@@ -76,7 +77,11 @@ class Configurator extends React.Component {
     }).filter(([, selectedItems]) => {
       return Object.keys(selectedItems).length > 0;
     });
-    let configuration = Object.fromEntries(selectedBucketObjects);
+    return Object.fromEntries(selectedBucketObjects);
+  }
+
+  validateConfiguration(system, newConfig, quantity, callback) {
+    let configuration = this.prepareConfiguration();
     let payload = {
       system: system['id'],
       kit: system['kit_id'],
@@ -151,7 +156,8 @@ class Configurator extends React.Component {
       content: /*#__PURE__*/React.createElement(Summary, {
         system: this.state.system,
         currentConfig: this.state.currentConfig,
-        validateConfiguration: this.validateConfiguration
+        validateConfiguration: this.validateConfiguration,
+        prepareConfiguration: this.prepareConfiguration
       })
     }];
     return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {
@@ -245,13 +251,13 @@ class Configurator extends React.Component {
     }, tab['description']), tab['content']))), /*#__PURE__*/React.createElement("div", {
       className: "d-flex justify-content-between"
     }, /*#__PURE__*/React.createElement("a", {
-      className: "text-decoration-none",
+      className: "text-primary text-on-hover-primary-highlight text-decoration-none",
       href: "javascript:void(0)",
       onClick: () => this._back()
     }, /*#__PURE__*/React.createElement("span", {
       className: "bg-primary text-white p-1 icon-left-open me-2"
     }), "Go Back"), /*#__PURE__*/React.createElement("a", {
-      className: "text-decoration-none",
+      className: "text-primary text-on-hover-primary-highlight text-decoration-none",
       href: "javascript:void(0)",
       onClick: () => this._continue()
     }, "Continue", /*#__PURE__*/React.createElement("span", {

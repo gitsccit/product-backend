@@ -285,24 +285,14 @@ class Configure extends React.Component {
 
           </div>
         </div>
-        {
-          !standaloneBucket && (currentBucket['minqty'] || currentBucket['maxqty'] || currentBucket['compare']) &&
-          <div
-            className="item-group align-items-center justify-content-end fw-bold text-muted mb-3">
-            {currentBucket['minqty'] && <span>MIN QUANTITY: {currentBucket['minqty']}</span>}
-            {currentBucket['maxqty'] && <span>MAX QUANTITY: {currentBucket['maxqty']}</span>}
-            {
-              currentBucket['compare'] &&
-              <a className="btn btn-primary" href="javascript:void(0)" data-bs-toggle="modal"
-                 data-bs-target="#compare-modal" onClick={() => this._compareProducts(currentBucket)}>Compare</a>
-            }
-          </div>
-        }
         <div className="row">
           {
             !standaloneBucket &&
             <div className="col-md-3 col-lg-2">
-              <div className="bg-3 shadow-sm text-md-right h-100 d-flex flex-column">
+              <div className="bg-3 shadow-sm d-flex flex-column">
+                <div className="p-2 bg-black text-white">
+                  <span className="icon-sliders"></span>Configurator
+                </div>
                 {
                   buckets.map((bucket, index) => {
                     let borderColor = '';
@@ -318,7 +308,7 @@ class Configure extends React.Component {
                     return (
                       <a
                         key={bucket['id']}
-                        className={`p-2 border-3 border-right bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted')}
+                        className={`p-2 border-3 border-end bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted')}
                         href="javascript:void(0)"
                         onClick={() => this._changeTab(index)}>
                         {bucket['category']}
@@ -388,43 +378,73 @@ class Configure extends React.Component {
                 });
 
                 return (
-                  <div
-                    key={bucket['id']}
-                    className={'item-group-vertical fade ' + (this.state.currentTab === bucketIndex ? 'show' : 'd-none')}>
+                  <div key={bucket['id']}
+                       className={'item-group-vertical fade ' + (this.state.currentTab === bucketIndex ? 'show' : 'd-none')}>
                     {
                       !standaloneBucket &&
-                      <div className="item-group flex-lg-nowrap">
-                        <div
-                          className="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3">
-                          <div className="row -mx-2 flex-fill">
-                            {
-                              filters.slice(0, 4).map(([filterGroup, options]) => (
-                                <div className="col-6 col-lg-3 px-2">
-                                  <div className="fw-bold mb-3 text-nowrap">{filterGroup}</div>
-                                  <select className="form-control form-control-sm"
-                                          value={this.state.selectedFilters[bucket['id']][filterGroup]}
-                                          onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
-                                    {
-                                      options.map(([option, count]) => (
-                                        <option key={option} value={option}>
-                                          {option + (count > 0 ? ` (${count})` : '')}
-                                        </option>
-                                      ))
-                                    }
-                                  </select>
-                                </div>
-                              ))
-                            }
-                          </div>
-                          <a className="text-primary text-decoration-none text-nowrap ms-3" href="javascript:void(0)"
-                             onClick={() => this._clearFilters(bucket['id'])}>
-                            Clear Filters
-                          </a>
-                        </div>
+                      <div className="item-group flex-nowrap">
                         <div className="d-flex justify-content-center align-items-center p-3 bg-white border"
                              style={{width: 100, height: 100}}>
                           <img style={{maxWidth: 75, maxHeight: 75}} src={this._getBucketImage(bucket['id'])}/>
                         </div>
+                        <div className="bg-3 p-3 d-flex flex-column justify-content-center flex-fill">
+                          <div className="d-flex flex-wrap align-items-center">
+                            <h6 className="mb-0 pe-2 me-2 border-end border-1 border-dark">{bucket['name']}</h6>
+                            {
+                              currentBucket['compare'] ?
+                                <a className="text-primary text-on-hover-primary-highlight"
+                                   href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#compare-modal"
+                                   onClick={() => this._compareProducts(currentBucket)}>Compare</a> :
+                                <a className="text-muted">
+                                  Compare
+                                </a>
+                            }
+                            {
+                              !standaloneBucket &&
+                              <div className="ms-auto fw-bold text-muted">
+                                <span>MIN QUANTITY: {currentBucket['minqty'] ?? 0}</span>
+                                <span className="ms-3">
+                              MAX QUANTITY: {currentBucket['maxqty'] ?? <i className="icon-infinity"></i>}
+                            </span>
+                              </div>
+                            }
+                          </div>
+                          {
+                            bucket['notes'] !== '' &&
+                            <div dangerouslySetInnerHTML={{__html: bucket['notes']}} className="mt-3"></div>
+                          }
+                        </div>
+                      </div>
+                    }
+                    {
+                      !standaloneBucket && filters.length > 0 &&
+                      <div
+                        className="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3">
+                        <div className="row -mx-2 flex-fill">
+                          {
+                            filters.slice(0, 4).map(([filterGroup, options]) => (
+                              <div className="col-6 col-lg-3 px-2">
+                                <div className="fw-bold mb-2 text-nowrap">{filterGroup}:</div>
+                                <select className="form-control form-control-sm"
+                                        value={this.state.selectedFilters[bucket['id']][filterGroup]}
+                                        onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
+                                  {
+                                    options.map(([option, count]) => (
+                                      <option key={option} value={option}>
+                                        {option + (count > 0 ? ` (${count})` : '')}
+                                      </option>
+                                    ))
+                                  }
+                                </select>
+                              </div>
+                            ))
+                          }
+                        </div>
+                        <a
+                          className="text-primary text-decoration-none text-nowrap ms-3 text-on-hover-primary-highlight"
+                          href="javascript:void(0)" onClick={() => this._clearFilters(bucket['id'])}>
+                          Clear Filters
+                        </a>
                       </div>
                     }
                     {
@@ -450,7 +470,7 @@ class Configure extends React.Component {
                                 group['name'] &&
                                 <>
                                   <div className="fw-bold">{group['name']}</div>
-                                  <hr/>
+                                  <hr className="-mx-4"/>
                                 </>
                               }
                               {

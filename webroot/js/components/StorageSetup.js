@@ -315,13 +315,13 @@ class StorageSetup extends React.Component {
                       {
                         controller['id'] in this.state.storageConfig &&
                         <>
-                          <hr/>
+                          <hr className="-mx-3"/>
                           <table>
                             <thead>
                             <tr>
                               <th colSpan="3"></th>
                               <th className="fw-bold">
-                                Quantity
+                                Qty
                               </th>
                               <th className="fw-bold">
                                 Action

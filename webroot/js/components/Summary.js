@@ -4,6 +4,7 @@ class Summary extends React.Component {
 
     this.state = {
       comments: '',
+      quantity: 1,
       grandTotal: props.system['price'],
       totalCost: props.system['cost'] ?? undefined,
     };
@@ -16,8 +17,11 @@ class Summary extends React.Component {
   }
 
   _updateQuantity(event) {
-    this.props.validateConfiguration(this.props.system, this.props.currentConfig, parseInt(event.target.value), (result) => {
+    let quantity = parseInt(event.target.value)
+
+    this.props.validateConfiguration(this.props.system, this.props.currentConfig, quantity, (result) => {
       this.setState({
+        quantity: quantity,
         totalCost: result['cost'] ?? undefined,
         grandTotal: result['price'],
       });
@@ -25,7 +29,36 @@ class Summary extends React.Component {
   }
 
   _addToOrder() {
+    let url = this.props.baseUrl + '/api/unified-order/opportunities/prepare';
+    let payload = {
+      store_id: system['id'],
+      environment_id: system['kit_id'],
+      opportunity_details: [
+        {
+          quantity: this.state.quantity,
+          opportunity_detail_type_id: 4,
+          opportunity_systems: {
+            system_id: this.props.system['id'],
+            opportunity_system_data_logs: [
+              {
+                data: this.props.prepareConfiguration(),
+              }
+            ],
+          }
+        }
+      ],
+    };
 
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': this.props.csrf,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify(payload)
+    })
   }
 
   render() {
@@ -38,9 +71,9 @@ class Summary extends React.Component {
       },
       {
         image: '',
-        title: 'Request Formal Quote',
-        description: 'Use the Request Formal Quote tool to receive a formal quote based on this configuration. Please use the System Comments to note any changes or special requests you may have.',
-        button: 'Request quote',
+        title: 'Submit For Review',
+        description: "Are there any particular features that you're looking for? Is there a configuration option you want but isn't available online?",
+        button: 'Submit for Review',
       },
     ];
 
@@ -62,7 +95,7 @@ class Summary extends React.Component {
             {
               cards.map(({image, title, description, button}) => (
                 <div className="col-md-6 mb-3 mb-md-0">
-                  <div className="d-flex flex-column align-items-center text-center bg-white p-5 h-100">
+                  <div className="d-flex flex-column align-items-center text-center bg-white p-5 h-100 shadow-sm">
                     <img src={image}/>
                     <h3 className="mb-4">{title}</h3>
                     <p className="mb-4">{description}</p>
@@ -73,91 +106,95 @@ class Summary extends React.Component {
             }
           </div>
         }
-        <table className="table table-bordered my-5">
-          <thead>
-          <tr className="d-flex">
-            <th className="col-3">
-              <h3 className="mb-0 fw-bold">{this.props.system['name']}</h3>
-            </th>
-            <th className="col-9">
-              <div className="item-group justify-content-end">
-                <div>
-                  <span className="h5 mb-0 icon-floppy"></span>
-                  <a className="text-primary text-decoration-none" href="javascript:void(0)">Save Configuration</a>
+        <div className="p-4 my-4 bg-white shadow-sm">
+          <table className="table table-striped">
+            <thead>
+            <tr className="d-flex">
+              <th className="col-3">
+                <h5 className="mb-0 fw-bold">{this.props.system['name']}</h5>
+              </th>
+              <th className="col-9">
+                <div className="item-group justify-content-end align-items-end h-100">
+                  <div>
+                    <span className="h5 mb-0 icon-floppy"></span>
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Save Configuration</a>
+                  </div>
+                  <div>
+                    <span className="h5 mb-0 icon-mail"></span>
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Email Configuration</a>
+                  </div>
+                  <div>
+                    <span className="h5 mb-0 icon-print"></span>
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">View Specs</a>
+                  </div>
                 </div>
-                <div>
-                  <span className="h5 mb-0 icon-mail"></span>
-                  <a className="text-primary text-decoration-none" href="javascript:void(0)">Email Configuration</a>
-                </div>
-                <div>
-                  <span className="h5 mb-0 icon-print"></span>
-                  <a className="text-primary text-decoration-none" href="javascript:void(0)">View Specs</a>
-                </div>
-              </div>
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          {
-            selectedSpecs.map(([bucketCategory, spec]) => (
-              <tr className="d-flex">
-                <td className="col-3 fw-bold">
-                  {bucketCategory}
-                </td>
-                <td className="col-9" dangerouslySetInnerHTML={{__html: spec}}>
-                </td>
-              </tr>
-            ))
-          }
-          </tbody>
-        </table>
-        <div className="row">
-          <div className="col-lg-8 col-md-6">
-            <h4>System Comments</h4>
-            <p>Please leave any further notes or comments pertaining to your system configuration below.</p>
-            <textarea className="form-control" onChange={event => this._updateComments(event)} rows={5}>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            {
+              selectedSpecs.map(([bucketCategory, spec]) => (
+                <tr className="d-flex">
+                  <td className="col-3 fw-bold">
+                    {bucketCategory}
+                  </td>
+                  <td className="col-9" dangerouslySetInnerHTML={{__html: spec}}>
+                  </td>
+                </tr>
+              ))
+            }
+            </tbody>
+          </table>
+        </div>
+        <div className="bg-white shadow-sm p-4">
+          <div className="row">
+            <div className="col-lg-8 col-md-6">
+              <h4>System Comments</h4>
+              <p>Please leave any further notes or comments pertaining to your system configuration below.</p>
+              <textarea className="form-control" onChange={event => this._updateComments(event)} rows={5}>
               {this.state.comments}
             </textarea>
-          </div>
-          <div className="col-lg-4 col-md-6 d-flex flex-column justify-content-between">
-            <div className="text-md-right">
-              <div className="h5">
-                <span>Configured Price: </span>
-                <span
-                  className="h4 fw-bold">{this.props.system['price']}</span>
-              </div>
-              {
-                'cost' in this.props.system &&
-                <div className="h5">
-                  <span>Cost: </span>
-                  <span
-                    className="h4 fw-bold">{this.props.system['cost']}</span>
-                </div>
-              }
-              <div className="h5">
-                <label htmlFor="quantity">Quantity: </label>
-                <input id="quantity" className="d-inline-block form-control" type="number"
-                       style={{width: "4rem"}} name="quantity" min="1" defaultValue="1"
-                       onChange={(event) => this._updateQuantity(event)}/>
-              </div>
-              <hr className="border-black"/>
-              <div className="h5">
-                <span>Grand Total: </span>
-                <span
-                  className="h4 fw-bold">{this.state.grandTotal}</span>
-              </div>
-              {
-                this.state.totalCost !== undefined &&
-                <div className="h5">
-                  <span>Total Cost: </span>
-                  <span
-                    className="h4 fw-bold">{this.state.totalCost}</span>
-                </div>
-              }
             </div>
-            <a className="btn btn-primary py-2" href="javascript:void(0)" onClick={() => this._addToOrder()}>
-              <span className="h5 icon-plus-circled"></span>Add To Order
-            </a>
+            <div className="col-lg-4 col-md-6 d-flex flex-column justify-content-between">
+              <div className="text-md-end">
+                <div className="h6">
+                  <span className="fw-bold">Configured Price: </span>
+                  <span
+                    className="h6">{this.props.system['price']}</span>
+                </div>
+                {
+                  'cost' in this.props.system &&
+                  <div className="h6">
+                    <span className="fw-bold">Cost: </span>
+                    <span
+                      className="h6">{this.props.system['cost']}</span>
+                  </div>
+                }
+                <div className="h6">
+                  <label htmlFor="quantity" className="fw-bold">Quantity:</label>
+                  <input id="quantity" className="d-inline-block form-control ms-1" type="number"
+                         style={{width: "4rem"}} name="quantity" min="1" defaultValue={this.state.quantity}
+                         onChange={(event) => this._updateQuantity(event)}/>
+                </div>
+                <hr className="border-black"/>
+                <div className="h6">
+                  <span className="fw-bold">Grand Total: </span>
+                  <span
+                    className="h6">{this.state.grandTotal}</span>
+                </div>
+                {
+                  this.state.totalCost !== undefined &&
+                  <div className="h6">
+                    <span className="fw-bold">Total Cost: </span>
+                    <span
+                      className="h6">{this.state.totalCost}</span>
+                  </div>
+                }
+              </div>
+              <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)" onClick={() => this._addToOrder()}>
+                <span className="h5 icon-plus-circled"></span>Add To Order
+              </a>
+            </div>
           </div>
         </div>
       </div>

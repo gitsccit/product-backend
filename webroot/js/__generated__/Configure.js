@@ -258,21 +258,17 @@ class Configure extends React.Component {
       dangerouslySetInnerHTML: {
         __html: this.state.compareProductHTML
       }
-    })), !standaloneBucket && (currentBucket['minqty'] || currentBucket['maxqty'] || currentBucket['compare']) && /*#__PURE__*/React.createElement("div", {
-      className: "item-group align-items-center justify-content-end fw-bold text-muted mb-3"
-    }, currentBucket['minqty'] && /*#__PURE__*/React.createElement("span", null, "MIN QUANTITY: ", currentBucket['minqty']), currentBucket['maxqty'] && /*#__PURE__*/React.createElement("span", null, "MAX QUANTITY: ", currentBucket['maxqty']), currentBucket['compare'] && /*#__PURE__*/React.createElement("a", {
-      className: "btn btn-primary",
-      href: "javascript:void(0)",
-      "data-bs-toggle": "modal",
-      "data-bs-target": "#compare-modal",
-      onClick: () => this._compareProducts(currentBucket)
-    }, "Compare")), /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("div", {
       className: "row"
     }, !standaloneBucket && /*#__PURE__*/React.createElement("div", {
       className: "col-md-3 col-lg-2"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-3 shadow-sm text-md-right h-100 d-flex flex-column"
-    }, buckets.map((bucket, index) => {
+      className: "bg-3 shadow-sm d-flex flex-column"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "p-2 bg-black text-white"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "icon-sliders"
+    }), "Configurator"), buckets.map((bucket, index) => {
       let borderColor = '';
 
       if (this.state.errors.filter(error => Array.isArray(error) && error[0] === bucket['id']).length > 0) {
@@ -285,7 +281,7 @@ class Configure extends React.Component {
 
       return /*#__PURE__*/React.createElement("a", {
         key: bucket['id'],
-        className: `p-2 border-3 border-right bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted'),
+        className: `p-2 border-3 border-end bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted'),
         href: "javascript:void(0)",
         onClick: () => this._changeTab(index)
       }, bucket['category']);
@@ -348,27 +344,8 @@ class Configure extends React.Component {
         key: bucket['id'],
         className: 'item-group-vertical fade ' + (this.state.currentTab === bucketIndex ? 'show' : 'd-none')
       }, !standaloneBucket && /*#__PURE__*/React.createElement("div", {
-        className: "item-group flex-lg-nowrap"
+        className: "item-group flex-nowrap"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "row -mx-2 flex-fill"
-      }, filters.slice(0, 4).map(([filterGroup, options]) => /*#__PURE__*/React.createElement("div", {
-        className: "col-6 col-lg-3 px-2"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "fw-bold mb-3 text-nowrap"
-      }, filterGroup), /*#__PURE__*/React.createElement("select", {
-        className: "form-control form-control-sm",
-        value: this.state.selectedFilters[bucket['id']][filterGroup],
-        onChange: event => this._updateFilter(bucket['id'], filterGroup, event)
-      }, options.map(([option, count]) => /*#__PURE__*/React.createElement("option", {
-        key: option,
-        value: option
-      }, option + (count > 0 ? ` (${count})` : ''))))))), /*#__PURE__*/React.createElement("a", {
-        className: "text-primary text-decoration-none text-nowrap ms-3",
-        href: "javascript:void(0)",
-        onClick: () => this._clearFilters(bucket['id'])
-      }, "Clear Filters")), /*#__PURE__*/React.createElement("div", {
         className: "d-flex justify-content-center align-items-center p-3 bg-white border",
         style: {
           width: 100,
@@ -380,7 +357,51 @@ class Configure extends React.Component {
           maxHeight: 75
         },
         src: this._getBucketImage(bucket['id'])
-      }))), filteredGroups.map((group, groupIndex) => /*#__PURE__*/React.createElement(ConditionalWrapper, {
+      })), /*#__PURE__*/React.createElement("div", {
+        className: "bg-3 p-3 d-flex flex-column justify-content-center flex-fill"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "d-flex flex-wrap align-items-center"
+      }, /*#__PURE__*/React.createElement("h6", {
+        className: "mb-0 pe-2 me-2 border-end border-1 border-dark"
+      }, bucket['name']), currentBucket['compare'] ? /*#__PURE__*/React.createElement("a", {
+        className: "text-primary text-on-hover-primary-highlight",
+        href: "javascript:void(0)",
+        "data-bs-toggle": "modal",
+        "data-bs-target": "#compare-modal",
+        onClick: () => this._compareProducts(currentBucket)
+      }, "Compare") : /*#__PURE__*/React.createElement("a", {
+        className: "text-muted"
+      }, "Compare"), !standaloneBucket && /*#__PURE__*/React.createElement("div", {
+        className: "ms-auto fw-bold text-muted"
+      }, /*#__PURE__*/React.createElement("span", null, "MIN QUANTITY: ", currentBucket['minqty'] ?? 0), /*#__PURE__*/React.createElement("span", {
+        className: "ms-3"
+      }, "MAX QUANTITY: ", currentBucket['maxqty'] ?? /*#__PURE__*/React.createElement("i", {
+        className: "icon-infinity"
+      })))), bucket['notes'] !== '' && /*#__PURE__*/React.createElement("div", {
+        dangerouslySetInnerHTML: {
+          __html: bucket['notes']
+        },
+        className: "mt-3"
+      }))), !standaloneBucket && filters.length > 0 && /*#__PURE__*/React.createElement("div", {
+        className: "d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "row -mx-2 flex-fill"
+      }, filters.slice(0, 4).map(([filterGroup, options]) => /*#__PURE__*/React.createElement("div", {
+        className: "col-6 col-lg-3 px-2"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "fw-bold mb-2 text-nowrap"
+      }, filterGroup, ":"), /*#__PURE__*/React.createElement("select", {
+        className: "form-control form-control-sm",
+        value: this.state.selectedFilters[bucket['id']][filterGroup],
+        onChange: event => this._updateFilter(bucket['id'], filterGroup, event)
+      }, options.map(([option, count]) => /*#__PURE__*/React.createElement("option", {
+        key: option,
+        value: option
+      }, option + (count > 0 ? ` (${count})` : ''))))))), /*#__PURE__*/React.createElement("a", {
+        className: "text-primary text-decoration-none text-nowrap ms-3 text-on-hover-primary-highlight",
+        href: "javascript:void(0)",
+        onClick: () => this._clearFilters(bucket['id'])
+      }, "Clear Filters")), filteredGroups.map((group, groupIndex) => /*#__PURE__*/React.createElement(ConditionalWrapper, {
         condition: standaloneBucket,
         wrapper: children => /*#__PURE__*/React.createElement("div", {
           className: "row -mx-2"
@@ -401,7 +422,9 @@ class Configure extends React.Component {
         className: 'bg-white p-4 shadow-sm'
       }, group['name'] && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
         className: "fw-bold"
-      }, group['name']), /*#__PURE__*/React.createElement("hr", null)), group['group_items'].map(item => {
+      }, group['name']), /*#__PURE__*/React.createElement("hr", {
+        className: "-mx-4"
+      })), group['group_items'].map(item => {
         let itemIndexInBucket = itemsInBucket.indexOf(item);
         let itemInConfiguration = itemsInBucket[itemIndexInBucket];
         let checked = itemInConfiguration['selected_at'] != null;

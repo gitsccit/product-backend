@@ -32,6 +32,7 @@ class Configurator extends React.Component {
 
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
+    this.prepareConfiguration = this.prepareConfiguration.bind(this);
 
     this.state = {
       system: system,
@@ -71,7 +72,7 @@ class Configurator extends React.Component {
     event.target.form.submit();
   }
 
-  validateConfiguration(system, newConfig, quantity, callback) {
+  prepareConfiguration() {
     let selectedBucketObjects = Object.entries(this.state.currentConfig).map(([bucketID, items]) => {
       let selectedItems = items.filter(item => {
         return item['selected_at'] != null;
@@ -85,7 +86,11 @@ class Configurator extends React.Component {
       return Object.keys(selectedItems).length > 0;
     });
 
-    let configuration = Object.fromEntries(selectedBucketObjects);
+    return Object.fromEntries(selectedBucketObjects);
+  }
+
+  validateConfiguration(system, newConfig, quantity, callback) {
+    let configuration = this.prepareConfiguration();
     let payload = {
       system: system['id'],
       kit: system['kit_id'],
@@ -155,7 +160,8 @@ class Configurator extends React.Component {
         name: 'Summary',
         description: 'Review the following and check for any errors or mistakes. You may also Print, Email, or Save this configuration for future review.',
         content: <Summary system={this.state.system} currentConfig={this.state.currentConfig}
-                          validateConfiguration={this.validateConfiguration}/>,
+                          validateConfiguration={this.validateConfiguration}
+                          prepareConfiguration={this.prepareConfiguration}/>,
       },
     ];
 
@@ -297,11 +303,13 @@ class Configurator extends React.Component {
             ))}
           </div>
           <div className="d-flex justify-content-between">
-            <a className="text-decoration-none" href="javascript:void(0)" onClick={() => this._back()}>
+            <a className="text-primary text-on-hover-primary-highlight text-decoration-none" href="javascript:void(0)"
+               onClick={() => this._back()}>
               <span className="bg-primary text-white p-1 icon-left-open me-2"></span>
               Go Back
             </a>
-            <a className="text-decoration-none" href="javascript:void(0)" onClick={() => this._continue()}>
+            <a className="text-primary text-on-hover-primary-highlight text-decoration-none" href="javascript:void(0)"
+               onClick={() => this._continue()}>
               Continue
               <span className="bg-primary text-white p-1 icon-right-open ms-2"></span>
             </a>
