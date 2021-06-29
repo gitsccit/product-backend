@@ -402,10 +402,11 @@ class Configure extends React.Component {
                             {
                               !standaloneBucket &&
                               <div className="ms-auto fw-bold text-muted">
-                                <span>MIN QUANTITY: {currentBucket['minqty'] ?? 0}</span>
+                                <span>MIN QUANTITY: {currentBucket['multiple'] ? (currentBucket['minqty'] ?? 0) : 1}</span>
                                 <span className="ms-3">
-                              MAX QUANTITY: {currentBucket['maxqty'] ?? <i className="icon-infinity"></i>}
-                            </span>
+                                  MAX QUANTITY: {currentBucket['multiple'] ? (currentBucket['maxqty'] ??
+                                  <i className="icon-infinity"></i>) : currentBucket['quantity'].slice(-1)[0]}
+                                </span>
                               </div>
                             }
                           </div>

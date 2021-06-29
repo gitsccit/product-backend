@@ -154,7 +154,8 @@ class Configurator extends React.Component {
         name: 'Select Warranty',
         description: 'Select the warranty.',
         content: <Configure system={systemWithOnlyStandaloneBuckets} currentConfig={this.state.currentConfig}
-                            csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}/>,
+                            csrf={this.props.csrf} updateSystem={this.updateSystem}
+                            validateConfiguration={this.validateConfiguration}/>,
       },
       {
         name: 'Summary',

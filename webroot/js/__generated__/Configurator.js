@@ -148,6 +148,7 @@ class Configurator extends React.Component {
         system: systemWithOnlyStandaloneBuckets,
         currentConfig: this.state.currentConfig,
         csrf: this.props.csrf,
+        updateSystem: this.updateSystem,
         validateConfiguration: this.validateConfiguration
       })
     }, {

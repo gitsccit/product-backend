@@ -373,11 +373,11 @@ class Configure extends React.Component {
         className: "text-muted"
       }, "Compare"), !standaloneBucket && /*#__PURE__*/React.createElement("div", {
         className: "ms-auto fw-bold text-muted"
-      }, /*#__PURE__*/React.createElement("span", null, "MIN QUANTITY: ", currentBucket['minqty'] ?? 0), /*#__PURE__*/React.createElement("span", {
+      }, /*#__PURE__*/React.createElement("span", null, "MIN QUANTITY: ", currentBucket['multiple'] ? currentBucket['minqty'] ?? 0 : 1), /*#__PURE__*/React.createElement("span", {
         className: "ms-3"
-      }, "MAX QUANTITY: ", currentBucket['maxqty'] ?? /*#__PURE__*/React.createElement("i", {
+      }, "MAX QUANTITY: ", currentBucket['multiple'] ? currentBucket['maxqty'] ?? /*#__PURE__*/React.createElement("i", {
         className: "icon-infinity"
-      })))), bucket['notes'] !== '' && /*#__PURE__*/React.createElement("div", {
+      }) : currentBucket['quantity'].slice(-1)[0]))), bucket['notes'] !== '' && /*#__PURE__*/React.createElement("div", {
         dangerouslySetInnerHTML: {
           __html: bucket['notes']
         },
