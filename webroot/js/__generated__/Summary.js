@@ -189,7 +189,7 @@ class Summary extends React.Component {
       href: "javascript:void(0)",
       onClick: () => this._addToOrder()
     }, /*#__PURE__*/React.createElement("span", {
-      className: "h5 icon-plus-circled"
+      className: "h5 icon-basket-1"
     }), "Add To Order")))));
   }
 
