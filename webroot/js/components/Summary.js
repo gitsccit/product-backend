@@ -192,7 +192,7 @@ class Summary extends React.Component {
                 }
               </div>
               <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)" onClick={() => this._addToOrder()}>
-                <span className="h5 icon-basket-1"></span>Add To Order
+                <span className="h5 icon-plus"></span>Add To Order
               </a>
             </div>
           </div>
