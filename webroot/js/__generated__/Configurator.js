@@ -158,7 +158,9 @@ class Configurator extends React.Component {
         system: this.state.system,
         currentConfig: this.state.currentConfig,
         validateConfiguration: this.validateConfiguration,
-        prepareConfiguration: this.prepareConfiguration
+        prepareConfiguration: this.prepareConfiguration,
+        environment: this.props.environment,
+        storeID: this.props.store
       })
     }];
     return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {

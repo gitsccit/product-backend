@@ -29,10 +29,14 @@ $currentPriceLevel = $this->request->getQuery('priceLevel',
 $warehouses = json_encode($warehouses, JSON_HEX_APOS);
 $currentWarehouse = $this->request->getQuery('warehouse',
     $this->request->getSession()->read('options.store.warehouse'));
+$environmentID = $this->request->getQuery('environment_id', $this->request->getSession()->read('environment.id'));
+$storeID = $this->request->getQuery('store_id', $this->request->getSession()->read('store.id'));
 ?>
 
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
+     data-environment='<?= $environmentID ?>'
+     data-store='<?= $storeID ?>'
     <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>
     <?= Configure::read('ProductBackend.showCost') ? "data-current-price-level='$currentPriceLevel'" : '' ?>
     <?= Configure::read('ProductBackend.showStock') ? "data-warehouses='$warehouses'" : '' ?>

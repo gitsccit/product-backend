@@ -162,7 +162,8 @@ class Configurator extends React.Component {
         description: 'Review the following and check for any errors or mistakes. You may also Print, Email, or Save this configuration for future review.',
         content: <Summary system={this.state.system} currentConfig={this.state.currentConfig}
                           validateConfiguration={this.validateConfiguration}
-                          prepareConfiguration={this.prepareConfiguration}/>,
+                          prepareConfiguration={this.prepareConfiguration}
+                          environment={this.props.environment} storeID={this.props.store}/>,
       },
     ];
 
