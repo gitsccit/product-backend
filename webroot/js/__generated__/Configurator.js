@@ -53,12 +53,6 @@ class Configurator extends React.Component {
     });
   }
 
-  _getBaseUrl() {
-    let url = window.location.href;
-    let index = url.indexOf('/system');
-    return url.substr(0, index);
-  }
-
   _handleSubmit(event) {
     event.target.form.submit();
   }
@@ -93,7 +87,7 @@ class Configurator extends React.Component {
       payload['priceLevel'] = this.props['currentPriceLevel'];
     }
 
-    let url = this._getBaseUrl() + '/system/validate';
+    let url = this.props.baseUrl + '/system/validate';
     this.setState({
       currentConfig: newConfig,
       system: system
@@ -132,7 +126,7 @@ class Configurator extends React.Component {
         csrf: this.props.csrf,
         validateConfiguration: this.validateConfiguration,
         updateSystem: this.updateSystem,
-        baseUrl: this._getBaseUrl()
+        baseUrl: this.props.baseUrl
       })
     }, {
       name: 'Storage Setup',
@@ -161,7 +155,8 @@ class Configurator extends React.Component {
         prepareConfiguration: this.prepareConfiguration,
         environment: this.props.environment,
         storeID: this.props.store,
-        csrf: this.props.csrf
+        csrf: this.props.csrf,
+        baseUrl: this.props.baseUrl
       })
     }];
     return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {

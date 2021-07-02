@@ -35,6 +35,7 @@ $storeID = $this->request->getQuery('store_id', $this->request->getSession()->re
 
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
+     data-base-url='<?= trim($this->Url->build('/', ['fullBase' => true]), '/') ?>'
      data-environment='<?= $environmentID ?>'
      data-store='<?= $storeID ?>'
     <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>

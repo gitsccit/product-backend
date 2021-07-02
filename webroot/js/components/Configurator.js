@@ -61,13 +61,6 @@ class Configurator extends React.Component {
     });
   }
 
-  _getBaseUrl() {
-    let url = window.location.href;
-    let index = url.indexOf('/system');
-
-    return url.substr(0, index);
-  }
-
   _handleSubmit(event) {
     event.target.form.submit();
   }
@@ -102,7 +95,7 @@ class Configurator extends React.Component {
       payload['priceLevel'] = this.props['currentPriceLevel'];
     }
 
-    let url = this._getBaseUrl() + '/system/validate';
+    let url = this.props.baseUrl + '/system/validate';
 
     this.setState({
       currentConfig: newConfig,
@@ -143,7 +136,7 @@ class Configurator extends React.Component {
         description: 'Configure you system by selecting the desired item or items from each required category below.',
         content: <Configure system={systemWithoutStandaloneBuckets} currentConfig={this.state.currentConfig}
                             csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
-                            updateSystem={this.updateSystem} baseUrl={this._getBaseUrl()}/>,
+                            updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}/>,
       },
       {
         name: 'Storage Setup',
@@ -164,7 +157,7 @@ class Configurator extends React.Component {
                           validateConfiguration={this.validateConfiguration}
                           prepareConfiguration={this.prepareConfiguration}
                           environment={this.props.environment} storeID={this.props.store}
-                          csrf={this.props.csrf}/>,
+                          csrf={this.props.csrf} baseUrl={this.props.baseUrl}/>,
       },
     ];
 
