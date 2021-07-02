@@ -156,7 +156,7 @@ class Configurator extends React.Component {
         content: <Summary system={this.state.system} currentConfig={this.state.currentConfig}
                           validateConfiguration={this.validateConfiguration}
                           prepareConfiguration={this.prepareConfiguration}
-                          environment={this.props.environment} storeID={this.props.store}
+                          environmentId={this.props.environmentId} storeId={this.props.storeId}
                           csrf={this.props.csrf} baseUrl={this.props.baseUrl} token={this.props.token}/>,
       },
     ];

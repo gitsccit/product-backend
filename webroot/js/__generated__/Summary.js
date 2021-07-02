@@ -29,8 +29,8 @@ class Summary extends React.Component {
   _addToOrder() {
     let url = this.props.baseUrl + '/api/unified-order/opportunities/prepare';
     let payload = {
-      store_id: this.props.store,
-      environment_id: this.props.environment,
+      store_id: this.props.storeId,
+      environment_id: this.props.environmentId,
       opportunity_details: [{
         quantity: this.state.quantity,
         opportunity_detail_type_id: 4,
