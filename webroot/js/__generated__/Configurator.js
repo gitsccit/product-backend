@@ -156,7 +156,7 @@ class Configurator extends React.Component {
         environmentId: this.props.environmentId,
         storeId: this.props.storeId,
         csrf: this.props.csrf,
-        baseUrl: this.props.baseUrl,
+        appsUrl: this.props.appsUrl,
         token: this.props.token
       })
     }];
