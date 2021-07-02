@@ -156,7 +156,8 @@ class Configurator extends React.Component {
         environment: this.props.environment,
         storeID: this.props.store,
         csrf: this.props.csrf,
-        baseUrl: this.props.baseUrl
+        baseUrl: this.props.baseUrl,
+        token: this.props.token
       })
     }];
     return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {

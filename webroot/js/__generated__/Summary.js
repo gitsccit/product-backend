@@ -48,7 +48,8 @@ class Summary extends React.Component {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'X-CSRF-Token': this.props.csrf,
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        'scctoken': this.props.token
       },
       body: JSON.stringify(payload)
     });

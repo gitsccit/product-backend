@@ -38,6 +38,7 @@ $storeID = $this->request->getQuery('store_id', $this->request->getSession()->re
      data-base-url='<?= trim($this->Url->build('/', ['fullBase' => true]), '/') ?>'
      data-environment='<?= $environmentID ?>'
      data-store='<?= $storeID ?>'
+     data-token='<?= Configure::read('Security.scctoken') ?>'
     <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>
     <?= Configure::read('ProductBackend.showCost') ? "data-current-price-level='$currentPriceLevel'" : '' ?>
     <?= Configure::read('ProductBackend.showStock') ? "data-warehouses='$warehouses'" : '' ?>
