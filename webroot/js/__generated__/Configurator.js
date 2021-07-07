@@ -139,7 +139,7 @@ class Configurator extends React.Component {
           });
           break;
 
-        case 'Select Warranty':
+        case 'Warranty':
           tab['content'] = /*#__PURE__*/React.createElement(Configure, {
             system: systemWithOnlyStandaloneBuckets,
             currentConfig: this.state.currentConfig,

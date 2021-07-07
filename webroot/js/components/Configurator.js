@@ -141,7 +141,7 @@ class Configurator extends React.Component {
         case 'Storage Setup':
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
           break;
-        case 'Select Warranty':
+        case 'Warranty':
           tab['content'] = <Configure system={systemWithOnlyStandaloneBuckets} currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} updateSystem={this.updateSystem}
                                       validateConfiguration={this.validateConfiguration}/>;
