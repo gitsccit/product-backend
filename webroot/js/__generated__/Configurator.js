@@ -117,49 +117,54 @@ class Configurator extends React.Component {
     systemWithoutStandaloneBuckets['buckets'] = systemWithoutStandaloneBuckets['buckets'].filter(bucket => bucket['name'] !== 'Warranty');
     let systemWithOnlyStandaloneBuckets = Object.assign({}, this.state.system);
     systemWithOnlyStandaloneBuckets['buckets'] = systemWithOnlyStandaloneBuckets['buckets'].filter(bucket => bucket['name'] === 'Warranty');
-    let tabs = [{
-      name: 'Configure',
-      description: 'Configure you system by selecting the desired item or items from each required category below.',
-      content: /*#__PURE__*/React.createElement(Configure, {
-        system: systemWithoutStandaloneBuckets,
-        currentConfig: this.state.currentConfig,
-        csrf: this.props.csrf,
-        validateConfiguration: this.validateConfiguration,
-        updateSystem: this.updateSystem,
-        baseUrl: this.props.baseUrl
-      })
-    }, {
-      name: 'Storage Setup',
-      description: 'Assign the storage distribution to your controllers from the chosen drives you selected.',
-      content: /*#__PURE__*/React.createElement(StorageSetup, {
-        system: this.state.system,
-        currentConfig: this.state.currentConfig
-      })
-    }, {
-      name: 'Select Warranty',
-      description: 'Select the warranty.',
-      content: /*#__PURE__*/React.createElement(Configure, {
-        system: systemWithOnlyStandaloneBuckets,
-        currentConfig: this.state.currentConfig,
-        csrf: this.props.csrf,
-        updateSystem: this.updateSystem,
-        validateConfiguration: this.validateConfiguration
-      })
-    }, {
-      name: 'Summary',
-      description: 'Review the following and check for any errors or mistakes. You may also Print, Email, or Save this configuration for future review.',
-      content: /*#__PURE__*/React.createElement(Summary, {
-        system: this.state.system,
-        currentConfig: this.state.currentConfig,
-        validateConfiguration: this.validateConfiguration,
-        prepareConfiguration: this.prepareConfiguration,
-        environmentId: this.props.environmentId,
-        storeId: this.props.storeId,
-        csrf: this.props.csrf,
-        appsUrl: this.props.appsUrl,
-        token: this.props.token
-      })
-    }];
+    let tabs = Object.assign({}, this.state.tabs);
+
+    for (const tab of tabs) {
+      switch (tab['name']) {
+        case 'Configure':
+          tab['content'] = /*#__PURE__*/React.createElement(Configure, {
+            system: systemWithoutStandaloneBuckets,
+            currentConfig: this.state.currentConfig,
+            csrf: this.props.csrf,
+            validateConfiguration: this.validateConfiguration,
+            updateSystem: this.updateSystem,
+            baseUrl: this.props.baseUrl
+          });
+          break;
+
+        case 'Storage Setup':
+          tab['content'] = /*#__PURE__*/React.createElement(StorageSetup, {
+            system: this.state.system,
+            currentConfig: this.state.currentConfig
+          });
+          break;
+
+        case 'Select Warranty':
+          tab['content'] = /*#__PURE__*/React.createElement(Configure, {
+            system: systemWithOnlyStandaloneBuckets,
+            currentConfig: this.state.currentConfig,
+            csrf: this.props.csrf,
+            updateSystem: this.updateSystem,
+            validateConfiguration: this.validateConfiguration
+          });
+          break;
+
+        case 'Summary':
+          tab['content'] = /*#__PURE__*/React.createElement(Summary, {
+            system: this.state.system,
+            currentConfig: this.state.currentConfig,
+            validateConfiguration: this.validateConfiguration,
+            prepareConfiguration: this.prepareConfiguration,
+            environmentId: this.props.environmentId,
+            storeId: this.props.storeId,
+            csrf: this.props.csrf,
+            appsUrl: this.props.appsUrl,
+            token: this.props.token
+          });
+          break;
+      }
+    }
+
     return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {
       className: "mb-3",
       method: "get"
