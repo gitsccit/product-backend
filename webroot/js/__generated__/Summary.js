@@ -140,7 +140,7 @@ class Summary extends React.Component {
       onChange: event => this._updateComments(event),
       rows: 5
     }, this.state.comments)), /*#__PURE__*/React.createElement("div", {
-      className: "col-lg-4 col-md-6 d-flex flex-column justify-content-between"
+      className: "col-lg-4 col-md-6 d-flex flex-column justify-content-center"
     }, this.props.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "text-md-end"
     }, /*#__PURE__*/React.createElement("div", {
@@ -193,7 +193,7 @@ class Summary extends React.Component {
       className: "h5 icon-plus"
     }), "Add To Order")) : /*#__PURE__*/React.createElement("h4", {
       className: "text-primary"
-    }, "'Invalid Configuration'")))));
+    }, "Invalid Configuration")))));
   }
 
 }

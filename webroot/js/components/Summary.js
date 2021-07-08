@@ -158,7 +158,7 @@ class Summary extends React.Component {
               {this.state.comments}
             </textarea>
             </div>
-            <div className="col-lg-4 col-md-6 d-flex flex-column justify-content-between">
+            <div className="col-lg-4 col-md-6 d-flex flex-column justify-content-center">
               {
                 this.props.validConfiguration ?
                   <>
@@ -203,7 +203,7 @@ class Summary extends React.Component {
                     </a>
                   </> :
                   <h4 className="text-primary">
-                    'Invalid Configuration'
+                    Invalid Configuration
                   </h4>
               }
             </div>

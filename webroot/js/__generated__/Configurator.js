@@ -238,7 +238,7 @@ class Configurator extends React.Component {
       className: "text-muted"
     }, "From ", this.state.system['price'], "/mo")) : /*#__PURE__*/React.createElement("h4", {
       className: "text-primary"
-    }, "'Invalid Configuration'"))))), /*#__PURE__*/React.createElement("div", {
+    }, "Invalid Configuration"))))), /*#__PURE__*/React.createElement("div", {
       className: "container py-5"
     }, /*#__PURE__*/React.createElement("div", {
       className: "border-bottom"

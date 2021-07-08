@@ -266,7 +266,7 @@ class Configurator extends React.Component {
                       </>
                     ) :
                     <h4 className="text-primary">
-                      'Invalid Configuration'
+                      Invalid Configuration
                     </h4>
                 }
               </div>
