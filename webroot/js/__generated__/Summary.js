@@ -141,7 +141,7 @@ class Summary extends React.Component {
       rows: 5
     }, this.state.comments)), /*#__PURE__*/React.createElement("div", {
       className: "col-lg-4 col-md-6 d-flex flex-column justify-content-between"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, this.props.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "text-md-end"
     }, /*#__PURE__*/React.createElement("div", {
       className: "h6"
@@ -191,7 +191,9 @@ class Summary extends React.Component {
       onClick: () => this._addToOrder()
     }, /*#__PURE__*/React.createElement("span", {
       className: "h5 icon-plus"
-    }), "Add To Order")))));
+    }), "Add To Order")) : /*#__PURE__*/React.createElement("h4", {
+      className: "text-primary"
+    }, "'Invalid Configuration'")))));
   }
 
 }

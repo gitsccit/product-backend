@@ -118,11 +118,13 @@ class Summary extends React.Component {
                 <div className="item-group justify-content-end align-items-end h-100">
                   <div>
                     <span className="h5 mb-0 icon-floppy"></span>
-                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Save Configuration</a>
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Save
+                      Configuration</a>
                   </div>
                   <div>
                     <span className="h5 mb-0 icon-mail"></span>
-                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Email Configuration</a>
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Email
+                      Configuration</a>
                   </div>
                   <div>
                     <span className="h5 mb-0 icon-print"></span>
@@ -157,44 +159,53 @@ class Summary extends React.Component {
             </textarea>
             </div>
             <div className="col-lg-4 col-md-6 d-flex flex-column justify-content-between">
-              <div className="text-md-end">
-                <div className="h6">
-                  <span className="fw-bold">Configured Price: </span>
-                  <span
-                    className="h6">{this.props.system['price']}</span>
-                </div>
-                {
-                  'cost' in this.props.system &&
-                  <div className="h6">
-                    <span className="fw-bold">Cost: </span>
-                    <span
-                      className="h6">{this.props.system['cost']}</span>
-                  </div>
-                }
-                <div className="h6">
-                  <label htmlFor="quantity" className="fw-bold">Quantity:</label>
-                  <input id="quantity" className="d-inline-block form-control ms-1" type="number"
-                         style={{width: "4rem"}} name="quantity" min="1" defaultValue={this.state.quantity}
-                         onChange={(event) => this._updateQuantity(event)}/>
-                </div>
-                <hr className="border-black"/>
-                <div className="h6">
-                  <span className="fw-bold">Grand Total: </span>
-                  <span
-                    className="h6">{this.state.grandTotal}</span>
-                </div>
-                {
-                  this.state.totalCost !== undefined &&
-                  <div className="h6">
-                    <span className="fw-bold">Total Cost: </span>
-                    <span
-                      className="h6">{this.state.totalCost}</span>
-                  </div>
-                }
-              </div>
-              <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)" onClick={() => this._addToOrder()}>
-                <span className="h5 icon-plus"></span>Add To Order
-              </a>
+              {
+                this.props.validConfiguration ?
+                  <>
+                    <div className="text-md-end">
+                      <div className="h6">
+                        <span className="fw-bold">Configured Price: </span>
+                        <span
+                          className="h6">{this.props.system['price']}</span>
+                      </div>
+                      {
+                        'cost' in this.props.system &&
+                        <div className="h6">
+                          <span className="fw-bold">Cost: </span>
+                          <span
+                            className="h6">{this.props.system['cost']}</span>
+                        </div>
+                      }
+                      <div className="h6">
+                        <label htmlFor="quantity" className="fw-bold">Quantity:</label>
+                        <input id="quantity" className="d-inline-block form-control ms-1" type="number"
+                               style={{width: "4rem"}} name="quantity" min="1" defaultValue={this.state.quantity}
+                               onChange={(event) => this._updateQuantity(event)}/>
+                      </div>
+                      <hr className="border-black"/>
+                      <div className="h6">
+                        <span className="fw-bold">Grand Total: </span>
+                        <span
+                          className="h6">{this.state.grandTotal}</span>
+                      </div>
+                      {
+                        this.state.totalCost !== undefined &&
+                        <div className="h6">
+                          <span className="fw-bold">Total Cost: </span>
+                          <span
+                            className="h6">{this.state.totalCost}</span>
+                        </div>
+                      }
+                    </div>
+                    <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)"
+                       onClick={() => this._addToOrder()}>
+                      <span className="h5 icon-plus"></span>Add To Order
+                    </a>
+                  </> :
+                  <h4 className="text-primary">
+                    'Invalid Configuration'
+                  </h4>
+              }
             </div>
           </div>
         </div>

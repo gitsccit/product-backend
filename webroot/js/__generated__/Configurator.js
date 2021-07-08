@@ -153,6 +153,7 @@ class Configurator extends React.Component {
           tab['content'] = /*#__PURE__*/React.createElement(Summary, {
             system: this.state.system,
             currentConfig: this.state.currentConfig,
+            validConfiguration: this.state.validConfiguration,
             validateConfiguration: this.validateConfiguration,
             prepareConfiguration: this.prepareConfiguration,
             environmentId: this.props.environmentId,
@@ -235,7 +236,9 @@ class Configurator extends React.Component {
       className: "text-primary"
     }, this.state.system['price'])), /*#__PURE__*/React.createElement("div", {
       className: "text-muted"
-    }, "From ", this.state.system['price'], "/mo")) : 'Invalid Configuration')))), /*#__PURE__*/React.createElement("div", {
+    }, "From ", this.state.system['price'], "/mo")) : /*#__PURE__*/React.createElement("h4", {
+      className: "text-primary"
+    }, "'Invalid Configuration'"))))), /*#__PURE__*/React.createElement("div", {
       className: "container py-5"
     }, /*#__PURE__*/React.createElement("div", {
       className: "border-bottom"

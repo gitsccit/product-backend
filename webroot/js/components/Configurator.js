@@ -148,6 +148,7 @@ class Configurator extends React.Component {
           break;
         case 'Summary':
           tab['content'] = <Summary system={this.state.system} currentConfig={this.state.currentConfig}
+                                    validConfiguration={this.state.validConfiguration}
                                     validateConfiguration={this.validateConfiguration}
                                     prepareConfiguration={this.prepareConfiguration}
                                     environmentId={this.props.environmentId} storeId={this.props.storeId}
@@ -264,7 +265,9 @@ class Configurator extends React.Component {
                         </div>
                       </>
                     ) :
-                    'Invalid Configuration'
+                    <h4 className="text-primary">
+                      'Invalid Configuration'
+                    </h4>
                 }
               </div>
             </div>
