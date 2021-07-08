@@ -202,7 +202,7 @@ class Summary extends React.Component {
                       <span className="h5 icon-plus"></span>Add To Order
                     </a>
                   </> :
-                  <h4 className="text-primary">
+                  <h4 className="text-primary text-md-center">
                     Invalid Configuration
                   </h4>
               }

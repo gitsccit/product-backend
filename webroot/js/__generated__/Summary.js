@@ -192,7 +192,7 @@ class Summary extends React.Component {
     }, /*#__PURE__*/React.createElement("span", {
       className: "h5 icon-plus"
     }), "Add To Order")) : /*#__PURE__*/React.createElement("h4", {
-      className: "text-primary"
+      className: "text-primary text-md-center"
     }, "Invalid Configuration")))));
   }
 
