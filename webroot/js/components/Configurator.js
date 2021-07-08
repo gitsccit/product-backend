@@ -130,7 +130,7 @@ class Configurator extends React.Component {
     let systemWithOnlyStandaloneBuckets = Object.assign({}, this.state.system);
     systemWithOnlyStandaloneBuckets['buckets'] = systemWithOnlyStandaloneBuckets['buckets'].filter(bucket => bucket['name'] === 'Warranty');
 
-    let tabs = Object.assign({}, this.state.tabs);
+    let tabs = Object.assign([], this.state.tabs);
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
