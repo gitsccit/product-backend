@@ -23,7 +23,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SystemItemsTable&\Cake\ORM\Association\HasMany $SystemItems
  * @property \ProductBackend\Model\Table\SystemPerspectivesTable&\Cake\ORM\Association\HasMany $SystemPerspectives
  * @property \ProductBackend\Model\Table\SystemPriceLevelsTable&\Cake\ORM\Association\HasMany $SystemPriceLevels
- *
  * @method \ProductBackend\Model\Entity\System newEmptyEntity()
  * @method \ProductBackend\Model\Entity\System newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\System[] newEntities(array $data, array $options = [])
@@ -183,8 +182,10 @@ class SystemsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
-        $rules->add($rules->existsIn(['system_category_id'], 'SystemCategories'),
-            ['errorField' => 'system_category_id']);
+        $rules->add(
+            $rules->existsIn(['system_category_id'], 'SystemCategories'),
+            ['errorField' => 'system_category_id']
+        );
 
         return $rules;
     }
@@ -282,7 +283,7 @@ class SystemsTable extends Table
                             'Tags.sort',
                             'Tags.name',
                         ]);
-                }
+                },
             ])
             ->select($this->Kits)
             ->formatResults(function ($result) {
@@ -346,8 +347,10 @@ class SystemsTable extends Table
                 return $result->map(function ($system) use ($options) {
                     $system->noise_level = $system->noise_level === 'yes';
                     $system->power_estimate = $system->power_estimate === 'yes';
-                    $system->buckets = $this->Kits->Buckets->find('configuration',
-                        ['kitID' => $system->kit_id])->find('filters')->toList();
+                    $system->buckets = $this->Kits->Buckets->find(
+                        'configuration',
+                        ['kitID' => $system->kit_id]
+                    )->find('filters')->toList();
 
                     if (Configure::read('ProductBackend.showStock')) {
                         $thinkAPI = Client::createFromUrl(Configure::read('Urls.thinkAPI'));
@@ -359,12 +362,19 @@ class SystemsTable extends Table
                         ]);
                         $session = new Session();
                         $warehouseCode = $options['warehouse'] ?? $session->read('options.store.warehouse');
-                        $itemCodes = array_values(array_unique(Hash::extract($system->buckets,
-                            '{n}.groups.{n}.group_items.{n}.sage_itemcode')));
-                        $result = $thinkAPI->post("/sage100/items/availability.json?warehousecode=$warehouseCode",
-                            json_encode($itemCodes));
-                        $itemCodesAvaiability = Hash::combine($result->getJson()['items'], '{n}.ItemCode',
-                            '{n}.Warehouses.{n}.Available');
+                        $itemCodes = array_values(array_unique(Hash::extract(
+                            $system->buckets,
+                            '{n}.groups.{n}.group_items.{n}.sage_itemcode'
+                        )));
+                        $result = $thinkAPI->post(
+                            "/sage100/items/availability.json?warehousecode=$warehouseCode",
+                            json_encode($itemCodes)
+                        );
+                        $itemCodesAvaiability = Hash::combine(
+                            $result->getJson()['items'],
+                            '{n}.ItemCode',
+                            '{n}.Warehouses.{n}.Available'
+                        );
                         foreach ($system->buckets as &$bucket) {
                             foreach ($bucket->groups as &$group) {
                                 foreach ($group->group_items as &$groupItem) {
@@ -386,10 +396,14 @@ class SystemsTable extends Table
     {
         $selectedItemsQuantities = array_replace(...$configuration);
 
-        $selectedItems = $this->GroupItems->find('configuration', $options)->whereInList('GroupItems.id',
-            array_keys($selectedItemsQuantities));
-        $system = $this->find('price',
-            $options)->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
+        $selectedItems = $this->GroupItems->find('configuration', $options)->whereInList(
+            'GroupItems.id',
+            array_keys($selectedItemsQuantities)
+        );
+        $system = $this->find(
+            'price',
+            $options
+        )->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
         $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
             return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
         }, $system['fpa']);

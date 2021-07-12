@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\BelongsTo $ProductCategories
  * @property \ProductBackend\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\BelongsTo $ProductCategories
- *
  * @method \ProductBackend\Model\Entity\ProductCategoryRelation newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductCategoryRelation newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductCategoryRelation[] newEntities(array $data, array $options = [])
@@ -61,10 +60,14 @@ class ProductCategoryRelationsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']);
-        $rules->add($rules->existsIn(['related_product_category_id'], 'ProductCategories'),
-            ['errorField' => 'related_product_category_id']);
+        $rules->add(
+            $rules->existsIn(['product_category_id'], 'ProductCategories'),
+            ['errorField' => 'product_category_id']
+        );
+        $rules->add(
+            $rules->existsIn(['related_product_category_id'], 'ProductCategories'),
+            ['errorField' => 'related_product_category_id']
+        );
 
         return $rules;
     }

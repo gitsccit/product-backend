@@ -19,7 +19,6 @@ use Cake\Utility\Hash;
  */
 class SystemsController extends AppController
 {
-
     /**
      * Index method
      *
@@ -74,7 +73,7 @@ class SystemsController extends AppController
                 ->innerJoinWith('PriceLevelPerspectives')
                 ->where([
                     'PriceLevelPerspectives.perspective_id' => $this->request->getSession()->read('options.store.perspective'),
-                    'PriceLevelPerspectives.active' => 'yes'
+                    'PriceLevelPerspectives.active' => 'yes',
                 ])
                 ->orderAsc('sort')
                 ->combine('id', 'name')
@@ -120,17 +119,24 @@ class SystemsController extends AppController
 
             $errors = $this->Systems->Kits->validateBucketItems($kitID, $configuration);
             [$kitRuleWarnings, $kitRuleErrors] = $this->Systems->Kits->validateKitRules($kitID, $configuration);
-            [$productRuleWarnings, $productRuleErrors] = $this->Systems->Kits->validateProductRules($kitID,
-                $configuration);
-            [$globalSpecRuleWarnings, $globalSpecRuleErrors] = $this->Systems->Kits->validateGlobalSpecRules($kitID,
-                $configuration);
+            [$productRuleWarnings, $productRuleErrors] = $this->Systems->Kits->validateProductRules(
+                $kitID,
+                $configuration
+            );
+            [$globalSpecRuleWarnings, $globalSpecRuleErrors] = $this->Systems->Kits->validateGlobalSpecRules(
+                $kitID,
+                $configuration
+            );
             [
                 $additionalCost,
                 $additionalPrice,
-                $additionalItems
+                $additionalItems,
             ] = $this->Systems->Kits->validateSkuRules($configuration, compact('priceLevel'));
-            [$cost, $price] = $this->Systems->getConfigurationCostAndPrice($data['system'], $configuration,
-                compact('priceLevel'));
+            [$cost, $price] = $this->Systems->getConfigurationCostAndPrice(
+                $data['system'],
+                $configuration,
+                compact('priceLevel')
+            );
             $warnings = array_merge($kitRuleWarnings, $productRuleWarnings, $globalSpecRuleWarnings);
             $errors = array_merge($errors, $kitRuleErrors, $productRuleErrors, $globalSpecRuleErrors);
             $cost = Number::currency(($cost + $additionalCost) * $quantity);

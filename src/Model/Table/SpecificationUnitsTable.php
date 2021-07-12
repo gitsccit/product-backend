@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SpecificationUnitGroupsTable&\Cake\ORM\Association\BelongsTo $SpecificationUnitGroups
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\HasMany $Specifications
- *
  * @method \ProductBackend\Model\Entity\SpecificationUnit newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SpecificationUnit newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SpecificationUnit[] newEntities(array $data, array $options = [])
@@ -101,8 +100,10 @@ class SpecificationUnitsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['specification_unit_group_id'], 'SpecificationUnitGroups'),
-            ['errorField' => 'specification_unit_group_id']);
+        $rules->add(
+            $rules->existsIn(['specification_unit_group_id'], 'SpecificationUnitGroups'),
+            ['errorField' => 'specification_unit_group_id']
+        );
 
         return $rules;
     }

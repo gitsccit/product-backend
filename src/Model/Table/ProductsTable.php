@@ -35,7 +35,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\GenericsTable&\Cake\ORM\Association\BelongsToMany $Generics
  * @property \ProductBackend\Model\Table\ProductRulesTable&\Cake\ORM\Association\BelongsToMany $ProductRules
  * @property \ProductBackend\Model\Table\ProductsRelationsTable&\Cake\ORM\Association\BelongsToMany $RelatedProducts
- *
  * @method \ProductBackend\Model\Entity\Product newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Product newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Product[] newEntities(array $data, array $options = [])
@@ -299,8 +298,10 @@ class ProductsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']);
+        $rules->add(
+            $rules->existsIn(['product_category_id'], 'ProductCategories'),
+            ['errorField' => 'product_category_id']
+        );
         $rules->add($rules->existsIn(['gallery_id'], 'Galleries'), ['errorField' => 'gallery_id']);
         $rules->add($rules->existsIn(['manufacturer_id'], 'Manufacturers'), ['errorField' => 'manufacturer_id']);
         $rules->add($rules->existsIn(['status_id'], 'ProductStatuses'), ['errorField' => 'status_id']);
@@ -515,8 +516,10 @@ class ProductsTable extends Table
             })
             ->formatResults(function (CollectionInterface $result) {
                 return $result->map(function ($product) {
-                    $product->related_systems = Hash::extract($product,
-                        'group_items.{n}.group.buckets.{n}.kit_buckets.{n}.kit.systems.{n}');
+                    $product->related_systems = Hash::extract(
+                        $product,
+                        'group_items.{n}.group.buckets.{n}.kit_buckets.{n}.kit.systems.{n}'
+                    );
                     unset($product->group_items);
 
                     return $product;

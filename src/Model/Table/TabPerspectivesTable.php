@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\TabsTable&\Cake\ORM\Association\BelongsTo $Tabs
  * @property \ProductBackend\Model\Table\FilesTable&\Cake\ORM\Association\BelongsTo $Files
- *
  * @method \ProductBackend\Model\Entity\TabPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\TabPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\TabPerspective[] newEntities(array $data, array $options = [])

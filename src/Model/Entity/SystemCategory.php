@@ -74,13 +74,13 @@ class SystemCategory extends Entity
         }
     }
 
-    static public function getBreadcrumbBase()
+    public static function getBreadcrumbBase()
     {
         return [
             [
                 'title' => 'Systems',
                 'url' => '/systems',
-            ]
+            ],
         ];
     }
 

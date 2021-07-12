@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsTo $Systems
  * @property \ProductBackend\Model\Table\GroupItemsTable&\Cake\ORM\Association\BelongsTo $GroupItems
- *
  * @method \ProductBackend\Model\Entity\SystemItem newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemItem newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemItem[] newEntities(array $data, array $options = [])

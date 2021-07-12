@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\GenericsTable&\Cake\ORM\Association\BelongsTo $Generics
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
- *
  * @method \ProductBackend\Model\Entity\GenericsProduct newEmptyEntity()
  * @method \ProductBackend\Model\Entity\GenericsProduct newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\GenericsProduct[] newEntities(array $data, array $options = [])

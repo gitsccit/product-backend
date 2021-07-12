@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\ShipRatesTable&\Cake\ORM\Association\BelongsTo $ShipRates
  * @property \ProductBackend\Model\Table\ShipRegionsTable&\Cake\ORM\Association\BelongsTo $ShipRegions
- *
  * @method \ProductBackend\Model\Entity\ShipRateShipRegionPrice newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipRateShipRegionPrice newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipRateShipRegionPrice[] newEntities(array $data, array $options = [])

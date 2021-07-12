@@ -19,7 +19,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\RaidMapsTable&\Cake\ORM\Association\HasMany $RaidMaps
  * @property \ProductBackend\Model\Table\SpareCategoryRelationsTable&\Cake\ORM\Association\HasMany $SpareCategoryRelations
  * @property \ProductBackend\Model\Table\ProductCategoryRelationsTable&\Cake\ORM\Association\BelongsToMany $RelatedProductCategories
- *
  * @method \ProductBackend\Model\Entity\ProductCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductCategory[] newEntities(array $data, array $options = [])

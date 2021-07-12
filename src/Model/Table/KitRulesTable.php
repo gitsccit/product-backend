@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\KitRuleDetailsTable&\Cake\ORM\Association\HasMany $KitRuleDetails
- *
  * @method \ProductBackend\Model\Entity\KitRule newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitRule newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitRule[] newEntities(array $data, array $options = [])

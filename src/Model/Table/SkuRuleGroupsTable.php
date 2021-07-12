@@ -15,7 +15,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SkuRuleAdditionalSkusTable&\Cake\ORM\Association\HasMany $SkuRuleAdditionalSkus
  * @property \ProductBackend\Model\Table\SkuRuleGroupSkusTable&\Cake\ORM\Association\HasMany $SkuRuleGroupSkus
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\HasMany $SkuRules
- *
  * @method \ProductBackend\Model\Entity\SkuRuleGroup newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleGroup newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleGroup[] newEntities(array $data, array $options = [])

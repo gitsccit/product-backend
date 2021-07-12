@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\PriceLevelPerspectivesTable&\Cake\ORM\Association\HasMany $PriceLevelPerspectives
  * @property \ProductBackend\Model\Table\ProductPriceLevelsTable&\Cake\ORM\Association\HasMany $ProductPriceLevels
  * @property \ProductBackend\Model\Table\SystemPriceLevelsTable&\Cake\ORM\Association\HasMany $SystemPriceLevels
- *
  * @method \ProductBackend\Model\Entity\PriceLevel newEmptyEntity()
  * @method \ProductBackend\Model\Entity\PriceLevel newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\PriceLevel[] newEntities(array $data, array $options = [])

@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\ProductRulesTable&\Cake\ORM\Association\BelongsTo $ProductRules
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
- *
  * @method \ProductBackend\Model\Entity\ProductRulesProduct newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductRulesProduct newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductRulesProduct[] newEntities(array $data, array $options = [])

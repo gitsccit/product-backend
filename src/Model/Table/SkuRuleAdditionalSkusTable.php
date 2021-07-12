@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\BelongsTo $SkuRules
  * @property \ProductBackend\Model\Table\SkuRuleGroupsTable&\Cake\ORM\Association\BelongsTo $SkuRuleGroups
- *
  * @method \ProductBackend\Model\Entity\SkuRuleAdditionalSkus newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleAdditionalSkus newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleAdditionalSkus[] newEntities(array $data, array $options = [])

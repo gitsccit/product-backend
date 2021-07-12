@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SpareCategoryRelationsTable&\Cake\ORM\Association\HasMany $SpareCategoryRelations
  * @property \ProductBackend\Model\Table\SparesTable&\Cake\ORM\Association\HasMany $Spares
- *
  * @method \ProductBackend\Model\Entity\SpareCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SpareCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SpareCategory[] newEntities(array $data, array $options = [])

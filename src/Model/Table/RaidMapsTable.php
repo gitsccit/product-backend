@@ -20,7 +20,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\BelongsTo $PergroupSpecs
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\BelongsTo $CapacitySpecs
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\BelongsTo $BackplaneSpecs
- *
  * @method \ProductBackend\Model\Entity\RaidMap newEmptyEntity()
  * @method \ProductBackend\Model\Entity\RaidMap newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\RaidMap[] newEntities(array $data, array $options = [])
@@ -126,11 +125,15 @@ class RaidMapsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']);
+        $rules->add(
+            $rules->existsIn(['product_category_id'], 'ProductCategories'),
+            ['errorField' => 'product_category_id']
+        );
         $rules->add($rules->existsIn(['interface_spec_id'], 'InterfaceSpecs'), ['errorField' => 'interface_spec_id']);
-        $rules->add($rules->existsIn(['interface2_spec_id'], 'Interface2Specs'),
-            ['errorField' => 'interface2_spec_id']);
+        $rules->add(
+            $rules->existsIn(['interface2_spec_id'], 'Interface2Specs'),
+            ['errorField' => 'interface2_spec_id']
+        );
         $rules->add($rules->existsIn(['name_spec_id'], 'NameSpecs'), ['errorField' => 'name_spec_id']);
         $rules->add($rules->existsIn(['raid_spec_id'], 'RaidSpecs'), ['errorField' => 'raid_spec_id']);
         $rules->add($rules->existsIn(['ports_spec_id'], 'PortsSpecs'), ['errorField' => 'ports_spec_id']);

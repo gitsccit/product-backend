@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\SystemCategoriesTable&\Cake\ORM\Association\BelongsTo $SystemCategories
  * @property \ProductBackend\Model\Table\BannersTable&\Cake\ORM\Association\BelongsTo $Banners
- *
  * @method \ProductBackend\Model\Entity\SystemCategoryPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemCategoryPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemCategoryPerspective[] newEntities(array $data, array $options = [])
@@ -108,8 +107,10 @@ class SystemCategoryPerspectivesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
-        $rules->add($rules->existsIn(['system_category_id'], 'SystemCategories'),
-            ['errorField' => 'system_category_id']);
+        $rules->add(
+            $rules->existsIn(['system_category_id'], 'SystemCategories'),
+            ['errorField' => 'system_category_id']
+        );
         $rules->add($rules->existsIn(['banner_id'], 'Banners'), ['errorField' => 'banner_id']);
 
         return $rules;

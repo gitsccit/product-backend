@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\IconsTable&\Cake\ORM\Association\BelongsTo $Icons
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
- *
  * @method \ProductBackend\Model\Entity\IconsKit newEmptyEntity()
  * @method \ProductBackend\Model\Entity\IconsKit newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\IconsKit[] newEntities(array $data, array $options = [])

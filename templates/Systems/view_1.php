@@ -18,17 +18,24 @@ $system['image'] = \ProductBackend\Core\Utility::getFileUrl($system['image_id'],
 foreach ($system['buckets'] as &$bucket) {
     foreach ($bucket['groups'] as &$group) {
         foreach ($group['group_items'] as &$groupItem) {
-            $groupItem['image'] = $groupItem['image_id'] ? \ProductBackend\Core\Utility::getFileUrl($groupItem['image_id'],
-                100, 100) : null;
+            $groupItem['image'] = $groupItem['image_id'] ? \ProductBackend\Core\Utility::getFileUrl(
+                $groupItem['image_id'],
+                100,
+                100
+            ) : null;
         }
     }
 }
 $priceLevels = json_encode($priceLevels, JSON_HEX_APOS);
-$currentPriceLevel = $this->request->getQuery('priceLevel',
-    $this->request->getSession()->read('options.store.price-level'));
+$currentPriceLevel = $this->request->getQuery(
+    'priceLevel',
+    $this->request->getSession()->read('options.store.price-level')
+);
 $warehouses = json_encode($warehouses, JSON_HEX_APOS);
-$currentWarehouse = $this->request->getQuery('warehouse',
-    $this->request->getSession()->read('options.store.warehouse'));
+$currentWarehouse = $this->request->getQuery(
+    'warehouse',
+    $this->request->getSession()->read('options.store.warehouse')
+);
 $environmentID = $this->request->getQuery('environment_id', $this->request->getSession()->read('environment.id'));
 $storeID = $this->request->getQuery('store_id', $this->request->getSession()->read('store.id'));
 ?>

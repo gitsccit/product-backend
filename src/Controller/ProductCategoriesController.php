@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace ProductBackend\Controller;
 
-use ProductBackend\Model\Entity\ProductCategory;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Utility\Hash;
+use ProductBackend\Model\Entity\ProductCategory;
 
 /**
  * ProductCategories Controller

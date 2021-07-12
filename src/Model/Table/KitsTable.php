@@ -25,7 +25,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\IconsTable&\Cake\ORM\Association\BelongsToMany $Icons
  * @property \ProductBackend\Model\Table\PluginsTable&\Cake\ORM\Association\BelongsToMany $Plugins
  * @property \ProductBackend\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
- *
  * @method \ProductBackend\Model\Entity\Kit newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Kit newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Kit[] newEntities(array $data, array $options = [])
@@ -276,8 +275,10 @@ class KitsTable extends Table
             $notFoundItemIDs = array_diff($selectedBucketItemIDs, $bucketItemsIDs);
 
             if (!empty($notFoundItemIDs)) {
-                $notFoundItems = $this->KitItems->GroupItems->find('configuration')->whereInList('GroupItems.id',
-                    $notFoundItemIDs);
+                $notFoundItems = $this->KitItems->GroupItems->find('configuration')->whereInList(
+                    'GroupItems.id',
+                    $notFoundItemIDs
+                );
 
                 foreach ($notFoundItems as $notFoundItem) {
                     $errors[$bucket['id']][] = "$notFoundItem[name] is not found in $bucket[name].";
@@ -295,14 +296,14 @@ class KitsTable extends Table
             if (!empty($bucket['minqty']) && $bucket['minqty'] > $bucketQuantity) {
                 $errors[] = [
                     $bucket['id'],
-                    "$bucket[name] minimum quantity $bucket[minqty]." . ($bucketHasItems ? " ($bucketQuantity selected)" : '')
+                    "$bucket[name] minimum quantity $bucket[minqty]." . ($bucketHasItems ? " ($bucketQuantity selected)" : ''),
                 ];
             }
 
             if (!empty($bucket['maxqty']) && $bucket['maxqty'] < $bucketQuantity) {
                 $errors[] = [
                     $bucket['id'],
-                    "$bucket[name] maximum quantity $bucket[maxqty]." . ($bucketHasItems ? " ($bucketQuantity selected)" : '')
+                    "$bucket[name] maximum quantity $bucket[maxqty]." . ($bucketHasItems ? " ($bucketQuantity selected)" : ''),
                 ];
             }
 
@@ -481,9 +482,7 @@ class KitsTable extends Table
 
         $specsTable = $this->KitItems->GroupItems->Products->Specifications;
         if ($products = $productCategories['Barebones'] ?? []) {
-
         } elseif ($products = $productCategories['Chassis'] ?? []) {
-
         }
 
         if ($quantity = $productCategories['Video Cards'] ?? 0) { // video card
@@ -517,7 +516,6 @@ class KitsTable extends Table
 //                $specsTable->find()->where([
 //                    '' => '',
 //                ]);
-
             }
         }
 
@@ -609,14 +607,17 @@ GROUP BY sras.id", [$priceLevelID, $perspectiveID, $rule['id']])->fetchAll('asso
                 $quantity = (float)$l['quantity'] * (float)$columns[$l['sku_rule_group_id']];
                 $quantity += (float)$l['quantity_modifier'];
                 if ($quantity > 0) {
-                    $additionalItems[] = ($quantity > 1 ? $quantity . ' x ' : '') . "$l[name] [+" . number_format($l['price'] * $quantity,
-                            2, ".", ",") . "]";
+                    $additionalItems[] = ($quantity > 1 ? $quantity . ' x ' : '') . "$l[name] [+" . number_format(
+                        $l['price'] * $quantity,
+                        2,
+                        '.',
+                        ','
+                    ) . ']';
                     $price += $l['price'] * $quantity;
                     $cost += $l['cost'] * $quantity;
                 }
             }
         }
-
 
         return [$cost, $price, $additionalItems];
     }

@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\SpareCategoriesTable&\Cake\ORM\Association\BelongsTo $SpareCategories
  * @property \ProductBackend\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\BelongsTo $ProductCategories
- *
  * @method \ProductBackend\Model\Entity\SpareCategoryRelation newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SpareCategoryRelation newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SpareCategoryRelation[] newEntities(array $data, array $options = [])
@@ -62,8 +61,10 @@ class SpareCategoryRelationsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['spare_category_id'], 'SpareCategories'), ['errorField' => 'spare_category_id']);
-        $rules->add($rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']);
+        $rules->add(
+            $rules->existsIn(['product_category_id'], 'ProductCategories'),
+            ['errorField' => 'product_category_id']
+        );
 
         return $rules;
     }

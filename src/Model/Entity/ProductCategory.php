@@ -77,13 +77,13 @@ class ProductCategory extends Entity
         }
     }
 
-    static public function getBreadcrumbBase()
+    public static function getBreadcrumbBase()
     {
         return [
             [
                 'title' => 'Hardware',
                 'url' => '/hardware',
-            ]
+            ],
         ];
     }
 

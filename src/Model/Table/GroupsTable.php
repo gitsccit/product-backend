@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -14,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsToMany $Products
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsToMany $Systems
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsToMany $Buckets
- *
  * @method \ProductBackend\Model\Entity\Group newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Group newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Group[] newEntities(array $data, array $options = [])

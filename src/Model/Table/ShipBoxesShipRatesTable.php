@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\ShipBoxesTable&\Cake\ORM\Association\BelongsTo $ShipBoxes
  * @property \ProductBackend\Model\Table\ShipRatesTable&\Cake\ORM\Association\BelongsTo $ShipRates
- *
  * @method \ProductBackend\Model\Entity\ShipBoxesShipRate newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipBoxesShipRate newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipBoxesShipRate[] newEntities(array $data, array $options = [])

@@ -15,7 +15,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\LocationsTable&\Cake\ORM\Association\BelongsTo $Locations
  * @property \ProductBackend\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsTo $Images
  * @property \ProductBackend\Model\Table\CustomerBomDetailsTable&\Cake\ORM\Association\HasMany $CustomerBomDetails
- *
  * @method \ProductBackend\Model\Entity\CustomerBom newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerBom newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerBom[] newEntities(array $data, array $options = [])
@@ -151,8 +150,10 @@ class CustomerBomsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
-        $rules->add($rules->existsIn(['customer_category_id'], 'CustomerCategories'),
-            ['errorField' => 'customer_category_id']);
+        $rules->add(
+            $rules->existsIn(['customer_category_id'], 'CustomerCategories'),
+            ['errorField' => 'customer_category_id']
+        );
         $rules->add($rules->existsIn(['location_id'], 'Locations'), ['errorField' => 'location_id']);
         $rules->add($rules->existsIn(['image_id'], 'Images'), ['errorField' => 'image_id']);
 

@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\CustomerBomsTable&\Cake\ORM\Association\BelongsTo $CustomerBoms
  * @property \ProductBackend\Model\Table\CustomerBomDetailAdditionalSkusTable&\Cake\ORM\Association\HasMany $CustomerBomDetailAdditionalSkus
- *
  * @method \ProductBackend\Model\Entity\CustomerBomDetail newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerBomDetail newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerBomDetail[] newEntities(array $data, array $options = [])

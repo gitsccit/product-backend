@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  * SkuRuleGroupSkus Model
  *
  * @property \ProductBackend\Model\Table\SkuRuleGroupsTable&\Cake\ORM\Association\BelongsTo $SkuRuleGroups
- *
  * @method \ProductBackend\Model\Entity\SkuRuleGroupSkus newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleGroupSkus newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleGroupSkus[] newEntities(array $data, array $options = [])

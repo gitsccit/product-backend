@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \ProductBackend\Model\Table\CustomerCategoriesTable&\Cake\ORM\Association\BelongsTo $CustomerCategories
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
- *
  * @method \ProductBackend\Model\Entity\CustomerProduct newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerProduct newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerProduct[] newEntities(array $data, array $options = [])
@@ -109,8 +108,10 @@ class CustomerProductsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
-        $rules->add($rules->existsIn(['customer_category_id'], 'CustomerCategories'),
-            ['errorField' => 'customer_category_id']);
+        $rules->add(
+            $rules->existsIn(['customer_category_id'], 'CustomerCategories'),
+            ['errorField' => 'customer_category_id']
+        );
         $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
 
         return $rules;

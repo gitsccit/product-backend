@@ -14,14 +14,14 @@ $url = $this->Url->build("/system/$card[url]");
     <div class="d-flex flex-column flex-fill p-4">
         <a class="h5 text-black text-decoration-none fw-bold" href="<?= $url ?>"><?= $card['name'] ?></a>
         <div class="d-flex flex-column py-3">
-            <?php foreach ($card['tags'] as $tag): ?>
+            <?php foreach ($card['tags'] as $tag) : ?>
                 <div class="d-flex">
                     <div style="width:20px; height: 20px" class="d-flex justify-content-center align-items-center me-1">
                         <img class="mw-100 mh-100"
                              src="<?= \ProductBackend\Core\Utility::getFileUrl($tag['image_id']) ?>">
                     </div>
                     <div>
-                        <?php if ($tag['value']): ?>
+                        <?php if ($tag['value']) : ?>
                             <span class="text-primary fw-bold"><?= $tag['value'] ?></span>
                         <?php endif; ?>
                         <?= $tag['name'] ?>

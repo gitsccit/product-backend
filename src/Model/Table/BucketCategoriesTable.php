@@ -14,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\TabsTable&\Cake\ORM\Association\BelongsTo $Tabs
  * @property \ProductBackend\Model\Table\BucketCategoriesTable&\Cake\ORM\Association\HasMany $ChildBucketCategories
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\HasMany $Buckets
- *
  * @method \ProductBackend\Model\Entity\BucketCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\BucketCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\BucketCategory[] newEntities(array $data, array $options = [])

@@ -29,11 +29,11 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
             <div class="row p-3 ps-md-0 h-100">
                 <div class="col-md-9">
                     <div class="row align-items-stretch h-100">
-                        <?php foreach (array_slice($card['tags'], 0, 4) as $tagCategory => $tags): ?>
+                        <?php foreach (array_slice($card['tags'], 0, 4) as $tagCategory => $tags) : ?>
                             <div class="col-3 d-flex flex-column">
                                 <span class="fw-bolder"><?= $tagCategory ?></span>
                                 <div class="d-flex flex-column justify-content-center flex-grow-1">
-                                    <?php foreach ($tags as $tag): ?>
+                                    <?php foreach ($tags as $tag) : ?>
                                         <div class="d-flex align-items-center">
                                             <div style="width:20px; height: 20px"
                                                  class="d-flex justify-content-center align-items-center me-1">
@@ -41,7 +41,7 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
                                                      src="<?= \ProductBackend\Core\Utility::getFileUrl($tag['image_id']) ?>">
                                             </div>
                                             <div class="text-small">
-                                                <?php if ($tag['value']): ?>
+                                                <?php if ($tag['value']) : ?>
                                                     <span class="text-primary fw-bold"><?= $tag['value'] ?></span>
                                                 <?php endif; ?>
                                                 <?= $tag['name'] ?>

@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsToMany $Products
- *
  * @method \ProductBackend\Model\Entity\Generic newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Generic newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Generic[] newEntities(array $data, array $options = [])

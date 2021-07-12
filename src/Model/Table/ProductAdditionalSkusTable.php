@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  * ProductAdditionalSkus Model
  *
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
- *
  * @method \ProductBackend\Model\Entity\ProductAdditionalSkus newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductAdditionalSkus newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductAdditionalSkus[] newEntities(array $data, array $options = [])

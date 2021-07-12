@@ -56,8 +56,10 @@ foreach ($specificationGroups as $groupName => $specificationGroup) {
     $section = [];
     foreach ($specificationGroup as $specification) {
         foreach ($products as $product) {
-            $section[$specification][] = \Cake\Utility\Hash::extract($product['specification_groups'][$groupName],
-                    "{n}[name=$specification].text_value")[0] ?? $emptyFieldValue;
+            $section[$specification][] = \Cake\Utility\Hash::extract(
+                $product['specification_groups'][$groupName],
+                "{n}[name=$specification].text_value"
+            )[0] ?? $emptyFieldValue;
         }
     }
     $sections[$groupName] = $section;
@@ -92,8 +94,10 @@ switch (count($products)) {
                 <tr class="d-flex">
                     <td class="col-3 bg-3 d-flex justify-content-center align-items-center"><?= $rowName ?></td>
                     <?php foreach ($row as $index => $column) : ?>
-                        <td class="<?= ($index === 0 || $row[0] === $column) && !in_array($rowName,
-                            $ignoreCompareFields) ? 'bg-5 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
+                        <td class="<?= ($index === 0 || $row[0] === $column) && !in_array(
+                            $rowName,
+                            $ignoreCompareFields
+                                   ) ? 'bg-5 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>
@@ -109,4 +113,4 @@ switch (count($products)) {
         </div>
     </div>
 </div>
-<?php exit(); ?>
+<?php exit; ?>

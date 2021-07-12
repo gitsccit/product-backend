@@ -14,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
  * @property \ProductBackend\Model\Table\SpecificationFieldsTable&\Cake\ORM\Association\BelongsTo $SpecificationFields
  * @property \ProductBackend\Model\Table\SpecificationUnitsTable&\Cake\ORM\Association\BelongsTo $SpecificationUnits
- *
  * @method \ProductBackend\Model\Entity\Specification newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Specification newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Specification[] newEntities(array $data, array $options = [])
@@ -103,10 +102,14 @@ class SpecificationsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
-        $rules->add($rules->existsIn(['specification_field_id'], 'SpecificationFields'),
-            ['errorField' => 'specification_field_id']);
-        $rules->add($rules->existsIn(['specification_unit_id'], 'SpecificationUnits'),
-            ['errorField' => 'specification_unit_id']);
+        $rules->add(
+            $rules->existsIn(['specification_field_id'], 'SpecificationFields'),
+            ['errorField' => 'specification_field_id']
+        );
+        $rules->add(
+            $rules->existsIn(['specification_unit_id'], 'SpecificationUnits'),
+            ['errorField' => 'specification_unit_id']
+        );
 
         return $rules;
     }

@@ -10,7 +10,6 @@ use Cake\Validation\Validator;
  * SpecificationGroups Model
  *
  * @property \ProductBackend\Model\Table\SpecificationFieldsTable&\Cake\ORM\Association\HasMany $SpecificationFields
- *
  * @method \ProductBackend\Model\Entity\SpecificationGroup newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SpecificationGroup newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SpecificationGroup[] newEntities(array $data, array $options = [])

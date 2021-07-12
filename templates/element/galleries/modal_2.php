@@ -18,7 +18,7 @@ $hasOneSlide = count($images) <= $slideSize;
                 <div class="p-3">
                     <h5 class="mb-3"><?= $product['name'] ?></h5>
                     <div class="tab-content" id="modal-gallery-content">
-                        <?php foreach ($images as $index => $image): ?>
+                        <?php foreach ($images as $index => $image) : ?>
                             <div class="tab-pane fade<?= $index === 0 ? ' show active' : '' ?>"
                                  id="modal-image-<?= $image['id'] ?>" role="tabpanel">
                                 <div class="d-flex justify-content-center align-items-center bg-white p-5 image-tab"
@@ -34,17 +34,20 @@ $hasOneSlide = count($images) <= $slideSize;
             <div id="modal-gallery-carousel-controls" class="carousel slide bg-3 p-3 px-5"
                  data-interval="false">
                 <div class="carousel-inner">
-                    <?php foreach (array_chunk($images, $slideSize) as $i => $slideOfImages): ?>
+                    <?php foreach (array_chunk($images, $slideSize) as $i => $slideOfImages) : ?>
                         <div class="carousel-item<?= $i === 0 ? ' active' : '' ?>">
                             <ul class="row nav m-0" id="gallery-nav-bar" role="tablist">
-                                <?php foreach ($slideOfImages as $j => $image): ?>
+                                <?php foreach ($slideOfImages as $j => $image) : ?>
                                     <li class="col-2 p-2">
                                         <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $i === 0 && $j === 0 ? ' active' : '' ?>"
                                            id="modal-image-<?= $image['id'] ?>-tab" data-bs-toggle="tab"
                                            href="#modal-image-<?= $image['id'] ?>" role="tab" style="height: 80px">
                                             <img class="mw-100 mh-100"
-                                                 src="<?= \ProductBackend\Core\Utility::getFileUrl($image['file_id'], 300,
-                                                     200) ?>">
+                                                 src="<?= \ProductBackend\Core\Utility::getFileUrl(
+                                                     $image['file_id'],
+                                                     300,
+                                                     200
+                                                      ) ?>">
                                         </a>
                                     </li>
                                 <?php endforeach; ?>

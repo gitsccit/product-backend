@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\BelongsTo $ProductCategories
- *
  * @method \ProductBackend\Model\Entity\ProductCategoryPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductCategoryPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductCategoryPerspective[] newEntities(array $data, array $options = [])
@@ -107,8 +106,10 @@ class ProductCategoryPerspectivesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
-        $rules->add($rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']);
+        $rules->add(
+            $rules->existsIn(['product_category_id'], 'ProductCategories'),
+            ['errorField' => 'product_category_id']
+        );
 
         return $rules;
     }

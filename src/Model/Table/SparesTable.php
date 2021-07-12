@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
  * @property \ProductBackend\Model\Table\SpareCategoriesTable&\Cake\ORM\Association\BelongsTo $SpareCategories
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
- *
  * @method \ProductBackend\Model\Entity\Spare newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Spare newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Spare[] newEntities(array $data, array $options = [])

@@ -15,7 +15,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SkuRuleAdditionalSkusTable&\Cake\ORM\Association\HasMany $SkuRuleAdditionalSkus
  * @property \ProductBackend\Model\Table\SkuRuleGroupsTable&\Cake\ORM\Association\HasMany $SkuRuleGroups
  * @property \ProductBackend\Model\Table\SkuRulesFilesTable&\Cake\ORM\Association\HasMany $SkuRulesFiles
- *
  * @method \ProductBackend\Model\Entity\SkuRule newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRule newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRule[] newEntities(array $data, array $options = [])
@@ -117,8 +116,10 @@ class SkuRulesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['sku_rule_category_id'], 'SkuRuleCategories'),
-            ['errorField' => 'sku_rule_category_id']);
+        $rules->add(
+            $rules->existsIn(['sku_rule_category_id'], 'SkuRuleCategories'),
+            ['errorField' => 'sku_rule_category_id']
+        );
         $rules->add($rules->existsIn(['sku_rule_group_id'], 'SkuRuleGroups'), ['errorField' => 'sku_rule_group_id']);
 
         return $rules;

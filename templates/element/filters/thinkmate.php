@@ -2,14 +2,14 @@
 /**
  * @var \App\View\AppView $this
  * @var array $filters
- * @var boolean $open
+ * @var bool $open
  */
 $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', '')), true) ?? [];
 ?>
 <div class="h-100 bg-3 p-3">
     <span class="icon-sliders h4">Filter By:</span>
     <hr>
-    <?php foreach ($filters as $index => $filter): ?>
+    <?php foreach ($filters as $index => $filter) : ?>
         <?php $open = $index < 5; ?>
         <div class="accordion" id="#filter-accordion">
             <?php $open = $open || isset($newOptions[$filter['id']]); ?>
@@ -18,7 +18,7 @@ $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', 
                 <?= $filter['name'] ?>
             </label>
             <div class="accordion-content">
-                <?php foreach ($filter['options'] as $option): ?>
+                <?php foreach ($filter['options'] as $option) : ?>
                     <?php
                     $newOptions = $selectedOptions;
                     $optionSelected = isset($newOptions[$filter['id']][$option['id']]);
@@ -28,8 +28,10 @@ $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', 
                             unset($newOptions[$filter['id']]);
                         }
                     } else {
-                        $newOptions = array_replace_recursive($newOptions,
-                            [$filter['id'] => [$option['id'] => $option['name']]]);
+                        $newOptions = array_replace_recursive(
+                            $newOptions,
+                            [$filter['id'] => [$option['id'] => $option['name']]]
+                        );
                     }
                     $link = \Cake\Routing\Router::url($this->request->getPath());
                     if (!empty($newOptions)) {

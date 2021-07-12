@@ -25,14 +25,14 @@ $url = $this->Url->build("/system/$card[url]");
     <div class="d-flex flex-column flex-fill p-4">
         <div class="h4 text-primary">Supports:</div>
         <div class="d-flex flex-column my-2">
-            <?php foreach ($card['tags'] as $tag): ?>
+            <?php foreach ($card['tags'] as $tag) : ?>
                 <div class="d-flex">
                     <div style="width:20px; height: 20px" class="d-flex justify-content-center align-items-center me-2">
                         <img class="mw-100 mh-100"
                              src="<?= \ProductBackend\Core\Utility::getFileUrl($tag['image_id']) ?>">
                     </div>
                     <div>
-                        <?php if ($tag['value']): ?>
+                        <?php if ($tag['value']) : ?>
                             <span class="text-primary fw-bold"><?= $tag['value'] ?></span>
                         <?php endif; ?>
                         <?= $tag['name'] ?>

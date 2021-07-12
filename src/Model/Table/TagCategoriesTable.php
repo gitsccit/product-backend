@@ -10,7 +10,6 @@ use Cake\Validation\Validator;
  * TagCategories Model
  *
  * @property \ProductBackend\Model\Table\TagsTable&\Cake\ORM\Association\HasMany $Tags
- *
  * @method \ProductBackend\Model\Entity\TagCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\TagCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\TagCategory[] newEntities(array $data, array $options = [])

@@ -15,7 +15,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\GalleryImagesTable&\Cake\ORM\Association\BelongsTo $SystemGalleryImages
  * @property \ProductBackend\Model\Table\GalleryImagesTable&\Cake\ORM\Association\HasMany $GalleryImages
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\HasMany $Products
- *
  * @method \ProductBackend\Model\Entity\Gallery newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Gallery newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Gallery[] newEntities(array $data, array $options = [])
@@ -98,12 +97,18 @@ class GalleriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_gallery_image_id'], 'ProductGalleryImages'),
-            ['errorField' => 'product_gallery_image_id']);
-        $rules->add($rules->existsIn(['browse_gallery_image_id'], 'BrowseGalleryImages'),
-            ['errorField' => 'browse_gallery_image_id']);
-        $rules->add($rules->existsIn(['system_gallery_image_id'], 'SystemGalleryImages'),
-            ['errorField' => 'system_gallery_image_id']);
+        $rules->add(
+            $rules->existsIn(['product_gallery_image_id'], 'ProductGalleryImages'),
+            ['errorField' => 'product_gallery_image_id']
+        );
+        $rules->add(
+            $rules->existsIn(['browse_gallery_image_id'], 'BrowseGalleryImages'),
+            ['errorField' => 'browse_gallery_image_id']
+        );
+        $rules->add(
+            $rules->existsIn(['system_gallery_image_id'], 'SystemGalleryImages'),
+            ['errorField' => 'system_gallery_image_id']
+        );
 
         return $rules;
     }

@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var array $filter
- * @var boolean $open
+ * @var bool $open
  */
 $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', '')), true) ?? [];
 ?>
@@ -12,7 +12,7 @@ $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', 
         <?= $filter['name'] ?>
     </label>
     <div class="accordion-content">
-        <?php foreach ($filter['options'] as $option): ?>
+        <?php foreach ($filter['options'] as $option) : ?>
             <div class="my-1">
                 <a href="<?= \Cake\Routing\Router::url($this->request->getPath() . '?filter=' . base64_encode(json_encode(array_replace($selectedOptions, [$filter['id'] => [$option['id'] => $option['name']]])))) ?>">
                     <?= $option['name'] ?>

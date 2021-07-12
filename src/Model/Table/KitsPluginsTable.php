@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\PluginsTable&\Cake\ORM\Association\BelongsTo $Plugins
- *
  * @method \ProductBackend\Model\Entity\KitsPlugin newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitsPlugin newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitsPlugin[] newEntities(array $data, array $options = [])

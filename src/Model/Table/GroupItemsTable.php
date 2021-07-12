@@ -18,7 +18,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsTo $Systems
  * @property \ProductBackend\Model\Table\KitItemsTable&\Cake\ORM\Association\HasMany $KitItems
  * @property \ProductBackend\Model\Table\KitRuleDetailsTable&\Cake\ORM\Association\HasMany $KitRuleDetails
- *
  * @method \ProductBackend\Model\Entity\GroupItem newEmptyEntity()
  * @method \ProductBackend\Model\Entity\GroupItem newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\GroupItem[] newEntities(array $data, array $options = [])

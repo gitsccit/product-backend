@@ -12,7 +12,7 @@
                     <div class="p-3">
                         <h5 class="mb-3"><?= $product['name'] ?></h5>
                         <div class="tab-content" id="modal-gallery-content">
-                            <?php foreach ($images as $index => $image): ?>
+                            <?php foreach ($images as $index => $image) : ?>
                                 <div class="tab-pane fade<?= $index === 0 ? ' show active' : '' ?>"
                                      id="modal-image-<?= $image['id'] ?>" role="tabpanel">
                                     <div class="d-flex justify-content-center align-items-center bg-white image-tab p-5"
@@ -32,7 +32,7 @@
                         </a>
                     </div>
                     <ul class="row nav mx-0 my-3" id="gallery-nav-bar" role="tablist">
-                        <?php foreach ($images as $index => $image): ?>
+                        <?php foreach ($images as $index => $image) : ?>
                             <li class="col-6 p-2">
                                 <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $index === 0 ? ' active' : '' ?>"
                                    id="modal-image-<?= $image['id'] ?>-tab" data-bs-toggle="tab"

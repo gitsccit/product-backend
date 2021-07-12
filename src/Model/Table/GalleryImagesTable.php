@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\GalleriesTable&\Cake\ORM\Association\BelongsTo $Galleries
  * @property \ProductBackend\Model\Table\FilesTable&\Cake\ORM\Association\BelongsTo $Files
- *
  * @method \ProductBackend\Model\Entity\GalleryImage newEmptyEntity()
  * @method \ProductBackend\Model\Entity\GalleryImage newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\GalleryImage[] newEntities(array $data, array $options = [])

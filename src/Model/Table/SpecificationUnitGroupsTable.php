@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SpecificationFieldsTable&\Cake\ORM\Association\HasMany $SpecificationFields
  * @property \ProductBackend\Model\Table\SpecificationUnitsTable&\Cake\ORM\Association\HasMany $SpecificationUnits
- *
  * @method \ProductBackend\Model\Entity\SpecificationUnitGroup newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SpecificationUnitGroup newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SpecificationUnitGroup[] newEntities(array $data, array $options = [])

@@ -11,7 +11,7 @@ $this->Breadcrumbs->add($breadcrumbs ?? []);
     <?= $this->element('ProductBackend.compare') ?>
     <h1 class="mb-5"><?= $productCategory->name ?></h1>
     <div class="row">
-        <?php if ($specifications): ?>
+        <?php if ($specifications) : ?>
             <div class="col-md-3">
                 <?= $this->element('ProductBackend.filters/thinkmate', ['filters' => $specifications]) ?>
             </div>

@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  * ShipRegionLocations Model
  *
  * @property \ProductBackend\Model\Table\ShipRegionsTable&\Cake\ORM\Association\BelongsTo $ShipRegions
- *
  * @method \ProductBackend\Model\Entity\ShipRegionLocation newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipRegionLocation newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipRegionLocation[] newEntities(array $data, array $options = [])

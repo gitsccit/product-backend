@@ -14,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\TilesTable&\Cake\ORM\Association\BelongsTo $Tiles
  * @property \ProductBackend\Model\Table\SystemCategoriesTable&\Cake\ORM\Association\HasMany $SystemCategories
  * @property \ProductBackend\Model\Table\SystemCategoryPerspectivesTable&\Cake\ORM\Association\HasMany $SystemCategoryPerspectives
- *
  * @method \ProductBackend\Model\Entity\Banner newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Banner newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Banner[] newEntities(array $data, array $options = [])

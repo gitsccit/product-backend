@@ -10,7 +10,7 @@
         <p class="mb-5"><?= $this->request->getSession()->read('store.name') ?> pre-configured servers illustrate a
             configuration opportunity for the barebone server above. You may start your very own configuration from
             scratch, or you may begin customizing your configuration from our recommended starting point below.</p>
-        <?php foreach ($systems as $card): ?>
+        <?php foreach ($systems as $card) : ?>
             <?= $this->element('ProductBackend.cards/system_1', compact('card')) ?>
         <?php endforeach; ?>
     </div>

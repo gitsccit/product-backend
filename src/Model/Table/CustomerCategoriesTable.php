@@ -15,7 +15,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\CustomerBomsTable&\Cake\ORM\Association\HasMany $CustomerBoms
  * @property \ProductBackend\Model\Table\CustomerCategoriesTable&\Cake\ORM\Association\HasMany $ChildCustomerCategories
  * @property \ProductBackend\Model\Table\CustomerProductsTable&\Cake\ORM\Association\HasMany $CustomerProducts
- *
  * @method \ProductBackend\Model\Entity\CustomerCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerCategory[] newEntities(array $data, array $options = [])

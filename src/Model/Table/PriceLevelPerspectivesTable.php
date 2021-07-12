@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\PriceLevelsTable&\Cake\ORM\Association\BelongsTo $PriceLevels
- *
  * @method \ProductBackend\Model\Entity\PriceLevelPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\PriceLevelPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\PriceLevelPerspective[] newEntities(array $data, array $options = [])

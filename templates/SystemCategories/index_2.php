@@ -8,15 +8,15 @@ $subCategories = $this->request->getParam('pass');
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 ?>
 <div class="container py-5">
-    <?php if ($subCategories): ?>
+    <?php if ($subCategories) : ?>
         <?= $this->element('ProductBackend.cards/category_2', [
             'category' => [
                 'name' => humanize(end($subCategories)),
                 'children' => $systemCategories,
             ],
         ]) ?>
-    <?php else: ?>
-        <?php foreach ($systemCategories as $category): ?>
+    <?php else : ?>
+        <?php foreach ($systemCategories as $category) : ?>
             <?= $this->element('ProductBackend.cards/category_2', compact('category')) ?>
         <?php endforeach; ?>
     <?php endif; ?>

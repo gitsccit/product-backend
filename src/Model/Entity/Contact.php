@@ -32,7 +32,6 @@ use Cake\ORM\Entity;
  * @property string $source
  * @property string $referer
  * @property string $referer_note
- *
  */
 class Contact extends Entity
 {
@@ -46,7 +45,7 @@ class Contact extends Entity
      * @var array
      */
     protected $_accessible = [
-        
+
         'first_name' => true,
         'last_name' => true,
         'email' => true,
@@ -72,6 +71,4 @@ class Contact extends Entity
         'referer' => true,
         'referer_note' => true,
     ];
-
-
 }

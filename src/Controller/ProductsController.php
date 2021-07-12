@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace ProductBackend\Controller;
 
-use Cake\Collection\Collection;
 use Cake\Http\Exception\NotFoundException;
 
 /**
@@ -28,7 +27,7 @@ class ProductsController extends AppController
                 'Manufacturers',
                 'ProductStatuses',
                 'ShipBoxes',
-                'Locations'
+                'Locations',
             ],
         ];
         $products = $this->paginate($this->Products);
@@ -92,8 +91,17 @@ class ProductsController extends AppController
         $locations = $this->Products->Locations->find('list', ['limit' => 200]);
         $generics = $this->Products->Generics->find('list', ['limit' => 200]);
         $productRules = $this->Products->ProductRules->find('list', ['limit' => 200]);
-        $this->set(compact('product', 'productCategories', 'galleries', 'manufacturers', 'productStatuses', 'shipBoxes',
-            'locations', 'generics', 'productRules'));
+        $this->set(compact(
+            'product',
+            'productCategories',
+            'galleries',
+            'manufacturers',
+            'productStatuses',
+            'shipBoxes',
+            'locations',
+            'generics',
+            'productRules'
+        ));
     }
 
     /**
@@ -125,8 +133,17 @@ class ProductsController extends AppController
         $locations = $this->Products->Locations->find('list', ['limit' => 200]);
         $generics = $this->Products->Generics->find('list', ['limit' => 200]);
         $productRules = $this->Products->ProductRules->find('list', ['limit' => 200]);
-        $this->set(compact('product', 'productCategories', 'galleries', 'manufacturers', 'productStatuses', 'shipBoxes',
-            'locations', 'generics', 'productRules'));
+        $this->set(compact(
+            'product',
+            'productCategories',
+            'galleries',
+            'manufacturers',
+            'productStatuses',
+            'shipBoxes',
+            'locations',
+            'generics',
+            'productRules'
+        ));
     }
 
     /**

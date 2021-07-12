@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\BelongsTo $SkuRules
  * @property \ProductBackend\Model\Table\FilesTable&\Cake\ORM\Association\BelongsTo $Files
- *
  * @method \ProductBackend\Model\Entity\SkuRulesFile newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRulesFile newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRulesFile[] newEntities(array $data, array $options = [])

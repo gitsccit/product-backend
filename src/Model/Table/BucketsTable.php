@@ -20,7 +20,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\KitBucketsTable&\Cake\ORM\Association\HasMany $KitBuckets
  * @property \ProductBackend\Model\Table\KitRuleDetailsTable&\Cake\ORM\Association\HasMany $KitRuleDetails
  * @property \ProductBackend\Model\Table\GroupsTable&\Cake\ORM\Association\BelongsToMany $Groups
- *
  * @method \ProductBackend\Model\Entity\Bucket newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Bucket newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Bucket[] newEntities(array $data, array $options = [])
@@ -141,8 +140,10 @@ class BucketsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['bucket_category_id'], 'BucketCategories'),
-            ['errorField' => 'bucket_category_id']);
+        $rules->add(
+            $rules->existsIn(['bucket_category_id'], 'BucketCategories'),
+            ['errorField' => 'bucket_category_id']
+        );
         $rules->add($rules->existsIn(['tab_id'], 'Tabs'), ['errorField' => 'tab_id']);
         $rules->add($rules->existsIn(['plugin_id'], 'Plugins'), ['errorField' => 'plugin_id']);
 
@@ -214,8 +215,10 @@ class BucketsTable extends Table
                 return $result->map(function ($bucket) {
                     $filters = FactoryLocator::get('Table')->get('ProductBackend.Specifications')
                         ->find('specifications')
-                        ->whereInList('product_id',
-                            Hash::extract($bucket, 'groups.{n}.group_items.{n}.original_id'))
+                        ->whereInList(
+                            'product_id',
+                            Hash::extract($bucket, 'groups.{n}.group_items.{n}.original_id')
+                        )
                         ->group(['SpecificationFields.id', 'Specifications.text_value'])
                         ->groupBy('name')
                         ->toArray();

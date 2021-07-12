@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SkuRuleCategoriesTable&\Cake\ORM\Association\BelongsTo $ParentSkuRuleCategories
  * @property \ProductBackend\Model\Table\SkuRuleCategoriesTable&\Cake\ORM\Association\HasMany $ChildSkuRuleCategories
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\HasMany $SkuRules
- *
  * @method \ProductBackend\Model\Entity\SkuRuleCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleCategory[] newEntities(array $data, array $options = [])

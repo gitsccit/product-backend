@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsTo $Images
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsToMany $Kits
- *
  * @method \ProductBackend\Model\Entity\Icon newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Icon newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Icon[] newEntities(array $data, array $options = [])

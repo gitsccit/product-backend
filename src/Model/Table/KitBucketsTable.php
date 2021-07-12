@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsTo $Buckets
- *
  * @method \ProductBackend\Model\Entity\KitBucket newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitBucket newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitBucket[] newEntities(array $data, array $options = [])

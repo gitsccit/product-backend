@@ -11,7 +11,6 @@ use Cake\ORM\Table;
  *
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsTo $Buckets
  * @property \ProductBackend\Model\Table\GroupsTable&\Cake\ORM\Association\BelongsTo $Groups
- *
  * @method \ProductBackend\Model\Entity\BucketsGroup newEmptyEntity()
  * @method \ProductBackend\Model\Entity\BucketsGroup newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\BucketsGroup[] newEntities(array $data, array $options = [])

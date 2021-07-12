@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
- *
  * @method \ProductBackend\Model\Entity\ProductPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductPerspective[] newEntities(array $data, array $options = [])

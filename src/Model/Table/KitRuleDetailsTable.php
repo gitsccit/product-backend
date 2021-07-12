@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\KitRulesTable&\Cake\ORM\Association\BelongsTo $KitRules
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsTo $Buckets
  * @property \ProductBackend\Model\Table\GroupItemsTable&\Cake\ORM\Association\BelongsTo $GroupItems
- *
  * @method \ProductBackend\Model\Entity\KitRuleDetail newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitRuleDetail newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitRuleDetail[] newEntities(array $data, array $options = [])

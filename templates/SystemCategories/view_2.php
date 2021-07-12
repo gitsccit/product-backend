@@ -10,7 +10,7 @@ $this->Breadcrumbs->add($breadcrumbs ?? []);
 <div class="container py-5">
     <h1 class="mb-5">Browse & <span class="text-primary">Configure</span></h1>
     <div class="row">
-        <?php if ($tagCategories): ?>
+        <?php if ($tagCategories) : ?>
             <div class="col-md-3">
                 <?= $this->element('ProductBackend.filters/thinkmate', ['filters' => $tagCategories]) ?>
             </div>

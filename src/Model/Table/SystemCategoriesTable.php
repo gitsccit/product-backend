@@ -17,7 +17,6 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SystemCategoriesTable&\Cake\ORM\Association\HasMany $ChildSystemCategories
  * @property \ProductBackend\Model\Table\SystemCategoryPerspectivesTable&\Cake\ORM\Association\HasMany $SystemCategoryPerspectives
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\HasMany $Systems
- *
  * @method \ProductBackend\Model\Entity\SystemCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemCategory[] newEntities(array $data, array $options = [])

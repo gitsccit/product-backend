@@ -12,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PriceLevelsTable&\Cake\ORM\Association\BelongsTo $PriceLevels
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
- *
  * @method \ProductBackend\Model\Entity\ProductPriceLevel newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductPriceLevel newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductPriceLevel[] newEntities(array $data, array $options = [])
