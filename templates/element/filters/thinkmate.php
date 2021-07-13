@@ -35,7 +35,7 @@ $selectedOptions = json_decode(base64_decode($this->request->getQuery('filter', 
                     }
                     $link = \Cake\Routing\Router::url($this->request->getPath());
                     if (!empty($newOptions)) {
-                        $link .= '?filter=' . base64_encode(json_encode($newOptions));
+                        $link .= '?filter=' . base64_encode(json_encode($newOptions, JSON_HEX_TAG));
                     }
                     ?>
                     <div class="d-flex align-items-center my-1">
