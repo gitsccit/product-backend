@@ -134,7 +134,7 @@ class GroupItemsTable extends Table
                     $unifiedItem['id'] = $groupItem['id'];
                     $unifiedItem['original_id'] = $item['id'];
                     $unifiedItem['group_id'] = $groupItem['group_id'];
-                    $unifiedItem['type'] = $groupItem['prodcut_id'] ? 'product' : 'system';
+                    $unifiedItem['type'] = $groupItem['product_id'] ? 'product' : 'system';
                     $unifiedItem['name'] = $item['name'];
                     $unifiedItem['image_id'] = $item['image_id'];
                     $unifiedItem['status'] = $item['status'];
