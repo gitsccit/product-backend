@@ -204,6 +204,20 @@ class Configure extends React.Component {
     return filteredGroups;
   }
 
+  _configureSubKit(itemID) {
+    let url = this.props.baseUrl + `/system/${this.state.system[url]}/`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': this.props.csrf,
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify(payload)
+    }).then(response => response.json());
+  }
+
   render() {
     let buckets = this.state.system['buckets'].filter(bucket => !bucket['hidden']);
     let currentBucket = buckets[this.state.currentTab];
@@ -429,6 +443,7 @@ class Configure extends React.Component {
         let itemInConfiguration = itemsInBucket[itemIndexInBucket];
         let checked = itemInConfiguration['selected_at'] != null;
         let itemQuantity = itemInConfiguration['quantity'];
+        let isSystemItem = item['type'] === 'system';
         let options = bucket['quantity'].filter(quantityOption => {
           if (bucket['maxqty'] == null) {
             return true;
@@ -457,7 +472,7 @@ class Configure extends React.Component {
         let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'price');
 
         return /*#__PURE__*/React.createElement("div", {
-          className: "item-group align-items-center my-1"
+          className: "item-group align-items-start my-1"
         }, (bucket['quantity'].length > 1 || bucket['quantity'][0] > 1) && /*#__PURE__*/React.createElement(React.Fragment, null, bucket['quantity'].length > 1 ? /*#__PURE__*/React.createElement("select", {
           className: "form-control form-control-sm w-auto",
           disabled: !checked && reachedMaxQuantity,
@@ -467,9 +482,16 @@ class Configure extends React.Component {
           key: quantity,
           value: quantity
         }, quantity))) : /*#__PURE__*/React.createElement("span", null, bucket['quantity'][0]), /*#__PURE__*/React.createElement("span", {
-          className: "icon-cancel text-muted"
-        })), /*#__PURE__*/React.createElement("label", {
-          className: 'my-0' + (checked ? ' fw-bold' : '')
+          className: "icon-cancel text-muted",
+          style: {
+            marginTop: '0.4rem'
+          }
+        })), /*#__PURE__*/React.createElement("div", {
+          className: "mt-1 mx-0"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "item-group align-items-center my-1 mx-0"
+        }, /*#__PURE__*/React.createElement("label", {
+          className: checked ? 'fw-bold' : ''
         }, /*#__PURE__*/React.createElement("input", {
           className: "me-1",
           type: isMultiSelect ? 'checkbox' : 'radio',
@@ -482,7 +504,20 @@ class Configure extends React.Component {
         }, "[qty: ", item['availableQuantity'], "]"), costDifference === null ? /*#__PURE__*/React.createElement("span", null, "[ ", priceDifference, " ]") : /*#__PURE__*/React.createElement("span", null, "[ ", costDifference, " | ", priceDifference, " ]"), (item['warning'] || item['status_text']) && /*#__PURE__*/React.createElement("span", {
           className: "bg-warning px-1",
           title: item['status_text']
-        }, item['status']));
+        }, item['status'])), isSystemItem && checked && /*#__PURE__*/React.createElement("div", {
+          className: "item-group align-items-center mt-1 mx-0"
+        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), " ", /*#__PURE__*/React.createElement("span", {
+          className: "text-primary"
+        }, item['price']), " each"), /*#__PURE__*/React.createElement("a", {
+          "data-bs-toggle": "tooltip",
+          "data-bs-placement": "bottom",
+          title: item['price']
+        }, "Detail ", /*#__PURE__*/React.createElement("i", {
+          className: "icon-info-circled"
+        })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {
+          className: "btn btn-sm btn-primary",
+          onClick: () => this._configureSubKit(item['id'])
+        }, "Configure Sub-kit"))));
       }))))));
     }))));
   }

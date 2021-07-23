@@ -38,6 +38,7 @@ $currentWarehouse = $this->request->getQuery(
 );
 $environmentID = $this->request->getQuery('environment_id', $this->request->getSession()->read('environment.id'));
 $storeID = $this->request->getQuery('store_id', $this->request->getSession()->read('store.id'));
+$configuringSubKit = false;
 ?>
 
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
@@ -47,6 +48,7 @@ $storeID = $this->request->getQuery('store_id', $this->request->getSession()->re
      data-environment-id='<?= $environmentID ?>'
      data-store-id='<?= $storeID ?>'
      data-token='<?= Configure::read('Security.scctoken') ?>'
+     data-configuring-sub-kit='<?= $configuringSubKit ?>'
     <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>
     <?= Configure::read('ProductBackend.showCost') ? "data-current-price-level='$currentPriceLevel'" : '' ?>
     <?= Configure::read('ProductBackend.showStock') ? "data-warehouses='$warehouses'" : '' ?>

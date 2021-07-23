@@ -160,7 +160,8 @@ class Configurator extends React.Component {
             storeId: this.props.storeId,
             csrf: this.props.csrf,
             appsUrl: this.props.appsUrl,
-            token: this.props.token
+            token: this.props.token,
+            configuringSubKit: this.props.configuringSubKit
           });
           break;
       }

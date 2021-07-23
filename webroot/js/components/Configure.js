@@ -215,6 +215,21 @@ class Configure extends React.Component {
     return filteredGroups;
   }
 
+  _configureSubKit(itemID) {
+    let url = this.props.baseUrl + `/system/${this.state.system[url]}/`;
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': this.props.csrf,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify(payload)
+    }).then(response => response.json());
+  }
+
   render() {
     let buckets = this.state.system['buckets'].filter(bucket => !bucket['hidden']);
     let currentBucket = buckets[this.state.currentTab];
@@ -480,6 +495,7 @@ class Configure extends React.Component {
                                   let itemInConfiguration = itemsInBucket[itemIndexInBucket];
                                   let checked = itemInConfiguration['selected_at'] != null;
                                   let itemQuantity = itemInConfiguration['quantity'];
+                                  let isSystemItem = item['type'] === 'system';
                                   let options = bucket['quantity'].filter(quantityOption => {
                                     if (bucket['maxqty'] == null) {
                                       return true;
@@ -507,7 +523,7 @@ class Configure extends React.Component {
                                   let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'price');
 
                                   return (
-                                    <div className="item-group align-items-center my-1">
+                                    <div className="item-group align-items-start my-1">
                                       {
                                         (bucket['quantity'].length > 1 || bucket['quantity'][0] > 1) &&
                                         <>
@@ -524,35 +540,57 @@ class Configure extends React.Component {
                                               </select> :
                                               <span>{bucket['quantity'][0]}</span>
                                           }
-                                          <span className="icon-cancel text-muted"/>
+                                          <span className="icon-cancel text-muted" style={{marginTop: '0.4rem'}}/>
                                         </>
                                       }
-                                      <label className={'my-0' + (checked ? ' fw-bold' : '')}>
-                                        <input
-                                          className="me-1"
-                                          type={isMultiSelect ? 'checkbox' : 'radio'}
-                                          value={itemQuantity}
-                                          checked={checked}
-                                          disabled={isMultiSelect && !checked && reachedMaxQuantity}
-                                          onChange={() => this._selectItem(bucket['id'], itemIndexInBucket)}/>
-                                        {item['name']}
-                                      </label>
-                                      {
-                                        'availableQuantity' in item &&
-                                        <span className={item['availableQuantity'] <= 0 ? 'text-danger' : ''}>
+                                      <div className="mt-1 mx-0">
+                                        <div className="item-group align-items-center my-1 mx-0">
+                                          <label className={checked ? 'fw-bold' : ''}>
+                                            <input
+                                              className="me-1"
+                                              type={isMultiSelect ? 'checkbox' : 'radio'}
+                                              value={itemQuantity}
+                                              checked={checked}
+                                              disabled={isMultiSelect && !checked && reachedMaxQuantity}
+                                              onChange={() => this._selectItem(bucket['id'], itemIndexInBucket)}/>
+                                            {item['name']}
+                                          </label>
+                                          {
+                                            'availableQuantity' in item &&
+                                            <span className={item['availableQuantity'] <= 0 ? 'text-danger' : ''}>
                                           [qty: {item['availableQuantity']}]
                                         </span>
-                                      }
-                                      {
-                                        costDifference === null ?
-                                          <span>[ {priceDifference} ]</span> :
-                                          <span>[ {costDifference} | {priceDifference} ]</span>
-                                      }
-                                      {
-                                        (item['warning'] || item['status_text']) &&
-                                        <span className="bg-warning px-1"
-                                              title={item['status_text']}>{item['status']}</span>
-                                      }
+                                          }
+                                          {
+                                            costDifference === null ?
+                                              <span>[ {priceDifference} ]</span> :
+                                              <span>[ {costDifference} | {priceDifference} ]</span>
+                                          }
+                                          {
+                                            (item['warning'] || item['status_text']) &&
+                                            <span className="bg-warning px-1"
+                                                  title={item['status_text']}>{item['status']}</span>
+                                          }
+                                        </div>
+                                        {
+                                          isSystemItem && checked &&
+                                          <div className="item-group align-items-center mt-1 mx-0">
+                                            <div>
+                                              <b>Base Configuration:</b> <span
+                                              className="text-primary">{item['price']}</span> each
+                                            </div>
+                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                               title={item['price']}>
+                                              Detail <i className="icon-info-circled"></i>
+                                            </a>
+                                            {
+                                              this.state.errors.length === 0 &&
+                                              <a className="btn btn-sm btn-primary"
+                                                 onClick={() => this._configureSubKit(item['id'])}>Configure Sub-kit</a>
+                                            }
+                                          </div>
+                                        }
+                                      </div>
                                     </div>
                                   );
                                 })
@@ -571,4 +609,5 @@ class Configure extends React.Component {
       </>
     );
   }
+
 }

@@ -191,7 +191,7 @@ class Summary extends React.Component {
       onClick: () => this._addToOrder()
     }, /*#__PURE__*/React.createElement("span", {
       className: "h5 icon-plus"
-    }), "Add To Order")) : /*#__PURE__*/React.createElement("h4", {
+    }), this.props.configuringSubKit ? 'Save & Return' : 'Add To Order')) : /*#__PURE__*/React.createElement("h4", {
       className: "text-primary text-md-center"
     }, "Invalid Configuration")))));
   }
