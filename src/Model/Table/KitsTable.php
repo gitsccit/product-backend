@@ -352,7 +352,7 @@ class KitsTable extends Table
                         break;
                     case 'BUCKET_QUANTITY':
                         $bucketSelected = array_key_exists($detail['bucket_id'], $configuration);
-                        $quantity = $bucketSelected ? array_sum($configuration[$detail['bucket_id']]) : 0;
+                        $quantity = $bucketSelected ? array_sum(Hash::extract($configuration[$detail['bucket_id']], '{n}.qty')) : 0;
                         $expression[] = eval("return $quantity $relation $detail[value];") ? 'true' : 'false';
                         break;
                     case 'PRODUCT_SELECTED':
@@ -527,7 +527,7 @@ class KitsTable extends Table
         $additionalItems = [];
         $cost = 0;
         $price = 0;
-        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');;
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
         $selectedItemIDs = array_keys($selectedItemsQuantities);
 
         $sageItemCodes = [];

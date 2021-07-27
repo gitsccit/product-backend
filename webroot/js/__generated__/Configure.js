@@ -506,7 +506,7 @@ class Configure extends React.Component {
           title: item['status_text']
         }, item['status'])), isSystemItem && checked && /*#__PURE__*/React.createElement("div", {
           className: "item-group align-items-center mt-1 mx-0"
-        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), "&nbsp", /*#__PURE__*/React.createElement("span", {
+        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), /*#__PURE__*/React.createElement("span", {
           className: "text-primary"
         }, this.props.currencyFormatter.format(item['price'])), " each"), /*#__PURE__*/React.createElement("a", {
           "data-bs-toggle": "tooltip",

@@ -394,7 +394,7 @@ class SystemsTable extends Table
 
     public function getConfigurationCostAndPrice($systemID, $configuration, $options = [])
     {
-        $selectedItemsQuantities = array_replace(...$configuration);
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
 
         $selectedItems = $this->GroupItems->find('configuration', $options)->whereInList(
             'GroupItems.id',

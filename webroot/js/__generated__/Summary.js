@@ -14,11 +14,8 @@ class Summary extends React.Component {
   }
 
   _updateQuantity(event) {
-    let quantity = parseInt(event.target.value);
-    this.props.validateConfiguration(this.props.system, this.props.currentConfig, result => {
-      this.setState({
-        quantity: quantity
-      });
+    this.setState({
+      quantity: parseInt(event.target.value)
     });
   }
 

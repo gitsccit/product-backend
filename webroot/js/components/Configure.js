@@ -576,7 +576,7 @@ class Configure extends React.Component {
                                           isSystemItem && checked &&
                                           <div className="item-group align-items-center mt-1 mx-0">
                                             <div>
-                                              <b>Base Configuration:</b>&nbsp
+                                              <b>Base Configuration:</b>
                                               <span className="text-primary">
                                                 {this.props.currencyFormatter.format(item['price'])}
                                               </span> each
