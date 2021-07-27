@@ -525,8 +525,8 @@ class KitsTable extends Table
     public function validateSkuRules(array $configuration, $options = [])
     {
         $additionalItems = [];
-        $cost = 0;
-        $price = 0;
+        $cost = 0.0;
+        $price = 0.0;
         $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
         $selectedItemIDs = array_keys($selectedItemsQuantities);
 

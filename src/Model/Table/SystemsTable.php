@@ -409,7 +409,7 @@ class SystemsTable extends Table
         }, $system['fpa']);
         $cost = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
             return $carry + $item['cost'] * $selectedItemsQuantities[$item['id']];
-        }, 0);
+        }, 0.0);
 
         return [$cost, $price];
     }
