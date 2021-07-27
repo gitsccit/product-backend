@@ -71,7 +71,7 @@ class Configure extends React.Component {
 
   _sendConfiguration(newConfig) {
     let system = Object.assign({}, this.state.system);
-    this.props.validateConfiguration(this.state.system, newConfig, 1, (result) => {
+    this.props.validateConfiguration(this.state.system, newConfig, (result) => {
       system['price'] = result['price'];
       if ('cost' in result) {
         system['cost'] = result['cost'];
@@ -135,10 +135,10 @@ class Configure extends React.Component {
     }
 
     if (priceDiff === 0) {
-      return priceDiff.toFixed(2);
+      return this.props.currencyFormatter.format(priceDiff.toFixed(2));
     }
 
-    return (priceDiff > 0 ? '+' : '') + priceDiff.toFixed(2);
+    return (priceDiff > 0 ? '+' : '') + this.props.currencyFormatter.format(priceDiff.toFixed(2));
   }
 
   _updateFilter(bucketID, filterGroup, event) {
@@ -576,8 +576,10 @@ class Configure extends React.Component {
                                           isSystemItem && checked &&
                                           <div className="item-group align-items-center mt-1 mx-0">
                                             <div>
-                                              <b>Base Configuration:</b> <span
-                                              className="text-primary">{item['price']}</span> each
+                                              <b>Base Configuration:</b>&nbsp
+                                              <span className="text-primary">
+                                                {this.props.currencyFormatter.format(item['price'])}
+                                              </span> each
                                             </div>
                                             <a data-bs-toggle="tooltip" data-bs-placement="bottom"
                                                title={item['price']}>
@@ -609,5 +611,4 @@ class Configure extends React.Component {
       </>
     );
   }
-
 }

@@ -65,7 +65,7 @@ class Configure extends React.Component {
 
   _sendConfiguration(newConfig) {
     let system = Object.assign({}, this.state.system);
-    this.props.validateConfiguration(this.state.system, newConfig, 1, result => {
+    this.props.validateConfiguration(this.state.system, newConfig, result => {
       system['price'] = result['price'];
 
       if ('cost' in result) {
@@ -131,10 +131,10 @@ class Configure extends React.Component {
     }
 
     if (priceDiff === 0) {
-      return priceDiff.toFixed(2);
+      return this.props.currencyFormatter.format(priceDiff.toFixed(2));
     }
 
-    return (priceDiff > 0 ? '+' : '') + priceDiff.toFixed(2);
+    return (priceDiff > 0 ? '+' : '') + this.props.currencyFormatter.format(priceDiff.toFixed(2));
   }
 
   _updateFilter(bucketID, filterGroup, event) {
@@ -506,9 +506,9 @@ class Configure extends React.Component {
           title: item['status_text']
         }, item['status'])), isSystemItem && checked && /*#__PURE__*/React.createElement("div", {
           className: "item-group align-items-center mt-1 mx-0"
-        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), " ", /*#__PURE__*/React.createElement("span", {
+        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), "&nbsp", /*#__PURE__*/React.createElement("span", {
           className: "text-primary"
-        }, item['price']), " each"), /*#__PURE__*/React.createElement("a", {
+        }, this.props.currencyFormatter.format(item['price'])), " each"), /*#__PURE__*/React.createElement("a", {
           "data-bs-toggle": "tooltip",
           "data-bs-placement": "bottom",
           title: item['price']

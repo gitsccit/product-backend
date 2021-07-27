@@ -3,9 +3,7 @@ class Summary extends React.Component {
     super(props);
     this.state = {
       comments: '',
-      quantity: 1,
-      grandTotal: props.system['price'],
-      totalCost: props.system['cost'] ?? undefined
+      quantity: 1
     };
   }
 
@@ -17,11 +15,9 @@ class Summary extends React.Component {
 
   _updateQuantity(event) {
     let quantity = parseInt(event.target.value);
-    this.props.validateConfiguration(this.props.system, this.props.currentConfig, quantity, result => {
+    this.props.validateConfiguration(this.props.system, this.props.currentConfig, result => {
       this.setState({
-        quantity: quantity,
-        totalCost: result['cost'] ?? undefined,
-        grandTotal: result['price']
+        quantity: quantity
       });
     });
   }
@@ -37,7 +33,10 @@ class Summary extends React.Component {
         opportunity_systems: {
           system_id: this.props.system['id'],
           opportunity_system_data_logs: [{
-            data: this.props.prepareConfiguration()
+            data: {
+              'name': this.state.name,
+              'comments': this.state.comments
+            }
           }]
         }
       }]
@@ -149,13 +148,13 @@ class Summary extends React.Component {
       className: "fw-bold"
     }, "Configured Price: "), /*#__PURE__*/React.createElement("span", {
       className: "h6"
-    }, this.props.system['price'])), 'cost' in this.props.system && /*#__PURE__*/React.createElement("div", {
+    }, this.props.currencyFormatter.format(this.props.system['price']))), 'cost' in this.props.system && /*#__PURE__*/React.createElement("div", {
       className: "h6"
     }, /*#__PURE__*/React.createElement("span", {
       className: "fw-bold"
     }, "Cost: "), /*#__PURE__*/React.createElement("span", {
       className: "h6"
-    }, this.props.system['cost'])), /*#__PURE__*/React.createElement("div", {
+    }, this.props.currencyFormatter.format(this.props.system['cost']))), /*#__PURE__*/React.createElement("div", {
       className: "h6"
     }, /*#__PURE__*/React.createElement("label", {
       htmlFor: "quantity",
@@ -179,13 +178,13 @@ class Summary extends React.Component {
       className: "fw-bold"
     }, "Grand Total: "), /*#__PURE__*/React.createElement("span", {
       className: "h6"
-    }, this.state.grandTotal)), this.state.totalCost !== undefined && /*#__PURE__*/React.createElement("div", {
+    }, this.props.currencyFormatter.format(this.props.system['price'] * this.state.quantity))), 'cost' in this.props.system && /*#__PURE__*/React.createElement("div", {
       className: "h6"
     }, /*#__PURE__*/React.createElement("span", {
       className: "fw-bold"
     }, "Total Cost: "), /*#__PURE__*/React.createElement("span", {
       className: "h6"
-    }, this.state.totalCost))), /*#__PURE__*/React.createElement("a", {
+    }, this.props.currencyFormatter.format(this.props.system['cost'] * this.state.quantity)))), /*#__PURE__*/React.createElement("a", {
       className: "btn btn-primary py-2 mt-1",
       href: "javascript:void(0)",
       onClick: () => this._addToOrder()

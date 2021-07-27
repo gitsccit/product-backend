@@ -114,7 +114,6 @@ class SystemsController extends AppController
             $data = $this->request->getData();
             $kitID = $data['kit'];
             $configuration = $data['configuration'];
-            $quantity = $data['quantity'] ?? 1;
             $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('options.store.price-level');
 
             $errors = $this->Systems->Kits->validateBucketItems($kitID, $configuration);
@@ -139,8 +138,8 @@ class SystemsController extends AppController
             );
             $warnings = array_merge($kitRuleWarnings, $productRuleWarnings, $globalSpecRuleWarnings);
             $errors = array_merge($errors, $kitRuleErrors, $productRuleErrors, $globalSpecRuleErrors);
-            $cost = Number::currency(($cost + $additionalCost) * $quantity);
-            $price = Number::currency(($price + $additionalPrice) * $quantity);
+            $cost = $cost + $additionalCost;
+            $price = $price + $additionalPrice;
 
             $result = compact('price', 'warnings', 'errors', 'additionalItems');
 

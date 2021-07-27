@@ -270,7 +270,7 @@ class KitsTable extends Table
         $buckets = $this->Buckets->find('configuration', ['kitID' => $kitID]);
 
         foreach ($buckets as $bucket) {
-            $selectedBucketItemIDs = array_keys($configuration[$bucket['id']] ?? []);
+            $selectedBucketItemIDs = Hash::extract($configuration[$bucket['id']] ?? [], '{n).item_id');
             $bucketItemsIDs = Hash::extract($bucket, 'groups.{n}.group_items.{n}.id');
             $notFoundItemIDs = array_diff($selectedBucketItemIDs, $bucketItemsIDs);
 
@@ -286,7 +286,7 @@ class KitsTable extends Table
             }
 
             $bucketHasItems = array_key_exists($bucket['id'], $configuration);
-            $selectedQuantities = array_values($configuration[$bucket['id']] ?? []);
+            $selectedQuantities = Hash::extract($configuration[$bucket['id']] ?? [], '{n}.qty');
             $bucketQuantity = array_sum($selectedQuantities);
 
             if (!$bucket['multiple'] && !$bucketHasItems) {
@@ -320,7 +320,7 @@ class KitsTable extends Table
     public function validateKitRules(int $kitID, array $configuration)
     {
         $errors = $warnings = [];
-        $selectedItemsQuantities = array_replace(...$configuration);
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
 
         $rules = $this->KitRules->find()
             ->contain('KitRuleDetails', function (Query $q) {
@@ -385,7 +385,7 @@ class KitsTable extends Table
     public function validateProductRules(int $kitID, array $configuration)
     {
         $errors = $warnings = [];
-        $selectedItemsQuantities = array_replace(...$configuration);
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');;
         $selectedItemIDs = array_keys($selectedItemsQuantities);
 
         $selectedItemProductIdMap = $this->KitItems->GroupItems->Products
@@ -471,7 +471,7 @@ class KitsTable extends Table
         $productCategories = [];
         $nodes = 1;
 
-        $selectedItemsQuantities = array_replace(...$configuration);
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');;
         $selectedItemIDs = array_keys($selectedItemsQuantities);
         $selectedProducts = $this->KitItems->GroupItems->Products
             ->find()
@@ -527,7 +527,7 @@ class KitsTable extends Table
         $additionalItems = [];
         $cost = 0;
         $price = 0;
-        $selectedItemsQuantities = array_replace(...$configuration);
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');;
         $selectedItemIDs = array_keys($selectedItemsQuantities);
 
         $sageItemCodes = [];

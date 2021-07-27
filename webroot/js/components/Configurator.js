@@ -33,6 +33,12 @@ class Configurator extends React.Component {
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
     this.prepareConfiguration = this.prepareConfiguration.bind(this);
+    this.currencyFormatter = new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: this.props.currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
     this.state = {
       system: system,
@@ -40,6 +46,7 @@ class Configurator extends React.Component {
       currentConfig: baseConfig,
       currentTab: 0,
       validConfiguration: true,
+      name: 'My System ' + (new Date()).toString(),
     };
   }
 
@@ -70,25 +77,32 @@ class Configurator extends React.Component {
       let selectedItems = items.filter(item => {
         return item['selected_at'] != null;
       }).map(item => {
-        return {[item['id']]: item['quantity']};
+        let config = {
+          'item_id': item['id'],
+          'qty': item['quantity'],
+        };
+
+        if ('subkit' in item) {
+          config['subkit'] = item['subkit'];
+        }
+
+        return config;
       });
-      selectedItems = Object.assign({}, ...selectedItems);
 
       return [bucketID, selectedItems];
     }).filter(([, selectedItems]) => {
-      return Object.keys(selectedItems).length > 0;
+      return selectedItems.length > 0;
     });
 
     return Object.fromEntries(selectedBucketObjects);
   }
 
-  validateConfiguration(system, newConfig, quantity, callback) {
+  validateConfiguration(system, newConfig, callback) {
     let configuration = this.prepareConfiguration();
     let payload = {
       system: system['id'],
       kit: system['kit_id'],
       configuration: configuration,
-      quantity: quantity,
     };
 
     if ('currentPriceLevel' in this.props) {
@@ -136,7 +150,8 @@ class Configurator extends React.Component {
         case 'Configure':
           tab['content'] = <Configure system={systemWithoutStandaloneBuckets} currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
-                                      updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}/>;
+                                      updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
+                                      currencyFormatter={this.currencyFormatter}/>;
           break;
         case 'Storage Setup':
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
@@ -144,16 +159,19 @@ class Configurator extends React.Component {
         case 'Warranty':
           tab['content'] = <Configure system={systemWithOnlyStandaloneBuckets} currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} updateSystem={this.updateSystem}
-                                      validateConfiguration={this.validateConfiguration}/>;
+                                      validateConfiguration={this.validateConfiguration}
+                                      currencyFormatter={this.currencyFormatter}/>;
           break;
         case 'Summary':
-          tab['content'] = <Summary system={this.state.system} currentConfig={this.state.currentConfig}
+          tab['content'] = <Summary system={this.state.system} name={this.state.name}
+                                    currentConfig={this.state.currentConfig}
                                     validConfiguration={this.state.validConfiguration}
                                     validateConfiguration={this.validateConfiguration}
                                     prepareConfiguration={this.prepareConfiguration}
                                     environmentId={this.props.environmentId} storeId={this.props.storeId}
                                     csrf={this.props.csrf} appsUrl={this.props.appsUrl} token={this.props.token}
-                                    configuringSubKit={this.props.configuringSubKit}/>;
+                                    configuringSubKit={this.props.configuringSubKit}
+                                    currencyFormatter={this.currencyFormatter}/>;
           break;
       }
     }
@@ -241,7 +259,8 @@ class Configurator extends React.Component {
                       <>
                         {
                           'cost' in this.state.system ?
-                            [['CONFIGURED PRICE', this.state.system['price']], ['COST', this.state.system['cost']],
+                            [['CONFIGURED PRICE', this.currencyFormatter.format(this.state.system['price'])],
+                              ['COST', this.currencyFormatter.format(this.state.system['cost'])],
                               ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) =>
                               <div className="mb-1">
                                 <h6 className="text-muted mb-0">
@@ -257,12 +276,12 @@ class Configurator extends React.Component {
                                 CONFIGURED PRICE:
                               </h5>
                               <h2 className="text-primary">
-                                {this.state.system['price']}
+                                {this.currencyFormatter.format(this.state.system['price'])}
                               </h2>
                             </>
                         }
                         <div className="text-muted">
-                          From {this.state.system['price']}/mo
+                          From {this.currencyFormatter.format(this.state.system['price'])}/mo
                         </div>
                       </>
                     ) :

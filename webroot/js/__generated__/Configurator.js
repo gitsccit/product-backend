@@ -26,12 +26,19 @@ class Configurator extends React.Component {
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
     this.prepareConfiguration = this.prepareConfiguration.bind(this);
+    this.currencyFormatter = new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: this.props.currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
     this.state = {
       system: system,
       tabs: JSON.parse(props.tabs),
       currentConfig: baseConfig,
       currentTab: 0,
-      validConfiguration: true
+      validConfiguration: true,
+      name: 'My System ' + new Date().toString()
     };
   }
 
@@ -62,25 +69,30 @@ class Configurator extends React.Component {
       let selectedItems = items.filter(item => {
         return item['selected_at'] != null;
       }).map(item => {
-        return {
-          [item['id']]: item['quantity']
+        let config = {
+          'item_id': item['id'],
+          'qty': item['quantity']
         };
+
+        if ('subkit' in item) {
+          config['subkit'] = item['subkit'];
+        }
+
+        return config;
       });
-      selectedItems = Object.assign({}, ...selectedItems);
       return [bucketID, selectedItems];
     }).filter(([, selectedItems]) => {
-      return Object.keys(selectedItems).length > 0;
+      return selectedItems.length > 0;
     });
     return Object.fromEntries(selectedBucketObjects);
   }
 
-  validateConfiguration(system, newConfig, quantity, callback) {
+  validateConfiguration(system, newConfig, callback) {
     let configuration = this.prepareConfiguration();
     let payload = {
       system: system['id'],
       kit: system['kit_id'],
-      configuration: configuration,
-      quantity: quantity
+      configuration: configuration
     };
 
     if ('currentPriceLevel' in this.props) {
@@ -128,7 +140,8 @@ class Configurator extends React.Component {
             csrf: this.props.csrf,
             validateConfiguration: this.validateConfiguration,
             updateSystem: this.updateSystem,
-            baseUrl: this.props.baseUrl
+            baseUrl: this.props.baseUrl,
+            currencyFormatter: this.currencyFormatter
           });
           break;
 
@@ -145,13 +158,15 @@ class Configurator extends React.Component {
             currentConfig: this.state.currentConfig,
             csrf: this.props.csrf,
             updateSystem: this.updateSystem,
-            validateConfiguration: this.validateConfiguration
+            validateConfiguration: this.validateConfiguration,
+            currencyFormatter: this.currencyFormatter
           });
           break;
 
         case 'Summary':
           tab['content'] = /*#__PURE__*/React.createElement(Summary, {
             system: this.state.system,
+            name: this.state.name,
             currentConfig: this.state.currentConfig,
             validConfiguration: this.state.validConfiguration,
             validateConfiguration: this.validateConfiguration,
@@ -161,7 +176,8 @@ class Configurator extends React.Component {
             csrf: this.props.csrf,
             appsUrl: this.props.appsUrl,
             token: this.props.token,
-            configuringSubKit: this.props.configuringSubKit
+            configuringSubKit: this.props.configuringSubKit,
+            currencyFormatter: this.currencyFormatter
           });
           break;
       }
@@ -225,7 +241,7 @@ class Configurator extends React.Component {
       className: "h4 mb-0 icon-flash"
     }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, "Noise Level"), /*#__PURE__*/React.createElement("div", null, this.state.system['nose_level'])))), /*#__PURE__*/React.createElement("p", null, "Configure your system by selecting the desired item or items from each required parts category below.")), /*#__PURE__*/React.createElement("div", {
       className: "col-md-4 d-flex flex-column justify-content-center"
-    }, this.state.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, 'cost' in this.state.system ? [['CONFIGURED PRICE', this.state.system['price']], ['COST', this.state.system['cost']], ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) => /*#__PURE__*/React.createElement("div", {
+    }, this.state.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, 'cost' in this.state.system ? [['CONFIGURED PRICE', this.currencyFormatter.format(this.state.system['price'])], ['COST', this.currencyFormatter.format(this.state.system['cost'])], ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) => /*#__PURE__*/React.createElement("div", {
       className: "mb-1"
     }, /*#__PURE__*/React.createElement("h6", {
       className: "text-muted mb-0"
@@ -235,9 +251,9 @@ class Configurator extends React.Component {
       className: "text-muted"
     }, "CONFIGURED PRICE:"), /*#__PURE__*/React.createElement("h2", {
       className: "text-primary"
-    }, this.state.system['price'])), /*#__PURE__*/React.createElement("div", {
+    }, this.currencyFormatter.format(this.state.system['price']))), /*#__PURE__*/React.createElement("div", {
       className: "text-muted"
-    }, "From ", this.state.system['price'], "/mo")) : /*#__PURE__*/React.createElement("h4", {
+    }, "From ", this.currencyFormatter.format(this.state.system['price']), "/mo")) : /*#__PURE__*/React.createElement("h4", {
       className: "text-primary"
     }, "Invalid Configuration"))))), /*#__PURE__*/React.createElement("div", {
       className: "container py-5"

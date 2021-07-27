@@ -5,8 +5,6 @@ class Summary extends React.Component {
     this.state = {
       comments: '',
       quantity: 1,
-      grandTotal: props.system['price'],
-      totalCost: props.system['cost'] ?? undefined,
     };
   }
 
@@ -19,11 +17,9 @@ class Summary extends React.Component {
   _updateQuantity(event) {
     let quantity = parseInt(event.target.value)
 
-    this.props.validateConfiguration(this.props.system, this.props.currentConfig, quantity, (result) => {
+    this.props.validateConfiguration(this.props.system, this.props.currentConfig, (result) => {
       this.setState({
         quantity: quantity,
-        totalCost: result['cost'] ?? undefined,
-        grandTotal: result['price'],
       });
     });
   }
@@ -41,7 +37,10 @@ class Summary extends React.Component {
             system_id: this.props.system['id'],
             opportunity_system_data_logs: [
               {
-                data: this.props.prepareConfiguration(),
+                data: {
+                  'name': this.state.name,
+                  'comments': this.state.comments,
+                },
               }
             ],
           }
@@ -165,15 +164,13 @@ class Summary extends React.Component {
                     <div className="text-md-end">
                       <div className="h6">
                         <span className="fw-bold">Configured Price: </span>
-                        <span
-                          className="h6">{this.props.system['price']}</span>
+                        <span className="h6">{this.props.currencyFormatter.format(this.props.system['price'])}</span>
                       </div>
                       {
                         'cost' in this.props.system &&
                         <div className="h6">
                           <span className="fw-bold">Cost: </span>
-                          <span
-                            className="h6">{this.props.system['cost']}</span>
+                          <span className="h6">{this.props.currencyFormatter.format(this.props.system['cost'])}</span>
                         </div>
                       }
                       <div className="h6">
@@ -185,21 +182,23 @@ class Summary extends React.Component {
                       <hr className="border-black"/>
                       <div className="h6">
                         <span className="fw-bold">Grand Total: </span>
-                        <span
-                          className="h6">{this.state.grandTotal}</span>
+                        <span className="h6">
+                          {this.props.currencyFormatter.format(this.props.system['price'] * this.state.quantity)}</span>
                       </div>
                       {
-                        this.state.totalCost !== undefined &&
+                        'cost' in this.props.system &&
                         <div className="h6">
                           <span className="fw-bold">Total Cost: </span>
-                          <span
-                            className="h6">{this.state.totalCost}</span>
+                          <span className="h6">
+                            {this.props.currencyFormatter.format(this.props.system['cost'] * this.state.quantity)}
+                          </span>
                         </div>
                       }
                     </div>
                     <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)"
                        onClick={() => this._addToOrder()}>
-                      <span className="h5 icon-plus"></span>{this.props.configuringSubKit ? 'Save & Return' : 'Add To Order'}
+                      <span
+                        className="h5 icon-plus"></span>{this.props.configuringSubKit ? 'Save & Return' : 'Add To Order'}
                     </a>
                   </> :
                   <h4 className="text-primary text-md-center">
