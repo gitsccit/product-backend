@@ -578,7 +578,7 @@ class Configure extends React.Component {
                                             <div>
                                               <b>Base Configuration:</b>
                                               <span className="text-primary">
-                                                {this.props.currencyFormatter.format(item['price'])}
+                                                &nbsp;{this.props.currencyFormatter.format(item['price'])}
                                               </span> each
                                             </div>
                                             <a data-bs-toggle="tooltip" data-bs-placement="bottom"
