@@ -129,7 +129,7 @@ class GroupItemsTable extends Table
                         ->toArray();
                 }
 
-                return $result->map(function ($groupItem) use ($products, $systems) {
+                return $result->map(function ($groupItem) use ($products, $systems, $options) {
                     $item = $products[$groupItem['product_id']] ?? $systems[$groupItem['system_id']];
                     $unifiedItem['id'] = $groupItem['id'];
                     $unifiedItem['original_id'] = $item['id'];
@@ -142,6 +142,15 @@ class GroupItemsTable extends Table
                     $unifiedItem['warning'] = $item['warning'];
                     $unifiedItem['price'] = $item['price'];
                     $unifiedItem['specs'] = $item['specifications'];
+
+                    if ($groupItem['system_id']) {
+                        $unifiedItem['configuration'] = $this->Systems->SystemItems->find()
+                            ->innerJoinWith('GroupItems.Products', function (Query $q) use ($options) {
+                                return $q->find('basic', $options);
+                            })
+                            ->where(['SystemItems.system_id' => $groupItem['system_id']])
+                            ->toArray();
+                    }
 
                     if (Configure::read('ProductBackend.showCost')) {
                         $unifiedItem['cost'] = $item['cost'];

@@ -36,6 +36,7 @@ class Summary extends React.Component {
                 data: {
                   'name': this.state.name,
                   'comments': this.state.comments,
+                  'config': this.props.prepareConfiguration(),
                 },
               }
             ],
@@ -50,11 +51,13 @@ class Summary extends React.Component {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'X-CSRF-Token': this.props.csrf,
-        'X-Requested-With': 'XMLHttpRequest',
         'scctoken': this.props.token,
       },
       body: JSON.stringify(payload)
-    })
+    }).then(_ => {
+      let url = this.props.baseUrl + ('cost' in this.props.system ? '/quote' : '/order');
+      window.location.assign(url);
+    });
   }
 
   render() {

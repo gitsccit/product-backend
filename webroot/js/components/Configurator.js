@@ -6,6 +6,7 @@ class Configurator extends React.Component {
     super(props);
 
     let system = JSON.parse(props.system);
+    let opportunity = JSON.parse(props.opportunity);
     let baseConfig = {};
 
     system['buckets'].forEach(bucket => {
@@ -16,12 +17,16 @@ class Configurator extends React.Component {
           item['selected_at'] = null;
           item['quantity'] = parseInt(bucket['quantity'][0]);
 
-          system['system_items'].forEach(entry => {
-            if (item['id'] === entry['item_id']) {
-              item['selected_at'] = Date.now();
-              item['quantity'] = parseInt(entry['quantity']);
-            }
-          });
+          if (opportunity === null) {
+            system['system_items'].forEach(entry => {
+              if (item['id'] === entry['item_id']) {
+                item['selected_at'] = Date.now();
+                item['quantity'] = parseInt(entry['quantity']);
+              }
+            });
+          } else {
+
+          }
 
           bucketItems.push(item);
         });
@@ -43,6 +48,7 @@ class Configurator extends React.Component {
     this.state = {
       system: system,
       tabs: JSON.parse(props.tabs),
+
       currentConfig: baseConfig,
       currentTab: 0,
       validConfiguration: true,
@@ -82,7 +88,7 @@ class Configurator extends React.Component {
           'qty': item['quantity'],
         };
 
-        if ('subkit' in item) {
+        if ('configuration' in item) {
           config['subkit'] = item['subkit'];
         }
 
@@ -121,7 +127,6 @@ class Configurator extends React.Component {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           'X-CSRF-Token': this.props.csrf,
-          'X-Requested-With': 'XMLHttpRequest',
         },
         body: JSON.stringify(payload)
       })
@@ -163,7 +168,7 @@ class Configurator extends React.Component {
                                       currencyFormatter={this.currencyFormatter}/>;
           break;
         case 'Summary':
-          tab['content'] = <Summary system={this.state.system} name={this.state.name}
+          tab['content'] = <Summary system={this.state.system} name={this.state.name} baseUrl={this.props.baseUrl}
                                     currentConfig={this.state.currentConfig}
                                     validConfiguration={this.state.validConfiguration}
                                     validateConfiguration={this.validateConfiguration}

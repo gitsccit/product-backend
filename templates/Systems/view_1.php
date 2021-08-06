@@ -6,7 +6,7 @@
 
 use Cake\Core\Configure;
 
-$this->Html->script(['react@16.13.1.development', 'react-dom@16.13.1.development'], ['block' => true]);
+$this->Html->script(['ProductBackend.bootstrap.bundle.min'], ['block' => true]);
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 
 $system['image'] = \ProductBackend\Core\Utility::getFileUrl($system['image_id'], 200, 200);
@@ -40,6 +40,7 @@ $configuringSubKit = false;
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
      data-currency='<?= \Cake\I18n\Number::getDefaultCurrency() ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
+     data-opportunity='<?= null ?>'
      data-base-url='<?= trim($this->Url->build('/', ['fullBase' => true]), '/') ?>'
      data-apps-url='<?= trim(Configure::read('Urls.apps', $this->Url->build('/', ['fullBase' => true])), '/') ?>'
      data-environment-id='<?= $environmentID ?>'

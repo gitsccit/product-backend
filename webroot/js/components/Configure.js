@@ -216,7 +216,7 @@ class Configure extends React.Component {
   }
 
   _configureSubKit(itemID) {
-    let url = this.props.baseUrl + `/system/${this.state.system[url]}/`;
+    let url = this.props.appsUrl + '/api/unified-order/opportunities/prepare';
 
     fetch(url, {
       method: 'POST',
@@ -224,10 +224,20 @@ class Configure extends React.Component {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'X-CSRF-Token': this.props.csrf,
-        'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify(payload)
-    }).then(response => response.json());
+    }).then(response => response.json())
+      .then(result => {
+        let systemID = result['opportunity']['opportunity_details'];
+        let url = this.props.baseUrl + `/system/${this.state.system['url']}/`;
+        window.location.assign(url);
+      });
+  }
+
+  _getSubKitSummary(item) {
+    return item['configuration'].map(item => {
+      return item['quantity'] > 1 ? `${item['quantity']} x ${item['name']}` : item['name'];
+    }).join('<br>');
   }
 
   render() {
@@ -235,6 +245,10 @@ class Configure extends React.Component {
     let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 
     if (this.state.errors.length > 0) {
       prompts['errors'] = this.state.errors;
@@ -581,8 +595,8 @@ class Configure extends React.Component {
                                                 &nbsp;{this.props.currencyFormatter.format(item['price'])}
                                               </span> each
                                             </div>
-                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                               title={item['price']}>
+                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                                               title={this._getSubKitSummary(item)}>
                                               Detail <i className="icon-info-circled"></i>
                                             </a>
                                             {

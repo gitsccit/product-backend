@@ -34,4 +34,8 @@ class Group extends Entity
         'group_items' => true,
         'buckets' => true,
     ];
+
+    protected $_hidden = [
+        '_joinData',
+    ];
 }
