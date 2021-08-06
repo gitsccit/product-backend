@@ -378,6 +378,9 @@ class SystemsTable extends Table
                         foreach ($system->buckets as &$bucket) {
                             foreach ($bucket->groups as &$group) {
                                 foreach ($group->group_items as &$groupItem) {
+                                    if (!isset($groupItem['sage_itemcode'])) {
+                                        continue;
+                                    }
                                     if (isset($itemCodesAvaiability[$groupItem['sage_itemcode']])) {
                                         $groupItem['availableQuantity'] = $itemCodesAvaiability[$groupItem['sage_itemcode']];
                                     }

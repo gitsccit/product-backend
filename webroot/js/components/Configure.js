@@ -536,78 +536,76 @@ class Configure extends React.Component {
                                   let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'price');
 
                                   return (
-                                    <div className="item-group align-items-start my-1">
-                                      {
-                                        (bucket['quantity'].length > 1 || bucket['quantity'][0] > 1) &&
-                                        <>
-                                          {
-                                            bucket['quantity'].length > 1 ?
-                                              <select className="form-control form-control-sm w-auto"
-                                                      disabled={!checked && reachedMaxQuantity}
-                                                      value={itemQuantity}
-                                                      onChange={(event) => this._changeQuantity(bucket['id'], itemIndexInBucket, event)}>
-                                                {
-                                                  options.map(quantity => (
-                                                    <option key={quantity} value={quantity}>{quantity}</option>))
-                                                }
-                                              </select> :
-                                              <span>{bucket['quantity'][0]}</span>
-                                          }
-                                          <span className="icon-cancel text-muted" style={{marginTop: '0.4rem'}}/>
-                                        </>
-                                      }
-                                      <div className="mt-1 mx-0">
-                                        <div className="item-group align-items-center my-1 mx-0">
-                                          <label className={checked ? 'fw-bold' : ''}>
-                                            <input
-                                              className="me-1"
-                                              type={isMultiSelect ? 'checkbox' : 'radio'}
-                                              value={itemQuantity}
-                                              checked={checked}
-                                              disabled={isMultiSelect && !checked && reachedMaxQuantity}
-                                              onChange={() => this._selectItem(bucket['id'], itemIndexInBucket)}/>
-                                            {item['name']}
-                                          </label>
-                                          {
-                                            'availableQuantity' in item &&
-                                            <span className={item['availableQuantity'] <= 0 ? 'text-danger' : ''}>
+                                    <>
+                                      <div className="item-group align-items-center my-1">
+                                        {
+                                          (bucket['quantity'].length > 1 || bucket['quantity'][0] > 1) &&
+                                          <>
+                                            {
+                                              bucket['quantity'].length > 1 ?
+                                                <select className="form-control form-control-sm w-auto"
+                                                        disabled={!checked && reachedMaxQuantity}
+                                                        value={itemQuantity}
+                                                        onChange={(event) => this._changeQuantity(bucket['id'], itemIndexInBucket, event)}>
+                                                  {
+                                                    options.map(quantity => (
+                                                      <option key={quantity} value={quantity}>{quantity}</option>))
+                                                  }
+                                                </select> :
+                                                <span>{bucket['quantity'][0]}</span>
+                                            }
+                                            <span className="icon-cancel text-muted"/>
+                                          </>
+                                        }
+                                        <label className={checked ? 'fw-bold' : ''}>
+                                          <input
+                                            className="me-1"
+                                            type={isMultiSelect ? 'checkbox' : 'radio'}
+                                            value={itemQuantity}
+                                            checked={checked}
+                                            disabled={isMultiSelect && !checked && reachedMaxQuantity}
+                                            onChange={() => this._selectItem(bucket['id'], itemIndexInBucket)}/>
+                                          {item['name']}
+                                        </label>
+                                        {
+                                          'availableQuantity' in item &&
+                                          <span className={item['availableQuantity'] <= 0 ? 'text-danger' : ''}>
                                           [qty: {item['availableQuantity']}]
                                         </span>
-                                          }
-                                          {
-                                            costDifference === null ?
-                                              <span>[ {priceDifference} ]</span> :
-                                              <span>[ {costDifference} | {priceDifference} ]</span>
-                                          }
-                                          {
-                                            (item['warning'] || item['status_text']) &&
-                                            <span className="bg-warning px-1"
-                                                  title={item['status_text']}>{item['status']}</span>
-                                          }
-                                        </div>
+                                        }
                                         {
-                                          isSystemItem && checked &&
-                                          <div className="item-group align-items-center mt-1 mx-0">
-                                            <div>
-                                              <b>Base Configuration:</b>
-                                              <span className="text-primary">
-                                                &nbsp;{this.props.currencyFormatter.format(item['price'])}
-                                              </span> each
-                                            </div>
-                                            <a href="javascript:void(0)" className="text-dark" data-bs-toggle="tooltip"
-                                               data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
-                                               title={this._getSubKitSummary(item)}>
-                                              Detail <i className="icon-info-circled"></i>
-                                            </a>
-                                            {
-                                              this.state.errors.length === 0 &&
-                                              <a className="btn btn-sm btn-primary"
-                                                 onClick={() => this._configureSubKit(item['id'])}>Configure Sub-kit</a>
-                                            }
-                                          </div>
+                                          costDifference === null ?
+                                            <span>[ {priceDifference} ]</span> :
+                                            <span>[ {costDifference} | {priceDifference} ]</span>
+                                        }
+                                        {
+                                          (item['warning'] || item['status_text']) &&
+                                          <span className="bg-warning px-1"
+                                                title={item['status_text']}>{item['status']}</span>
                                         }
                                       </div>
-                                    </div>
+                                      {
+                                        isSystemItem && checked &&
+                                        <div className="item-group align-items-center mt-1" style={{marginLeft: '4.9rem'}}>
+                                          <div>
+                                            <b>Base Configuration:</b>
+                                            <span className="text-primary">
+                                                &nbsp;{this.props.currencyFormatter.format(item['price'])}
+                                              </span> each
+                                          </div>
+                                          <a href="javascript:void(0)" className="text-black" data-bs-toggle="tooltip"
+                                             data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
+                                             title={this._getSubKitSummary(item)}>
+                                            Detail <i className="icon-info-circled"></i>
+                                          </a>
+                                          {
+                                            this.state.errors.length === 0 &&
+                                            <a className="btn btn-sm btn-primary"
+                                               onClick={() => this._configureSubKit(item['id'])}>Configure Sub-kit</a>
+                                          }
+                                        </div>
+                                      }
+                                    </>
                                   );
                                 })
                               }

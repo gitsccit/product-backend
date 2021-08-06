@@ -482,8 +482,8 @@ class Configure extends React.Component {
 
         let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'price');
 
-        return /*#__PURE__*/React.createElement("div", {
-          className: "item-group align-items-start my-1"
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "item-group align-items-center my-1"
         }, (bucket['quantity'].length > 1 || bucket['quantity'][0] > 1) && /*#__PURE__*/React.createElement(React.Fragment, null, bucket['quantity'].length > 1 ? /*#__PURE__*/React.createElement("select", {
           className: "form-control form-control-sm w-auto",
           disabled: !checked && reachedMaxQuantity,
@@ -493,15 +493,8 @@ class Configure extends React.Component {
           key: quantity,
           value: quantity
         }, quantity))) : /*#__PURE__*/React.createElement("span", null, bucket['quantity'][0]), /*#__PURE__*/React.createElement("span", {
-          className: "icon-cancel text-muted",
-          style: {
-            marginTop: '0.4rem'
-          }
-        })), /*#__PURE__*/React.createElement("div", {
-          className: "mt-1 mx-0"
-        }, /*#__PURE__*/React.createElement("div", {
-          className: "item-group align-items-center my-1 mx-0"
-        }, /*#__PURE__*/React.createElement("label", {
+          className: "icon-cancel text-muted"
+        })), /*#__PURE__*/React.createElement("label", {
           className: checked ? 'fw-bold' : ''
         }, /*#__PURE__*/React.createElement("input", {
           className: "me-1",
@@ -516,12 +509,15 @@ class Configure extends React.Component {
           className: "bg-warning px-1",
           title: item['status_text']
         }, item['status'])), isSystemItem && checked && /*#__PURE__*/React.createElement("div", {
-          className: "item-group align-items-center mt-1 mx-0"
+          className: "item-group align-items-center mt-1",
+          style: {
+            marginLeft: '4.9rem'
+          }
         }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), /*#__PURE__*/React.createElement("span", {
           className: "text-primary"
         }, "\xA0", this.props.currencyFormatter.format(item['price'])), " each"), /*#__PURE__*/React.createElement("a", {
           href: "javascript:void(0)",
-          className: "text-dark",
+          className: "text-black",
           "data-bs-toggle": "tooltip",
           "data-bs-html": "true",
           "data-bs-placement": "bottom",
@@ -532,7 +528,7 @@ class Configure extends React.Component {
         })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {
           className: "btn btn-sm btn-primary",
           onClick: () => this._configureSubKit(item['id'])
-        }, "Configure Sub-kit"))));
+        }, "Configure Sub-kit")));
       }))))));
     }))));
   }
