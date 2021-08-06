@@ -5,7 +5,7 @@ class Configurator extends React.Component {
   constructor(props) {
     super(props);
     let system = JSON.parse(props.system);
-    let opportunity = JSON.parse(props.opportunity);
+    let opportunity = props.opportunity ? JSON.parse(props.opportunity) : null;
     let baseConfig = {};
     system['buckets'].forEach(bucket => {
       let bucketItems = [];

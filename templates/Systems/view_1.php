@@ -6,7 +6,6 @@
 
 use Cake\Core\Configure;
 
-$this->Html->script(['ProductBackend.bootstrap.bundle.min'], ['block' => true]);
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 
 $system['image'] = \ProductBackend\Core\Utility::getFileUrl($system['image_id'], 200, 200);
@@ -37,6 +36,14 @@ $storeID = $this->request->getQuery('store_id', $this->request->getSession()->re
 $configuringSubKit = false;
 ?>
 
+<style>
+    .tooltip-inner {
+        font-size: var(--text-font-size);
+        max-width: 100%;
+        text-align: start;
+    }
+</style>
+
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
      data-currency='<?= \Cake\I18n\Number::getDefaultCurrency() ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
@@ -52,6 +59,7 @@ $configuringSubKit = false;
     <?= Configure::read('ProductBackend.showStock') ? "data-warehouses='$warehouses'" : '' ?>
     <?= Configure::read('ProductBackend.showStock') ? "data-current-warehouse='$currentWarehouse'" : '' ?>
      data-csrf='<?= $this->request->getCookie('csrfToken') ?>'></div>
+<?= $this->Html->script('ProductBackend.bootstrap.bundle.min'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/ConditionalWrapper'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Configure'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/StorageSetup'); ?>

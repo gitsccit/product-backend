@@ -236,7 +236,7 @@ class Configure extends React.Component {
 
   _getSubKitSummary(item) {
     return item['configuration'].map(item => {
-      return item['quantity'] > 1 ? `${item['quantity']} x ${item['name']}` : item['name'];
+      return item['quantity'] > 1 ? `<b>${item['quantity']} x</b> ${item['name']}` : item['name'];
     }).join('<br>');
   }
 
@@ -245,10 +245,9 @@ class Configure extends React.Component {
     let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
+
+    // enable bootstrap tooltip
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el => new bootstrap.Tooltip(el));
 
     if (this.state.errors.length > 0) {
       prompts['errors'] = this.state.errors;
@@ -595,7 +594,8 @@ class Configure extends React.Component {
                                                 &nbsp;{this.props.currencyFormatter.format(item['price'])}
                                               </span> each
                                             </div>
-                                            <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                                            <a href="javascript:void(0)" className="text-dark" data-bs-toggle="tooltip"
+                                               data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
                                                title={this._getSubKitSummary(item)}>
                                               Detail <i className="icon-info-circled"></i>
                                             </a>

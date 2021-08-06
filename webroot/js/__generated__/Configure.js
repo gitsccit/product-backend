@@ -223,7 +223,7 @@ class Configure extends React.Component {
 
   _getSubKitSummary(item) {
     return item['configuration'].map(item => {
-      return item['quantity'] > 1 ? `${item['quantity']} x ${item['name']}` : item['name'];
+      return item['quantity'] > 1 ? `<b>${item['quantity']} x</b> ${item['name']}` : item['name'];
     }).join('<br>');
   }
 
@@ -231,11 +231,9 @@ class Configure extends React.Component {
     let buckets = this.state.system['buckets'].filter(bucket => !bucket['hidden']);
     let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
-    let prompts = {};
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
+    let prompts = {}; // enable bootstrap tooltip
+
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el => new bootstrap.Tooltip(el));
 
     if (this.state.errors.length > 0) {
       prompts['errors'] = this.state.errors;
@@ -522,9 +520,12 @@ class Configure extends React.Component {
         }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), /*#__PURE__*/React.createElement("span", {
           className: "text-primary"
         }, "\xA0", this.props.currencyFormatter.format(item['price'])), " each"), /*#__PURE__*/React.createElement("a", {
+          href: "javascript:void(0)",
+          className: "text-dark",
           "data-bs-toggle": "tooltip",
-          "data-bs-placement": "bottom",
           "data-bs-html": "true",
+          "data-bs-placement": "bottom",
+          "data-bs-trigger": "hover",
           title: this._getSubKitSummary(item)
         }, "Detail ", /*#__PURE__*/React.createElement("i", {
           className: "icon-info-circled"
