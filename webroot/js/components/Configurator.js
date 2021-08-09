@@ -273,7 +273,7 @@ class Configurator extends React.Component {
                   parts category below.
                 </p>
               </div>
-              <div className="col-md-4 d-flex flex-column justify-content-center">
+              <div className="col-md-4 d-flex flex-column justify-content-center align-items-start">
                 {
                   this.state.validConfiguration ?
                     (

@@ -261,7 +261,7 @@ class Configurator extends React.Component {
     }, /*#__PURE__*/React.createElement("span", {
       className: "h4 mb-0 icon-flash"
     }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, "Noise Level"), /*#__PURE__*/React.createElement("div", null, this.state.system['nose_level'])))), /*#__PURE__*/React.createElement("p", null, "Configure your system by selecting the desired item or items from each required parts category below.")), /*#__PURE__*/React.createElement("div", {
-      className: "col-md-4 d-flex flex-column justify-content-center"
+      className: "col-md-4 d-flex flex-column justify-content-center align-items-start"
     }, this.state.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, 'cost' in this.state.system ? [['CONFIGURED PRICE', this.currencyFormatter.format(this.state.system['price'])], ['COST', this.currencyFormatter.format(this.state.system['cost'])], ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) => /*#__PURE__*/React.createElement("div", {
       className: "mb-1"
     }, /*#__PURE__*/React.createElement("h6", {
