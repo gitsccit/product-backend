@@ -141,6 +141,11 @@ class Configurator extends React.Component {
     });
   }
 
+  componentDidMount() {
+    // enable bootstrap tooltip
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el => new bootstrap.Tooltip(el));
+  }
+
   render() {
     let systemWithoutStandaloneBuckets = Object.assign({}, this.state.system);
     systemWithoutStandaloneBuckets['buckets'] = systemWithoutStandaloneBuckets['buckets'].filter(bucket => bucket['name'] !== 'Warranty');
@@ -276,7 +281,7 @@ class Configurator extends React.Component {
       "data-bs-html": "true",
       "data-bs-placement": "bottom",
       "data-bs-trigger": "hover",
-      title: this._getFinancingOptions()
+      "data-bs-original-title": this._getFinancingOptions()
     }, "From ", this.currencyFormatter.format(this.state.system['price'] / 36), "/mo ", /*#__PURE__*/React.createElement("i", {
       className: "icon-info-circled"
     }))) : /*#__PURE__*/React.createElement("h4", {

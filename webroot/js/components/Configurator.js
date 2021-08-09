@@ -155,6 +155,11 @@ class Configurator extends React.Component {
     });
   }
 
+  componentDidMount() {
+    // enable bootstrap tooltip
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el => new bootstrap.Tooltip(el));
+  }
+
   render() {
     let systemWithoutStandaloneBuckets = Object.assign({}, this.state.system);
     systemWithoutStandaloneBuckets['buckets'] = systemWithoutStandaloneBuckets['buckets'].filter(bucket => bucket['name'] !== 'Warranty');
@@ -299,7 +304,8 @@ class Configurator extends React.Component {
                             </>
                         }
                         <a href="javascript:void(0)" className="text-muted" data-bs-target="tooltip" data-bs-html="true"
-                           data-bs-placement="bottom" data-bs-trigger="hover" title={this._getFinancingOptions()}>
+                           data-bs-placement="bottom" data-bs-trigger="hover"
+                           data-bs-original-title={this._getFinancingOptions()}>
                           From {this.currencyFormatter.format(this.state.system['price'] / 36)}/mo <i
                           className="icon-info-circled"/>
                         </a>
