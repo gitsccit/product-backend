@@ -38,7 +38,7 @@ foreach ($products as $index => $product) {
     $checked = $index === 0 ? 'checked' : '';
 //    $table['Remove'][] = "<a href='#' onclick='product_compare($product[id], false)'><span class='icon-cancel'></span></a>";
     $section[$emptyFieldValue][] = "<a class='btn btn-primary' href='#$product[id]'>Add To Order</a>";
-    $section['Base Model'][] = "<input type='radio' name='$product[id]' $checked onchange='product_compare($product[id])'>";
+    $section['Base Model'][] = "<input type='radio' name='$product[id]' $checked onchange='product_compare({$this->Url->build('/')}, $product[id])'>";
     $section['Price'][] = $this->Number->currency($product['price']);
     $section['Status'][] = $product['status'];
     $section['Manufacturer'][] = $product['manufacturer'] ? $product['manufacturer']['name'] : $emptyFieldValue;
@@ -57,9 +57,9 @@ foreach ($specificationGroups as $groupName => $specificationGroup) {
     foreach ($specificationGroup as $specification) {
         foreach ($products as $product) {
             $section[$specification][] = \Cake\Utility\Hash::extract(
-                $product['specification_groups'][$groupName],
-                "{n}[name=$specification].text_value"
-            )[0] ?? $emptyFieldValue;
+                    $product['specification_groups'][$groupName],
+                    "{n}[name=$specification].text_value"
+                )[0] ?? $emptyFieldValue;
         }
     }
     $sections[$groupName] = $section;
@@ -97,7 +97,7 @@ switch (count($products)) {
                         <td class="<?= ($index === 0 || $row[0] === $column) && !in_array(
                             $rowName,
                             $ignoreCompareFields
-                                   ) ? 'bg-5 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
+                        ) ? 'bg-5 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>

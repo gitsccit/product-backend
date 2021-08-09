@@ -154,8 +154,13 @@ class Configurator extends React.Component {
   }
 
   componentDidMount() {
-    // enable bootstrap tooltip
-    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el => new bootstrap.Tooltip(el));
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')]
+      .forEach(el => !el.hasAttribute('data-bs-original-title') && new bootstrap.Tooltip(el));
+  }
+
+  componentDidUpdate() {
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')]
+      .forEach(el => !el.hasAttribute('data-bs-original-title') && new bootstrap.Tooltip(el));
   }
 
   render() {
@@ -305,7 +310,7 @@ class Configurator extends React.Component {
                           this.state.system['price'] > 2500 &&
                           <a href="javascript:void(0)" className="text-muted" data-bs-toggle="tooltip"
                              data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
-                             data-bs-original-title={this._getFinancingOptions()}>
+                             title={this._getFinancingOptions()}>
                             From {this.currencyFormatter.format(this.state.system['price'] / 36)}/mo <i
                             className="icon-info-circled"/>
                           </a>

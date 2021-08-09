@@ -232,9 +232,7 @@ class Configure extends React.Component {
     let buckets = this.state.system['buckets'].filter(bucket => !bucket['hidden']);
     let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
-    let prompts = {}; // enable bootstrap tooltip
-
-    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el => new bootstrap.Tooltip(el));
+    let prompts = {};
 
     if (this.state.errors.length > 0) {
       prompts['errors'] = this.state.errors;
@@ -523,7 +521,7 @@ class Configure extends React.Component {
           "data-bs-html": "true",
           "data-bs-placement": "bottom",
           "data-bs-trigger": "hover",
-          "data-bs-original-title": this._getSubKitSummary(item)
+          title: this._getSubKitSummary(item)
         }, "Detail ", /*#__PURE__*/React.createElement("i", {
           className: "icon-info-circled"
         })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {

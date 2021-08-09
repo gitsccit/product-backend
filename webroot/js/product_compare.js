@@ -1,22 +1,13 @@
-function find_base_url() {
-    let url = window.location.href;
-    let index = url.indexOf('/hardware');
+function product_compare(baseUrl, currentProductID) {
+    let url = baseUrl + '/hardware/compare';
 
-    return url.substr(0, index) + '/hardware/compare';
-}
-
-function product_compare(currentProduct, check = true) {
-    let url = find_base_url();
-
-    const currentCheckbox = document.getElementsByName(currentProduct)[0];
-    currentCheckbox.checked = check;
-    if (check) {
-        url += `/${currentCheckbox.name}`;
-    }
+    const currentCheckbox = document.getElementsByName(currentProductID)[0];
+    currentCheckbox.checked = true;
+    url += `/${currentCheckbox.name}`;
 
     const checkboxes = document.getElementsByClassName('product-compare');
     for (const checkbox of checkboxes) {
-        if (checkbox.checked && checkbox.name != currentProduct) {
+        if (checkbox.checked && checkbox.name != currentProductID) {
             url += `/${checkbox.name}`;
         }
     }

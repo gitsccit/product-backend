@@ -248,9 +248,6 @@ class Configure extends React.Component {
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
 
-    // enable bootstrap tooltip
-    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')].forEach(el => new bootstrap.Tooltip(el));
-
     if (this.state.errors.length > 0) {
       prompts['errors'] = this.state.errors;
     }
@@ -597,7 +594,7 @@ class Configure extends React.Component {
                                           </div>
                                           <a href="javascript:void(0)" className="text-dark" data-bs-toggle="tooltip"
                                              data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
-                                             data-bs-original-title={this._getSubKitSummary(item)}>
+                                             title={this._getSubKitSummary(item)}>
                                             Detail <i className="icon-info-circled"></i>
                                           </a>
                                           {
