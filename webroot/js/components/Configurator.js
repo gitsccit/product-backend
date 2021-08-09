@@ -301,12 +301,15 @@ class Configurator extends React.Component {
                               </h2>
                             </>
                         }
-                        <a href="javascript:void(0)" className="text-muted" data-bs-toggle="tooltip" data-bs-html="true"
-                           data-bs-placement="bottom" data-bs-trigger="hover"
-                           data-bs-original-title={this._getFinancingOptions()}>
-                          From {this.currencyFormatter.format(this.state.system['price'] / 36)}/mo <i
-                          className="icon-info-circled"/>
-                        </a>
+                        {
+                          this.state.system['price'] > 2500 &&
+                          <a href="javascript:void(0)" className="text-muted" data-bs-toggle="tooltip"
+                             data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
+                             data-bs-original-title={this._getFinancingOptions()}>
+                            From {this.currencyFormatter.format(this.state.system['price'] / 36)}/mo <i
+                            className="icon-info-circled"/>
+                          </a>
+                        }
                       </>
                     ) :
                     <h4 className="text-primary">

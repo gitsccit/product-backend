@@ -272,7 +272,7 @@ class Configurator extends React.Component {
       className: "text-muted"
     }, "CONFIGURED PRICE:"), /*#__PURE__*/React.createElement("h2", {
       className: "text-primary"
-    }, this.currencyFormatter.format(this.state.system['price']))), /*#__PURE__*/React.createElement("a", {
+    }, this.currencyFormatter.format(this.state.system['price']))), this.state.system['price'] > 2500 && /*#__PURE__*/React.createElement("a", {
       href: "javascript:void(0)",
       className: "text-muted",
       "data-bs-toggle": "tooltip",
