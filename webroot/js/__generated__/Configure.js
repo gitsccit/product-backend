@@ -222,9 +222,10 @@ class Configure extends React.Component {
   }
 
   _getSubKitSummary(item) {
-    return item['configuration'].map(item => {
+    let summary = item['configuration'].map(item => {
       return item['quantity'] > 1 ? `<b>${item['quantity']} x</b> ${item['name']}` : item['name'];
     }).join('<br>');
+    return `<div class="text-start">${summary}</div>`;
   }
 
   render() {
@@ -495,7 +496,7 @@ class Configure extends React.Component {
         }, quantity))) : /*#__PURE__*/React.createElement("span", null, bucket['quantity'][0]), /*#__PURE__*/React.createElement("span", {
           className: "icon-cancel text-muted"
         })), /*#__PURE__*/React.createElement("label", {
-          className: checked ? 'fw-bold' : ''
+          className: 'd-flex align-items-center' + (checked ? ' fw-bold' : '')
         }, /*#__PURE__*/React.createElement("input", {
           className: "me-1",
           type: isMultiSelect ? 'checkbox' : 'radio',
@@ -517,12 +518,12 @@ class Configure extends React.Component {
           className: "text-primary"
         }, "\xA0", this.props.currencyFormatter.format(item['price'])), " each"), /*#__PURE__*/React.createElement("a", {
           href: "javascript:void(0)",
-          className: "text-black",
+          className: "text-dark",
           "data-bs-toggle": "tooltip",
           "data-bs-html": "true",
           "data-bs-placement": "bottom",
           "data-bs-trigger": "hover",
-          title: this._getSubKitSummary(item)
+          "data-bs-original-title": this._getSubKitSummary(item)
         }, "Detail ", /*#__PURE__*/React.createElement("i", {
           className: "icon-info-circled"
         })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {

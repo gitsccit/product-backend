@@ -38,9 +38,8 @@ $configuringSubKit = false;
 
 <style>
     .tooltip-inner {
-        font-size: var(--text-font-size);
+        font-size: 11px;
         max-width: 100%;
-        text-align: start;
     }
 </style>
 

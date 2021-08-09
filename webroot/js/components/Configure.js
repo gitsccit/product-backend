@@ -235,9 +235,11 @@ class Configure extends React.Component {
   }
 
   _getSubKitSummary(item) {
-    return item['configuration'].map(item => {
+    let summary = item['configuration'].map(item => {
       return item['quantity'] > 1 ? `<b>${item['quantity']} x</b> ${item['name']}` : item['name'];
     }).join('<br>');
+
+    return `<div class="text-start">${summary}</div>`;
   }
 
   render() {
@@ -557,7 +559,7 @@ class Configure extends React.Component {
                                             <span className="icon-cancel text-muted"/>
                                           </>
                                         }
-                                        <label className={checked ? 'fw-bold' : ''}>
+                                        <label className={'d-flex align-items-center' + (checked ? ' fw-bold' : '')}>
                                           <input
                                             className="me-1"
                                             type={isMultiSelect ? 'checkbox' : 'radio'}
@@ -593,9 +595,9 @@ class Configure extends React.Component {
                                                 &nbsp;{this.props.currencyFormatter.format(item['price'])}
                                               </span> each
                                           </div>
-                                          <a href="javascript:void(0)" className="text-black" data-bs-toggle="tooltip"
+                                          <a href="javascript:void(0)" className="text-dark" data-bs-toggle="tooltip"
                                              data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
-                                             title={this._getSubKitSummary(item)}>
+                                             data-bs-original-title={this._getSubKitSummary(item)}>
                                             Detail <i className="icon-info-circled"></i>
                                           </a>
                                           {
