@@ -17,7 +17,7 @@ $url = $this->Url->build("/product/$card[url]");
             <label class="my-2 d-flex align-items-center" for="compare">
                 <input class="product-compare" type="checkbox" name="<?= $card['id'] ?>">
                 <a class="ms-1 text-dark" href="#compare" data-bs-toggle="modal" data-bs-target="#compare-modal"
-                   onclick="product_compare(<?= $this->Url->build('/') ?>, <?= $card['id'] ?>)">Compare</a>
+                   onclick="product_compare('<?= $this->Url->build('/') ?>', <?= $card['id'] ?>)">Compare</a>
             </label>
         </div>
     </div>
