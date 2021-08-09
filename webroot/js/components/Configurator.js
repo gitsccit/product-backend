@@ -80,15 +80,13 @@ class Configurator extends React.Component {
 
   _getFinancingOptions() {
     return `<div class="text-start">
-    Financing is available for business purchases greater than $2500.00, and is provided by Direct Capital.
+    Financing is available for business purchases greater than $2500.00, and is provided by Direct Capital.<br>
     Full financials are required for amounts greater than $100,000.00.
     </div>
-    <div class="text-center">
-    ${this.currencyFormatter.format(this.state.system['price'] / 12)}/mo for 12 months<br>
-    ${this.currencyFormatter.format(this.state.system['price'] / 24)}/mo for 24 months<br>
-    ${this.currencyFormatter.format(this.state.system['price'] / 36)}/mo for 36 months<br>
-    <span class="text-muted">Requires credit approval, rates subject to changes.</span>
-    </div>`;
+    <div>${this.currencyFormatter.format(this.state.system['price'] / 12)}/mo for 12 months</div>
+    <div>${this.currencyFormatter.format(this.state.system['price'] / 24)}/mo for 24 months</div>
+    <div>${this.currencyFormatter.format(this.state.system['price'] / 36)}/mo for 36 months</div>
+    <div class="text-muted">Requires credit approval, rates subject to changes.</div>`;
   }
 
   prepareConfiguration() {
