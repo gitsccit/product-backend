@@ -277,7 +277,7 @@ class Configurator extends React.Component {
     }, this.currencyFormatter.format(this.state.system['price']))), /*#__PURE__*/React.createElement("a", {
       href: "javascript:void(0)",
       className: "text-muted",
-      "data-bs-target": "tooltip",
+      "data-bs-toggle": "tooltip",
       "data-bs-html": "true",
       "data-bs-placement": "bottom",
       "data-bs-trigger": "hover",

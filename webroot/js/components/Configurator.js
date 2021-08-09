@@ -303,7 +303,7 @@ class Configurator extends React.Component {
                               </h2>
                             </>
                         }
-                        <a href="javascript:void(0)" className="text-muted" data-bs-target="tooltip" data-bs-html="true"
+                        <a href="javascript:void(0)" className="text-muted" data-bs-toggle="tooltip" data-bs-html="true"
                            data-bs-placement="bottom" data-bs-trigger="hover"
                            data-bs-original-title={this._getFinancingOptions()}>
                           From {this.currencyFormatter.format(this.state.system['price'] / 36)}/mo <i
