@@ -17,7 +17,7 @@ function product_compare(baseUrl, currentProductID) {
     request.onloadstart = function () {
         compareModal.innerHTML = `
             <div class="spinner-border text-primary align-self-center" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only"></span>
             </div>`;
     };
     request.onreadystatechange = function () {
