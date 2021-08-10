@@ -79,38 +79,35 @@ switch (count($products)) {
 ?>
 
 <div class="modal-content bg-white overflow-auto" id="compare-modal-content">
-    <table class="table table-bordered mb-0 border-0 text-center">
-        <tbody>
-        <?php foreach ($sections as $groupName => $section) : ?>
-            <?php if (is_string($groupName)) : ?>
-                <tr class="d-flex">
-                    <td class="col-3 bg-black text-white fw-bold"><?= $groupName ?></td>
-                    <?php foreach ($products as $product) : ?>
-                        <td class="col-<?= $col ?> bg-black"></td>
-                    <?php endforeach; ?>
-                </tr>
-            <?php endif; ?>
-            <?php foreach ($section as $rowName => $row) : ?>
-                <tr class="d-flex">
-                    <td class="col-3 bg-3 d-flex justify-content-center align-items-center"><?= $rowName ?></td>
-                    <?php foreach ($row as $index => $column) : ?>
-                        <td class="<?= ($index === 0 || $row[0] === $column) && !in_array(
-                            $rowName,
-                            $ignoreCompareFields
-                        ) ? 'bg-5 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
-                    <?php endforeach; ?>
-                </tr>
+    <div class="modal-body">
+        <table class="table table-bordered mb-0 border-0 text-center">
+            <tbody>
+            <?php foreach ($sections as $groupName => $section) : ?>
+                <?php if (is_string($groupName)) : ?>
+                    <tr class="d-flex">
+                        <td class="col-3 bg-black text-white fw-bold"><?= $groupName ?></td>
+                        <?php foreach ($products as $product) : ?>
+                            <td class="col-<?= $col ?> bg-black"></td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endif; ?>
+                <?php foreach ($section as $rowName => $row) : ?>
+                    <tr class="d-flex">
+                        <td class="col-3 bg-3 d-flex justify-content-center align-items-center"><?= $rowName ?></td>
+                        <?php foreach ($row as $index => $column) : ?>
+                            <td class="<?= ($index === 0 || $row[0] === $column) && !in_array(
+                                $rowName,
+                                $ignoreCompareFields
+                            ) ? 'bg-5 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
             <?php endforeach; ?>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="row justify-content-center my-5">
-        <div class="col-3">
-            <a class="w-100 btn btn-primary">Print</a>
-        </div>
-        <div class="col-3">
-            <a class="w-100 btn btn-black" href="#close-modal" data-bs-dismiss="modal" aria-label="Close">Close</a>
+            </tbody>
+        </table>
+        <div class="row justify-content-center mt-5">
+            <a class="col-3 btn btn-primary">Print</a>
+            <a class="col-3 btn btn-black" data-bs-dismiss="modal" aria-label="Close">Close</a>
         </div>
     </div>
 </div>
-<?php exit; ?>
