@@ -156,7 +156,7 @@ class Configure extends React.Component {
     });
     let url = this.props.baseUrl + '/hardware/compare/' + productIDs.join('/');
     this.setState({
-      compareProductHTML: `<div class="spinner-border text-primary align-self-center" role="status"><span class="sr-only">Loading...</span></div>`
+      compareProductHTML: `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>`
     }, () => {
       fetch(url, {
         headers: {
@@ -273,12 +273,9 @@ class Configure extends React.Component {
       className: "modal fade",
       id: "compare-modal",
       tabIndex: "-1",
-      role: "dialog",
       "aria-hidden": "true"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl",
-      role: "document",
-      id: "compare-modal-content",
+      className: "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl justify-content-center",
       dangerouslySetInnerHTML: {
         __html: this.state.compareProductHTML
       }
