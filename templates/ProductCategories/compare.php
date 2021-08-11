@@ -102,7 +102,7 @@ switch (count($products)) {
                     <tr class="d-flex">
                         <td class="col-3 bg-3 d-flex justify-content-center align-items-center"><?= $rowName ?></td>
                         <?php foreach ($row as $index => $column) : ?>
-                            <td class="<?= ($index === 0 || $row[0] === $column) && !in_array(
+                            <td class="<?= !isset($bucket) && ($index === 0 || $row[0] === $column) && !in_array(
                                 $rowName,
                                 $ignoreCompareFields
                             ) ? 'bg-4 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
