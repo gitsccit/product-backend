@@ -426,18 +426,22 @@ class Configure extends React.Component {
         className: "d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3"
       }, /*#__PURE__*/React.createElement("div", {
         className: "row -mx-2 flex-fill"
-      }, filters.slice(0, 4).map(([filterGroup, options]) => /*#__PURE__*/React.createElement("div", {
-        className: "col-6 col-lg-3 px-2"
-      }, /*#__PURE__*/React.createElement("div", {
-        className: "fw-bold mb-2 text-nowrap"
-      }, filterGroup, ":"), /*#__PURE__*/React.createElement("select", {
-        className: "form-control form-control-sm",
-        value: this.state.selectedFilters[bucket['id']][filterGroup],
-        onChange: event => this._updateFilter(bucket['id'], filterGroup, event)
-      }, options.map(([option, count]) => /*#__PURE__*/React.createElement("option", {
-        key: option,
-        value: option
-      }, option + (count > 0 ? ` (${count})` : ''))))))), /*#__PURE__*/React.createElement("a", {
+      }, filters.slice(0, 4).map(([filterGroup, options]) => {
+        let currentGroupSelectedFilter = this.state.selectedFilters[bucket['id']][filterGroup];
+        return /*#__PURE__*/React.createElement("div", {
+          className: "col-6 col-lg-3 px-2"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "fw-bold mb-2 text-nowrap"
+        }, filterGroup, ":"), /*#__PURE__*/React.createElement("select", {
+          className: 'form-control form-control-sm' + (currentGroupSelectedFilter === 'All' ? '' : ' border-primary text-primary'),
+          value: currentGroupSelectedFilter,
+          onChange: event => this._updateFilter(bucket['id'], filterGroup, event)
+        }, options.map(([option, count]) => /*#__PURE__*/React.createElement("option", {
+          className: option === currentGroupSelectedFilter && option !== 'All' ? 'text-primary' : 'text-black',
+          key: option,
+          value: option
+        }, option + (count > 0 ? ` (${count})` : '')))));
+      })), /*#__PURE__*/React.createElement("a", {
         className: "text-primary text-decoration-none text-nowrap ms-3 text-on-hover-primary-highlight",
         href: "javascript:void(0)",
         onClick: () => this._clearFilters(bucket['id'])

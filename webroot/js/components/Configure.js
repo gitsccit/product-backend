@@ -468,22 +468,27 @@ class Configure extends React.Component {
                         className="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3">
                         <div className="row -mx-2 flex-fill">
                           {
-                            filters.slice(0, 4).map(([filterGroup, options]) => (
-                              <div className="col-6 col-lg-3 px-2">
+                            filters.slice(0, 4).map(([filterGroup, options]) => {
+                              let currentGroupSelectedFilter = this.state.selectedFilters[bucket['id']][filterGroup];
+
+                              return (<div className="col-6 col-lg-3 px-2">
                                 <div className="fw-bold mb-2 text-nowrap">{filterGroup}:</div>
-                                <select className="form-control form-control-sm"
-                                        value={this.state.selectedFilters[bucket['id']][filterGroup]}
-                                        onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
+                                <select
+                                  className={'form-control form-control-sm' + (currentGroupSelectedFilter === 'All' ? '' : ' border-primary text-primary')}
+                                  value={currentGroupSelectedFilter}
+                                  onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
                                   {
                                     options.map(([option, count]) => (
-                                      <option key={option} value={option}>
+                                      <option
+                                        className={(option === currentGroupSelectedFilter && option !== 'All') ? 'text-primary' : 'text-black'}
+                                        key={option} value={option}>
                                         {option + (count > 0 ? ` (${count})` : '')}
                                       </option>
                                     ))
                                   }
                                 </select>
-                              </div>
-                            ))
+                              </div>);
+                            })
                           }
                         </div>
                         <a
@@ -603,7 +608,8 @@ class Configure extends React.Component {
                                       </div>
                                       {
                                         isSystemItem && checked &&
-                                        <div className="item-group align-items-center mt-1" style={{marginLeft: '4.9rem'}}>
+                                        <div className="item-group align-items-center mt-1"
+                                             style={{marginLeft: '4.9rem'}}>
                                           <div>
                                             <b>Base Configuration:</b>
                                             <span className="text-primary">
