@@ -46,12 +46,7 @@ foreach ($products as $index => $product) {
     if (!isset($bucket)) {
         $section['Base Model'][] = "<input type='radio' name='$product[id]' $checked onchange=\"product_compare('{$this->Url->build('/')}', $product[id])\">";
     }
-    if (isset($bucket)) {
-        $priceDiff = $productSelected ? -$product['price'] : $product['price'];
-        $section['Price Change'][] = $priceDiff > 0 ? ('+' . $this->Number->currency($priceDiff)) : $this->Number->currency($priceDiff);
-    } else {
-        $section['Price'][] = $this->Number->currency($product['price']);
-    }
+    $section['Price'][] = $this->Number->currency($product['price']);
     $section['Status'][] = $product['status'];
     $section['Manufacturer'][] = $product['manufacturer'] ? $product['manufacturer']['name'] : $emptyFieldValue;
     $section['Part Number'][] = $product['part_number'] ?? $emptyFieldValue;
