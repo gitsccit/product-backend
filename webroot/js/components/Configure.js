@@ -96,6 +96,15 @@ class Configure extends React.Component {
     let bucket = this.state.system['buckets'].find(bucket => bucket['id'] === bucketID);
 
     if (bucket['multiple']) {
+      let itemsInBucket = this.state.currentConfig[bucket['id']];
+      let selectedItemsInBucket = itemsInBucket.filter(item => item['selected_at']);
+      let bucketQuantity = selectedItemsInBucket.reduce((a, b) => a + b['quantity'], 0);
+      let reachedMaxQuantity = bucket['maxqty'] == null ? false : bucketQuantity >= bucket['maxqty'];
+
+      if (!item['selected_at'] && reachedMaxQuantity) {
+        return;
+      }
+
       item['selected_at'] = item['selected_at'] ? null : Date.now();
     } else {
       newConfig[bucketID].forEach((item, index) => {
@@ -153,14 +162,23 @@ class Configure extends React.Component {
   _compareProducts(bucket) {
     let filteredGroups = this._filterBucketGroups(bucket);
     let productIDs = [];
+    let selectedProductIDs = [];
 
     filteredGroups.forEach(group => {
       group['group_items'].forEach(item => {
         productIDs.push(item['original_id']);
-      })
-    })
 
-    let url = this.props.baseUrl + '/hardware/compare/' + productIDs.join('/');
+        if (item['selected_at']) {
+          selectedProductIDs.push(item['original_id']);
+        }
+      });
+    });
+
+    let url = this.props.baseUrl + '/hardware/compare/' + productIDs.join('/') + `?bucket=${bucket['id']}`;
+
+    if (selectedProductIDs) {
+      url += `&selectedProducts=${selectedProductIDs.join(',')}`;
+    }
 
     this.setState({
       compareProductHTML: `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>`,

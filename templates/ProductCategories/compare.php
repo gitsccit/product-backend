@@ -22,6 +22,9 @@ foreach ($products as $product) {
     }
 }
 
+$selectedProducts = $this->request->getQuery('selectedProducts', '');
+$selectedProducts = $selectedProducts ? explode(',', $selectedProducts) : [];
+
 $section = [];
 foreach ($products as $index => $product) {
     $url = $this->Url->build("/product/$product[url]");
@@ -37,9 +40,18 @@ foreach ($products as $index => $product) {
     </div>";
     $checked = $index === 0 ? 'checked' : '';
 //    $table['Remove'][] = "<a href='#' onclick='product_compare($product[id], false)'><span class='icon-cancel'></span></a>";
-    $section[$emptyFieldValue][] = "<a class='btn btn-primary' href='#$product[id]'>Add To Order</a>";
-    $section['Base Model'][] = "<input type='radio' name='$product[id]' $checked onchange=\"product_compare('{$this->Url->build('/')}', $product[id])\">";
-    $section['Price'][] = $this->Number->currency($product['price']);
+    $productSelected = in_array($product['id'], $selectedProducts);
+    $buttonText = isset($bucket) ? ($productSelected ? 'Unselect' : 'Select') : 'Add To Order';
+    $section[$emptyFieldValue][] = (isset($bucket) && !$bucket['multiple'] && $productSelected) ? 'Current Selection' : "<a class='btn btn-primary' data-bs-dismiss='modal' onclick='window.configure._selectItem($bucket[id], $index)'>$buttonText</a>";
+    if (!isset($bucket)) {
+        $section['Base Model'][] = "<input type='radio' name='$product[id]' $checked onchange=\"product_compare('{$this->Url->build('/')}', $product[id])\">";
+    }
+    if (isset($bucket)) {
+        $priceDiff = $productSelected ? -$product['price'] : $product['price'];
+        $section['Price Change'][] = $priceDiff > 0 ? ('+' . $this->Number->currency($priceDiff)) : $this->Number->currency($priceDiff);
+    } else {
+        $section['Price'][] = $this->Number->currency($product['price']);
+    }
     $section['Status'][] = $product['status'];
     $section['Manufacturer'][] = $product['manufacturer'] ? $product['manufacturer']['name'] : $emptyFieldValue;
     $section['Part Number'][] = $product['part_number'] ?? $emptyFieldValue;
@@ -98,7 +110,7 @@ switch (count($products)) {
                             <td class="<?= ($index === 0 || $row[0] === $column) && !in_array(
                                 $rowName,
                                 $ignoreCompareFields
-                            ) ? 'bg-5 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
+                            ) ? 'bg-4 ' : '' ?>col-<?= $col ?> d-flex justify-content-center align-items-center"><?= $column ?></td>
                         <?php endforeach; ?>
                     </tr>
                 <?php endforeach; ?>
@@ -106,8 +118,12 @@ switch (count($products)) {
             </tbody>
         </table>
         <div class="row justify-content-center mt-5">
-            <a class="col-3 btn btn-primary">Print</a>
-            <a class="col-3 btn btn-black" data-bs-dismiss="modal" aria-label="Close">Close</a>
+            <div class="col-3">
+                <a class="w-100 btn btn-primary">Print</a>
+            </div>
+            <div class="col-3">
+                <a class="w-100 btn btn-black" data-bs-dismiss="modal" aria-label="Close">Close</a>
+            </div>
         </div>
     </div>
 </div>

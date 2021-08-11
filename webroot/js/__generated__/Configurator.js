@@ -158,6 +158,9 @@ class Configurator extends React.Component {
       switch (tab['name']) {
         case 'Configure':
           tab['content'] = /*#__PURE__*/React.createElement(Configure, {
+            ref: configure => {
+              window.configure = configure;
+            },
             system: systemWithoutStandaloneBuckets,
             currentConfig: this.state.currentConfig,
             csrf: this.props.csrf,

@@ -5,6 +5,7 @@ namespace ProductBackend\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use ProductBackend\Model\Entity\ProductCategory;
 
@@ -149,6 +150,17 @@ class ProductCategoriesController extends AppController
             $productsCopy[$index] = $products[$id];
         }
         $products = $productsCopy;
+
+        if ($bucketID = $this->request->getQuery('bucket')) {
+            $bucket = TableRegistry::getTableLocator()->get('ProductBackend.Buckets')->get($bucketID);
+
+            if ($bucket['compare'] === 'no') {
+                throw new \Exception('Bucket is not comparable');
+            }
+            $bucket['multiple'] = $bucket['multiple'] === 'yes';
+
+            $this->set(compact('bucket'));
+        }
 
         $this->set(compact('products'));
     }
