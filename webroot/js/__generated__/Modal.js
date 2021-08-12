@@ -5,12 +5,13 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      html: undefined
+      html: undefined,
+      requestFailed: false
     };
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.url !== prevProps.url) {
+    if (this.props.url !== prevProps.url || this.state.requestFailed) {
       this._fetchContent();
     }
   }
@@ -23,9 +24,10 @@ class Modal extends React.Component {
         headers: {
           'X-Requested-With': 'XMLHttpRequest'
         }
-      }).then(response => response.text()).then(result => {
+      }).then(response => {
         this.setState({
-          html: result
+          html: response.text(),
+          requestFailed: !response.ok
         });
       });
     });
@@ -38,11 +40,13 @@ class Modal extends React.Component {
       id: this.props.id,
       "aria-hidden": "true"
     }, /*#__PURE__*/React.createElement("div", {
-      className: `modal-dialog modal-dialog-centered modal-dialog-scrollable justify-content-center ${this.props.size != null && `modal-${this.props.size}`}`,
+      className: `modal-dialog modal-dialog-centered modal-dialog-scrollable justify-content-center ${this.props.size != null && `modal-${this.props.size}`}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "modal-content overflow-auto",
       dangerouslySetInnerHTML: {
         __html: this.state.html
       }
-    }));
+    })));
   }
 
 }
