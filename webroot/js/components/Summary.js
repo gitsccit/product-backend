@@ -106,8 +106,9 @@ class Summary extends React.Component {
 
     return (
       <div>
-        <Modal id="email-modal" url={this.state.emailConfigurationUrl}/>
         <Modal id="save-modal" url={this.state.saveConfigurationUrl} size="xl"/>
+        <Modal id="email-modal" url={this.state.emailConfigurationUrl}/>
+        <Modal id="specs-modal" url={this.state.saveConfigurationUrl} size="xl"/>
         {
           !('cost' in this.props.system) &&
           <div className="row">

@@ -89,10 +89,14 @@ class Summary extends React.Component {
       return [bucket['category'], selectedItems.join('<br>')];
     });
     return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Modal, {
+      id: "save-modal",
+      url: this.state.saveConfigurationUrl,
+      size: "xl"
+    }), /*#__PURE__*/React.createElement(Modal, {
       id: "email-modal",
       url: this.state.emailConfigurationUrl
     }), /*#__PURE__*/React.createElement(Modal, {
-      id: "save-modal",
+      id: "specs-modal",
       url: this.state.saveConfigurationUrl,
       size: "xl"
     }), !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", {
