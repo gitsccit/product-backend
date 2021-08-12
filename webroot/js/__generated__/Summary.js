@@ -19,6 +19,18 @@ class Summary extends React.Component {
     });
   }
 
+  _saveConfiguration() {
+    this.setState({
+      saveConfigurationUrl: this.props.baseUrl + '/system/save'
+    });
+  }
+
+  _emailConfiguration() {
+    this.setState({
+      emailConfigurationUrl: this.props.baseUrl + '/system/email'
+    });
+  }
+
   _addToOrder() {
     let url = this.props.appsUrl + '/api/unified-order/opportunities/prepare';
     let payload = {
@@ -70,7 +82,14 @@ class Summary extends React.Component {
       let selectedItems = this.props.currentConfig[bucket['id']].filter(item => item['selected_at'] != null).map(item => item['quantity'] > 1 ? `${item['quantity']} x ${item['name']}` : item['name']);
       return [bucket['category'], selectedItems.join('<br>')];
     });
-    return /*#__PURE__*/React.createElement("div", null, !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Modal, {
+      id: "email-modal",
+      url: this.state.emailConfigurationUrl
+    }), /*#__PURE__*/React.createElement(Modal, {
+      id: "save-modal",
+      url: this.state.saveConfigurationUrl,
+      size: "xl"
+    }), !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", {
       className: "row"
     }, cards.map(({
       image,
@@ -113,7 +132,8 @@ class Summary extends React.Component {
       className: "h5 mb-0 icon-mail"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none fw-normal",
-      href: "javascript:void(0)"
+      href: "javascript:void(0)",
+      onClick: () => this._emailConfiguration()
     }, "Email Configuration")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "h5 mb-0 icon-print"
     }), /*#__PURE__*/React.createElement("a", {

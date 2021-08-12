@@ -85,7 +85,7 @@ switch (count($products)) {
 }
 ?>
 
-<div class="modal-content bg-white overflow-auto" id="compare-modal-content">
+<div class="modal-content bg-white overflow-auto">
     <div class="modal-body">
         <table class="table table-bordered mb-0 border-0 text-center">
             <tbody>

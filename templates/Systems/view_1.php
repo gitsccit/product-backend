@@ -60,6 +60,7 @@ $configuringSubKit = false;
      data-csrf='<?= $this->request->getCookie('csrfToken') ?>'></div>
 <?= $this->Html->script('ProductBackend.bootstrap.bundle.min'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/ConditionalWrapper'); ?>
+<?= $this->Html->script('ProductBackend.__generated__/Modal'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Configure'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/StorageSetup'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Summary'); ?>

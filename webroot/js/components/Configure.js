@@ -19,7 +19,6 @@ class Configure extends React.Component {
       currentTab: 0,
       currentConfig: props.currentConfig,
       selectedFilters: selectedFilters,
-      compareProductHTML: undefined,
       errors: [],
       warnings: [],
       additionalItems: [],
@@ -181,19 +180,7 @@ class Configure extends React.Component {
     }
 
     this.setState({
-      compareProductHTML: `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>`,
-    }, () => {
-      fetch(url, {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        }
-      })
-        .then(response => response.text())
-        .then((result) => {
-          this.setState({
-            compareProductHTML: result,
-          });
-        });
+      compareUrl: url,
     });
   }
 
@@ -324,12 +311,7 @@ class Configure extends React.Component {
             }
           </div>
         }
-        <div className="modal fade" id="compare-modal" tabIndex="-1" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl justify-content-center"
-               dangerouslySetInnerHTML={{__html: this.state.compareProductHTML}}>
-
-          </div>
-        </div>
+        <Modal id="compare-modal" url={this.state.compareUrl} size="xl"/>
         <div className="row">
           {
             !standaloneBucket &&

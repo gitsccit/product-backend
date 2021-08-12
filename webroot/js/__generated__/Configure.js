@@ -14,7 +14,6 @@ class Configure extends React.Component {
       currentTab: 0,
       currentConfig: props.currentConfig,
       selectedFilters: selectedFilters,
-      compareProductHTML: undefined,
       errors: [],
       warnings: [],
       additionalItems: []
@@ -175,17 +174,7 @@ class Configure extends React.Component {
     }
 
     this.setState({
-      compareProductHTML: `<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>`
-    }, () => {
-      fetch(url, {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      }).then(response => response.text()).then(result => {
-        this.setState({
-          compareProductHTML: result
-        });
-      });
+      compareUrl: url
     });
   }
 
@@ -288,17 +277,11 @@ class Configure extends React.Component {
           className: "text-small mb-2"
         }, "Additional components have been added to support your selection:"), prompt) : prompt);
       });
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "modal fade",
+    })), /*#__PURE__*/React.createElement(Modal, {
       id: "compare-modal",
-      tabIndex: "-1",
-      "aria-hidden": "true"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl justify-content-center",
-      dangerouslySetInnerHTML: {
-        __html: this.state.compareProductHTML
-      }
-    })), /*#__PURE__*/React.createElement("div", {
+      url: this.state.compareUrl,
+      size: "xl"
+    }), /*#__PURE__*/React.createElement("div", {
       className: "row"
     }, !standaloneBucket && /*#__PURE__*/React.createElement("div", {
       className: "col-md-3 col-lg-2"

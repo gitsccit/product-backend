@@ -20,6 +20,18 @@ class Summary extends React.Component {
     });
   }
 
+  _saveConfiguration() {
+    this.setState({
+      saveConfigurationUrl: this.props.baseUrl + '/system/save',
+    });
+  }
+
+  _emailConfiguration() {
+    this.setState({
+      emailConfigurationUrl: this.props.baseUrl + '/system/email',
+    });
+  }
+
   _addToOrder() {
     let url = this.props.appsUrl + '/api/unified-order/opportunities/prepare';
     let payload = {
@@ -88,6 +100,8 @@ class Summary extends React.Component {
 
     return (
       <div>
+        <Modal id="email-modal" url={this.state.emailConfigurationUrl}/>
+        <Modal id="save-modal" url={this.state.saveConfigurationUrl} size="xl"/>
         {
           !('cost' in this.props.system) &&
           <div className="row">
@@ -121,8 +135,9 @@ class Summary extends React.Component {
                   </div>
                   <div>
                     <span className="h5 mb-0 icon-mail"></span>
-                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Email
-                      Configuration</a>
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
+                       onClick={() => this._emailConfiguration()}>
+                      Email Configuration</a>
                   </div>
                   <div>
                     <span className="h5 mb-0 icon-print"></span>
