@@ -27,7 +27,7 @@ class Summary extends React.Component {
 
   _emailConfiguration() {
     this.setState({
-      emailConfigurationUrl: this.props.baseUrl + '/system/email'
+      emailConfigurationUrl: this.props.baseUrl + '/email/system'
     });
   }
 
@@ -97,7 +97,7 @@ class Summary extends React.Component {
       url: this.state.emailConfigurationUrl
     }), /*#__PURE__*/React.createElement(Modal, {
       id: "specs-modal",
-      url: this.state.saveConfigurationUrl,
+      url: this.state.specsUrl,
       size: "xl"
     }), !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", {
       className: "row"
