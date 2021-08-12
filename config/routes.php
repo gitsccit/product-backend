@@ -5,6 +5,11 @@ use Cake\Routing\Router;
 
 Router::plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builder) {
 
+    $builder->scope('/email', ['controller' => 'Email'], function (RouteBuilder $builder) {
+        $builder->connect('/product', ['action' => 'product']);
+        $builder->connect('/system', ['action' => 'system']);
+    });
+
     $builder->connect('/hardware', ['controller' => 'ProductCategories', 'action' => 'index']);
     $builder->connect('/hardware/compare/*', ['controller' => 'ProductCategories', 'action' => 'compare']);
     $builder->connect('/hardware/*', ['controller' => 'ProductCategories', 'action' => 'view']);

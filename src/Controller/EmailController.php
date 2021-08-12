@@ -26,7 +26,7 @@ class EmailController extends AppController
         }
     }
 
-    public function configuration()
+    public function system()
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();
