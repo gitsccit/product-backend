@@ -13,10 +13,7 @@
             </a>
         </div>
         <h4 class="fw-bold mb-3">Email a link to this product</h4>
-        <?= $this->Form->create(
-            null,
-            ['url' => ['controller' => 'Email', 'action' => 'products', 'plugin' => 'ProductBackend', $product->id]]
-        ); ?>
+        <?= $this->Form->create(null); ?>
         <div class="mb-3">
             <?= $this->Form->control('name', ['required' => true, 'label' => 'Your Name']); ?>
         </div>
