@@ -32,6 +32,12 @@ class Summary extends React.Component {
     });
   }
 
+  _viewSpecs() {
+    this.setState({
+      specsUrl: this.props.baseUrl + '/system/specs',
+    });
+  }
+
   _addToOrder() {
     let url = this.props.appsUrl + '/api/unified-order/opportunities/prepare';
     let payload = {
@@ -130,18 +136,23 @@ class Summary extends React.Component {
                 <div className="item-group justify-content-end align-items-end h-100">
                   <div>
                     <span className="h5 mb-0 icon-floppy"></span>
-                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">Save
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
+                       data-bs-toggle="modal" data-bs-target="#save-modal"
+                       onClick={() => this._saveConfiguration()}>Save
                       Configuration</a>
                   </div>
                   <div>
                     <span className="h5 mb-0 icon-mail"></span>
                     <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
+                       data-bs-toggle="modal" data-bs-target="#email-modal"
                        onClick={() => this._emailConfiguration()}>
                       Email Configuration</a>
                   </div>
                   <div>
                     <span className="h5 mb-0 icon-print"></span>
-                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)">View Specs</a>
+                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
+                       data-bs-toggle="modal" data-bs-target="#specs-modal"
+                       onClick={() => this._viewSpecs()}>View Specs</a>
                   </div>
                 </div>
               </th>

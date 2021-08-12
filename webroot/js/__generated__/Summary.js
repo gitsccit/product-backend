@@ -31,6 +31,12 @@ class Summary extends React.Component {
     });
   }
 
+  _viewSpecs() {
+    this.setState({
+      specsUrl: this.props.baseUrl + '/system/specs'
+    });
+  }
+
   _addToOrder() {
     let url = this.props.appsUrl + '/api/unified-order/opportunities/prepare';
     let payload = {
@@ -127,18 +133,26 @@ class Summary extends React.Component {
       className: "h5 mb-0 icon-floppy"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none fw-normal",
-      href: "javascript:void(0)"
+      href: "javascript:void(0)",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#save-modal",
+      onClick: () => this._saveConfiguration()
     }, "Save Configuration")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "h5 mb-0 icon-mail"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none fw-normal",
       href: "javascript:void(0)",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#email-modal",
       onClick: () => this._emailConfiguration()
     }, "Email Configuration")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "h5 mb-0 icon-print"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none fw-normal",
-      href: "javascript:void(0)"
+      href: "javascript:void(0)",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#specs-modal",
+      onClick: () => this._viewSpecs()
     }, "View Specs")))))), /*#__PURE__*/React.createElement("tbody", null, selectedSpecs.map(([bucketCategory, spec]) => /*#__PURE__*/React.createElement("tr", {
       className: "d-flex"
     }, /*#__PURE__*/React.createElement("td", {
