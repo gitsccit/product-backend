@@ -14,7 +14,7 @@ class Modal extends React.Component {
     this.setState({
       html: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>',
     }, () => {
-      fetch(this.props.url, {
+      fetch(url, {
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
         }
