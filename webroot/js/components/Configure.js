@@ -179,9 +179,7 @@ class Configure extends React.Component {
       url += `&selectedProducts=${selectedProductIDs.join(',')}`;
     }
 
-    this.setState({
-      compareUrl: url,
-    });
+    this.compareModal.fetchContent(url);
   }
 
   _filterBucketGroups(bucket) {
@@ -311,7 +309,9 @@ class Configure extends React.Component {
             }
           </div>
         }
-        <Modal id="compare-modal" url={this.state.compareUrl} size="xl"/>
+        <Modal ref={(modal) => {
+          this.compareModal = modal;
+        }} id="compare-modal" url={this.state.compareUrl} size="xl"/>
         <div className="row">
           {
             !standaloneBucket &&

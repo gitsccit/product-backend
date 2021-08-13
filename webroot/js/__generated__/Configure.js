@@ -173,9 +173,7 @@ class Configure extends React.Component {
       url += `&selectedProducts=${selectedProductIDs.join(',')}`;
     }
 
-    this.setState({
-      compareUrl: url
-    });
+    this.compareModal.fetchContent(url);
   }
 
   _filterBucketGroups(bucket) {
@@ -278,6 +276,9 @@ class Configure extends React.Component {
         }, "Additional components have been added to support your selection:"), prompt) : prompt);
       });
     })), /*#__PURE__*/React.createElement(Modal, {
+      ref: modal => {
+        this.compareModal = modal;
+      },
       id: "compare-modal",
       url: this.state.compareUrl,
       size: "xl"

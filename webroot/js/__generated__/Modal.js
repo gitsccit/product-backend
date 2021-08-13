@@ -9,13 +9,7 @@ class Modal extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.url !== prevProps.url) {
-      this._fetchContent();
-    }
-  }
-
-  _fetchContent() {
+  fetchContent(url = null) {
     this.setState({
       html: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
     }, () => {

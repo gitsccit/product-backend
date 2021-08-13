@@ -20,21 +20,15 @@ class Summary extends React.Component {
   }
 
   _saveConfiguration() {
-    this.setState({
-      saveConfigurationUrl: this.props.baseUrl + '/system/save'
-    });
+    this.saveConfigurationModal.fetchContent(this.props.baseUrl + '/system/save');
   }
 
   _emailConfiguration() {
-    this.setState({
-      emailConfigurationUrl: this.props.baseUrl + '/email/system'
-    });
+    this.emailConfigurationModal.fetchContent(this.props.baseUrl + '/email/system');
   }
 
   _viewSpecs() {
-    this.setState({
-      specsUrl: this.props.baseUrl + '/system/specs'
-    });
+    this.viewSpecsModal.fetchContent(this.props.baseUrl + '/system/specs');
   }
 
   _addToOrder() {
@@ -89,15 +83,21 @@ class Summary extends React.Component {
       return [bucket['category'], selectedItems.join('<br>')];
     });
     return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Modal, {
+      ref: modal => {
+        this.saveConfigurationModal = modal;
+      },
       id: "save-modal",
-      url: this.state.saveConfigurationUrl,
       size: "xl"
     }), /*#__PURE__*/React.createElement(Modal, {
-      id: "email-modal",
-      url: this.state.emailConfigurationUrl
+      ref: modal => {
+        this.emailConfigurationModal = modal;
+      },
+      id: "email-modal"
     }), /*#__PURE__*/React.createElement(Modal, {
+      ref: modal => {
+        this.viewSpecsModal = modal;
+      },
       id: "specs-modal",
-      url: this.state.specsUrl,
       size: "xl"
     }), !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", {
       className: "row"

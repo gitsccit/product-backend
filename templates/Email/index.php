@@ -12,7 +12,7 @@
                 <span class="bg-black text-white icon-cancel" aria-hidden="true"></span>
             </a>
         </div>
-        <h4 class="fw-bold mb-3">Email a link to this product</h4>
+        <h4 class="fw-bold mb-3">Email This <?= ucfirst($this->request->getParam('action')) ?></h4>
         <?= $this->Form->create(null); ?>
         <div class="mb-3">
             <?= $this->Form->control('name', ['required' => true, 'label' => 'Your Name']); ?>

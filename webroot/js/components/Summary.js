@@ -21,21 +21,15 @@ class Summary extends React.Component {
   }
 
   _saveConfiguration() {
-    this.setState({
-      saveConfigurationUrl: this.props.baseUrl + '/system/save',
-    });
+    this.saveConfigurationModal.fetchContent(this.props.baseUrl + '/system/save');
   }
 
   _emailConfiguration() {
-    this.setState({
-      emailConfigurationUrl: this.props.baseUrl + '/email/system',
-    });
+    this.emailConfigurationModal.fetchContent(this.props.baseUrl + '/email/system');
   }
 
   _viewSpecs() {
-    this.setState({
-      specsUrl: this.props.baseUrl + '/system/specs',
-    });
+    this.viewSpecsModal.fetchContent(this.props.baseUrl + '/system/specs');
   }
 
   _addToOrder() {
@@ -106,9 +100,15 @@ class Summary extends React.Component {
 
     return (
       <div>
-        <Modal id="save-modal" url={this.state.saveConfigurationUrl} size="xl"/>
-        <Modal id="email-modal" url={this.state.emailConfigurationUrl}/>
-        <Modal id="specs-modal" url={this.state.specsUrl} size="xl"/>
+        <Modal ref={(modal) => {
+          this.saveConfigurationModal = modal;
+        }} id="save-modal" size="xl"/>
+        <Modal ref={(modal) => {
+          this.emailConfigurationModal = modal;
+        }} id="email-modal"/>
+        <Modal ref={(modal) => {
+          this.viewSpecsModal = modal;
+        }} id="specs-modal" size="xl"/>
         {
           !('cost' in this.props.system) &&
           <div className="row">
