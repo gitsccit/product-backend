@@ -41,7 +41,7 @@ class Summary extends React.Component {
         {
           quantity: this.state.quantity,
           opportunity_detail_type_id: 4,
-          opportunity_systems: {
+          opportunity_system: {
             system_id: this.props.system['id'],
             opportunity_system_data_logs: [
               {
