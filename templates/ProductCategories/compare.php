@@ -4,6 +4,8 @@
  * @var \App\Model\Entity\Product[] $products
  */
 
+$this->Html->scriptBlock('print');
+
 $emptyFieldValue = '—';
 
 $specificationGroups = [];
@@ -114,7 +116,7 @@ switch (count($products)) {
         </table>
         <div class="row justify-content-center mt-5">
             <div class="col-3">
-                <a class="w-100 btn btn-primary">Print</a>
+                <a class="w-100 btn btn-primary" onclick="print()">Print</a>
             </div>
             <div class="col-3">
                 <a class="w-100 btn btn-black" data-bs-dismiss="modal" aria-label="Close">Close</a>

@@ -6,7 +6,6 @@ class Configurator extends React.Component {
     super(props);
 
     let system = JSON.parse(props.system);
-    let opportunity = props.opportunity ? JSON.parse(props.opportunity) : null;
     let baseConfig = {};
 
     system['buckets'].forEach(bucket => {
@@ -17,16 +16,12 @@ class Configurator extends React.Component {
           item['selected_at'] = null;
           item['quantity'] = parseInt(bucket['quantity'][0]);
 
-          if (opportunity === null) {
-            system['system_items'].forEach(entry => {
-              if (item['id'] === entry['item_id']) {
-                item['selected_at'] = Date.now();
-                item['quantity'] = parseInt(entry['quantity']);
-              }
-            });
-          } else {
-
-          }
+          system['system_items'].forEach(entry => {
+            if (item['id'] === entry['item_id']) {
+              item['selected_at'] = Date.now();
+              item['quantity'] = parseInt(entry['quantity']);
+            }
+          });
 
           bucketItems.push(item);
         });
@@ -48,7 +43,6 @@ class Configurator extends React.Component {
     this.state = {
       system: system,
       tabs: JSON.parse(props.tabs),
-
       currentConfig: baseConfig,
       currentTab: 0,
       validConfiguration: true,

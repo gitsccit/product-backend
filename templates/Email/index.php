@@ -14,18 +14,10 @@
         </div>
         <h4 class="fw-bold mb-3">Email This <?= ucfirst($this->request->getParam('action')) ?></h4>
         <?= $this->Form->create(null); ?>
-        <div class="mb-3">
-            <?= $this->Form->control('name', ['required' => true, 'label' => 'Your Name']); ?>
-        </div>
-        <div class="mb-3">
-            <?= $this->Form->control('email', ['type' => 'email', 'required' => true, 'label' => 'Your Email']); ?>
-        </div>
-        <div class="mb-3">
-            <?= $this->Form->control('email2', ['type' => 'email', 'label' => 'Additional Email']); ?>
-        </div>
-        <div class="mb-3">
-            <?= $this->Form->control('comments', ['type' => 'textarea']); ?>
-        </div>
+        <?= $this->Form->control('name', ['required' => true, 'label' => 'Your Name']); ?>
+        <?= $this->Form->control('email', ['type' => 'email', 'required' => true, 'label' => 'Your Email']); ?>
+        <?= $this->Form->control('email2', ['type' => 'email', 'label' => 'Additional Email']); ?>
+        <?= $this->Form->control('comments', ['type' => 'textarea']); ?>
         <div class="mb-3">
             <?= $this->element('ProductBackend.captcha'); ?>
         </div>

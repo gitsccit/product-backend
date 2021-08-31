@@ -20,5 +20,5 @@ Router::plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builde
     $builder->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
 
     $builder->connect('/system/validate', ['controller' => 'Systems', 'action' => 'validate']);
-    $builder->connect('/system/**', ['controller' => 'Systems', 'action' => 'view']);
+    $builder->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
 });

@@ -32,7 +32,7 @@ class Summary extends React.Component {
   }
 
   _addToOrder() {
-    let url = this.props.appsUrl + '/api/unified-order/opportunities/prepare';
+    let url = this.props.appsUrl + '/api/unified-order/opportunities/commit';
     let payload = {
       store_id: this.props.storeId,
       environment_id: this.props.environmentId,
@@ -51,6 +51,11 @@ class Summary extends React.Component {
         }
       }]
     };
+
+    if ('opportunity_id' in this.props.system) {
+      payload['id'] = this.props.system['opportunity_id'];
+    }
+
     fetch(url, {
       method: 'POST',
       headers: {

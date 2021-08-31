@@ -5,7 +5,6 @@ class Configurator extends React.Component {
   constructor(props) {
     super(props);
     let system = JSON.parse(props.system);
-    let opportunity = props.opportunity ? JSON.parse(props.opportunity) : null;
     let baseConfig = {};
     system['buckets'].forEach(bucket => {
       let bucketItems = [];
@@ -13,16 +12,12 @@ class Configurator extends React.Component {
         group['group_items'].forEach(item => {
           item['selected_at'] = null;
           item['quantity'] = parseInt(bucket['quantity'][0]);
-
-          if (opportunity === null) {
-            system['system_items'].forEach(entry => {
-              if (item['id'] === entry['item_id']) {
-                item['selected_at'] = Date.now();
-                item['quantity'] = parseInt(entry['quantity']);
-              }
-            });
-          } else {}
-
+          system['system_items'].forEach(entry => {
+            if (item['id'] === entry['item_id']) {
+              item['selected_at'] = Date.now();
+              item['quantity'] = parseInt(entry['quantity']);
+            }
+          });
           bucketItems.push(item);
         });
       });
