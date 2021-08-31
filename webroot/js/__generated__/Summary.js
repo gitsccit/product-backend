@@ -42,11 +42,11 @@ class Summary extends React.Component {
         opportunity_system: {
           system_id: this.props.system['id'],
           opportunity_system_data_logs: [{
-            data: {
+            data: JSON.stringify({
               'name': this.state.name,
               'comments': this.state.comments,
               'config': this.props.prepareConfiguration()
-            }
+            })
           }]
         }
       }]

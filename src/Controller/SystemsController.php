@@ -65,12 +65,13 @@ class SystemsController extends AppController
 
         if ($configID) {
             $opportunitySystem = Configure::read('ProductBackend.showCost') ?
-                TableRegistry::getTableLocator()->get('OpportunitySystems')->get($configID)->toArray() :
+                TableRegistry::getTableLocator()->get('OpportunitySystems')->get($configID, [
+                    'contain' => ['OpportunitySystemDetails','OpportunityDetails'],
+                ]) :
                 (new \ApiHandler())->get("/unified-order/opportunity-systems/view/$configID")->getJson()['opportunity_system'];
-
             $system['config_name'] = $opportunitySystem['config_name'];
             $system['system_items'] = $opportunitySystem['opportunity_system_details'];
-            $system['opportunity_id'] = $opportunitySystem['opportunity_id'];
+            $system['opportunity_id'] = $opportunitySystem['opportunity_detail']['opportunity_id'];
         }
 
         $tabs = FactoryLocator::get('Table')->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
