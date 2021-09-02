@@ -140,7 +140,7 @@ class SystemCategoriesTable extends Table
     public function findListing(Query $query, $options)
     {
         $session = new Session();
-        $perspectiveId = $session->read('options.store.perspective');
+        $perspectiveID = $session->read('options.store.perspective');
 
         return $this->find()
             ->select([
@@ -150,9 +150,9 @@ class SystemCategoriesTable extends Table
                 'name' => 'IFNULL(SystemCategoryPerspectives.name, SystemCategories.name)',
                 'product_count' => 'IFNULL(SystemCategoryPerspectives.children, SystemCategories.children)',
             ])
-            ->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveId) {
+            ->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
                 return $query->where([
-                    'SystemCategoryPerspectives.perspective_id' => $perspectiveId,
+                    'SystemCategoryPerspectives.perspective_id' => $perspectiveID,
                 ]);
             })
             ->where([

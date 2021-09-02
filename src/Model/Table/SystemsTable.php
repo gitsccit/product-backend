@@ -11,6 +11,7 @@ use Cake\I18n\Number;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
@@ -190,34 +191,48 @@ class SystemsTable extends Table
         return $rules;
     }
 
-    public function findPrice(Query $query, array $options)
+    public function findBasePrice(Query $query, array $options)
     {
         $session = new Session();
-        $priceLevelId = $options['priceLevel'] ?? $session->read('options.store.price-level');
+        $priceLevelID = $options['priceLevel'] ?? $session->read('options.store.price-level');
 
         return $query
             ->select([
                 'price' => 'SystemPriceLevels.price',
             ])
-            ->innerJoinWith('SystemPriceLevels', function (Query $q) use ($priceLevelId) {
-                return $q->where(['SystemPriceLevels.price_level_id' => $priceLevelId]);
+            ->innerJoinWith('SystemPriceLevels', function (Query $q) use ($priceLevelID) {
+                return $q->where(['SystemPriceLevels.price_level_id' => $priceLevelID]);
             });
     }
 
-    public function findBasic(Query $query, array $options)
+    public function findConfiguredPrice(Query $query, array $options)
     {
-        $session = new Session();
-        $perspectiveId = $options['perspective'] ?? $session->read('options.store.perspective');
+        return $query
+            ->select([
+                'fpa' => 'SystemPriceLevels.fpa',
+            ])
+            ->find('basePrice', $options)
+            ->find('baseConfiguration', $options)
+            ->formatResults(function ($result) {
+                return $result->each(function ($system) {
+                    $system->price = $system->fpa;
+                    foreach ($system->system_items as &$systemItem) {
+                        $system->price += $systemItem['group_item']['price'] * $systemItem['quantity'];
+                    }
+                    unset($system->fpa);
+                });
+            });
+    }
 
+    public function findCost(Query $query, array $options)
+    {
         if (Configure::read('ProductBackend.showCost')) {
             $query
-                ->contain('SystemItems.GroupItems', function ($query) use ($options) {
-                    return $query->find('configuration', $options);
-                })
+                ->find('baseConfiguration', $options)
                 ->formatResults(function ($result) {
                     return $result->each(function ($system) {
                         $system->cost = 0;
-                        foreach ($system->system_items as $systemItem) {
+                        foreach ($system->system_items as &$systemItem) {
                             $system->cost += $systemItem['group_item']['cost'] * $systemItem['quantity'];
                         }
                         $system->gross_margin = Number::toPercentage(($system->price - $system->cost) / $system->price * 100);
@@ -225,8 +240,17 @@ class SystemsTable extends Table
                 });
         }
 
+        return $query;
+    }
+
+    public function findBasic(Query $query, array $options)
+    {
+        $session = new Session();
+        $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
+
         return $query
-            ->find('price', $options)
+            ->find(isset($options['configID']) ? 'configuredPrice' : 'basePrice', $options)
+            ->find('cost', $options)
             ->select([
                 'Systems.id',
                 'Systems.kit_id',
@@ -234,8 +258,8 @@ class SystemsTable extends Table
                 'url' => 'IFNULL(SystemPerspectives.url, Systems.url)',
                 'name' => 'IFNULL(SystemPerspectives.name, Systems.name)',
             ])
-            ->leftJoinWith('SystemPerspectives', function (Query $q) use ($perspectiveId) {
-                return $q->where(['SystemPerspectives.perspective_id' => $perspectiveId]);
+            ->leftJoinWith('SystemPerspectives', function (Query $q) use ($perspectiveID) {
+                return $q->where(['SystemPerspectives.perspective_id' => $perspectiveID]);
             })
             ->group(['Systems.id'])
             ->order([
@@ -329,9 +353,8 @@ class SystemsTable extends Table
     public function findDetails(Query $query, array $options)
     {
         return $query
-            ->find('active', $options)
+            ->find('basic', $options)
             ->find('image', ['type' => 'System'])
-            ->find('baseConfiguration')
             ->select([
                 'description' => 'IFNULL(SystemPerspectives.description, Systems.description)',
                 'meta_title' => 'IFNULL(SystemPerspectives.meta_title, Systems.meta_title)',
@@ -395,30 +418,52 @@ class SystemsTable extends Table
             });
     }
 
-    public function getConfigurationCostAndPrice($systemID, $configuration, $options = [])
-    {
-        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
-
-        $selectedItems = $this->GroupItems->find('configuration', $options)->whereInList(
-            'GroupItems.id',
-            array_keys($selectedItemsQuantities)
-        );
-        $system = $this->find(
-            'price',
-            $options
-        )->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
-        $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
-            return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
-        }, $system['fpa']);
-        $cost = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
-            return $carry + $item['cost'] * $selectedItemsQuantities[$item['id']];
-        }, 0.0);
-
-        return [$cost, $price];
-    }
-
     public function findBaseConfiguration(Query $query, array $options)
     {
+        if ($configID = $options['configID'] ?? null) {
+            $opportunitySystem = Configure::read('ProductBackend.showCost') ?
+                TableRegistry::getTableLocator()->get('OpportunitySystems')->get($configID, [
+                    'contain' => ['OpportunitySystemDetails', 'OpportunityDetails'],
+                ])->toArray() :
+                (new \ApiHandler())->get("/unified-order/opportunity-systems/view/$configID")->getJson()['opportunity_system'];
+
+            return $query->formatResults(function ($result) use ($opportunitySystem, $options) {
+                return $result->map(function ($system) use ($opportunitySystem, $options) {
+                    $system['config_name'] = $opportunitySystem['config_name'];
+                    $system['opportunity_id'] = $opportunitySystem['opportunity_detail']['opportunity_id'];
+                    $system['system_items'] = [];
+                    foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {
+                        if ($systemDetail['item_id'] !== null) {
+                            $system['system_items'][] = [
+                                'item_id' => $systemDetail['item_id'],
+                                'quantity' => $systemDetail['quantity'],
+                            ];
+                        }
+                    }
+
+                    if (Configure::read('ProductBackend.showCost')) {
+                        unset($options['configID']);
+                        $groupItems = $this->GroupItems->find('configuration', $options)
+                            ->whereInList('GroupItems.id', Hash::extract($system['system_items'], '{n}.item_id'))
+                            ->indexBy('id')
+                            ->toArray();
+
+                        foreach ($system['system_items'] as &$systemItem) {
+                            $systemItem['group_item'] = $groupItems[$systemItem['item_id']];
+                        }
+                    }
+
+                    return $system;
+                });
+            });
+        }
+
+        if (Configure::read('ProductBackend.showCost')) {
+            return $query->contain('SystemItems.GroupItems', function ($query) use ($options) {
+                return $query->find('configuration', $options);
+            });
+        }
+
         return $query->contain('SystemItems');
     }
 
@@ -445,6 +490,24 @@ class SystemsTable extends Table
                 'Products.cost' => 'DESC',
                 'Products.sort',
             ]);
+    }
+
+    public function getConfigurationCostAndPrice($systemID, $configuration, $options = [])
+    {
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
+
+        $selectedItems = $this->GroupItems->find('configuration', $options)
+            ->whereInList('GroupItems.id', array_keys($selectedItemsQuantities));
+        $system = $this->find('basePrice', $options)
+            ->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
+        $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
+            return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
+        }, $system['fpa']);
+        $cost = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
+            return $carry + $item['cost'] * $selectedItemsQuantities[$item['id']];
+        }, 0.0);
+
+        return [$cost, $price];
     }
 
     /**

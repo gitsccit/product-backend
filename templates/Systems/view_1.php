@@ -33,7 +33,6 @@ $currentWarehouse = $this->request->getQuery(
 );
 $environmentID = $this->request->getQuery('environment_id', $this->request->getSession()->read('environment.id'));
 $storeID = $this->request->getQuery('store_id', $this->request->getSession()->read('store.id'));
-$configuringSubKit = false;
 ?>
 
 <style>

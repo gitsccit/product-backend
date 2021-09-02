@@ -593,10 +593,10 @@ class Configure extends React.Component {
                                         <div className="item-group align-items-center mt-1"
                                              style={{marginLeft: '4.9rem'}}>
                                           <div>
-                                            <b>Base Configuration:</b>
+                                            <b>{item['config_name'] ?? 'Base Configuration'}</b>:
                                             <span className="text-primary">
                                                 &nbsp;{this.props.currencyFormatter.format(item['price'])}
-                                              </span> each
+                                            </span> each
                                           </div>
                                           <a href="javascript:void(0)" className="text-dark" data-bs-toggle="tooltip"
                                              data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"

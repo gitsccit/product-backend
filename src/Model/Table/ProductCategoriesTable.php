@@ -151,7 +151,7 @@ class ProductCategoriesTable extends Table
     public function findListing(Query $query, $options)
     {
         $session = new Session();
-        $perspectiveId = $session->read('options.store.perspective');
+        $perspectiveID = $session->read('options.store.perspective');
 
         return $query
             ->select([
@@ -162,9 +162,9 @@ class ProductCategoriesTable extends Table
                 'name' => 'IFNULL(ProductCategoryPerspectives.name, ProductCategories.name)',
                 'product_count' => 'IFNULL(ProductCategoryPerspectives.children, ProductCategories.children)',
             ])
-            ->leftJoinWith('ProductCategoryPerspectives', function (Query $query) use ($perspectiveId) {
+            ->leftJoinWith('ProductCategoryPerspectives', function (Query $query) use ($perspectiveID) {
                 return $query->where([
-                    'ProductCategoryPerspectives.perspective_id' => $perspectiveId,
+                    'ProductCategoryPerspectives.perspective_id' => $perspectiveID,
                 ]);
             })
             ->where([

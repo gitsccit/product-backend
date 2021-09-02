@@ -33,12 +33,12 @@ class ProductCategoriesController extends AppController
     {
         $productCategories = $this->ProductCategories->find('listing')->find('threaded');
 
-        if ($parentId = $this->request->getAttribute('parent_id')) {
-            $findSubCategories = function ($categories) use (&$findSubCategories, $parentId) {
+        if ($parentID = $this->request->getAttribute('parent_id')) {
+            $findSubCategories = function ($categories) use (&$findSubCategories, $parentID) {
                 $matchingCategories = [];
 
                 foreach ($categories as $category) {
-                    if ($category->parent_id == $parentId) {
+                    if ($category->parent_id == $parentID) {
                         $matchingCategories[] = $category;
                     }
 
@@ -98,7 +98,7 @@ class ProductCategoriesController extends AppController
         }
 
         $specifications = $this->ProductCategories->Products->find('specifications', [
-            'productCategoryId' => $productCategory->id,
+            'productCategoryID' => $productCategory->id,
         ]);
 
         if ($filter = json_decode(base64_decode($this->request->getQuery('filter', '')), true)) {

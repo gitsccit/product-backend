@@ -388,7 +388,7 @@ class KitsTable extends Table
         $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');;
         $selectedItemIDs = array_keys($selectedItemsQuantities);
 
-        $selectedItemProductIdMap = $this->KitItems->GroupItems->Products
+        $selectedItemProductIDMap = $this->KitItems->GroupItems->Products
             ->find()
             ->select(['id', 'item_id' => 'GroupItems.id'])
             ->innerJoinWith('GroupItems')
@@ -397,7 +397,7 @@ class KitsTable extends Table
             ->toArray();
 
         $selectedProductQuantities = [];
-        foreach ($selectedItemProductIdMap as $selectedItemID => $selectedProductID) {
+        foreach ($selectedItemProductIDMap as $selectedItemID => $selectedProductID) {
             $selectedProductQuantities[$selectedProductID] = $selectedItemsQuantities[$selectedItemID];
         }
         $selectedProductIDs = array_keys($selectedProductQuantities);
@@ -488,21 +488,21 @@ class KitsTable extends Table
         if ($quantity = $productCategories['Video Cards'] ?? 0) { // video card
             switch ($quantity) {
                 case 2:
-                    $specificationFieldId = 1996; // 2-way sli/crossfile
+                    $specificationFieldID = 1996; // 2-way sli/crossfile
                     break;
                 case 3:
-                    $specificationFieldId = 1997; // 3-way sli/crossfile
+                    $specificationFieldID = 1997; // 3-way sli/crossfile
                     break;
                 case 4:
-                    $specificationFieldId = 2054; // 4-way sli/crossfile
+                    $specificationFieldID = 2054; // 4-way sli/crossfile
                     break;
                 default:
-                    $specificationFieldId = 1975;
+                    $specificationFieldID = 1975;
                     break;
             }
 
             $minPower = $specsTable->find()->select(['sort'])->where([
-                'specification_field_id' => $specificationFieldId,
+                'specification_field_id' => $specificationFieldID,
 //                'product_id' => $productCategories[],
             ])->extract('sort')->first();
 

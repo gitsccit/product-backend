@@ -24,12 +24,12 @@ class SystemCategoriesController extends AppController
     {
         $systemCategories = $this->SystemCategories->find('listing')->find('threaded');
 
-        if ($parentId = $this->request->getAttribute('parent_id')) {
-            $findSubCategories = function ($categories) use (&$findSubCategories, $parentId) {
+        if ($parentID = $this->request->getAttribute('parent_id')) {
+            $findSubCategories = function ($categories) use (&$findSubCategories, $parentID) {
                 $matchingCategories = [];
 
                 foreach ($categories as $category) {
-                    if ($category->parent_id == $parentId) {
+                    if ($category->parent_id == $parentID) {
                         $matchingCategories[] = $category;
                     }
 

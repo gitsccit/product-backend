@@ -315,8 +315,8 @@ class ProductsTable extends Table
     public function findBasic(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveId = $options['perspective'] ?? $session->read('options.store.perspective');
-        $priceLevelId = $options['priceLevel'] ?? $session->read('options.store.price-level');
+        $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
+        $priceLevelID = $options['priceLevel'] ?? $session->read('options.store.price-level');
 
         if (Configure::read('ProductBackend.showCost')) {
             $query->select([
@@ -341,13 +341,13 @@ class ProductsTable extends Table
                 'status' => 'ProductStatuses.name',
                 'Products.part_number',
             ])
-            ->leftJoinWith('ProductPerspectives', function (Query $q) use ($perspectiveId) {
-                return $q->where(['ProductPerspectives.perspective_id' => $perspectiveId]);
+            ->leftJoinWith('ProductPerspectives', function (Query $q) use ($perspectiveID) {
+                return $q->where(['ProductPerspectives.perspective_id' => $perspectiveID]);
             })
             ->leftJoinWith('ProductStatuses')
-            ->innerJoinWith('ProductPriceLevels', function (Query $q) use ($priceLevelId) {
+            ->innerJoinWith('ProductPriceLevels', function (Query $q) use ($priceLevelID) {
                 return $q->where([
-                    'ProductPriceLevels.price_level_id' => $priceLevelId,
+                    'ProductPriceLevels.price_level_id' => $priceLevelID,
                 ]);
             })
             ->group(['Products.id'])
@@ -430,8 +430,8 @@ class ProductsTable extends Table
     public function findSpecifications(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveId = $session->read('options.store.perspective');
-        $productCategoryId = $options['productCategoryId'];
+        $perspectiveID = $session->read('options.store.perspective');
+        $productCategoryID = $options['productCategoryID'];
 
         return $query
             ->select([
@@ -440,13 +440,13 @@ class ProductsTable extends Table
                 'value' => 'Specifications.text_value',
                 'count' => 'COUNT(DISTINCT Specifications.id)',
             ])
-            ->leftJoinWith('ProductPerspectives', function (Query $q) use ($perspectiveId) {
-                return $q->where(['ProductPerspectives.perspective_id' => $perspectiveId]);
+            ->leftJoinWith('ProductPerspectives', function (Query $q) use ($perspectiveID) {
+                return $q->where(['ProductPerspectives.perspective_id' => $perspectiveID]);
             })
             ->innerJoinWith('Specifications.SpecificationFields.SpecificationGroups')
             ->leftJoinWith('Specifications.SpecificationUnits')
             ->where([
-                'Products.product_category_id' => $productCategoryId,
+                'Products.product_category_id' => $productCategoryID,
                 'IFNULL(ProductPerspectives.active, Products.active) =' => 'yes',
                 'SpecificationFields.techspec' => 'yes',
             ])

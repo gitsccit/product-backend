@@ -18,6 +18,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsTo $Systems
  * @property \ProductBackend\Model\Table\KitItemsTable&\Cake\ORM\Association\HasMany $KitItems
  * @property \ProductBackend\Model\Table\KitRuleDetailsTable&\Cake\ORM\Association\HasMany $KitRuleDetails
+ * @property \ProductBackend\Model\Table\SystemItemsTable&\Cake\ORM\Association\HasMany $SystemItems
  * @method \ProductBackend\Model\Entity\GroupItem newEmptyEntity()
  * @method \ProductBackend\Model\Entity\GroupItem newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\GroupItem[] newEntities(array $data, array $options = [])
@@ -68,6 +69,10 @@ class GroupItemsTable extends Table
         $this->hasMany('KitRuleDetails', [
             'foreignKey' => 'group_item_id',
             'className' => 'ProductBackend.KitRuleDetails',
+        ]);
+        $this->hasMany('SystemItems', [
+            'foreignKey' => 'item_id',
+            'className' => 'ProductBackend.SystemItems',
         ]);
     }
 
@@ -122,46 +127,50 @@ class GroupItemsTable extends Table
 
                 if ($systemIDs = $result->extract('system_id')->toList()) {
                     $systems = $this->Systems
-                        ->find('basic', $options)
+                        ->find('active', $options)
                         ->find('image')
                         ->whereInList('Systems.id', $systemIDs)
                         ->indexBy('id')
                         ->toArray();
                 }
 
-                return $result->map(function ($groupItem) use ($products, $systems, $options) {
-                    $item = $products[$groupItem['product_id']] ?? $systems[$groupItem['system_id']];
-                    $unifiedItem['id'] = $groupItem['id'];
-                    $unifiedItem['original_id'] = $item['id'];
-                    $unifiedItem['group_id'] = $groupItem['group_id'];
-                    $unifiedItem['type'] = $groupItem['product_id'] ? 'product' : 'system';
-                    $unifiedItem['name'] = $item['name'];
-                    $unifiedItem['image_id'] = $item['image_id'];
-                    $unifiedItem['status'] = $item['status'];
-                    $unifiedItem['status_text'] = $item['status_text'];
-                    $unifiedItem['warning'] = $item['warning'];
-                    $unifiedItem['price'] = $item['price'];
-                    $unifiedItem['specs'] = $item['specifications'];
+                return $result
+                    ->filter(function ($groupItem) use ($products, $systems) {
+                        return isset($products[$groupItem['product_id']]) || isset($systems[$groupItem['system_id']]);
+                    })
+                    ->map(function ($groupItem) use ($products, $systems, $options) {
+                        $item = $products[$groupItem['product_id']] ?? $systems[$groupItem['system_id']];
+                        $unifiedItem['id'] = $groupItem['id'];
+                        $unifiedItem['original_id'] = $item['id'];
+                        $unifiedItem['group_id'] = $groupItem['group_id'];
+                        $unifiedItem['type'] = $groupItem['product_id'] ? 'product' : 'system';
+                        $unifiedItem['name'] = $item['name'];
+                        $unifiedItem['image_id'] = $item['image_id'];
+                        $unifiedItem['status'] = $item['status'];
+                        $unifiedItem['status_text'] = $item['status_text'];
+                        $unifiedItem['warning'] = $item['warning'];
+                        $unifiedItem['price'] = $item['price'];
+                        $unifiedItem['specs'] = $item['specifications'];
 
-                    if ($groupItem['system_id']) {
-                        $unifiedItem['configuration'] = $this->Systems->SystemItems->find()
-                            ->innerJoinWith('GroupItems.Products', function (Query $q) use ($options) {
-                                return $q->find('basic', $options);
-                            })
-                            ->where(['SystemItems.system_id' => $groupItem['system_id']])
-                            ->toArray();
-                    }
+                        if ($groupItem['system_id']) {
+                            $unifiedItem['configuration'] = $this->Systems->SystemItems->find()
+                                ->innerJoinWith('GroupItems.Products', function (Query $q) use ($options) {
+                                    return $q->find('basic', $options);
+                                })
+                                ->where(['SystemItems.system_id' => $groupItem['system_id']])
+                                ->toArray();
+                        }
 
-                    if (Configure::read('ProductBackend.showCost')) {
-                        $unifiedItem['cost'] = $item['cost'];
-                    }
+                        if (Configure::read('ProductBackend.showCost')) {
+                            $unifiedItem['cost'] = $item['cost'];
+                        }
 
-                    if (Configure::read('ProductBackend.showStock') && isset($item['sage_itemcode'])) {
-                        $unifiedItem['sage_itemcode'] = $item['sage_itemcode'];
-                    }
+                        if (Configure::read('ProductBackend.showStock') && isset($item['sage_itemcode'])) {
+                            $unifiedItem['sage_itemcode'] = $item['sage_itemcode'];
+                        }
 
-                    return $unifiedItem;
-                });
+                        return $unifiedItem;
+                    });
             });
     }
 

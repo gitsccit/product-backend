@@ -40,9 +40,11 @@ class SystemsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(string $url, $configID = null)
+    public function view(string $url, $configID = null, $subKitUrl = null, $subKitConfigID = null)
     {
-        $url = str_replace(' ', '+', $url);
+        $systemUrl = $subKitUrl ?? $url;
+        $systemConfigID = $subKitConfigID ?? $configID;
+        $systemUrl = str_replace(' ', '+', $systemUrl);
 
         $options = [];
         if ($priceLevel = $this->request->getQuery('priceLevel')) {
@@ -51,27 +53,19 @@ class SystemsController extends AppController
         if ($warehouse = $this->request->getQuery('warehouse')) {
             $options['warehouse'] = $warehouse;
         }
+        if ($systemConfigID) {
+            $options['configID'] = $systemConfigID;
+        }
 
         $system = $this->Systems
             ->find('details', $options)
             ->where([
-                'IFNULL(SystemPerspectives.url, Systems.url) =' => $url,
+                'IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl,
             ])
             ->first();
 
         if (is_null($system)) {
             throw new NotFoundException();
-        }
-
-        if ($configID) {
-            $opportunitySystem = Configure::read('ProductBackend.showCost') ?
-                TableRegistry::getTableLocator()->get('OpportunitySystems')->get($configID, [
-                    'contain' => ['OpportunitySystemDetails','OpportunityDetails'],
-                ]) :
-                (new \ApiHandler())->get("/unified-order/opportunity-systems/view/$configID")->getJson()['opportunity_system'];
-            $system['config_name'] = $opportunitySystem['config_name'];
-            $system['system_items'] = $opportunitySystem['opportunity_system_details'];
-            $system['opportunity_id'] = $opportunitySystem['opportunity_detail']['opportunity_id'];
         }
 
         $tabs = FactoryLocator::get('Table')->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
@@ -108,11 +102,24 @@ class SystemsController extends AppController
         }
 
         if (!$this->request->is('ajax')) {
-            $breadcrumbs = $system->getBreadcrumbs();
+            $breadcrumbs = $this->Systems
+                ->find('active')
+                ->where([
+                    'IFNULL(SystemPerspectives.url, Systems.url) =' => $url,
+                ])
+                ->first()
+                ->getBreadcrumbs($configID);
+
+            $breadcrumbs[] = [
+                'title' => $system->name,
+                'url' => $this->request->getPath(),
+            ];
+
             $this->set(compact('breadcrumbs'));
         }
 
-        $this->set(compact('system', 'tabs'));
+        $configuringSubKit = isset($subKitUrl, $subKitConfigID);
+        $this->set(compact('system', 'tabs', 'configuringSubKit'));
 
         $layout = $this->request->getSession()->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");

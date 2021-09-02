@@ -516,7 +516,7 @@ class Configure extends React.Component {
           style: {
             marginLeft: '4.9rem'
           }
-        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, "Base Configuration:"), /*#__PURE__*/React.createElement("span", {
+        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, item['config_name'] ?? 'Base Configuration'), ":", /*#__PURE__*/React.createElement("span", {
           className: "text-primary"
         }, "\xA0", this.props.currencyFormatter.format(item['price'])), " each"), /*#__PURE__*/React.createElement("a", {
           href: "javascript:void(0)",
