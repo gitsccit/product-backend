@@ -430,7 +430,7 @@ class SystemsTable extends Table
             return $query->formatResults(function ($result) use ($opportunitySystem, $options) {
                 return $result->map(function ($system) use ($opportunitySystem, $options) {
                     $system['config_name'] = $opportunitySystem['config_name'];
-                    $system['config_json'] = $opportunitySystem['opportunity_system_data']['data'];
+                    $system['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
                     $system['opportunity_id'] = $opportunitySystem['opportunity_detail']['opportunity_id'];
                     $system['system_items'] = [];
                     foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {
