@@ -423,13 +423,14 @@ class SystemsTable extends Table
         if ($configID = $options['configID'] ?? null) {
             $opportunitySystem = Configure::read('ProductBackend.showCost') ?
                 TableRegistry::getTableLocator()->get('OpportunitySystems')->get($configID, [
-                    'contain' => ['OpportunitySystemDetails', 'OpportunityDetails'],
+                    'contain' => ['OpportunitySystemDetails', 'OpportunitySystemData', 'OpportunityDetails'],
                 ])->toArray() :
                 (new \ApiHandler())->get("/unified-order/opportunity-systems/view/$configID")->getJson()['opportunity_system'];
 
             return $query->formatResults(function ($result) use ($opportunitySystem, $options) {
                 return $result->map(function ($system) use ($opportunitySystem, $options) {
                     $system['config_name'] = $opportunitySystem['config_name'];
+                    $system['config_json'] = $opportunitySystem['opportunity_system_data']['data'];
                     $system['opportunity_id'] = $opportunitySystem['opportunity_detail']['opportunity_id'];
                     $system['system_items'] = [];
                     foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {

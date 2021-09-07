@@ -23,9 +23,10 @@ class Configurator extends React.Component {
       });
       baseConfig[bucket['id']] = bucketItems;
     });
-    this.validateConfiguration = this.validateConfiguration.bind(this);
     this.updateSystem = this.updateSystem.bind(this);
+    this.validateConfiguration = this.validateConfiguration.bind(this);
     this.prepareConfiguration = this.prepareConfiguration.bind(this);
+    this.saveConfiguration = this.saveConfiguration.bind(this);
     this.currencyFormatter = new Intl.NumberFormat(undefined, {
       style: 'currency',
       currency: this.props.currency,
@@ -81,8 +82,8 @@ class Configurator extends React.Component {
         return item['selected_at'] != null;
       }).map(item => {
         let config = {
-          'item_id': item['id'],
-          'qty': item['quantity']
+          item_id: item['id'],
+          qty: item['quantity']
         };
 
         if ('configuration' in item) {
@@ -103,13 +104,11 @@ class Configurator extends React.Component {
     let payload = {
       system: system['id'],
       kit: system['kit_id'],
-      configuration: configuration
+      configuration: configuration,
+      ...('currentPriceLevel' in this.props ? {
+        priceLevel: this.props['currentPriceLevel']
+      } : {})
     };
-
-    if ('currentPriceLevel' in this.props) {
-      payload['priceLevel'] = this.props['currentPriceLevel'];
-    }
-
     let url = this.props.baseUrl + '/system/validate';
     this.setState({
       currentConfig: newConfig,
@@ -125,6 +124,46 @@ class Configurator extends React.Component {
         body: JSON.stringify(payload)
       }).then(response => response.json()).then(callback);
     });
+  }
+
+  saveConfiguration({
+    quantity = null,
+    comments = null
+  }, callback) {
+    let url = this.props.appsUrl + '/api/unified-order/opportunities/commit';
+    let payload = { ...('opportunity_id' in this.state.system ? {
+        id: this.state.system['opportunity_id']
+      } : {}),
+      store_id: this.props.storeId,
+      environment_id: this.props.environmentId,
+      opportunity_details: [{ ...(quantity ? {
+          quantity: quantity
+        } : {}),
+        opportunity_detail_type_id: 4,
+        opportunity_system: {
+          system_id: this.state.system['id'],
+          opportunity_system_data: {
+            data: JSON.stringify({
+              name: this.state.name ?? 'My Configuration',
+              ...(comments ? {
+                comments: comments
+              } : {}),
+              config: this.prepareConfiguration()
+            })
+          }
+        }
+      }]
+    };
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': this.props.csrf,
+        'scctoken': this.props.token
+      },
+      body: JSON.stringify(payload)
+    }).then(response => response.json()).then(callback);
   }
 
   updateSystem(system, validConfiguration) {
@@ -162,6 +201,8 @@ class Configurator extends React.Component {
             validateConfiguration: this.validateConfiguration,
             updateSystem: this.updateSystem,
             baseUrl: this.props.baseUrl,
+            configId: this.props.configId,
+            subKitConfigId: this.props.subKitConfigId,
             currencyFormatter: this.currencyFormatter
           });
           break;
@@ -180,7 +221,8 @@ class Configurator extends React.Component {
             csrf: this.props.csrf,
             updateSystem: this.updateSystem,
             validateConfiguration: this.validateConfiguration,
-            currencyFormatter: this.currencyFormatter
+            currencyFormatter: this.currencyFormatter,
+            saveConfiguration: this.saveConfiguration
           });
           break;
 
@@ -193,12 +235,9 @@ class Configurator extends React.Component {
             validConfiguration: this.state.validConfiguration,
             validateConfiguration: this.validateConfiguration,
             prepareConfiguration: this.prepareConfiguration,
-            environmentId: this.props.environmentId,
-            storeId: this.props.storeId,
-            csrf: this.props.csrf,
-            appsUrl: this.props.appsUrl,
-            token: this.props.token,
-            configuringSubKit: this.props.configuringSubKit,
+            saveConfiguration: this.saveConfiguration,
+            configId: this.props.configId,
+            subKitConfigId: this.props.subKitConfigId,
             currencyFormatter: this.currencyFormatter
           });
           break;

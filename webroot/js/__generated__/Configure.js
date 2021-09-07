@@ -210,19 +210,13 @@ class Configure extends React.Component {
     return filteredGroups;
   }
 
-  _configureSubKit(itemID) {
-    let url = this.props.appsUrl + '/api/unified-order/opportunities/prepare';
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': this.props.csrf
-      },
-      body: JSON.stringify(payload)
-    }).then(response => response.json()).then(result => {
-      let systemID = result['opportunity']['opportunity_details'];
-      let url = this.props.baseUrl + `/system/${this.state.system['url']}/`;
+  _configureSubKit(item) {
+    this.props.saveConfiguration({}, result => {
+      let opportunityDetail = result['opportunity']['opportunity_details'].find(opportunityDetail => opportunityDetail['opportunity_detail_type']['name'] === 'system' && opportunityDetail['opportunity_system']['id'] === this.props.configID);
+      let configId = opportunityDetail['opportunity_system']['id'];
+      let subKit = result['opportunity']['opportunity_details'].find(opportunityDetail => opportunityDetail['opportunity_detail_type']['name'] === 'subkit' && opportunityDetail['opportunity_system']['id'] === item['id']);
+      let subKitConfigId = opportunityDetail['opportunity_system']['id'];
+      let url = `${this.props.baseUrl}/system/${this.state.system['url']}/${configId}/${item['url']}/${subKitConfigId}`;
       window.location.assign(url);
     });
   }
@@ -530,7 +524,7 @@ class Configure extends React.Component {
           className: "icon-info-circled"
         })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {
           className: "btn btn-sm btn-primary",
-          onClick: () => this._configureSubKit(item['id'])
+          onClick: () => this._configureSubKit(item)
         }, "Configure Sub-kit")));
       }))))));
     }))));

@@ -33,43 +33,13 @@ class Summary extends React.Component {
   }
 
   _addToOrder() {
-    let url = this.props.appsUrl + '/api/unified-order/opportunities/commit';
-    let payload = {
-      store_id: this.props.storeId,
-      environment_id: this.props.environmentId,
-      opportunity_details: [
-        {
-          quantity: this.state.quantity,
-          opportunity_detail_type_id: 4,
-          opportunity_system: {
-            system_id: this.props.system['id'],
-            opportunity_system_data: {
-              data: JSON.stringify({
-                'name': this.state.name,
-                'comments': this.state.comments,
-                'config': this.props.prepareConfiguration(),
-              }),
-            },
-          }
-        }
-      ],
-    };
+    this.props.saveConfiguration({quantity: this.state.quantity, comments: this.state.comments}, _ => {
+      let url = this.props.baseUrl + ('cost' in this.props.system ? '/quotes' : '/order');
 
-    if ('opportunity_id' in this.props.system) {
-      payload['id'] = this.props.system['opportunity_id'];
-    }
+      if (this.props.subKitConfigId) {
+        url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.configId}`;
+      }
 
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': this.props.csrf,
-        'scctoken': this.props.token,
-      },
-      body: JSON.stringify(payload)
-    }).then(_ => {
-      let url = this.props.baseUrl + ('cost' in this.props.system ? '/quote' : '/order');
       window.location.assign(url);
     });
   }
@@ -226,7 +196,7 @@ class Summary extends React.Component {
                     <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)"
                        onClick={() => this._addToOrder()}>
                       <span
-                        className="h5 icon-plus"></span>{this.props.configuringSubKit ? 'Save & Return' : 'Add To Order'}
+                        className="h5 icon-plus"></span>{this.props.subKitConfigId ? 'Save & Return' : 'Add To Order'}
                     </a>
                   </> :
                   <h4 className="text-primary text-md-center">
