@@ -40,8 +40,9 @@ class SystemsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(string $url, $configID = null, $subKitUrl = null, $subKitConfigID = null)
+    public function view(...$url)
     {
+        [$url, $configID, $subKitUrl, $subKitConfigID] = array_pad(array_slice($url, -4), 4, null);
         $systemUrl = $subKitUrl ?? $url;
         $systemConfigID = $subKitConfigID ?? $configID;
         $systemUrl = str_replace(' ', '+', $systemUrl);

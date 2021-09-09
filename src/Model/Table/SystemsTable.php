@@ -421,11 +421,9 @@ class SystemsTable extends Table
     public function findBaseConfiguration(Query $query, array $options)
     {
         if ($configID = $options['configID'] ?? null) {
-            $opportunitySystem = Configure::read('ProductBackend.showCost') ?
-                TableRegistry::getTableLocator()->get('OpportunitySystems')->get($configID, [
-                    'contain' => ['OpportunitySystemDetails', 'OpportunitySystemData', 'OpportunityDetails'],
-                ])->toArray() :
-                (new \ApiHandler())->get("/unified-order/opportunity-systems/view/$configID")->getJson()['opportunity_system'];
+            $opportunitySystem = Configure::read('Fetchers.opportunitySystem')($configID);
+            $opportunityID = $opportunitySystem['opportunity_id'] ?? $opportunitySystem['opportunity_detail']['opportunity_id'];
+            $opportunity = Configure::read('Fetchers.opportunity')($opportunityID);
 
             return $query->formatResults(function ($result) use ($opportunitySystem, $options) {
                 return $result->map(function ($system) use ($opportunitySystem, $options) {

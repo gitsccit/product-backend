@@ -12,7 +12,7 @@ class Utility
     static public function getFileName($id, $width = null, $height = null)
     {
         $session = new Session();
-        $fileFetcher = Configure::read('fileFetcher');
+        $fileFetcher = Configure::read('Fetchers.file');
         $file = $fileFetcher($id);
         $allowedSizes = $session->read('options.files.resize');
         $allowedSizes = explode(',', $allowedSizes);
@@ -50,6 +50,10 @@ class Utility
 
     static public function getFileUrl($id, $width = null, $height = null)
     {
+        if (empty($id)) {
+            return 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+        }
+
         return Router::url('/files/' . self::getFileName($id, $width, $height));
     }
 }
