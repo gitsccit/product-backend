@@ -602,26 +602,28 @@ class Configure extends React.Component {
                                           {
                                             this.state.errors.length === 0 &&
                                             <a className="btn btn-sm btn-primary"
-                                               onClick={() => this._configureSubKit(item)}>Configure Sub-kit</a>
+                                               onClick={() => this._configureSubKit(item)}>
+                                              {'config_name' in item ? 'Reconfigure' : 'Configure'} Sub-kit
+                                            </a>
                                           }
                                         </div>
                                       }
                                     </>
                                   );
                                 })
+                                }
+                                </div>
+                                </ConditionalWrapper>
+                                </ConditionalWrapper>
+                                ))
+                                }
+                                </div>
+                                )
+                                })
+                                }
+                                </div>
+                                </div>
+                                </>
+                                );
                               }
-                            </div>
-                          </ConditionalWrapper>
-                        </ConditionalWrapper>
-                      ))
-                    }
-                  </div>
-                )
-              })
-            }
-          </div>
-        </div>
-      </>
-    );
-  }
-}
+                                }

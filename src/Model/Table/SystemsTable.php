@@ -382,10 +382,8 @@ class SystemsTable extends Table
                                 $subKit = $opportunityDetail['opportunity_system'];
                                 $formattedSubKit = [
                                     'original_id' => $subKit['system_id'],
-//                                    'name' => $subKit['name'],
                                     'config_name' => $subKit['config_name'],
                                     'price' => $subKit['unit_price'],
-//                                    'type' => 'system',
                                     'quantity' => $opportunityDetail['quantity'],
                                     'configuration' => array_map(function ($systemDetail) {
                                         return [
@@ -416,7 +414,7 @@ class SystemsTable extends Table
 
                         $selectedItems = [];
                         foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {
-                            if ($systemDetail['item_id'] !== null && $systemDetail['type'] !== 'subkit') {
+                            if ($systemDetail['item_id'] !== null && $systemDetail['line_type'] !== 'subkit') {
                                 $selectedItems[$systemDetail['item_id']] = $systemDetail['quantity'];
                             }
                         }

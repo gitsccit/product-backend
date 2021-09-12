@@ -525,7 +525,7 @@ class Configure extends React.Component {
         })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {
           className: "btn btn-sm btn-primary",
           onClick: () => this._configureSubKit(item)
-        }, "Configure Sub-kit")));
+        }, 'config_name' in item ? 'Reconfigure' : 'Configure', " Sub-kit")));
       }))))));
     }))));
   }
