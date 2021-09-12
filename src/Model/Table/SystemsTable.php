@@ -11,7 +11,6 @@ use Cake\I18n\Number;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
@@ -191,7 +190,7 @@ class SystemsTable extends Table
         return $rules;
     }
 
-    public function findBasePrice(Query $query, array $options)
+    public function findPrice(Query $query, array $options)
     {
         $session = new Session();
         $priceLevelID = $options['priceLevel'] ?? $session->read('options.store.price-level');
@@ -202,25 +201,6 @@ class SystemsTable extends Table
             ])
             ->innerJoinWith('SystemPriceLevels', function (Query $q) use ($priceLevelID) {
                 return $q->where(['SystemPriceLevels.price_level_id' => $priceLevelID]);
-            });
-    }
-
-    public function findConfiguredPrice(Query $query, array $options)
-    {
-        return $query
-            ->select([
-                'fpa' => 'SystemPriceLevels.fpa',
-            ])
-            ->find('basePrice', $options)
-            ->find('baseConfiguration', $options)
-            ->formatResults(function ($result) {
-                return $result->each(function ($system) {
-                    $system->price = $system->fpa;
-                    foreach ($system->system_items as &$systemItem) {
-                        $system->price += $systemItem['group_item']['price'] * $systemItem['quantity'];
-                    }
-                    unset($system->fpa);
-                });
             });
     }
 
@@ -249,7 +229,7 @@ class SystemsTable extends Table
         $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
 
         return $query
-            ->find(isset($options['configID']) ? 'configuredPrice' : 'basePrice', $options)
+            ->find('price', $options)
             ->find('cost', $options)
             ->select([
                 'Systems.id',
@@ -352,6 +332,10 @@ class SystemsTable extends Table
 
     public function findDetails(Query $query, array $options)
     {
+        if (!isset($options['configID'])) {
+            $query->find('baseConfiguration', $options);
+        }
+
         return $query
             ->find('basic', $options)
             ->find('image', ['type' => 'System'])
@@ -368,12 +352,94 @@ class SystemsTable extends Table
             ->innerJoinWith('Kits')
             ->formatResults(function ($result) use ($options) {
                 return $result->map(function ($system) use ($options) {
-                    $system->noise_level = $system->noise_level === 'yes';
-                    $system->power_estimate = $system->power_estimate === 'yes';
-                    $system->buckets = $this->Kits->Buckets->find(
-                        'configuration',
-                        ['kitID' => $system->kit_id]
-                    )->find('filters')->toList();
+                    // load configuration
+                    if (isset($options['configID'])) {
+                        $opportunitySystem = Configure::read('Fetchers.opportunitySystem')($options['configID']);
+                        $opportunityID = $opportunitySystem['opportunity_id'] ?? $opportunitySystem['opportunity_detail']['opportunity_id'];
+                        $subKitCount = count(array_filter($opportunitySystem['opportunity_system_details'],
+                            function ($systemDetail) {
+                                return $systemDetail['line_type'] === 'subkit';
+                            }));
+
+                        // opportunity is only queried if current system has sub-kits, fill in sub-kits' details
+                        if ($subKitCount > 0) {
+                            $opportunity = Configure::read('Fetchers.opportunity')($opportunityID);
+                            $currentSystemDetail = array_filter($opportunity['opportunity_details'],
+                                function ($opportunityDetail) use ($options) {
+                                    return isset($opportunityDetail['opportunity_system']) &&
+                                        $opportunityDetail['opportunity_system']['id'] === $options['configID'];
+                                })[0];
+
+                            // sub-kits follow current system by line number in opportunity_details
+                            for ($i = $currentSystemDetail['line_number'] + 1; $i <= count($opportunity['opportunity_details']); $i++) {
+                                $opportunityDetail = $opportunity['opportunity_details'][$i];
+
+                                if ($opportunityDetail['opportunity_detail_type'] !== 'subkit') {
+                                    break;
+                                }
+
+                                $subKit = $opportunityDetail['opportunity_system'];
+                                $formattedSubKit = [
+                                    'system_id' => $subKit['system_id'],
+                                    'name' => $subKit['name'],
+                                    'config_name' => $subKit['config_name'],
+                                    'price' => $subKit['unit_price'],
+                                    'type' => 'system',
+                                    'quantity' => $opportunityDetail['quantity'],
+                                    'configuration' => array_map(function ($systemDetail) {
+                                        return [
+                                            'item_id' => $systemDetail['item_id'],
+                                            'name' => $systemDetail['name'],
+                                            'quantity' => $systemDetail['quantity'],
+                                        ];
+                                    }, $subKit['opportunity_system_details']),
+                                    'selected' => true,
+                                ];
+
+                                if (Configure::read('ProductBackend.showCost')) {
+                                    $formattedSubKit['cost'] = $subKit['unit_cost'];
+                                }
+
+                                if (Configure::read('ProductBackend.showStock') && isset($opportunityDetail['sage_itemcode'])) {
+                                    $formattedSubKit['sage_itemcode'] = $opportunityDetail['sage_itemcode'];
+                                }
+
+                                $subKits[] = $formattedSubKit;
+                            }
+                        }
+
+                        $system['price'] = $opportunitySystem['unit_price'];
+                        $system['config_name'] = $opportunitySystem['config_name'];
+                        $system['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
+                        $system['opportunity_id'] = $opportunityID;
+
+                        $selectedItems = [];
+                        foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {
+                            if ($systemDetail['item_id'] !== null && $systemDetail['type'] !== 'subkit') {
+                                $selectedItems[$systemDetail['item_id']] = $systemDetail['quantity'];
+                            }
+                        }
+
+                        if (Configure::read('ProductBackend.showCost')) {
+                            $system['cost'] = $opportunitySystem['unit_cost'];
+                        }
+                    }
+
+                    // use base configuration
+                    if (!isset($selectedItems)) {
+                        $selectedItems = Hash::combine($system['system_items'], '{n}.item_id', '{n}.quantity');
+                    }
+
+                    $system['noise_level'] = $system->noise_level === 'yes';
+                    $system['power_estimate'] = $system->power_estimate === 'yes';
+                    $system['buckets'] = $this->Kits->Buckets
+                        ->find('configuration', [
+                            'kitID' => $system['kit_id'],
+                            'subKits' => $subKits ?? [],
+                            'selectedItems' => $selectedItems
+                        ])
+                        ->find('filters')
+                        ->toList();
 
                     if (Configure::read('ProductBackend.showStock')) {
                         $thinkAPI = Client::createFromUrl(Configure::read('Urls.thinkAPI'));
@@ -420,43 +486,6 @@ class SystemsTable extends Table
 
     public function findBaseConfiguration(Query $query, array $options)
     {
-        if ($configID = $options['configID'] ?? null) {
-            $opportunitySystem = Configure::read('Fetchers.opportunitySystem')($configID);
-            $opportunityID = $opportunitySystem['opportunity_id'] ?? $opportunitySystem['opportunity_detail']['opportunity_id'];
-            $opportunity = Configure::read('Fetchers.opportunity')($opportunityID);
-
-            return $query->formatResults(function ($result) use ($opportunitySystem, $options) {
-                return $result->map(function ($system) use ($opportunitySystem, $options) {
-                    $system['config_name'] = $opportunitySystem['config_name'];
-                    $system['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
-                    $system['opportunity_id'] = $opportunitySystem['opportunity_detail']['opportunity_id'];
-                    $system['system_items'] = [];
-                    foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {
-                        if ($systemDetail['item_id'] !== null) {
-                            $system['system_items'][] = [
-                                'item_id' => $systemDetail['item_id'],
-                                'quantity' => $systemDetail['quantity'],
-                            ];
-                        }
-                    }
-
-                    if (Configure::read('ProductBackend.showCost')) {
-                        unset($options['configID']);
-                        $groupItems = $this->GroupItems->find('configuration', $options)
-                            ->whereInList('GroupItems.id', Hash::extract($system['system_items'], '{n}.item_id'))
-                            ->indexBy('id')
-                            ->toArray();
-
-                        foreach ($system['system_items'] as &$systemItem) {
-                            $systemItem['group_item'] = $groupItems[$systemItem['item_id']];
-                        }
-                    }
-
-                    return $system;
-                });
-            });
-        }
-
         if (Configure::read('ProductBackend.showCost')) {
             return $query->contain('SystemItems.GroupItems', function ($query) use ($options) {
                 return $query->find('configuration', $options);
@@ -497,7 +526,8 @@ class SystemsTable extends Table
 
         $selectedItems = $this->GroupItems->find('configuration', $options)
             ->whereInList('GroupItems.id', array_keys($selectedItemsQuantities));
-        $system = $this->find('basePrice', $options)
+        //TODO: calculate sub-kit prices
+        $system = $this->find('price', $options)
             ->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
         $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
             return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];

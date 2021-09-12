@@ -132,6 +132,18 @@ class GroupItemsTable extends Table
                         ->whereInList('Systems.id', $systemIDs)
                         ->indexBy('id')
                         ->toArray();
+
+                    $configuration = $this->Systems->SystemItems->find()
+                        ->innerJoinWith('GroupItems.Products', function (Query $q) use ($options) {
+                            return $q->find('basic', $options);
+                        })
+                        ->whereInList('SystemItems.system_id', $systemIDs)
+                        ->indexBy('system_id')
+                        ->toArray();
+
+                    foreach ($systems as &$system) {
+                        $system['configuration'] = $configuration[$system['id']];
+                    }
                 }
 
                 return $result
@@ -152,14 +164,15 @@ class GroupItemsTable extends Table
                         $unifiedItem['warning'] = $item['warning'];
                         $unifiedItem['price'] = $item['price'];
                         $unifiedItem['specs'] = $item['specifications'];
+                        $unifiedItem['selected'] = false;
+
+                        if ($quantity = $options['selectedItems'][$unifiedItem['id']]) {
+                            $unifiedItem['quantity'] = $quantity;
+                            $unifiedItem['selected'] = true;
+                        }
 
                         if ($groupItem['system_id']) {
-                            $unifiedItem['configuration'] = $this->Systems->SystemItems->find()
-                                ->innerJoinWith('GroupItems.Products', function (Query $q) use ($options) {
-                                    return $q->find('basic', $options);
-                                })
-                                ->where(['SystemItems.system_id' => $groupItem['system_id']])
-                                ->toArray();
+                            $unifiedItem['configuration'] = $item['configuration'];
                         }
 
                         if (Configure::read('ProductBackend.showCost')) {

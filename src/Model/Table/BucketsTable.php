@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
+use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\Core\Configure;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -153,6 +155,7 @@ class BucketsTable extends Table
     public function findConfiguration(Query $query, array $options)
     {
         $kitID = $options['kitID'];
+        $subKits = (new Collection($options['subKits']))->groupBy('system_id');
 
         return $query
             ->select([
@@ -169,14 +172,24 @@ class BucketsTable extends Table
             ])
             ->innerJoinWith('Kits')
             ->innerJoinWith('BucketCategories')
-            ->contain('Groups', function (Query $q) use ($kitID) {
+            ->contain('Groups', function (Query $q) use ($options, $kitID, $subKits) {
                 return $q
-                    ->contain('GroupItems', function (Query $q) use ($kitID) {
-                        return $q->find('configuration')->find('activeInKit', ['kitID' => $kitID]);
+                    ->contain('GroupItems', function (Query $q) use ($options, $kitID) {
+                        return $q->find('configuration', $options)->find('activeInKit', ['kitID' => $kitID]);
                     })
                     ->order([
                         'Groups.sort',
-                    ]);
+                    ])
+                    ->formatResults(function ($result) use ($subKits) {
+                        return $result->map(function (&$group) use ($subKits) {
+                            foreach ($group['group_items'] as $index => $groupItem) {
+                                // insert selected sub-kits in each group
+                                if ($selectedSystems = $subKits[$groupItem['id']] ?? []) {
+                                    array_splice($group['group_items'], $index, 0, $selectedSystems);
+                                }
+                            }
+                        });
+                    });
             })
             ->where(['Kits.id' => $kitID])
             ->order([

@@ -13,15 +13,8 @@ class Configurator extends React.Component {
 
       bucket['groups'].forEach(group => {
         group['group_items'].forEach(item => {
-          item['selected_at'] = null;
-          item['quantity'] = parseInt(bucket['quantity'][0]);
-
-          system['system_items'].forEach(entry => {
-            if (item['id'] === entry['item_id']) {
-              item['selected_at'] = Date.now();
-              item['quantity'] = parseInt(entry['quantity']);
-            }
-          });
+          item['selected_at'] = item['selected'] ? Date.now() : null;
+          item['quantity'] = parseInt(item['quantity'] ?? bucket['quantity'][0]);
 
           bucketItems.push(item);
         });
@@ -140,6 +133,16 @@ class Configurator extends React.Component {
 
   saveConfiguration({quantity = null, comments = null}, callback) {
     let url = this.props.appsUrl + '/api/unified-order/opportunities/commit';
+    let data = {
+      name: this.state.name ?? ('My System ' + new Date().toLocaleString()),
+      ...(comments ? {comments: comments} : {}),
+      config: this.prepareConfiguration(),
+    };
+
+    if (this.props.subKitConfigId) {
+      this.state.system['config_json']
+    }
+
     let payload = {
       ...('opportunity_id' in this.state.system ? {id: this.state.system['opportunity_id']} : {}),
       store_id: this.props.storeId,
@@ -151,11 +154,7 @@ class Configurator extends React.Component {
           opportunity_system: {
             system_id: this.state.system['id'],
             opportunity_system_data: {
-              data: JSON.stringify({
-                name: this.state.name ?? 'My Configuration',
-                ...(comments ? {comments: comments} : {}),
-                config: this.prepareConfiguration(),
-              }),
+              data: JSON.stringify(data),
             },
           }
         }
@@ -204,7 +203,9 @@ class Configurator extends React.Component {
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
-          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
+          tab['content'] = <Configure ref={(configure) => {
+            window.configure = configure
+          }}
                                       system={systemWithoutStandaloneBuckets} currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}

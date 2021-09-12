@@ -2,7 +2,7 @@ class Summary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comments: '',
+      comments: this.props.system?.['config_json']?.['comments'] ?? '',
       quantity: 1
     };
   }
