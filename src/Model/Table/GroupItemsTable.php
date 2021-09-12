@@ -138,7 +138,7 @@ class GroupItemsTable extends Table
                             return $q->find('basic', $options);
                         })
                         ->whereInList('SystemItems.system_id', $systemIDs)
-                        ->indexBy('system_id')
+                        ->groupBy('system_id')
                         ->toArray();
 
                     foreach ($systems as &$system) {
@@ -166,7 +166,7 @@ class GroupItemsTable extends Table
                         $unifiedItem['specs'] = $item['specifications'];
                         $unifiedItem['selected'] = false;
 
-                        if ($quantity = $options['selectedItems'][$unifiedItem['id']]) {
+                        if (isset($options['selectedItems']) && ($quantity = $options['selectedItems'][$unifiedItem['id']] ?? null)) {
                             $unifiedItem['quantity'] = $quantity;
                             $unifiedItem['selected'] = true;
                         }

@@ -155,7 +155,7 @@ class BucketsTable extends Table
     public function findConfiguration(Query $query, array $options)
     {
         $kitID = $options['kitID'];
-        $subKits = (new Collection($options['subKits']))->groupBy('system_id');
+        $subKits = (new Collection($options['subKits']))->groupBy('original_id')->toArray();
 
         return $query
             ->select([
@@ -181,13 +181,18 @@ class BucketsTable extends Table
                         'Groups.sort',
                     ])
                     ->formatResults(function ($result) use ($subKits) {
-                        return $result->map(function (&$group) use ($subKits) {
+                        return $result->map(function ($group) use ($subKits) {
                             foreach ($group['group_items'] as $index => $groupItem) {
                                 // insert selected sub-kits in each group
-                                if ($selectedSystems = $subKits[$groupItem['id']] ?? []) {
+                                if ($selectedSystems = $subKits[$groupItem['original_id']] ?? []) {
+                                    foreach ($selectedSystems as &$selectedSystem) {
+                                        $selectedSystem = array_merge($groupItem, $selectedSystem);
+                                    }
                                     array_splice($group['group_items'], $index, 0, $selectedSystems);
                                 }
                             }
+
+                            return $group;
                         });
                     });
             })

@@ -362,29 +362,30 @@ class SystemsTable extends Table
                             }));
 
                         // opportunity is only queried if current system has sub-kits, fill in sub-kits' details
+                        $subKits = [];
                         if ($subKitCount > 0) {
                             $opportunity = Configure::read('Fetchers.opportunity')($opportunityID);
                             $currentSystemDetail = array_filter($opportunity['opportunity_details'],
                                 function ($opportunityDetail) use ($options) {
                                     return isset($opportunityDetail['opportunity_system']) &&
-                                        $opportunityDetail['opportunity_system']['id'] === $options['configID'];
+                                        $opportunityDetail['opportunity_system']['id'] == $options['configID'];
                                 })[0];
 
                             // sub-kits follow current system by line number in opportunity_details
-                            for ($i = $currentSystemDetail['line_number'] + 1; $i <= count($opportunity['opportunity_details']); $i++) {
+                            for ($i = $currentSystemDetail['line_number']; $i < count($opportunity['opportunity_details']); $i++) {
                                 $opportunityDetail = $opportunity['opportunity_details'][$i];
 
-                                if ($opportunityDetail['opportunity_detail_type'] !== 'subkit') {
+                                if ($opportunityDetail['opportunity_detail_type']['name'] !== 'subkit') {
                                     break;
                                 }
 
                                 $subKit = $opportunityDetail['opportunity_system'];
                                 $formattedSubKit = [
-                                    'system_id' => $subKit['system_id'],
-                                    'name' => $subKit['name'],
+                                    'original_id' => $subKit['system_id'],
+//                                    'name' => $subKit['name'],
                                     'config_name' => $subKit['config_name'],
                                     'price' => $subKit['unit_price'],
-                                    'type' => 'system',
+//                                    'type' => 'system',
                                     'quantity' => $opportunityDetail['quantity'],
                                     'configuration' => array_map(function ($systemDetail) {
                                         return [
