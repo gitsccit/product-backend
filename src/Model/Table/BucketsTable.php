@@ -155,7 +155,7 @@ class BucketsTable extends Table
     public function findConfiguration(Query $query, array $options)
     {
         $kitID = $options['kitID'];
-        $subKits = (new Collection($options['subKits']))->groupBy('original_id')->toArray();
+        $subKits = (new Collection($options['subKits'] ?? []))->groupBy('original_id')->toArray();
 
         return $query
             ->select([
