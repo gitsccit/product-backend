@@ -45,7 +45,7 @@ class Configurator extends React.Component {
       currentConfig: baseConfig,
       currentTab: 0,
       validConfiguration: true,
-      name: 'My System ' + (new Date()).toString(),
+      name: system['config_name'] ?? 'My System ' + (new Date()).toLocaleString(),
     };
   }
 
@@ -80,6 +80,12 @@ class Configurator extends React.Component {
     <div>${this.currencyFormatter.format(this.state.system['price'] / 24)}/mo for 24 months</div>
     <div>${this.currencyFormatter.format(this.state.system['price'] / 36)}/mo for 36 months</div>
     <div class="text-muted">Requires credit approval, rates subject to changes.</div>`;
+  }
+
+  _updateName(event) {
+    this.setState({
+      name: event.target.value,
+    });
   }
 
   prepareConfiguration() {
@@ -139,7 +145,7 @@ class Configurator extends React.Component {
   saveConfiguration({quantity = null, comments = null}, callback) {
     let url = this.props.appsUrl + '/api/unified-order/opportunities/commit';
     let data = {
-      name: this.state.name ?? ('My System ' + new Date().toLocaleString()),
+      name: this.state.name,
       ...(comments ? {comments: comments} : {}),
       config: this.prepareConfiguration(),
     };
@@ -312,10 +318,12 @@ class Configurator extends React.Component {
                     </div>
                   }
                 </div>
-                <p>
+                <input className="form-control form-control-sm mb-3" type="text" value={this.state.name}
+                       onChange={(event) => this._updateName(event)}/>
+                <div>
                   Configure your system by selecting the desired item or items from each required
                   parts category below.
-                </p>
+                </div>
               </div>
               <div className="col-md-4 d-flex flex-column justify-content-center align-items-start">
                 {

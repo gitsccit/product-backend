@@ -384,13 +384,15 @@ class SystemsTable extends Table
                                     'config_name' => $subKit['config_name'],
                                     'price' => $subKit['unit_price'],
                                     'quantity' => $opportunityDetail['quantity'],
-                                    'configuration' => array_map(function ($systemDetail) {
+                                    'configuration' => array_values(array_map(function ($systemDetail) {
                                         return [
                                             'item_id' => $systemDetail['item_id'],
                                             'name' => $systemDetail['name'],
                                             'quantity' => $systemDetail['quantity'],
                                         ];
-                                    }, $subKit['opportunity_system_details']),
+                                    }, array_filter($subKit['opportunity_system_details'], function ($systemDetail) {
+                                        return $systemDetail['hidden'] === 'no';
+                                    }))),
                                     'selected' => true,
                                 ];
 
@@ -421,7 +423,7 @@ class SystemsTable extends Table
 
                         if (Configure::read('ProductBackend.showCost')) {
                             $system['cost'] = $opportunitySystem['unit_cost'];
-                            $system['margin'] = $opportunitySystem['margin'] / 100;
+                            $system['margin'] = ($system['price'] - $system['cost']) / $system['price'];
                         }
                     }
 

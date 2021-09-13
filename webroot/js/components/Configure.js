@@ -587,7 +587,7 @@ class Configure extends React.Component {
                                       {
                                         isSystemItem && checked &&
                                         <div className="item-group align-items-center mt-1"
-                                             style={{marginLeft: '4.9rem'}}>
+                                             style={{marginLeft: '5rem'}}>
                                           <div>
                                             <b>{item['config_name'] ?? 'Base Configuration'}</b>:
                                             <span className="text-primary">
@@ -603,7 +603,7 @@ class Configure extends React.Component {
                                             this.state.errors.length === 0 &&
                                             <a className="btn btn-sm btn-primary"
                                                onClick={() => this._configureSubKit(item)}>
-                                              {'config_name' in item ? 'Reconfigure' : 'Configure'} Sub-kit
+                                              {'config_name' in item ? 'Reconfigure' : 'Configure'} Sub-Kit
                                             </a>
                                           }
                                         </div>
@@ -611,19 +611,19 @@ class Configure extends React.Component {
                                     </>
                                   );
                                 })
-                                }
-                                </div>
-                                </ConditionalWrapper>
-                                </ConditionalWrapper>
-                                ))
-                                }
-                                </div>
-                                )
-                                })
-                                }
-                                </div>
-                                </div>
-                                </>
-                                );
                               }
-                                }
+                            </div>
+                          </ConditionalWrapper>
+                        </ConditionalWrapper>
+                      ))
+                    }
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
+      </>
+    );
+  }
+}

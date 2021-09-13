@@ -182,14 +182,17 @@ class BucketsTable extends Table
                     ])
                     ->formatResults(function ($result) use ($subKits) {
                         return $result->map(function ($group) use ($subKits) {
-                            foreach ($group['group_items'] as $index => $groupItem) {
+                            $index = 0;
+                            foreach ($group['group_items'] as $groupItem) {
                                 // insert selected sub-kits in each group
                                 if ($selectedSystems = $subKits[$groupItem['original_id']] ?? []) {
                                     foreach ($selectedSystems as &$selectedSystem) {
                                         $selectedSystem = array_merge($groupItem, $selectedSystem);
                                     }
                                     array_splice($group['group_items'], $index, 0, $selectedSystems);
+                                    $index += count($selectedSystems);
                                 }
+                                $index++;
                             }
 
                             return $group;

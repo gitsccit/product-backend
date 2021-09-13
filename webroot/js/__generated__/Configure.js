@@ -508,7 +508,7 @@ class Configure extends React.Component {
         }, item['status'])), isSystemItem && checked && /*#__PURE__*/React.createElement("div", {
           className: "item-group align-items-center mt-1",
           style: {
-            marginLeft: '4.9rem'
+            marginLeft: '5rem'
           }
         }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("b", null, item['config_name'] ?? 'Base Configuration'), ":", /*#__PURE__*/React.createElement("span", {
           className: "text-primary"
@@ -525,7 +525,7 @@ class Configure extends React.Component {
         })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {
           className: "btn btn-sm btn-primary",
           onClick: () => this._configureSubKit(item)
-        }, 'config_name' in item ? 'Reconfigure' : 'Configure', " Sub-kit")));
+        }, 'config_name' in item ? 'Reconfigure' : 'Configure', " Sub-Kit")));
       }))))));
     }))));
   }
