@@ -27,6 +27,11 @@ class Configurator extends React.Component {
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.prepareConfiguration = this.prepareConfiguration.bind(this);
     this.saveConfiguration = this.saveConfiguration.bind(this);
+    this.percentageFormatter = new Intl.NumberFormat(undefined, {
+      style: 'percent',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
     this.currencyFormatter = new Intl.NumberFormat(undefined, {
       style: 'currency',
       currency: this.props.currency,
@@ -321,7 +326,8 @@ class Configurator extends React.Component {
                           'cost' in this.state.system ?
                             [['CONFIGURED PRICE', this.currencyFormatter.format(this.state.system['price'])],
                               ['COST', this.currencyFormatter.format(this.state.system['cost'])],
-                              ['GROSS MARGIN', this.state.system['gross_margin']]].map(([title, value]) =>
+                              ['GROSS MARGIN', this.percentageFormatter.format(this.state.system['margin'])]
+                            ].map(([title, value]) =>
                               <div className="mb-1">
                                 <h6 className="text-muted mb-0">
                                   {title}:

@@ -220,15 +220,15 @@ class Configure extends React.Component {
 
   _configureSubKit(item) {
     this.props.saveConfiguration({}, result => {
-      let opportunityDetail = result['opportunity']['opportunity_details'].find(opportunityDetail => (
-        opportunityDetail['opportunity_detail_type']['name'] === 'system' && opportunityDetail['opportunity_system']['id'] === this.props.configID
+      let currentOpportunityDetail = result['opportunity']['opportunity_details'].find(opportunityDetail => (
+        'opportunity_system' in opportunityDetail && opportunityDetail['opportunity_system']['id'] === this.props.configID
       ));
-      let configId = opportunityDetail['opportunity_system']['id'];
+      let configId = currentOpportunityDetail['opportunity_system']['id'];
       let subKit = result['opportunity']['opportunity_details'].find(opportunityDetail => (
         opportunityDetail['opportunity_detail_type']['name'] === 'subkit' && opportunityDetail['opportunity_system']['id'] === item['id']
       ));
-      let subKitConfigId = opportunityDetail['opportunity_system']['id'];
-      let url = `${this.props.baseUrl}/system/${this.state.system['url']}/${configId}/${item['url']}/${subKitConfigId}`;
+      let subKitConfigId = currentOpportunityDetail['opportunity_system']['id'];
+      let url = `${window.location.href}/${configId}/${item['url']}/${subKitConfigId}`;
       window.location.assign(url);
     });
   }

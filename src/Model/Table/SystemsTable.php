@@ -7,7 +7,6 @@ use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Session;
-use Cake\I18n\Number;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -215,7 +214,7 @@ class SystemsTable extends Table
                         foreach ($system->system_items as &$systemItem) {
                             $system->cost += $systemItem['group_item']['cost'] * $systemItem['quantity'];
                         }
-                        $system->gross_margin = Number::toPercentage(($system->price - $system->cost) / $system->price * 100);
+                        $system->margin = ($system->price - $system->cost) / $system->price;
                     });
                 });
         }
@@ -409,7 +408,8 @@ class SystemsTable extends Table
 
                         $system['price'] = $opportunitySystem['unit_price'];
                         $system['config_name'] = $opportunitySystem['config_name'];
-                        $system['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
+                        $system['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'],
+                            true);
                         $system['opportunity_id'] = $opportunityID;
 
                         $selectedItems = [];
@@ -421,6 +421,7 @@ class SystemsTable extends Table
 
                         if (Configure::read('ProductBackend.showCost')) {
                             $system['cost'] = $opportunitySystem['unit_cost'];
+                            $system['margin'] = $opportunitySystem['margin'] / 100;
                         }
                     }
 
