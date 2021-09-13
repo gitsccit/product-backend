@@ -86,16 +86,13 @@ class Configurator extends React.Component {
       let selectedItems = items.filter(item => {
         return item['selected_at'] != null;
       }).map(item => {
-        let config = {
+        return {
           item_id: item['id'],
-          qty: item['quantity']
+          qty: item['quantity'],
+          ...('config_json' in item ? {
+            subkit: item['config_json']
+          } : {})
         };
-
-        if ('configuration' in item) {
-          config['subkit'] = item['subkit'];
-        }
-
-        return config;
       });
       return [bucketID, selectedItems];
     }).filter(([, selectedItems]) => {

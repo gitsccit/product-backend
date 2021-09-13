@@ -384,6 +384,7 @@ class SystemsTable extends Table
                                     'config_name' => $subKit['config_name'],
                                     'price' => $subKit['unit_price'],
                                     'quantity' => $opportunityDetail['quantity'],
+                                    'config_json' => json_decode($subKit['opportunity_system_data']['data'], true),
                                     'configuration' => array_values(array_map(function ($systemDetail) {
                                         return [
                                             'item_id' => $systemDetail['item_id'],

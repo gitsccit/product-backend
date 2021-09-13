@@ -65,7 +65,7 @@ class Summary extends React.Component {
       .map(bucket => {
         let selectedItems = this.props.currentConfig[bucket['id']]
           .filter(item => item['selected_at'] != null)
-          .map(item => item['quantity'] > 1 ? `${item['quantity']} x ${item['name']}` : item['name']);
+          .map(item => (item['quantity'] > 1 ? `${item['quantity']} x ` : '') + item['name'] + (item['config_name'] ? ` (${item['config_name']})` : ''));
 
         return [bucket['category'], selectedItems.join('<br>')];
       });
