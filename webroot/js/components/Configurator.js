@@ -137,7 +137,7 @@ class Configurator extends React.Component {
     });
   }
 
-  saveConfiguration({quantity = null, comments = null}, callback) {
+  saveConfiguration({quantity = 1, comments = null}, callback) {
     let url = this.props.appsUrl + '/api/unified-order/opportunities/commit';
     let data = {
       name: this.state.name,
@@ -156,7 +156,7 @@ class Configurator extends React.Component {
       environment_id: this.props.environmentId,
       opportunity_details: [
         {
-          ...(quantity ? {quantity: quantity} : {}),
+          quantity: quantity,
           opportunity_detail_type_id: 4,
           opportunity_system: {
             system_id: this.state.system['id'],
