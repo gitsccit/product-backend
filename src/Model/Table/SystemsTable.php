@@ -380,6 +380,7 @@ class SystemsTable extends Table
 
                                 $subKit = $opportunityDetail['opportunity_system'];
                                 $formattedSubKit = [
+                                    'config_id' => $subKit['id'],
                                     'original_id' => $subKit['system_id'],
                                     'config_name' => $subKit['config_name'],
                                     'price' => $subKit['unit_price'],
@@ -414,6 +415,7 @@ class SystemsTable extends Table
                         $system['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'],
                             true);
                         $system['opportunity_id'] = $opportunityID;
+                        $system['config_id'] = $options['configID'];
 
                         $selectedItems = [];
                         foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {

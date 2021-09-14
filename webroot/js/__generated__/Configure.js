@@ -211,12 +211,27 @@ class Configure extends React.Component {
   }
 
   _configureSubKit(item) {
+    let selectedSubKitConfigIDs = Object.entries(this.state.currentConfig).map(([, itemsInBucket]) => {
+      return itemsInBucket.filter(itemInBucket => 'config_id' in itemInBucket).map(itemInBucket => itemInBucket['config_id']);
+    }).flat();
     this.props.saveConfiguration({}, result => {
-      let currentOpportunityDetail = result['opportunity']['opportunity_details'].find(opportunityDetail => 'opportunity_system' in opportunityDetail && opportunityDetail['opportunity_system']['id'] === this.props.configID);
-      let configId = currentOpportunityDetail['opportunity_system']['id'];
-      let subKit = result['opportunity']['opportunity_details'].find(opportunityDetail => opportunityDetail['opportunity_detail_type']['name'] === 'subkit' && opportunityDetail['opportunity_system']['id'] === item['id']);
-      let subKitConfigId = currentOpportunityDetail['opportunity_system']['id'];
-      let url = `${window.location.href}/${configId}/${item['url']}/${subKitConfigId}`;
+      let url = window.location.href;
+      let configId = this.state.system['config_id'];
+
+      if (!configId) {
+        let currentOpportunityDetail = result['opportunity']['opportunity_details'].find(opportunityDetail => 'opportunity_system' in opportunityDetail && opportunityDetail['opportunity_system']['system_id'] === this.state.system['id'] && opportunityDetail['opportunity_system']['opportunity_system_data']['data'] === this.state.system['config_json']);
+        configId = currentOpportunityDetail['opportunity_system']['id'];
+        url = `${url}/${configId}`;
+      }
+
+      let subKitConfigId = item['config_id'];
+
+      if (!subKitConfigId) {
+        let subKitOpportunityDetail = result['opportunity']['opportunity_details'].find(opportunityDetail => opportunityDetail['opportunity_detail_type']['name'] === 'subkit' && opportunityDetail['opportunity_system']['system_id'] === item['original_id'] && !selectedSubKitConfigIDs.includes(opportunityDetail['opportunity_system']['id']));
+        subKitConfigId = subKitOpportunityDetail['opportunity_system']['id'];
+      }
+
+      url = `${url}/${item['url']}/${subKitConfigId}`;
       window.location.assign(url);
     });
   }

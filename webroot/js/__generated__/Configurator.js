@@ -141,8 +141,8 @@ class Configurator extends React.Component {
       config: this.prepareConfiguration()
     };
 
-    if (this.props.subKitConfigId) {
-      this.state.system['config_json'];
+    if (this.props.subKitConfigId) {// this.state.system['config_json']['config'][][][] = data;
+      // data = this.state.system['config_json'];
     }
 
     let payload = { ...('opportunity_id' in this.state.system ? {
