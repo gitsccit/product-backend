@@ -415,7 +415,7 @@ class SystemsTable extends Table
                         $system['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'],
                             true);
                         $system['opportunity_id'] = $opportunityID;
-                        $system['config_id'] = $options['configID'];
+                        $system['config_id'] = $opportunitySystem['id'];
 
                         $selectedItems = [];
                         foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {
