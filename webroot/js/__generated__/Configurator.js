@@ -209,9 +209,8 @@ class Configurator extends React.Component {
             validateConfiguration: this.validateConfiguration,
             updateSystem: this.updateSystem,
             baseUrl: this.props.baseUrl,
-            configId: this.props.configId,
-            subKitConfigId: this.props.subKitConfigId,
-            currencyFormatter: this.currencyFormatter
+            currencyFormatter: this.currencyFormatter,
+            saveConfiguration: this.saveConfiguration
           });
           break;
 
@@ -224,11 +223,15 @@ class Configurator extends React.Component {
 
         case 'Warranty':
           tab['content'] = /*#__PURE__*/React.createElement(Configure, {
+            ref: configure => {
+              window.configure = configure;
+            },
             system: systemWithOnlyStandaloneBuckets,
             currentConfig: this.state.currentConfig,
             csrf: this.props.csrf,
-            updateSystem: this.updateSystem,
             validateConfiguration: this.validateConfiguration,
+            updateSystem: this.updateSystem,
+            baseUrl: this.props.baseUrl,
             currencyFormatter: this.currencyFormatter,
             saveConfiguration: this.saveConfiguration
           });

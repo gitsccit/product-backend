@@ -210,22 +210,21 @@ class Configurator extends React.Component {
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
-          tab['content'] = <Configure ref={(configure) => {
-            window.configure = configure
-          }}
+          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
                                       system={systemWithoutStandaloneBuckets} currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
-                                      configId={this.props.configId} subKitConfigId={this.props.subKitConfigId}
-                                      currencyFormatter={this.currencyFormatter}/>;
+                                      currencyFormatter={this.currencyFormatter}
+                                      saveConfiguration={this.saveConfiguration}/>;
           break;
         case 'Storage Setup':
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
           break;
         case 'Warranty':
-          tab['content'] = <Configure system={systemWithOnlyStandaloneBuckets} currentConfig={this.state.currentConfig}
-                                      csrf={this.props.csrf} updateSystem={this.updateSystem}
-                                      validateConfiguration={this.validateConfiguration}
+          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
+                                      system={systemWithOnlyStandaloneBuckets} currentConfig={this.state.currentConfig}
+                                      csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
+                                      updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
                                       currencyFormatter={this.currencyFormatter}
                                       saveConfiguration={this.saveConfiguration}/>;
           break;
