@@ -31,8 +31,6 @@ $currentWarehouse = $this->request->getQuery(
     'warehouse',
     $this->request->getSession()->read('options.store.warehouse')
 );
-$environmentID = $this->request->getQuery('environment_id', $this->request->getSession()->read('environment.id'));
-$storeID = $this->request->getQuery('store_id', $this->request->getSession()->read('store.id'));
 ?>
 
 <style>
@@ -46,12 +44,7 @@ $storeID = $this->request->getQuery('store_id', $this->request->getSession()->re
      data-currency='<?= \Cake\I18n\Number::getDefaultCurrency() ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
      data-base-url='<?= trim($this->Url->build('/', ['fullBase' => true]), '/') ?>'
-     data-apps-url='<?= trim(Configure::read('Urls.apps', $this->Url->build('/', ['fullBase' => true])), '/') ?>'
-     data-environment-id='<?= $environmentID ?>'
-     data-store-id='<?= $storeID ?>'
-     data-token='<?= Configure::read('Security.scctoken') ?>'
-     data-config-id='<?= $configID ?>'
-     data-sub-kit-config-id='<?= $subKitConfigID ?>'
+     data-identifier='<?= $identifier ?>'
     <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>
     <?= Configure::read('ProductBackend.showCost') ? "data-current-price-level='$currentPriceLevel'" : '' ?>
     <?= Configure::read('ProductBackend.showStock') ? "data-warehouses='$warehouses'" : '' ?>

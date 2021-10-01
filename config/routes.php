@@ -19,6 +19,8 @@ Router::plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builde
     $builder->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
     $builder->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
 
+    $builder->connect('/system/configuration/{action}', ['controller' => 'Systems', 'action' => 'configureSubKit'],
+        ['action' => 'prepare|commit']);
     $builder->connect('/system/validate', ['controller' => 'Systems', 'action' => 'validate']);
     $builder->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
 });

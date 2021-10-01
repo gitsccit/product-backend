@@ -33,10 +33,10 @@ class Summary extends React.Component {
   }
 
   _addToOrder() {
-    this.props.saveConfiguration({quantity: this.state.quantity, comments: this.state.comments}, _ => {
+    this.props.updateConfiguration({quantity: this.state.quantity, comments: this.state.comments}, result => {
       let url = this.props.baseUrl + ('cost' in this.props.system ? '/quotes' : '/order');
 
-      if (this.props.subKitConfigId) {
+      if ('subKitLineNumber' in result) {
         url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.configId}`;
       }
 

@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
-use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
-use Cake\Core\Configure;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -155,7 +153,6 @@ class BucketsTable extends Table
     public function findConfiguration(Query $query, array $options)
     {
         $kitID = $options['kitID'];
-        $subKits = (new Collection($options['subKits'] ?? []))->groupBy('original_id')->toArray();
 
         return $query
             ->select([
@@ -172,32 +169,14 @@ class BucketsTable extends Table
             ])
             ->innerJoinWith('Kits')
             ->innerJoinWith('BucketCategories')
-            ->contain('Groups', function (Query $q) use ($options, $kitID, $subKits) {
+            ->contain('Groups', function (Query $q) use ($options, $kitID) {
                 return $q
                     ->contain('GroupItems', function (Query $q) use ($options, $kitID) {
                         return $q->find('configuration', $options)->find('activeInKit', ['kitID' => $kitID]);
                     })
                     ->order([
                         'Groups.sort',
-                    ])
-                    ->formatResults(function ($result) use ($subKits) {
-                        return $result->map(function ($group) use ($subKits) {
-                            $index = 0;
-                            foreach ($group['group_items'] as $groupItem) {
-                                // insert selected sub-kits in each group
-                                if ($selectedSystems = $subKits[$groupItem['original_id']] ?? []) {
-                                    foreach ($selectedSystems as &$selectedSystem) {
-                                        $selectedSystem = array_merge($groupItem, $selectedSystem);
-                                    }
-                                    array_splice($group['group_items'], $index, 0, $selectedSystems);
-                                    $index += count($selectedSystems);
-                                }
-                                $index++;
-                            }
-
-                            return $group;
-                        });
-                    });
+                    ]);
             })
             ->where(['Kits.id' => $kitID])
             ->order([

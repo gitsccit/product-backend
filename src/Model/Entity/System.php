@@ -7,6 +7,7 @@ use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
 /**
@@ -95,98 +96,109 @@ class System extends Entity
         return $breadcrumbs;
     }
 
-    public function loadConfiguration($opportunity = null, $lineNumber = null)
+    public function loadConfiguration($configJson = null)
     {
-        if ($opportunity) {
-            $currentDetailLine = $opportunity['opportunity_details'][$lineNumber - 1];
-            $opportunitySystem = $currentDetailLine['opportunity_system'];
-            $subKitLines = array_filter($opportunity['opportunity_details'],
-                function ($systemDetail) use ($currentDetailLine) {
-                    return $systemDetail['parent_line_number'] === $currentDetailLine['line_number'];
-                });
+        if ($configJson) {
+            $selectedItems = array_merge(...$configJson['config']);
+            $subKitItems = array_filter($selectedItems, function ($selectedItem) {
+                return isset($selectedItem['subkit']);
+            });
 
-            // fill in sub-kits' details
-            $subKits = array_map(function ($subKitLine) {
-                $subKit = $subKitLine['opportunity_system'];
-                $formattedSubKit = [
-                    'config_id' => $subKit['id'],
-                    'original_id' => $subKit['system_id'],
-                    'config_name' => $subKit['config_name'],
-                    'price' => $subKit['unit_price'],
-                    'quantity' => $subKitLine['quantity'],
-                    'config_json' => json_decode($subKit['opportunity_system_data']['data'], true),
-                    'line_number' => $subKitLine['line_number'],
-                    'configuration' => array_values(array_map(function ($systemDetail) {
-                        return [
-                            'item_id' => $systemDetail['item_id'],
-                            'name' => $systemDetail['name'],
-                            'quantity' => $systemDetail['quantity'],
-                        ];
-                    }, array_filter($subKit['opportunity_system_details'], function ($systemDetail) {
-                        return $systemDetail['hidden'] === 'no';
-                    }))),
-                    'selected' => true,
-                ];
+            [$cost, $price] = TableRegistry::getTableLocator()->get('ProductBackend.Systems')
+                ->getConfigurationCostAndPrice($configJson, ['systemID' => $this['id']]);
 
-                if (Configure::read('ProductBackend.showCost')) {
-                    $formattedSubKit['cost'] = $subKit['unit_cost'];
-                }
+            if (count($subKitItems) > 0) {
+                $allItems = Hash::combine($this['buckets'], '{n}.groups.{n}.group_items.{n}.id',
+                    '{n}.groups.{n}.group_items.{n}');
 
-                if (Configure::read('ProductBackend.showStock') && isset($subKitLine['sage_itemcode'])) {
-                    $formattedSubKit['sage_itemcode'] = $subKitLine['sage_itemcode'];
-                }
+                // fill in sub-kits' details
+                $subKitConfigItemIDs = array_unique(Hash::extract($subKitItems, '{n}.subkit.config.{n}.{n}.item_id'));
+                $subKitConfigItems = TableRegistry::getTableLocator()->get('ProductBackend.GroupItems')
+                    ->find('configuration')
+                    ->whereInList('GroupItems.id', $subKitConfigItemIDs)
+                    ->indexBy('id')
+                    ->toArray();
 
-                return $formattedSubKit;
-            }, $subKitLines);
+                $subKits = array_map(function ($subKitLine) use ($allItems, $subKitConfigItems) {
+                    $subKit = $subKitLine['subkit'];
 
-            $this['price'] = $currentDetailLine['unit_price'];
-            $this['config_name'] = $opportunitySystem['config_name'];
-            $this['config_json'] = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
-            $this['opportunity_id'] = $opportunity['id'];
-            $this['config_id'] = $opportunitySystem['id'];
-            $this['quantity'] = $currentDetailLine['quantity'];
+                    [$cost, $price] = TableRegistry::getTableLocator()->get('ProductBackend.Systems')
+                        ->getConfigurationCostAndPrice($subKit);
 
-            $selectedItems = [];
-            foreach ($opportunitySystem['opportunity_system_details'] as $systemDetail) {
-                if ($systemDetail['item_id'] !== null && $systemDetail['line_type'] !== 'subkit') {
-                    $selectedItems[$systemDetail['item_id']] = $systemDetail['quantity'];
+                    $formattedSubKit = array_merge($allItems[$subKitLine['item_id']], [
+                        'config_name' => $subKit['name'],
+                        'price' => $price,
+                        'config_json' => $subKit,
+                        'configuration' => array_map(function ($configDetail) use ($subKitConfigItems) {
+                            return [
+                                'item_id' => $configDetail['item_id'],
+                                'name' => $subKitConfigItems[$configDetail['item_id']]['name'],
+                                'quantity' => $configDetail['qty'],
+                            ];
+                        }, Hash::extract($subKit['config'], '{n}.{n}')),
+                        'selected' => true,
+                    ]);
+
+                    if (Configure::read('ProductBackend.showCost')) {
+                        $formattedSubKit['cost'] = $cost;
+                    }
+
+                    if (Configure::read('ProductBackend.showStock') && isset($subKitLine['sage_itemcode'])) {
+                        $formattedSubKit['sage_itemcode'] = $subKitLine['sage_itemcode'];
+                    }
+
+                    return $formattedSubKit;
+                }, $subKitItems);
+            }
+
+            $this['price'] = $price;
+            $this['config_name'] = $configJson['name'];
+            $this['config_json'] = $configJson;
+
+            $selectedNonSubKitItems = [];
+            foreach ($selectedItems as $selectedItem) {
+                if (!isset($selectedItem['subkit'])) {
+                    $selectedNonSubKitItems[$selectedItem['item_id']] = $selectedItem['qty'];
                 }
             }
 
             if (Configure::read('ProductBackend.showCost')) {
-                $this['cost'] = $opportunitySystem['unit_cost'];
-                $this['margin'] = ($this['price'] - $this['cost']) / $this['price'];
+                $this['cost'] = $cost;
+                $this['margin'] = ($price - $cost) / $price;
             }
         }
 
         // use base configuration
-        if (!isset($selectedItems)) {
-            $selectedItems = Hash::combine($this['system_items'], '{n}.item_id', '{n}.quantity');
+        if (!isset($selectedNonSubKitItems)) {
+            $selectedNonSubKitItems = Hash::combine($this['system_items'], '{n}.item_id', '{n}.quantity');
         }
 
-        $subKits = (new Collection($subKits ?? []))->groupBy('original_id')->toArray();
+        $subKits = (new Collection($subKits ?? []))->groupBy('id')->toArray();
 
-        foreach ($this['buckets'] as &$bucket) {
-            foreach ($bucket['groups'] as &$group) {
+        $this['buckets'] = array_map(function ($bucket) {
+            $bucket['groups'] = array_map(function ($group) {
                 $index = 0;
-                foreach ($group['group_items'] as &$groupItem) {
+                foreach ($group['group_items'] as $groupItem) {
                     // insert selected sub-kits in each group
-                    if ($selectedSystems = $subKits[$groupItem['original_id']] ?? []) {
-                        foreach ($selectedSystems as &$selectedSystem) {
-                            $selectedSystem = array_merge($groupItem, $selectedSystem);
-                        }
-                        array_splice($group['group_items'], $index, 0, $selectedSystems);
-                        $index += count($selectedSystems);
+                    if ($selectedSubKits = $subKits[$groupItem['id']] ?? []) {
+                        array_splice($group['group_items'], $index, 0, $selectedSubKits);
+                        $index += count($selectedSubKits);
                     }
                     $index++;
+                }
 
-                    // select items
-                    if ($quantity = $selectedItems[$groupItem['id']] ?? null) {
+                // select items
+                foreach ($group['group_items'] as &$groupItem) {
+                    if ($quantity = $selectedNonSubKitItems[$groupItem['id']] ?? null) {
                         $groupItem['quantity'] = $quantity;
                         $groupItem['selected'] = true;
                     }
                 }
-            }
-        }
+
+                return $group;
+            }, $bucket['groups']);
+
+            return $bucket;
+        }, $this['buckets']);
     }
 }

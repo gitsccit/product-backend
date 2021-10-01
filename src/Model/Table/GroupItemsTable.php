@@ -128,6 +128,7 @@ class GroupItemsTable extends Table
                 if ($systemIDs = $result->extract('system_id')->toList()) {
                     $systems = $this->Systems
                         ->find('active', $options)
+                        ->find('basic', $options)
                         ->find('image')
                         ->whereInList('Systems.id', $systemIDs)
                         ->indexBy('id')
@@ -165,11 +166,6 @@ class GroupItemsTable extends Table
                         $unifiedItem['price'] = $item['price'];
                         $unifiedItem['specs'] = $item['specifications'];
                         $unifiedItem['selected'] = false;
-
-                        if (isset($options['selectedItems']) && ($quantity = $options['selectedItems'][$unifiedItem['id']] ?? null)) {
-                            $unifiedItem['quantity'] = $quantity;
-                            $unifiedItem['selected'] = true;
-                        }
 
                         if ($groupItem['system_id']) {
                             $unifiedItem['configuration'] = $item['configuration'];

@@ -12,8 +12,7 @@ class Utility
     static public function getFileName($id, $width = null, $height = null)
     {
         $session = new Session();
-        $fileFetcher = Configure::read('Fetchers.file');
-        $file = $fileFetcher($id);
+        $file = Configure::read('Functions.getFile')($id);
         $allowedSizes = $session->read('options.files.resize');
         $allowedSizes = explode(',', $allowedSizes);
         if ($width) {

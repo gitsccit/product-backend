@@ -20,7 +20,7 @@ class Configurator extends React.Component {
     this.updateSystem = this.updateSystem.bind(this);
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.prepareConfiguration = this.prepareConfiguration.bind(this);
-    this.saveConfiguration = this.saveConfiguration.bind(this);
+    this.updateConfiguration = this.updateConfiguration.bind(this);
     this.percentageFormatter = new Intl.NumberFormat(undefined, {
       style: 'percent',
       minimumFractionDigits: 2,
@@ -34,6 +34,7 @@ class Configurator extends React.Component {
     });
     this.state = {
       system: system,
+      quantity: system['quantity'] ?? 1,
       tabs: JSON.parse(props.tabs),
       currentConfig: baseConfig,
       currentTab: 0,
@@ -128,46 +129,33 @@ class Configurator extends React.Component {
     });
   }
 
-  saveConfiguration({
-    quantity = 1,
+  updateConfiguration({
+    action = 'prepare',
+    subKitLineNumber = null,
     comments = null
   }, callback) {
-    let url = this.props.appsUrl + '/api/unified-order/opportunities/commit';
-    let data = {
-      name: this.state.name,
-      ...(comments ? {
-        comments: comments
+    let url = this.props.baseUrl + '/system/configuration';
+    let payload = {
+      action: action,
+      system_line_number: this.props.systemLineNumber,
+      ...(subKitLineNumber ? {
+        sub_kit_line_number: subKitLineNumber
       } : {}),
-      config: this.prepareConfiguration()
-    };
-
-    if (this.props.subKitConfigId) {// this.state.system['config_json']['config'][][][] = data;
-      // data = this.state.system['config_json'];
-    }
-
-    let payload = { ...('opportunity_id' in this.state.system ? {
-        id: this.state.system['opportunity_id']
-      } : {}),
-      store_id: this.props.storeId,
-      environment_id: this.props.environmentId,
-      opportunity_details: [{
-        quantity: quantity,
-        opportunity_detail_type_id: 4,
-        opportunity_system: {
-          system_id: this.state.system['id'],
-          opportunity_system_data: {
-            data: JSON.stringify(data)
-          }
-        }
-      }]
+      config_json: {
+        name: this.state.name,
+        ...(comments ? {
+          comments: comments
+        } : {}),
+        config: this.prepareConfiguration(),
+        configured_at: Math.round(Date.now() / 1000)
+      }
     };
     fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': this.props.csrf,
-        'scctoken': this.props.token
+        'X-CSRF-Token': this.props.csrf
       },
       body: JSON.stringify(payload)
     }).then(response => response.json()).then(callback);
@@ -209,7 +197,7 @@ class Configurator extends React.Component {
             updateSystem: this.updateSystem,
             baseUrl: this.props.baseUrl,
             currencyFormatter: this.currencyFormatter,
-            saveConfiguration: this.saveConfiguration
+            updateConfiguration: this.updateConfiguration
           });
           break;
 
@@ -232,7 +220,7 @@ class Configurator extends React.Component {
             updateSystem: this.updateSystem,
             baseUrl: this.props.baseUrl,
             currencyFormatter: this.currencyFormatter,
-            saveConfiguration: this.saveConfiguration
+            updateConfiguration: this.updateConfiguration
           });
           break;
 
@@ -245,7 +233,7 @@ class Configurator extends React.Component {
             validConfiguration: this.state.validConfiguration,
             validateConfiguration: this.validateConfiguration,
             prepareConfiguration: this.prepareConfiguration,
-            saveConfiguration: this.saveConfiguration,
+            updateConfiguration: this.updateConfiguration,
             configId: this.props.configId,
             subKitConfigId: this.props.subKitConfigId,
             currencyFormatter: this.currencyFormatter
