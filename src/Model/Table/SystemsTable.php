@@ -527,16 +527,30 @@ class SystemsTable extends Table
 
     public function getConfigurationCostAndPrice($systemID, $configuration, $options = [])
     {
-        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
+        $flattenedConfiguration = Hash::flatten($configuration);
+        $itemIDs = array_filter($flattenedConfiguration, function ($key) {
+            return endsWith($key, 'item_id');
+        }, ARRAY_FILTER_USE_KEY);
+        $quantities = array_filter($flattenedConfiguration, function ($key) {
+            return endsWith($key, 'qty');
+        }, ARRAY_FILTER_USE_KEY);
+        $selectedItemsQuantities = array_combine($itemIDs, $quantities);
 
         $selectedItems = $this->GroupItems->find('configuration', $options)
-            ->whereInList('GroupItems.id', array_keys($selectedItemsQuantities));
-        //TODO: calculate sub-kit prices
-        $system = $this->find('price', $options)
-            ->select(['fpa' => 'SystemPriceLevels.fpa'])->where(['Systems.id' => $systemID])->first();
+            ->whereInList('GroupItems.id', $itemIDs)->all();
+        $selectedSystemIDs = $selectedItems->filter(function ($item) {
+            return $item['type'] === 'system';
+        })->extract('id')->toList();
+        $selectedSystemIDs[] = $systemID;
+
+        $fpa = $this->find('price', $options)
+            ->select(['fpa' => 'SystemPriceLevels.fpa'])
+            ->whereInList('Systems.id', $selectedSystemIDs)
+            ->sumOf('fpa');
+
         $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
             return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
-        }, $system['fpa']);
+        }, $fpa);
         $cost = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
             return $carry + $item['cost'] * $selectedItemsQuantities[$item['id']];
         }, 0.0);
