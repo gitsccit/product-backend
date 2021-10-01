@@ -525,7 +525,7 @@ class SystemsTable extends Table
             ]);
     }
 
-    public function getConfigurationCostAndPrice($systemID, $configuration, $options = [])
+    public function getConfigurationCostAndPrice($configuration, $options = [])
     {
         $flattenedConfiguration = Hash::flatten($configuration);
         $itemIDs = array_filter($flattenedConfiguration, function ($key) {
@@ -541,7 +541,10 @@ class SystemsTable extends Table
         $selectedSystemIDs = $selectedItems->filter(function ($item) {
             return $item['type'] === 'system';
         })->extract('id')->toList();
-        $selectedSystemIDs[] = $systemID;
+
+        if ($systemID = $options['systemID'] ?? null) {
+            $selectedSystemIDs[] = $systemID;
+        }
 
         $fpa = $this->find('price', $options)
             ->select(['fpa' => 'SystemPriceLevels.fpa'])

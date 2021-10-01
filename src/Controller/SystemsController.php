@@ -149,9 +149,8 @@ class SystemsController extends AppController
                 $additionalItems,
             ] = $this->Systems->Kits->validateSkuRules($configuration, compact('priceLevel'));
             [$cost, $price] = $this->Systems->getConfigurationCostAndPrice(
-                $data['system'],
                 $configuration,
-                compact('priceLevel')
+                ['priceLevel' => $priceLevel, 'systemID' => $data['system']]
             );
             $warnings = array_merge($kitRuleWarnings, $productRuleWarnings, $globalSpecRuleWarnings);
             $errors = array_merge($errors, $kitRuleErrors, $productRuleErrors, $globalSpecRuleErrors);
