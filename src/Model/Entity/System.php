@@ -175,8 +175,8 @@ class System extends Entity
 
         $subKits = (new Collection($subKits ?? []))->groupBy('id')->toArray();
 
-        $this['buckets'] = array_map(function ($bucket) {
-            $bucket['groups'] = array_map(function ($group) {
+        foreach ($this['buckets'] as &$bucket) {
+            $bucket['groups'] = array_map(function ($group) use ($subKits, $selectedNonSubKitItems) {
                 $index = 0;
                 foreach ($group['group_items'] as $groupItem) {
                     // insert selected sub-kits in each group
@@ -197,8 +197,6 @@ class System extends Entity
 
                 return $group;
             }, $bucket['groups']);
-
-            return $bucket;
-        }, $this['buckets']);
+        }
     }
 }

@@ -80,7 +80,7 @@ class SystemsController extends AppController
                     return $this->request->redirect(['action' => 'view', $url]);
                 }
 
-                $configJson = $opportunitySystem['opportunity_system_data']['data'];
+                $configJson = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
                 $this->request->getSession()->write("configurations.$identifier", $configJson);
             }
 

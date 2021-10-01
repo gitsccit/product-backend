@@ -443,16 +443,20 @@ class SystemsTable extends Table
     public function getConfigurationCostAndPrice($configuration, $options = [])
     {
         $flattenedConfiguration = Hash::flatten($configuration);
-        $itemIDs = array_filter($flattenedConfiguration, function ($key) {
+        $itemIDs = array_values(array_filter($flattenedConfiguration, function ($key) {
             return endsWith($key, 'item_id');
-        }, ARRAY_FILTER_USE_KEY);
-        $quantities = array_filter($flattenedConfiguration, function ($key) {
+        }, ARRAY_FILTER_USE_KEY));
+        $quantities = array_values(array_filter($flattenedConfiguration, function ($key) {
             return endsWith($key, 'qty');
-        }, ARRAY_FILTER_USE_KEY);
-        $selectedItemsQuantities = array_combine($itemIDs, $quantities);
+        }, ARRAY_FILTER_USE_KEY));
+
+        $selectedItemsQuantities = [];
+        foreach ($itemIDs as $index => $itemID) {
+            $selectedItemsQuantities[$itemID] = ($selectedItemsQuantities[$itemID] ?? 0) + $quantities[$index];
+        }
 
         $selectedItems = $this->GroupItems->find('configuration', $options)
-            ->whereInList('GroupItems.id', $itemIDs)->all();
+            ->whereInList('GroupItems.id', array_unique($itemIDs))->all();
         $selectedSystemIDs = $selectedItems->filter(function ($item) {
             return $item['type'] === 'system';
         })->extract('id')->toList();
