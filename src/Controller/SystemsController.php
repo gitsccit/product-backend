@@ -40,7 +40,7 @@ class SystemsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(string $url, string $identifier = null, string $subKitPosition = null)
+    public function view(string $url, string $identifier = null, string $subKitPath = null)
     {
         $systemUrl = str_replace(' ', '+', $url);
 
@@ -60,16 +60,16 @@ class SystemsController extends AppController
             throw new NotFoundException();
         }
 
-        $configJson = null;
+        $configuration = null;
 
         if ($identifier) {
-            $configJson = $this->request->getSession()->read("configurations.$identifier");
+            $configuration = $this->request->getSession()->read("configurations.$identifier");
 
-            if (!is_numeric($identifier) && !$configJson) {
+            if (!is_numeric($identifier) && !$configuration) {
                 return $this->request->redirect(['action' => 'view', $url]);
             }
 
-            if (is_numeric($identifier) && !$configJson) { // load system by config ID
+            if (is_numeric($identifier) && !$configuration) { // load system by config ID
                 try {
                     $opportunitySystem = Configure::read('Functions.getOpportunitySystem')($identifier);
                 } catch (NotFoundException $exception) {
@@ -80,18 +80,19 @@ class SystemsController extends AppController
                     return $this->request->redirect(['action' => 'view', $url]);
                 }
 
-                $configJson = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
-                $this->request->getSession()->write("configurations.$identifier", $configJson);
+                $configuration = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
+                $this->request->getSession()->write("configurations.$identifier", $configuration);
             }
 
-            if ($subKitPosition) {
-                $subKitPosition = base64_decode($subKitPosition);
+            if ($subKitPath) {
+                $subKitPath = base64_decode($subKitPath);
                 $subKitConfigFound = true;
 
                 try {
-                    $configJson = Hash::get($configJson, $subKitPosition);
+                    $subKitLine = Hash::get($configuration, preg_replace('/\.subkit$/', '', $subKitPath));
+                    $configuration = $subKitLine['subkit'];
 
-                    if (!$configJson) {
+                    if (!$configuration) {
                         $subKitConfigFound = false;
                     }
                 } catch (\Exception $exception) {
@@ -105,7 +106,7 @@ class SystemsController extends AppController
                 $systemUrl = $this->Systems->find('active', $options)
                     ->select(['url' => 'IFNULL(SystemPerspectives.url, Systems.url)'])
                     ->innerJoinWith('GroupItems')
-                    ->where(['GroupItems.id' => $configJson['item_id']])
+                    ->where(['GroupItems.id' => $subKitLine['item_id']])
                     ->first()
                     ->get('url');
             }
@@ -117,7 +118,7 @@ class SystemsController extends AppController
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
 
-        $system->loadConfiguration($configJson);
+        $system->loadConfiguration($configuration);
 
         $tabs = TableRegistry::getTableLocator()->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
 
@@ -170,7 +171,7 @@ class SystemsController extends AppController
             $this->set(compact('breadcrumbs'));
         }
 
-        $this->set(compact('system', 'tabs', 'identifier'));
+        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath'));
 
         $layout = $this->request->getSession()->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");
@@ -222,65 +223,19 @@ class SystemsController extends AppController
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            $systemID = $data['system_id'];
-            $configJsonString = json_encode($data['config_json']);
-            $systemLineNumber = $data['system_line_number'] ?? 1;
-            $subKitConfigJsonString = json_encode($data['sub_kit_config_json'] ?? null);
-            $subKitSystemID = $data['sub_kit_system_id'] ?? null;
+            $identifier = $data['identifier'];
+            $configuration = $data['configuration'];
+            $subKitPath = $data['sub_kit_path'] ?? null;
 
-            $defaultOpportunity = [
-                'store_id' => $this->request->getQuery('store_id', $this->request->getSession()->read('store.id')),
-                'environment_id' => $this->request->getQuery('environment_id',
-                    $this->request->getSession()->read('environment.id')),
-                'opportunity_details' => [
-                    [
-                        'opportunity_detail_type_id' => 4,
-                        'opportunity_system' => [
-                            'system_id' => $systemID,
-                        ],
-                    ],
-                ],
-            ];
+            $oldConfiguration = $this->request->getSession()->read("configurations.$identifier");
 
-            $opportunity = $this->request->getSession()->read('opportunity', $defaultOpportunity);
-            $opportunity['opportunity_details'][$systemLineNumber - 1]['opportunity_system']['opportunity_system_data']['data'] = $configJsonString;
-            $opportunity = Configure::read("Functions.{$action}Opportunity")($opportunity);
-            $this->request->getSession()->write('opportunity', $opportunity);
-
-            $systemLine = array_filter($opportunity['opportunity_details'],
-                function ($opportunityDetail) use ($configJsonString) {
-                    return $opportunityDetail['opportunity_detail_type']['name'] === 'system' &&
-                        $opportunityDetail['opportunity_system']['opportunity_system_data']['data'] === $configJsonString;
-                })[0];
-
-            // sub-kit selected but not configured yet
-            if ($subKitSystemID) {
-                $subKitLine = array_filter($opportunity['opportunity_details'],
-                    function ($opportunityDetail) use ($subKitSystemID) {
-                        return $opportunityDetail['opportunity_detail_type']['name'] === 'subkit' &&
-                            $opportunityDetail['opportunity_system']['system_id'] === $subKitSystemID &&
-                            !isset(json_decode($opportunityDetail['opportunity_system']['opportunity_system_data']['data'],
-                                    true)['configured_at']);
-                    })[0];
+            if ($subKitPath) {
+                $configuration = Hash::insert($oldConfiguration, $subKitPath, $configuration);
             }
 
-            // configured sub-kit
-            if ($subKitConfigJsonString) {
-                $subKitLine = array_filter($opportunity['opportunity_details'],
-                    function ($opportunityDetail) use ($subKitConfigJsonString) {
-                        return $opportunityDetail['opportunity_detail_type']['name'] === 'subkit' &&
-                            $opportunityDetail['opportunity_system']['opportunity_system_data']['data'] === $subKitConfigJsonString;
-                    })[0];
-            }
+            $this->request->getSession()->write("configurations.$identifier", $configuration);
 
-            $result = compact('systemLineNumber');
-            if ($configID = $systemLine['opportunity_system']['id'] ?? null) {
-                $result['configId'] = $configID;
-            }
-
-            if (isset($subKitLine)) {
-                $result['subKitLineNumber'] = $subKitLine['line_number'];
-            }
+            $result = compact('configuration');
 
             return $this->response->withStringBody(json_encode($result))->withType('application/json');
         }

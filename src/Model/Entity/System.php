@@ -96,16 +96,16 @@ class System extends Entity
         return $breadcrumbs;
     }
 
-    public function loadConfiguration($configJson = null)
+    public function loadConfiguration($configuration = null)
     {
-        if ($configJson) {
-            $selectedItems = array_merge(...$configJson['config']);
+        if ($configuration) {
+            $selectedItems = array_merge(...$configuration['config']);
             $subKitItems = array_filter($selectedItems, function ($selectedItem) {
                 return isset($selectedItem['subkit']);
             });
 
             [$cost, $price] = TableRegistry::getTableLocator()->get('ProductBackend.Systems')
-                ->getConfigurationCostAndPrice($configJson, ['systemID' => $this['id']]);
+                ->getConfigurationCostAndPrice($configuration, ['systemID' => $this['id']]);
 
             if (count($subKitItems) > 0) {
                 $allItems = Hash::combine($this['buckets'], '{n}.groups.{n}.group_items.{n}.id',
@@ -152,8 +152,8 @@ class System extends Entity
             }
 
             $this['price'] = $price;
-            $this['config_name'] = $configJson['name'];
-            $this['config_json'] = $configJson;
+            $this['config_name'] = $configuration['name'];
+            $this['config_json'] = $configuration;
 
             $selectedNonSubKitItems = [];
             foreach ($selectedItems as $selectedItem) {

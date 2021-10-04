@@ -36,10 +36,11 @@ class Summary extends React.Component {
       quantity: this.state.quantity,
       comments: this.state.comments
     }, result => {
-      let url = this.props.baseUrl + ('cost' in this.props.system ? '/quotes' : '/order');
+      let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
 
-      if ('subKitLineNumber' in result) {
-        url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.configId}`;
+      if ('subKitPath' in result) {
+        // let path = path ? `/${btoa('abc')}` : '';
+        url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.identifier}`;
       }
 
       window.location.assign(url);
@@ -208,7 +209,7 @@ class Summary extends React.Component {
       onClick: () => this._addToOrder()
     }, /*#__PURE__*/React.createElement("span", {
       className: "h5 icon-plus"
-    }), this.props.subKitConfigId ? 'Save & Return' : 'Add To Order')) : /*#__PURE__*/React.createElement("h4", {
+    }), this.props.subKitPath ? 'Save & Return' : 'Add To Order')) : /*#__PURE__*/React.createElement("h4", {
       className: "text-primary text-md-center"
     }, "Invalid Configuration")))));
   }

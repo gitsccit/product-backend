@@ -69,6 +69,7 @@ class Configure extends React.Component {
 
       if ('cost' in result) {
         system['cost'] = result['cost'];
+        system['margin'] = (result['price'] - result['cost']) / result['price'];
       }
 
       let validConfiguration = result['errors'].length === 0;
@@ -210,16 +211,16 @@ class Configure extends React.Component {
     return filteredGroups;
   }
 
-  _configureSubKit(item) {
-    this.props.updateConfiguration({ ...('configured_at' in item['config_json'] ? {
-        sub_kit_config_json: item['config_json']
-      } : {
-        sub_kit_system_id: item['original_id']
-      })
-    }, result => {
+  _configureSubKit(bucketID, subKitIndexInBucket) {
+    let itemsInBucket = this.state.currentConfig[bucketID];
+    let selectedItemsInBucketBeforeSubKit = itemsInBucket.slice(0, subKitIndexInBucket + 1).filter(item => item['selected_at']);
+    let subKitIndexInBucketConfig = selectedItemsInBucketBeforeSubKit.length - 1;
+    let subKit = itemsInBucket[subKitIndexInBucket];
+    let subKitPath = `config.${bucketID}.${subKitIndexInBucketConfig}.subkit`;
+    let path = this.props.subKitPath ? `${this.props.subKitPath}.${subKitPath}` : subKitPath;
+    this.props.updateConfiguration({}, _ => {
       let [, query] = window.location.href.split('?');
-      let identifier = result['configId'] ?? btoa(result['lineNumber']);
-      let url = `${this.props.baseUrl}/system/${item['url']}/${identifier}` + (query ? `?${query}` : '');
+      let url = `${this.props.baseUrl}/system/${subKit['url']}/${this.props.identifier}/${btoa(path)}` + (query ? `?${query}` : '');
       window.location.assign(url);
     });
   }
@@ -527,7 +528,7 @@ class Configure extends React.Component {
           className: "icon-info-circled"
         })), this.state.errors.length === 0 && /*#__PURE__*/React.createElement("a", {
           className: "btn btn-sm btn-primary",
-          onClick: () => this._configureSubKit(item)
+          onClick: () => this._configureSubKit(bucket['id'], itemIndexInBucket)
         }, 'config_name' in item ? 'Reconfigure' : 'Configure', " Sub-Kit")));
       }))))));
     }))));

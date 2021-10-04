@@ -138,18 +138,17 @@ class Configurator extends React.Component {
     });
   }
 
-  updateConfiguration({action = 'prepare', subKitLineNumber = null, comments = null}, callback) {
+  updateConfiguration({action = 'prepare', comments = null}, callback) {
     let url = this.props.baseUrl + '/system/configuration';
 
     let payload = {
-      action: action,
-      system_line_number: this.props.systemLineNumber,
-      ...(subKitLineNumber ? {sub_kit_line_number: subKitLineNumber} : {}),
-      config_json: {
+      identifier: this.props.identifier,
+      ...(this.props.subKitPath ? {sub_kit_path: this.props.subKitPath} : {}),
+      configuration: {
         name: this.state.name,
         ...(comments ? {comments: comments} : {}),
         config: this.prepareConfiguration(),
-        configured_at: Math.round(Date.now() / 1000),
+        configured_at: parseInt(Date.now().toString().slice(0, -3)),
       },
     };
 
@@ -199,7 +198,9 @@ class Configurator extends React.Component {
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
                                       currencyFormatter={this.currencyFormatter}
-                                      updateConfiguration={this.updateConfiguration}/>;
+                                      updateConfiguration={this.updateConfiguration}
+                                      identifier={this.props.identifier}
+                                      subKitPath={this.props.subKitPath}/>;
           break;
         case 'Storage Setup':
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
@@ -219,8 +220,8 @@ class Configurator extends React.Component {
                                     validateConfiguration={this.validateConfiguration}
                                     prepareConfiguration={this.prepareConfiguration}
                                     updateConfiguration={this.updateConfiguration}
-                                    configId={this.props.configId}
-                                    subKitConfigId={this.props.subKitConfigId}
+                                    identifier={this.props.identifier}
+                                    subKitPath={this.props.subKitPath}
                                     currencyFormatter={this.currencyFormatter}/>;
           break;
       }

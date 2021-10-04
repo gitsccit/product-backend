@@ -45,6 +45,7 @@ $currentWarehouse = $this->request->getQuery(
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
      data-base-url='<?= trim($this->Url->build('/', ['fullBase' => true]), '/') ?>'
      data-identifier='<?= $identifier ?>'
+     data-sub-kit-path='<?= $subKitPath ?>'
     <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>
     <?= Configure::read('ProductBackend.showCost') ? "data-current-price-level='$currentPriceLevel'" : '' ?>
     <?= Configure::read('ProductBackend.showStock') ? "data-warehouses='$warehouses'" : '' ?>

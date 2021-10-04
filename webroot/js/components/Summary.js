@@ -34,10 +34,11 @@ class Summary extends React.Component {
 
   _addToOrder() {
     this.props.updateConfiguration({quantity: this.state.quantity, comments: this.state.comments}, result => {
-      let url = this.props.baseUrl + ('cost' in this.props.system ? '/quotes' : '/order');
+      let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
 
-      if ('subKitLineNumber' in result) {
-        url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.configId}`;
+      if ('subKitPath' in result) {
+        // let path = path ? `/${btoa('abc')}` : '';
+        url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.identifier}`;
       }
 
       window.location.assign(url);
@@ -196,7 +197,7 @@ class Summary extends React.Component {
                     <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)"
                        onClick={() => this._addToOrder()}>
                       <span
-                        className="h5 icon-plus"></span>{this.props.subKitConfigId ? 'Save & Return' : 'Add To Order'}
+                        className="h5 icon-plus"></span>{this.props.subKitPath ? 'Save & Return' : 'Add To Order'}
                     </a>
                   </> :
                   <h4 className="text-primary text-md-center">
