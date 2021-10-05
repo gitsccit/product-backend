@@ -66,18 +66,18 @@ class SystemsController extends AppController
             $configuration = $this->request->getSession()->read("configurations.$identifier");
 
             if (!is_numeric($identifier) && !$configuration) {
-                return $this->request->redirect(['action' => 'view', $url]);
+                return $this->redirect(['action' => 'view', $url]);
             }
 
             if (is_numeric($identifier) && !$configuration) { // load system by config ID
                 try {
                     $opportunitySystem = Configure::read('Functions.getOpportunitySystem')($identifier);
                 } catch (NotFoundException $exception) {
-                    return $this->request->redirect(['action' => 'view', $url]);
+                    return $this->redirect(['action' => 'view', $url]);
                 }
 
                 if ($system['id'] !== $opportunitySystem['system_id']) {
-                    return $this->request->redirect(['action' => 'view', $url]);
+                    return $this->redirect(['action' => 'view', $url]);
                 }
 
                 $configuration = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
@@ -100,7 +100,7 @@ class SystemsController extends AppController
                 }
 
                 if (!$subKitConfigFound) {
-                    return $this->request->redirect(['action' => 'view', $url, $identifier]);
+                    return $this->redirect(['action' => 'view', $url, $identifier]);
                 }
 
                 $systemUrl = $this->Systems->find('active', $options)
@@ -219,7 +219,7 @@ class SystemsController extends AppController
         }
     }
 
-    public function configuration($action)
+    public function configuration($method)
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();

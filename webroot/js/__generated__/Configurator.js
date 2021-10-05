@@ -130,10 +130,10 @@ class Configurator extends React.Component {
   }
 
   updateConfiguration({
-    action = 'prepare',
+    action = 'update',
     comments = null
   }, callback) {
-    let url = this.props.baseUrl + '/system/configuration';
+    let url = this.props.baseUrl + `/system/configuration/${action}`;
     let payload = {
       identifier: this.props.identifier,
       ...(this.props.subKitPath ? {

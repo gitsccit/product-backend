@@ -113,7 +113,7 @@ class GroupItemsTable extends Table
             ->formatResults(function (CollectionInterface $result) use ($options) {
                 $products = $systems = [];
 
-                if ($productIDs = $result->extract('product_id')->toList()) {
+                if ($productIDs = array_filter($result->extract('product_id')->toList())) {
                     $products = $this->Products
                         ->find('basic', $options)
                         ->find('image')
@@ -125,7 +125,7 @@ class GroupItemsTable extends Table
                         ->toArray();
                 }
 
-                if ($systemIDs = $result->extract('system_id')->toList()) {
+                if ($systemIDs = array_filter($result->extract('system_id')->toList())) {
                     $systems = $this->Systems
                         ->find('active', $options)
                         ->find('basic', $options)
