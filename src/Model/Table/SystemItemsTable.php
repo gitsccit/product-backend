@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
+use Cake\Http\Session;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -96,5 +98,25 @@ class SystemItemsTable extends Table
     public static function defaultConnectionName(): string
     {
         return 'product_backend';
+    }
+
+    public function findBasic(Query $query, array $options)
+    {
+        $session = new Session();
+        $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
+
+        return $query
+            ->select([
+                'SystemItems.system_id',
+                'SystemItems.item_id',
+                'SystemItems.quantity',
+                'name' => 'IF(GroupItems.product_id IS NULL, IFNULL(SystemPerspectives.name, Systems.name), IFNULL(ProductPerspectives.name, Products.name))',
+            ])
+            ->leftJoinWith('GroupItems.Products.ProductPerspectives', function (Query $q) use ($perspectiveID) {
+                return $q->where(['ProductPerspectives.perspective_id' => $perspectiveID]);
+            })
+            ->leftJoinWith('GroupItems.Systems.SystemPerspectives', function (Query $q) use ($perspectiveID) {
+                return $q->where(['SystemPerspectives.perspective_id' => $perspectiveID]);
+            });
     }
 }

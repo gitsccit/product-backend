@@ -134,10 +134,8 @@ class GroupItemsTable extends Table
                         ->indexBy('id')
                         ->toArray();
 
-                    $configuration = $this->Systems->SystemItems->find()
-                        ->innerJoinWith('GroupItems.Products', function (Query $q) use ($options) {
-                            return $q->find('basic', $options);
-                        })
+                    $configuration = $this->Systems->SystemItems
+                        ->find('basic')
                         ->whereInList('SystemItems.system_id', $systemIDs)
                         ->groupBy('system_id')
                         ->toArray();
