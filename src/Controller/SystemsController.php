@@ -236,9 +236,13 @@ class SystemsController extends AppController
             $configuration = $data['configuration'];
             $subKitPath = $data['sub_kit_path'] ?? null;
 
-            $itemIDsInConfiguration = Hash::extract($configuration, 'config.{n}.{n}.item_id');
-            $placeholders = implode(', ', array_fill(0, count($itemIDsInConfiguration), '?'));
-            $groupItems = TableRegistry::getTableLocator()->get('ProductBackend.GroupItems')->getConnection()
+            $configItems = Hash::extract($configuration, 'config.{n}.{n}');
+            $configItemsWithoutSubKit = Hash::filter($configItems, function ($item) {
+                return !isset($item['subkit']);
+            });
+            $configItemIDsWithoutSubKit = Hash::extract($configItemsWithoutSubKit, '{n}.item_id');
+            $placeholders = implode(', ', array_fill(0, count($configItemIDsWithoutSubKit), '?'));
+            $subKitItems = TableRegistry::getTableLocator()->get('ProductBackend.GroupItems')->getConnection()
                 ->execute("
                     SELECT
                         group_items.id,
@@ -251,10 +255,10 @@ class SystemsController extends AppController
                         INNER JOIN group_items gi ON gi.id = system_items.item_id
                         INNER JOIN groups ON groups.id = gi.group_id
                         INNER JOIN buckets_groups ON buckets_groups.group_id = groups.id
-                    WHERE group_items.id IN ($placeholders)", $itemIDsInConfiguration)
+                    WHERE group_items.id IN ($placeholders)", $configItemIDsWithoutSubKit)
                 ->fetchAll('assoc');
 
-            $subKitConfiguration = (new Collection($groupItems))
+            $subKitConfiguration = (new Collection($subKitItems))
                 ->groupBy('id')
                 ->map(function ($systemItems) {
                     return (new Collection($systemItems))->groupBy('bucket_id')->map(function ($bucketItems) {
