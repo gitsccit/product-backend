@@ -36,9 +36,10 @@ class Summary extends React.Component {
     this.props.updateConfiguration({quantity: this.state.quantity, comments: this.state.comments}, result => {
       let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
 
-      if ('subKitPath' in result) {
-        // let path = path ? `/${btoa('abc')}` : '';
-        url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.identifier}`;
+      if (this.props.subKitPath) {
+        let path = this.props.subKitPath.split('.').slice(0, -4).join('.');
+        path = path ? `/${btoa(path)}` : '';
+        url = `${this.props.baseUrl}/system/${this.props.system['url']}/${this.props.identifier}${path}`;
       }
 
       window.location.assign(url);
