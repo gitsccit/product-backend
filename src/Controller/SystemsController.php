@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace ProductBackend\Controller;
 
+use Cake\Collection\Collection;
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -17,6 +19,13 @@ use Cake\Utility\Hash;
  */
 class SystemsController extends AppController
 {
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $this->Authentication->allowUnauthenticated(['configuration']);
+    }
+
     /**
      * Index method
      *
@@ -227,10 +236,49 @@ class SystemsController extends AppController
             $configuration = $data['configuration'];
             $subKitPath = $data['sub_kit_path'] ?? null;
 
-            $oldConfiguration = $this->request->getSession()->read("configurations.$identifier");
+            $itemIDsInConfiguration = Hash::extract($configuration, 'config.{n}.{n}.item_id');
+            $placeholders = implode(', ', array_fill(0, count($itemIDsInConfiguration), '?'));
+            $groupItems = TableRegistry::getTableLocator()->get('ProductBackend.GroupItems')->getConnection()
+                ->execute("
+                    SELECT
+                        group_items.id,
+                        buckets_groups.bucket_id,
+                        system_items.item_id,
+                        system_items.quantity
+                    FROM group_items
+                        INNER JOIN systems ON systems.id = group_items.system_id
+                        INNER JOIN system_items ON system_items.system_id = systems.id
+                        INNER JOIN group_items gi ON gi.id = system_items.item_id
+                        INNER JOIN groups ON groups.id = gi.group_id
+                        INNER JOIN buckets_groups ON buckets_groups.group_id = groups.id
+                    WHERE group_items.id IN ($placeholders)", $itemIDsInConfiguration)
+                ->fetchAll('assoc');
+
+            $subKitConfiguration = (new Collection($groupItems))
+                ->groupBy('id')
+                ->map(function ($systemItems) {
+                    return (new Collection($systemItems))->groupBy('bucket_id')->map(function ($bucketItems) {
+                        return array_map(function ($item) {
+                            return [
+                                'item_id' => (int)$item['item_id'],
+                                'qty' => (int)$item['quantity'],
+                            ];
+                        }, $bucketItems);
+                    })->toArray();
+                })
+                ->toArray();
+
+            foreach ($configuration['config'] as &$bucketItems) {
+                foreach ($bucketItems as &$item) {
+                    if ($config = $subKitConfiguration[$item['item_id']] ?? null) {
+                        $item['subkit'] = compact('config');
+                    }
+                }
+            }
 
             if ($subKitPath) {
-                $configuration = Hash::insert($oldConfiguration, $subKitPath, $configuration);
+                $rootConfiguration = $this->request->getSession()->read("configurations.$identifier");
+                $configuration = Hash::insert($rootConfiguration, $subKitPath, $configuration);
             }
 
             $this->request->getSession()->write("configurations.$identifier", $configuration);
