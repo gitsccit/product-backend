@@ -207,7 +207,9 @@ class SystemsTable extends Table
     {
         if (Configure::read('ProductBackend.showCost')) {
             $query
-                ->find('baseConfiguration', $options)
+                ->contain('SystemItems.GroupItems', function ($query) use ($options) {
+                    return $query->find('configuration', $options);
+                })
                 ->formatResults(function ($result) {
                     return $result->each(function ($system) {
                         $system->cost = 0;
@@ -406,12 +408,6 @@ class SystemsTable extends Table
 
     public function findBaseConfiguration(Query $query, array $options)
     {
-        if (Configure::read('ProductBackend.showCost')) {
-            return $query->contain('SystemItems.GroupItems', function ($query) use ($options) {
-                return $query->find('configuration', $options);
-            });
-        }
-
         return $query->contain('SystemItems');
     }
 
@@ -460,6 +456,7 @@ class SystemsTable extends Table
         $selectedSystemIDs = $selectedItems->filter(function ($item) {
             return $item['type'] === 'system';
         })->extract('id')->toList();
+        $selectedItems = $selectedItems->indexBy('id')->toArray();
 
         if ($systemID = $options['systemID'] ?? null) {
             $selectedSystemIDs[] = $systemID;
@@ -473,12 +470,28 @@ class SystemsTable extends Table
                 ->sumOf('fpa');
         }
 
-        $price = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
-            return $carry + $item['price'] * $selectedItemsQuantities[$item['id']];
-        }, $fpa);
-        $cost = $selectedItems->reduce(function ($carry, $item) use ($selectedItemsQuantities) {
-            return $carry + $item['cost'] * $selectedItemsQuantities[$item['id']];
-        }, 0.0);
+        $findConfigurationCostAndPrice = function ($configuration) use ($selectedItems, &$findConfigurationCostAndPrice) {
+            $cost = $price = 0;
+
+            foreach ($configuration as $bucketItems) {
+                foreach ($bucketItems as $bucketItem) {
+                    if ($subKitConfig = $bucketItem['subkit'] ?? null) {
+                        [$subKitCost, $subKitPrice] = $findConfigurationCostAndPrice($subKitConfig);
+                        $cost += $subKitCost * $bucketItem['qty'];
+                        $price += $subKitPrice * $bucketItem['qty'];
+                        continue;
+                    }
+                    $selectedItem = $selectedItems[$bucketItem['item_id']];
+                    $cost += $selectedItem['cost'] * $bucketItem['qty'];
+                    $price += $selectedItem['price'] * $bucketItem['qty'];
+                }
+            }
+
+            return [$cost, $price];
+        };
+
+        [$cost, $price] = $findConfigurationCostAndPrice($configuration);
+        $price += $fpa;
 
         return [$cost, $price];
     }

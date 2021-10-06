@@ -2,15 +2,8 @@ class Summary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comments: this.props.system?.['config_json']?.['comments'] ?? '',
       quantity: 1
     };
-  }
-
-  _updateComments(event) {
-    this.setState({
-      comments: event.target.value
-    });
   }
 
   _updateQuantity(event) {
@@ -33,9 +26,8 @@ class Summary extends React.Component {
 
   _addToOrder() {
     this.props.updateConfiguration({
-      quantity: this.state.quantity,
-      comments: this.state.comments
-    }, result => {
+      quantity: this.state.quantity
+    }, _ => {
       let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
 
       if (this.props.subKitPath) {
@@ -159,9 +151,9 @@ class Summary extends React.Component {
       className: "col-lg-8 col-md-6"
     }, /*#__PURE__*/React.createElement("h4", null, "System Comments"), /*#__PURE__*/React.createElement("p", null, "Please leave any further notes or comments pertaining to your system configuration below."), /*#__PURE__*/React.createElement("textarea", {
       className: "form-control",
-      onChange: event => this._updateComments(event),
+      onChange: event => this.props.updateComments(event),
       rows: 5
-    }, this.state.comments)), /*#__PURE__*/React.createElement("div", {
+    }, this.props.comments)), /*#__PURE__*/React.createElement("div", {
       className: "col-lg-4 col-md-6 d-flex flex-column justify-content-center"
     }, this.props.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "text-md-end"

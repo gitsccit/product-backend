@@ -27,6 +27,7 @@ class Configurator extends React.Component {
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.prepareConfiguration = this.prepareConfiguration.bind(this);
     this.updateConfiguration = this.updateConfiguration.bind(this);
+    this.updateComments = this.updateComments.bind(this);
     this.percentageFormatter = new Intl.NumberFormat(undefined, {
       style: 'percent',
       minimumFractionDigits: 2,
@@ -47,6 +48,7 @@ class Configurator extends React.Component {
       currentTab: 0,
       validConfiguration: true,
       name: system['config_name'] ?? 'My System ' + (new Date()).toLocaleString(),
+      comment: system?.['config_json']?.['comments'] ?? '',
     };
   }
 
@@ -89,6 +91,12 @@ class Configurator extends React.Component {
     });
   }
 
+  updateComments(event) {
+    this.setState({
+      comments: event.target.value,
+    });
+  }
+
   prepareConfiguration() {
     let selectedBucketObjects = Object.entries(this.state.currentConfig).map(([bucketID, items]) => {
       let selectedItems = items.filter(item => {
@@ -106,15 +114,19 @@ class Configurator extends React.Component {
       return selectedItems.length > 0;
     });
 
-    return Object.fromEntries(selectedBucketObjects);
+    return {
+      name: this.state.name,
+      ...(this.state.comments ? {comments: this.state.comments} : {}),
+      config: Object.fromEntries(selectedBucketObjects),
+      configured_at: parseInt(Date.now().toString().slice(0, -3)),
+    };
   }
 
   validateConfiguration(system, newConfig, callback) {
-    let configuration = this.prepareConfiguration();
     let payload = {
       system: system['id'],
       kit: system['kit_id'],
-      configuration: configuration,
+      configuration: this.prepareConfiguration(),
       ...('currentPriceLevel' in this.props ? {priceLevel: this.props['currentPriceLevel']} : {})
     };
 
@@ -138,18 +150,13 @@ class Configurator extends React.Component {
     });
   }
 
-  updateConfiguration({comments = null}, callback) {
+  updateConfiguration(callback) {
     let url = this.props.baseUrl + `/system/configuration/update`;
 
     let payload = {
       identifier: this.props.identifier,
       ...(this.props.subKitPath ? {sub_kit_path: this.props.subKitPath} : {}),
-      configuration: {
-        name: this.state.name,
-        ...(comments ? {comments: comments} : {}),
-        config: this.prepareConfiguration(),
-        configured_at: parseInt(Date.now().toString().slice(0, -3)),
-      },
+      configuration: this.prepareConfiguration(),
     };
 
     fetch(url, {
@@ -220,9 +227,11 @@ class Configurator extends React.Component {
                                     validateConfiguration={this.validateConfiguration}
                                     prepareConfiguration={this.prepareConfiguration}
                                     updateConfiguration={this.updateConfiguration}
+                                    updateComments={this.updateComments}
+                                    currencyFormatter={this.currencyFormatter}
                                     identifier={this.props.identifier}
                                     subKitPath={this.props.subKitPath}
-                                    currencyFormatter={this.currencyFormatter}/>;
+                                    comments{this.state.comments}/>;
           break;
       }
     }

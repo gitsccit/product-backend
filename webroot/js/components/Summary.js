@@ -3,15 +3,8 @@ class Summary extends React.Component {
     super(props);
 
     this.state = {
-      comments: this.props.system?.['config_json']?.['comments'] ?? '',
       quantity: 1,
     };
-  }
-
-  _updateComments(event) {
-    this.setState({
-      comments: event.target.value,
-    });
   }
 
   _updateQuantity(event) {
@@ -33,7 +26,7 @@ class Summary extends React.Component {
   }
 
   _addToOrder() {
-    this.props.updateConfiguration({quantity: this.state.quantity, comments: this.state.comments}, result => {
+    this.props.updateConfiguration({quantity: this.state.quantity}, _ => {
       let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
 
       if (this.props.subKitPath) {
@@ -156,8 +149,8 @@ class Summary extends React.Component {
             <div className="col-lg-8 col-md-6">
               <h4>System Comments</h4>
               <p>Please leave any further notes or comments pertaining to your system configuration below.</p>
-              <textarea className="form-control" onChange={event => this._updateComments(event)} rows={5}>
-              {this.state.comments}
+              <textarea className="form-control" onChange={event => this.props.updateComments(event)} rows={5}>
+              {this.props.comments}
             </textarea>
             </div>
             <div className="col-lg-4 col-md-6 d-flex flex-column justify-content-center">

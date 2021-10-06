@@ -105,7 +105,7 @@ class System extends Entity
             });
 
             [$cost, $price] = TableRegistry::getTableLocator()->get('ProductBackend.Systems')
-                ->getConfigurationCostAndPrice($configuration, ['systemID' => $this['id']]);
+                ->getConfigurationCostAndPrice($configuration['config'], ['systemID' => $this['id']]);
 
             if (count($subKitItems) > 0) {
                 $allItems = Hash::combine($this['buckets'], '{n}.groups.{n}.group_items.{n}.id',
@@ -121,11 +121,12 @@ class System extends Entity
 
                 $subKits = array_map(function ($subKitLine) use ($allItems, $subKitConfigItems) {
                     $subKit = $subKitLine['subkit'];
+                    $subKitItem = $allItems[$subKitLine['item_id']];
 
                     [$cost, $price] = TableRegistry::getTableLocator()->get('ProductBackend.Systems')
-                        ->getConfigurationCostAndPrice($subKit);
+                        ->getConfigurationCostAndPrice($subKit['config'], ['system_id' => $subKitItem['original_id']]);
 
-                    $formattedSubKit = array_merge($allItems[$subKitLine['item_id']], [
+                    $formattedSubKit = array_merge($subKitItem, [
                         'config_name' => $subKit['name'],
                         'price' => $price,
                         'config_json' => $subKit,

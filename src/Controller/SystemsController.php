@@ -101,7 +101,12 @@ class SystemsController extends AppController
                 }
 
                 if (!$subKitConfigFound) {
-                    return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl, $identifier]);
+                    return $this->redirect([
+                        'action' => 'view',
+                        '?' => $this->request->getQueryParams(),
+                        $systemUrl,
+                        $identifier
+                    ]);
                 }
 
                 $systemUrl = $this->Systems->find('active', $options)
@@ -183,7 +188,7 @@ class SystemsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $kitID = $data['kit'];
-            $configuration = $data['configuration'];
+            $configuration = $data['configuration']['config'];
             $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('options.store.price-level');
 
             $errors = $this->Systems->Kits->validateBucketItems($kitID, $configuration);
