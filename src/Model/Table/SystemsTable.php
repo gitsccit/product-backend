@@ -475,8 +475,8 @@ class SystemsTable extends Table
 
             foreach ($configuration as $bucketItems) {
                 foreach ($bucketItems as $bucketItem) {
-                    if ($subKitConfig = $bucketItem['subkit'] ?? null) {
-                        [$subKitCost, $subKitPrice] = $findConfigurationCostAndPrice($subKitConfig);
+                    if ($subKit = $bucketItem['subkit'] ?? null) {
+                        [$subKitCost, $subKitPrice] = $findConfigurationCostAndPrice($subKit['config']);
                         $cost += $subKitCost * $bucketItem['qty'];
                         $price += $subKitPrice * $bucketItem['qty'];
                         continue;
