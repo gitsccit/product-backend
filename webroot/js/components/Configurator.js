@@ -118,7 +118,7 @@ class Configurator extends React.Component {
       ...('currentPriceLevel' in this.props ? {priceLevel: this.props['currentPriceLevel']} : {})
     };
 
-    let url = this.props.baseUrl + '/system/validate';
+    let url = this.props.baseUrl + '/system/configuration/validate';
 
     this.setState({
       currentConfig: newConfig,
@@ -138,8 +138,8 @@ class Configurator extends React.Component {
     });
   }
 
-  updateConfiguration({action = 'update', comments = null}, callback) {
-    let url = this.props.baseUrl + `/system/configuration/${action}`;
+  updateConfiguration({comments = null}, callback) {
+    let url = this.props.baseUrl + `/system/configuration/update`;
 
     let payload = {
       identifier: this.props.identifier,

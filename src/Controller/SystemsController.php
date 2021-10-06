@@ -178,7 +178,7 @@ class SystemsController extends AppController
         $this->viewBuilder()->setTemplate("view_$layout");
     }
 
-    public function validate()
+    public function validateConfiguration()
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();
@@ -220,7 +220,7 @@ class SystemsController extends AppController
         }
     }
 
-    public function configuration($method)
+    public function updateConfiguration()
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();
@@ -245,8 +245,8 @@ class SystemsController extends AppController
                         INNER JOIN systems ON systems.id = group_items.system_id
                         INNER JOIN system_items ON system_items.system_id = systems.id
                         INNER JOIN group_items gi ON gi.id = system_items.item_id
-                        INNER JOIN groups ON groups.id = gi.group_id
-                        INNER JOIN buckets_groups ON buckets_groups.group_id = groups.id
+                        INNER JOIN `groups` ON `groups`.id = gi.group_id
+                        INNER JOIN buckets_groups ON buckets_groups.group_id = `groups`.id
                     WHERE group_items.id IN ($placeholders)", $configItemIDsWithoutSubKit)
                 ->fetchAll('assoc');
 
@@ -280,18 +280,6 @@ class SystemsController extends AppController
             $this->request->getSession()->write("configurations.$identifier", $configuration);
 
             $result = compact('configuration');
-
-            return $this->response->withStringBody(json_encode($result))->withType('application/json');
-        }
-    }
-
-    public function saveConfiguration()
-    {
-        if ($this->request->is('post')) {
-            $data = $this->request->getData();
-            $configJsonString = json_encode($data['config_json']);
-
-            $result = [];
 
             return $this->response->withStringBody(json_encode($result))->withType('application/json');
         }
