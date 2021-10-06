@@ -18,7 +18,6 @@ use Cake\Utility\Hash;
  */
 class SystemsController extends AppController
 {
-
     /**
      * Index method
      *
