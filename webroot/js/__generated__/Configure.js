@@ -218,10 +218,10 @@ class Configure extends React.Component {
     let subKitPath = `config.${bucketID}.${subKitIndexInBucketConfig}.subkit`;
     let path = this.props.subKitPath ? `${this.props.subKitPath}.${subKitPath}` : subKitPath;
     this.props.updateConfiguration({}, _ => {
-      let [url, query] = window.location.href.split('?');
-      let urlParts = url.split('/');
+      let [currentUrl, query] = window.location.href.split('?');
+      let urlParts = currentUrl.split('/');
       let systemUrl = urlParts[urlParts.indexOf('system') + 1];
-      url = `${this.props.baseUrl}/system/${systemUrl}/${this.props.identifier}/${btoa(path)}` + (query ? `?${query}` : '');
+      let url = `${this.props.baseUrl}/system/${systemUrl}/${this.props.identifier}/${btoa(path)}` + (query ? `?${query}` : '');
       window.location.assign(url);
     });
   }
