@@ -223,12 +223,13 @@ class Configure extends React.Component {
     let itemsInBucket = this.state.currentConfig[bucketID];
     let selectedItemsInBucketBeforeSubKit = itemsInBucket.slice(0, subKitIndexInBucket + 1).filter(item => item['selected_at']);
     let subKitIndexInBucketConfig = selectedItemsInBucketBeforeSubKit.length - 1;
-    let subKit = itemsInBucket[subKitIndexInBucket];
     let subKitPath = `config.${bucketID}.${subKitIndexInBucketConfig}.subkit`;
     let path = this.props.subKitPath ? `${this.props.subKitPath}.${subKitPath}` : subKitPath;
     this.props.updateConfiguration({}, _ => {
-      let [, query] = window.location.href.split('?');
-      let url = `${this.props.baseUrl}/system/${subKit['url']}/${this.props.identifier}/${btoa(path)}` + (query ? `?${query}` : '');
+      let [url, query] = window.location.href.split('?');
+      let urlParts = url.split('/');
+      let systemUrl = urlParts[urlParts.indexOf('system') + 1];
+      url = `${this.props.baseUrl}/system/${systemUrl}/${this.props.identifier}/${btoa(path)}` + (query ? `?${query}` : '');
       window.location.assign(url);
     });
   }

@@ -5,6 +5,7 @@ namespace ProductBackend\Controller;
 
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -18,6 +19,13 @@ use Cake\Utility\Hash;
  */
 class SystemsController extends AppController
 {
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $this->Authentication->allowUnauthenticated(['configuration']);
+    }
+
     /**
      * Index method
      *
@@ -67,18 +75,18 @@ class SystemsController extends AppController
             $configuration = $this->request->getSession()->read("configurations.$identifier");
 
             if (!is_numeric($identifier) && !$configuration) {
-                return $this->redirect(['action' => 'view', $url]);
+                return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
             }
 
             if (is_numeric($identifier) && !$configuration) { // load system by config ID
                 try {
                     $opportunitySystem = Configure::read('Functions.getOpportunitySystem')($identifier);
                 } catch (NotFoundException $exception) {
-                    return $this->redirect(['action' => 'view', $url]);
+                    return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
                 }
 
                 if ($system['id'] !== $opportunitySystem['system_id']) {
-                    return $this->redirect(['action' => 'view', $url]);
+                    return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
                 }
 
                 $configuration = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
@@ -101,7 +109,7 @@ class SystemsController extends AppController
                 }
 
                 if (!$subKitConfigFound) {
-                    return $this->redirect(['action' => 'view', $url, $identifier]);
+                    return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl, $identifier]);
                 }
 
                 $systemUrl = $this->Systems->find('active', $options)
@@ -159,7 +167,7 @@ class SystemsController extends AppController
                 ->find('active')
                 ->find('basic', $options)
                 ->where([
-                    'IFNULL(SystemPerspectives.url, Systems.url) =' => $url,
+                    'IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl,
                 ])
                 ->first()
                 ->getBreadcrumbs($identifier);
