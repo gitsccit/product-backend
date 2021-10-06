@@ -153,7 +153,7 @@ class System extends Entity
             }
 
             $this['price'] = $price;
-            $this['config_name'] = $configuration['name'];
+            $this['config_name'] = $configuration['name'] ?? '';
             $this['config_json'] = $configuration;
 
             $selectedNonSubKitItems = [];
