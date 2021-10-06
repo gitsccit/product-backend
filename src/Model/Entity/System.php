@@ -124,7 +124,7 @@ class System extends Entity
                     $subKitItem = $allItems[$subKitLine['item_id']];
 
                     [$cost, $price] = TableRegistry::getTableLocator()->get('ProductBackend.Systems')
-                        ->getConfigurationCostAndPrice($subKit['config'], ['system_id' => $subKitItem['original_id']]);
+                        ->getConfigurationCostAndPrice($subKit['config'], ['systemID' => $subKitItem['original_id']]);
 
                     $formattedSubKit = array_merge($subKitItem, [
                         'config_name' => $subKit['name'],
