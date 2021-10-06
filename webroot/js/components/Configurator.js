@@ -225,13 +225,12 @@ class Configurator extends React.Component {
                                     currentConfig={this.state.currentConfig}
                                     validConfiguration={this.state.validConfiguration}
                                     validateConfiguration={this.validateConfiguration}
-                                    prepareConfiguration={this.prepareConfiguration}
                                     updateConfiguration={this.updateConfiguration}
                                     updateComments={this.updateComments}
                                     currencyFormatter={this.currencyFormatter}
                                     identifier={this.props.identifier}
                                     subKitPath={this.props.subKitPath}
-                                    comments{this.state.comments}/>;
+                                    comments={this.state.comments}/>;
           break;
       }
     }

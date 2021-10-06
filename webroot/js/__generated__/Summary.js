@@ -25,9 +25,7 @@ class Summary extends React.Component {
   }
 
   _addToOrder() {
-    this.props.updateConfiguration({
-      quantity: this.state.quantity
-    }, _ => {
+    this.props.updateConfiguration(_ => {
       let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
 
       if (this.props.subKitPath) {
