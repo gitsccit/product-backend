@@ -188,7 +188,7 @@ class SystemsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $kitID = $data['kit'];
-            $configuration = $data['configuration']['config'];
+            $configuration = $this->formatConfiguration($data['configuration'])['config'];
             $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('options.store.price-level');
 
             $errors = $this->Systems->Kits->validateBucketItems($kitID, $configuration);
@@ -233,49 +233,7 @@ class SystemsController extends AppController
             $configuration = $data['configuration'];
             $subKitPath = $data['sub_kit_path'] ?? null;
 
-            $configItems = Hash::extract($configuration, 'config.{n}.{n}');
-            $configItemsWithoutSubKit = Hash::filter($configItems, function ($item) {
-                return !isset($item['subkit']);
-            });
-            $configItemIDsWithoutSubKit = Hash::extract($configItemsWithoutSubKit, '{n}.item_id');
-            $placeholders = implode(', ', array_fill(0, count($configItemIDsWithoutSubKit), '?'));
-            $subKitItems = TableRegistry::getTableLocator()->get('ProductBackend.GroupItems')->getConnection()
-                ->execute("
-                    SELECT
-                        group_items.id,
-                        buckets_groups.bucket_id,
-                        system_items.item_id,
-                        system_items.quantity
-                    FROM group_items
-                        INNER JOIN systems ON systems.id = group_items.system_id
-                        INNER JOIN system_items ON system_items.system_id = systems.id
-                        INNER JOIN group_items gi ON gi.id = system_items.item_id
-                        INNER JOIN `groups` ON `groups`.id = gi.group_id
-                        INNER JOIN buckets_groups ON buckets_groups.group_id = `groups`.id
-                    WHERE group_items.id IN ($placeholders)", $configItemIDsWithoutSubKit)
-                ->fetchAll('assoc');
-
-            $subKitConfiguration = (new Collection($subKitItems))
-                ->groupBy('id')
-                ->map(function ($systemItems) {
-                    return (new Collection($systemItems))->groupBy('bucket_id')->map(function ($bucketItems) {
-                        return array_map(function ($item) {
-                            return [
-                                'item_id' => (int)$item['item_id'],
-                                'qty' => (int)$item['quantity'],
-                            ];
-                        }, $bucketItems);
-                    })->toArray();
-                })
-                ->toArray();
-
-            foreach ($configuration['config'] as &$bucketItems) {
-                foreach ($bucketItems as &$item) {
-                    if ($config = $subKitConfiguration[$item['item_id']] ?? null) {
-                        $item['subkit'] = compact('config');
-                    }
-                }
-            }
+            $configuration = $this->formatConfiguration($configuration);
 
             if ($subKitPath) {
                 $rootConfiguration = $this->request->getSession()->read("configurations.$identifier");
@@ -356,5 +314,58 @@ class SystemsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    protected function formatConfiguration($configuration) {
+        $configItems = Hash::extract($configuration, 'config.{n}.{n}');
+        $configItemsWithoutSubKit = Hash::filter($configItems, function ($item) {
+            return !isset($item['subkit']);
+        });
+
+        if (empty($configItemsWithoutSubKit)) {
+            return $configuration;
+        }
+
+        $configItemIDsWithoutSubKit = Hash::extract($configItemsWithoutSubKit, '{n}.item_id');
+        $placeholders = implode(', ', array_fill(0, count($configItemIDsWithoutSubKit), '?'));
+        $subKitItems = TableRegistry::getTableLocator()->get('ProductBackend.GroupItems')->getConnection()
+            ->execute("
+                    SELECT
+                        group_items.id,
+                        buckets_groups.bucket_id,
+                        system_items.item_id,
+                        system_items.quantity
+                    FROM group_items
+                        INNER JOIN systems ON systems.id = group_items.system_id
+                        INNER JOIN system_items ON system_items.system_id = systems.id
+                        INNER JOIN group_items gi ON gi.id = system_items.item_id
+                        INNER JOIN `groups` ON `groups`.id = gi.group_id
+                        INNER JOIN buckets_groups ON buckets_groups.group_id = `groups`.id
+                    WHERE group_items.id IN ($placeholders)", $configItemIDsWithoutSubKit)
+            ->fetchAll('assoc');
+
+        $subKitConfiguration = (new Collection($subKitItems))
+            ->groupBy('id')
+            ->map(function ($systemItems) {
+                return (new Collection($systemItems))->groupBy('bucket_id')->map(function ($bucketItems) {
+                    return array_map(function ($item) {
+                        return [
+                            'item_id' => (int)$item['item_id'],
+                            'qty' => (int)$item['quantity'],
+                        ];
+                    }, $bucketItems);
+                })->toArray();
+            })
+            ->toArray();
+
+        foreach ($configuration['config'] as &$bucketItems) {
+            foreach ($bucketItems as &$item) {
+                if ($config = $subKitConfiguration[$item['item_id']] ?? null) {
+                    $item['subkit'] = compact('config');
+                }
+            }
+        }
+
+        return $configuration;
     }
 }

@@ -193,6 +193,7 @@ class Configurator extends React.Component {
     let systemWithoutStandaloneBuckets = Object.assign({}, this.state.system);
     systemWithoutStandaloneBuckets['buckets'] = systemWithoutStandaloneBuckets['buckets'].filter(bucket => bucket['name'] !== 'Warranty');
 
+    // TODO: pass buckets not system, this.updateSystem will change the buckets
     let systemWithOnlyStandaloneBuckets = Object.assign({}, this.state.system);
     systemWithOnlyStandaloneBuckets['buckets'] = systemWithOnlyStandaloneBuckets['buckets'].filter(bucket => bucket['name'] === 'Warranty');
 

@@ -127,7 +127,7 @@ class System extends Entity
                         ->getConfigurationCostAndPrice($subKit['config'], ['systemID' => $subKitItem['original_id']]);
 
                     $formattedSubKit = array_merge($subKitItem, [
-                        'config_name' => $subKit['name'],
+                        'config_name' => $subKit['name'] ?? null,
                         'price' => $price,
                         'config_json' => $subKit,
                         'configuration' => array_map(function ($configDetail) use ($subKitConfigItems) {
