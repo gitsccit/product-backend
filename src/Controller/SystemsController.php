@@ -360,7 +360,7 @@ class SystemsController extends AppController
 
         foreach ($configuration['config'] as &$bucketItems) {
             foreach ($bucketItems as &$item) {
-                if ($config = $subKitConfiguration[$item['item_id']] ?? null) {
+                if (!isset($item['subkit']) && ($config = $subKitConfiguration[$item['item_id']] ?? null)) {
                     $item['subkit'] = compact('config');
                 }
             }
