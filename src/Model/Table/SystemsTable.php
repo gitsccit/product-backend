@@ -446,16 +446,14 @@ class SystemsTable extends Table
             return endsWith($key, 'qty');
         }, ARRAY_FILTER_USE_KEY));
 
-        $selectedItemsQuantities = [];
-        foreach ($itemIDs as $index => $itemID) {
-            $selectedItemsQuantities[$itemID] = ($selectedItemsQuantities[$itemID] ?? 0) + $quantities[$index];
-        }
-
         $selectedItems = $this->GroupItems->find('configuration', $options)
             ->whereInList('GroupItems.id', array_unique($itemIDs))->all();
         $selectedSystemIDs = $selectedItems->filter(function ($item) {
             return $item['type'] === 'system';
-        })->extract('id')->toList();
+        })->extract('original_id')->toList();
+        $selectedProducts = $selectedItems->filter(function ($item) {
+            return $item['type'] === 'system';
+        })->toList();
         $selectedItems = $selectedItems->indexBy('id')->toArray();
 
         if ($systemID = $options['systemID'] ?? null) {
@@ -470,28 +468,20 @@ class SystemsTable extends Table
                 ->sumOf('fpa');
         }
 
-        $findConfigurationCostAndPrice = function ($configuration) use ($selectedItems, &$findConfigurationCostAndPrice) {
-            $cost = $price = 0;
-
-            foreach ($configuration as $bucketItems) {
-                foreach ($bucketItems as $bucketItem) {
-                    if ($subKit = $bucketItem['subkit'] ?? null) {
-                        [$subKitCost, $subKitPrice] = $findConfigurationCostAndPrice($subKit['config']);
-                        $cost += $subKitCost * $bucketItem['qty'];
-                        $price += $subKitPrice * $bucketItem['qty'];
-                        continue;
-                    }
-                    $selectedItem = $selectedItems[$bucketItem['item_id']];
-                    $cost += $selectedItem['cost'] * $bucketItem['qty'];
-                    $price += $selectedItem['price'] * $bucketItem['qty'];
-                }
+        $selectedItemsQuantities = [];
+        foreach ($itemIDs as $index => $itemID) {
+            if ($selectedItems[$itemID]['type'] === 'product') {
+                $selectedItemsQuantities[$itemID] = ($selectedItemsQuantities[$itemID] ?? 0) + $quantities[$index];
             }
+        }
 
-            return [$cost, $price];
-        };
-
-        [$cost, $price] = $findConfigurationCostAndPrice($configuration);
-        $price += $fpa;
+        $cost = 0;
+        $price = $fpa;
+        foreach ($selectedItemsQuantities as $itemID => $quantity) {
+            $selectedItem = $selectedItems[$itemID];
+            $cost += $selectedItem['cost'] * $quantity;
+            $price += $selectedItem['price'] * $quantity;
+        }
 
         return [$cost, $price];
     }
