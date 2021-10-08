@@ -212,7 +212,7 @@ class Configurator extends React.Component {
           break;
         case 'Warranty':
           tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
-                                      system={this.state.system} buckets={nonStandaloneBuckets}
+                                      system={this.state.system} buckets={standaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}

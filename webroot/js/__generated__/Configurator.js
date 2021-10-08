@@ -218,7 +218,7 @@ class Configurator extends React.Component {
               window.configure = configure;
             },
             system: this.state.system,
-            buckets: nonStandaloneBuckets,
+            buckets: standaloneBuckets,
             currentConfig: this.state.currentConfig,
             csrf: this.props.csrf,
             validateConfiguration: this.validateConfiguration,
