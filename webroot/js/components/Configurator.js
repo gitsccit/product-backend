@@ -207,8 +207,8 @@ class Configurator extends React.Component {
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
                                       currencyFormatter={this.currencyFormatter}
                                       updateConfiguration={this.updateConfiguration}
-                                      identifier={this.props.identifier}
-                                      subKitPath={this.props.subKitPath}/>;
+                                      identifier={this.props.identifier} subKitPath={this.props.subKitPath}
+                                      systemUrl={this.props.systemUrl}/>;
           break;
         case 'Storage Setup':
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
@@ -229,9 +229,8 @@ class Configurator extends React.Component {
                                     updateConfiguration={this.updateConfiguration}
                                     updateComments={this.updateComments}
                                     currencyFormatter={this.currencyFormatter}
-                                    identifier={this.props.identifier}
-                                    subKitPath={this.props.subKitPath}
-                                    comments={this.state.comments}/>;
+                                    identifier={this.props.identifier} subKitPath={this.props.subKitPath}
+                                    comments={this.state.comments} systemUrl={this.props.systemUrl}/>;
           break;
       }
     }

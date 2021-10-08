@@ -30,12 +30,10 @@ class Summary extends React.Component {
       let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
 
       if (this.props.subKitPath) {
-        let [currentUrl, query] = window.location.href.split('?');
-        let urlParts = currentUrl.split('/');
-        let systemUrl = urlParts[urlParts.indexOf('system') + 1];
+        let [, query] = window.location.href.split('?');
         let path = this.props.subKitPath.split('.').slice(0, -4).join('.');
         path = path ? `/${btoa(path)}` : '';
-        url = `${this.props.baseUrl}/system/${systemUrl}/${this.props.identifier}${path}` + (query ? `?${query}` : '');
+        url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.identifier}${path}` + (query ? `?${query}` : '');
       }
 
       window.location.assign(url);

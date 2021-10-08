@@ -177,7 +177,7 @@ class SystemsController extends AppController
             $this->set(compact('breadcrumbs'));
         }
 
-        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath'));
+        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath', 'systemUrl'));
 
         $layout = $this->request->getSession()->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");

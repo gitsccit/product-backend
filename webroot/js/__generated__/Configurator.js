@@ -202,7 +202,8 @@ class Configurator extends React.Component {
             currencyFormatter: this.currencyFormatter,
             updateConfiguration: this.updateConfiguration,
             identifier: this.props.identifier,
-            subKitPath: this.props.subKitPath
+            subKitPath: this.props.subKitPath,
+            systemUrl: this.props.systemUrl
           });
           break;
 
@@ -242,7 +243,8 @@ class Configurator extends React.Component {
             currencyFormatter: this.currencyFormatter,
             identifier: this.props.identifier,
             subKitPath: this.props.subKitPath,
-            comments: this.state.comments
+            comments: this.state.comments,
+            systemUrl: this.props.systemUrl
           });
           break;
       }
