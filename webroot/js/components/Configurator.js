@@ -190,19 +190,16 @@ class Configurator extends React.Component {
   }
 
   render() {
-    let systemWithoutStandaloneBuckets = Object.assign({}, this.state.system);
-    systemWithoutStandaloneBuckets['buckets'] = systemWithoutStandaloneBuckets['buckets'].filter(bucket => bucket['name'] !== 'Warranty');
-
-    // TODO: pass buckets not system, this.updateSystem will change the buckets
-    let systemWithOnlyStandaloneBuckets = Object.assign({}, this.state.system);
-    systemWithOnlyStandaloneBuckets['buckets'] = systemWithOnlyStandaloneBuckets['buckets'].filter(bucket => bucket['name'] === 'Warranty');
+    let nonStandaloneBuckets = this.state.system['buckets'].filter(bucket => bucket['name'] !== 'Warranty');
+    let standaloneBuckets = this.state.system['buckets'].filter(bucket => bucket['name'] === 'Warranty');
 
     let tabs = Object.assign([], this.state.tabs);
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
           tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
-                                      system={systemWithoutStandaloneBuckets} currentConfig={this.state.currentConfig}
+                                      system={this.state.system} buckets={nonStandaloneBuckets}
+                                      currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
                                       currencyFormatter={this.currencyFormatter}
@@ -215,7 +212,8 @@ class Configurator extends React.Component {
           break;
         case 'Warranty':
           tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
-                                      system={systemWithOnlyStandaloneBuckets} currentConfig={this.state.currentConfig}
+                                      system={this.state.system} buckets={nonStandaloneBuckets}
+                                      currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
                                       currencyFormatter={this.currencyFormatter}

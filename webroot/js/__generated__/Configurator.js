@@ -179,11 +179,8 @@ class Configurator extends React.Component {
   }
 
   render() {
-    let systemWithoutStandaloneBuckets = Object.assign({}, this.state.system);
-    systemWithoutStandaloneBuckets['buckets'] = systemWithoutStandaloneBuckets['buckets'].filter(bucket => bucket['name'] !== 'Warranty'); // TODO: pass buckets not system, this.updateSystem will change the buckets
-
-    let systemWithOnlyStandaloneBuckets = Object.assign({}, this.state.system);
-    systemWithOnlyStandaloneBuckets['buckets'] = systemWithOnlyStandaloneBuckets['buckets'].filter(bucket => bucket['name'] === 'Warranty');
+    let nonStandaloneBuckets = this.state.system['buckets'].filter(bucket => bucket['name'] !== 'Warranty');
+    let standaloneBuckets = this.state.system['buckets'].filter(bucket => bucket['name'] === 'Warranty');
     let tabs = Object.assign([], this.state.tabs);
 
     for (const tab of tabs) {
@@ -193,7 +190,8 @@ class Configurator extends React.Component {
             ref: configure => {
               window.configure = configure;
             },
-            system: systemWithoutStandaloneBuckets,
+            system: this.state.system,
+            buckets: nonStandaloneBuckets,
             currentConfig: this.state.currentConfig,
             csrf: this.props.csrf,
             validateConfiguration: this.validateConfiguration,
@@ -219,7 +217,8 @@ class Configurator extends React.Component {
             ref: configure => {
               window.configure = configure;
             },
-            system: systemWithOnlyStandaloneBuckets,
+            system: this.state.system,
+            buckets: nonStandaloneBuckets,
             currentConfig: this.state.currentConfig,
             csrf: this.props.csrf,
             validateConfiguration: this.validateConfiguration,

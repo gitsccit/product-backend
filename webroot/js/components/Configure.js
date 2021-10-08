@@ -4,7 +4,7 @@ class Configure extends React.Component {
 
     let selectedFilters = {};
 
-    props.system['buckets'].forEach(bucket => {
+    props.buckets.forEach(bucket => {
       let bucketFilters = {};
 
       Object.entries(bucket['filters']).forEach(([name, options]) => {
@@ -39,7 +39,7 @@ class Configure extends React.Component {
   }
 
   _getBucketGroupImage(bucketID, groupIndex) {
-    let groupItems = this.state.system['buckets'].filter(bucket => bucket['id'] === bucketID)[0]['groups'][groupIndex]['group_items'];
+    let groupItems = this.props.buckets.filter(bucket => bucket['id'] === bucketID)[0]['groups'][groupIndex]['group_items'];
     let lastSelectedItemInGroup = groupItems.filter(item => item['selected_at']).sort((a, b) => a['selected_at'] - b['selected_at']).pop()
 
     if (lastSelectedItemInGroup) {
@@ -93,7 +93,7 @@ class Configure extends React.Component {
   _selectItem(bucketID, itemIndexInBucket) {
     let newConfig = Object.assign({}, this.state.currentConfig);
     let item = newConfig[bucketID][itemIndexInBucket];
-    let bucket = this.state.system['buckets'].find(bucket => bucket['id'] === bucketID);
+    let bucket = this.props.buckets.find(bucket => bucket['id'] === bucketID);
 
     if (bucket['multiple']) {
       let itemsInBucket = this.state.currentConfig[bucket['id']];
@@ -241,7 +241,7 @@ class Configure extends React.Component {
   }
 
   render() {
-    let buckets = this.state.system['buckets'].filter(bucket => !bucket['hidden']);
+    let buckets = this.props.buckets.filter(bucket => !bucket['hidden']);
     let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
@@ -274,7 +274,7 @@ class Configure extends React.Component {
                     let bucketID = null;
                     [bucketID, prompt] = prompt;
 
-                    bucketTab = this.state.system['buckets'].findIndex(bucket => bucket['id'] === parseInt(bucketID));
+                    bucketTab = this.props.buckets.findIndex(bucket => bucket['id'] === parseInt(bucketID));
                   }
 
                   return (
