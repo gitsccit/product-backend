@@ -43,7 +43,8 @@ class SystemsController extends AppController
      */
     public function view(string $url, string $identifier = null, string $subKitPath = null)
     {
-        $systemUrl = str_replace(' ', '+', $url);
+        $url = str_replace(' ', '+', $url);
+        $systemUrl = $url;
 
         $options = [];
         if ($priceLevel = $this->request->getQuery('priceLevel')) {
@@ -177,7 +178,8 @@ class SystemsController extends AppController
             $this->set(compact('breadcrumbs'));
         }
 
-        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath', 'systemUrl'));
+        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath'));
+        $this->set(['systemUrl' => $url]);
 
         $layout = $this->request->getSession()->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");
