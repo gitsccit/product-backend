@@ -137,6 +137,7 @@ class System extends Entity
                                 'quantity' => $configDetail['qty'],
                             ];
                         }, Hash::extract($subKit['config'], '{n}.{n}')),
+                        'quantity' => $subKitLine['qty'],
                         'selected' => true,
                     ]);
 
