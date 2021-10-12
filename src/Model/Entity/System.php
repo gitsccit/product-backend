@@ -80,7 +80,7 @@ class System extends Entity
         'system_price_levels' => true,
     ];
 
-    public function getBreadcrumbs($configID = null)
+    public function getBreadcrumbs($identifier = null)
     {
         if (!isset($this->system_category)) {
             $this->system_category = FactoryLocator::get('Table')->get('ProductBackend.SystemCategories')
@@ -90,7 +90,7 @@ class System extends Entity
         $breadcrumbs = $this->system_category->getBreadcrumbs();
         $breadcrumbs[] = [
             'title' => $this->name,
-            'url' => "/system/$this->url" . ($configID ? "/$configID" : ''),
+            'url' => "/system/$this->url" . ($identifier ? "/$identifier" : ''),
         ];
 
         return $breadcrumbs;

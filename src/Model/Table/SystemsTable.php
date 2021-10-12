@@ -255,6 +255,11 @@ class SystemsTable extends Table
         $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
 
         return $query
+            ->select([
+                'Systems.id',
+                'url' => 'IFNULL(SystemPerspectives.url, Systems.url)',
+                'name' => 'IFNULL(SystemPerspectives.name, Systems.name)',
+            ])
             ->leftJoinWith('SystemPerspectives', function (Query $q) use ($perspectiveID) {
                 return $q->where(['SystemPerspectives.perspective_id' => $perspectiveID]);
             })

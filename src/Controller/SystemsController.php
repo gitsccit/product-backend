@@ -54,11 +54,11 @@ class SystemsController extends AppController
             $options['warehouse'] = $warehouse;
         }
 
-        $system = $this->Systems->find('active', $options)
+        $rootSystem = $this->Systems->find('active', $options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
 
-        if (is_null($system)) {
+        if (is_null($rootSystem)) {
             throw new NotFoundException();
         }
 
@@ -78,7 +78,7 @@ class SystemsController extends AppController
                     return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
                 }
 
-                if ($system['id'] !== $opportunitySystem['system_id']) {
+                if ($rootSystem['id'] !== $opportunitySystem['system_id']) {
                     return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
                 }
 
@@ -161,14 +161,7 @@ class SystemsController extends AppController
         }
 
         if (!$this->request->is('ajax')) {
-            $breadcrumbs = $this->Systems
-                ->find('active')
-                ->find('basic', $options)
-                ->where([
-                    'IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl,
-                ])
-                ->first()
-                ->getBreadcrumbs($identifier);
+            $breadcrumbs = $rootSystem->getBreadcrumbs($identifier);
 
             $breadcrumbs[] = [
                 'title' => $system->name,
@@ -178,8 +171,7 @@ class SystemsController extends AppController
             $this->set(compact('breadcrumbs'));
         }
 
-        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath'));
-        $this->set(['systemUrl' => $url]);
+        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath', 'systemUrl'));
 
         $layout = $this->request->getSession()->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");
