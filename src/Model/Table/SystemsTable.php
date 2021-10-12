@@ -257,6 +257,7 @@ class SystemsTable extends Table
         return $query
             ->select([
                 'Systems.id',
+                'Systems.system_category_id',
                 'url' => 'IFNULL(SystemPerspectives.url, Systems.url)',
                 'name' => 'IFNULL(SystemPerspectives.name, Systems.name)',
             ])
