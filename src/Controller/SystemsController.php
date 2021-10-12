@@ -163,10 +163,12 @@ class SystemsController extends AppController
         if (!$this->request->is('ajax')) {
             $breadcrumbs = $rootSystem->getBreadcrumbs($identifier);
 
-            $breadcrumbs[] = [
-                'title' => $system->name,
-                'url' => $this->request->getPath(),
-            ];
+            if ($subKitPath) {
+                $breadcrumbs[] = [
+                    'title' => $system->name,
+                    'url' => $this->request->getPath(),
+                ];
+            }
 
             $this->set(compact('breadcrumbs'));
         }
