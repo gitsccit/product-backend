@@ -457,9 +457,6 @@ class SystemsTable extends Table
         $selectedSystemIDs = $selectedItems->filter(function ($item) {
             return $item['type'] === 'system';
         })->extract('original_id')->toList();
-        $selectedProducts = $selectedItems->filter(function ($item) {
-            return $item['type'] === 'system';
-        })->toList();
         $selectedItems = $selectedItems->indexBy('id')->toArray();
 
         if ($systemID = $options['systemID'] ?? null) {

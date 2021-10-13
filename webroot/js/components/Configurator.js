@@ -66,7 +66,7 @@ class Configurator extends React.Component {
 
   _continue() {
     this.setState({
-      currentTab: Math.min(this.state.tabs.length, this.state.currentTab + 1),
+      currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1),
     });
   }
 
@@ -197,7 +197,9 @@ class Configurator extends React.Component {
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
-          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
+          tab['content'] = <Configure ref={(configure) => {
+            window.configure = configure
+          }}
                                       system={this.state.system} buckets={nonStandaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
@@ -211,7 +213,9 @@ class Configurator extends React.Component {
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
           break;
         case 'Warranty':
-          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
+          tab['content'] = <Configure ref={(configure) => {
+            window.configure = configure
+          }}
                                       system={this.state.system} buckets={standaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}

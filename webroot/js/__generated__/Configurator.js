@@ -59,7 +59,7 @@ class Configurator extends React.Component {
 
   _continue() {
     this.setState({
-      currentTab: Math.min(this.state.tabs.length, this.state.currentTab + 1)
+      currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1)
     });
   }
 
