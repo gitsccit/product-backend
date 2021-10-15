@@ -214,9 +214,6 @@ class Configurator extends React.Component {
 
         case 'Warranty':
           tab['content'] = /*#__PURE__*/React.createElement(Configure, {
-            ref: configure => {
-              window.configure = configure;
-            },
             system: this.state.system,
             buckets: standaloneBuckets,
             currentConfig: this.state.currentConfig,

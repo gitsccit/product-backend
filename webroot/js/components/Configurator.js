@@ -197,9 +197,7 @@ class Configurator extends React.Component {
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
-          tab['content'] = <Configure ref={(configure) => {
-            window.configure = configure
-          }}
+          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
                                       system={this.state.system} buckets={nonStandaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
@@ -213,10 +211,7 @@ class Configurator extends React.Component {
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
           break;
         case 'Warranty':
-          tab['content'] = <Configure ref={(configure) => {
-            window.configure = configure
-          }}
-                                      system={this.state.system} buckets={standaloneBuckets}
+          tab['content'] = <Configure system={this.state.system} buckets={standaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
