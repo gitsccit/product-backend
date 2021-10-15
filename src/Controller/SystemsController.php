@@ -150,7 +150,7 @@ class SystemsController extends AppController
                 'headers' => [
                     'scctoken' => Configure::read('Security.thinkAPI_token'),
                     'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
-                        ->find()->where(['store_id' => $this->request->getSession()->read('store', 4)])
+                        ->find()->where(['store_id' => $this->request->getSession()->read('store.id')])
                         ->first()->company_code,
                 ],
                 'ssl_verify_peer' => false,
@@ -271,8 +271,8 @@ class SystemsController extends AppController
             ];
 
             $opportunity = [
-                'store_id' => $session->read('store'),
-                'environment_id' => $session->read('environment'),
+                'store_id' => $session->read('store.id'),
+                'environment_id' => $session->read('environment.id'),
                 'opportunity_details' => [$defaultOpportunityDetail],
             ];
 
@@ -282,7 +282,7 @@ class SystemsController extends AppController
 
                 foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
                     if ($opportunitySystem = $opportunityDetail['opportunity_system'] ?? null) {
-                        if ($opportunitySystem['opportunity_detail_type']['name'] === 'system' && $opportunitySystem['id'] === $identifier) {
+                        if ($opportunityDetail['opportunity_detail_type']['name'] === 'system' && $opportunitySystem['id'] === $identifier) {
                             $opportunitySystem['opportunity_system_data']['data'] = json_encode($configuration);
                             $updatingExistingSystem = true;
 
