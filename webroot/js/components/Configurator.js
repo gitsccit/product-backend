@@ -27,6 +27,7 @@ class Configurator extends React.Component {
     this.validateConfiguration = this.validateConfiguration.bind(this);
     this.prepareConfiguration = this.prepareConfiguration.bind(this);
     this.updateConfiguration = this.updateConfiguration.bind(this);
+    this.saveConfiguration = this.saveConfiguration.bind(this);
     this.updateComments = this.updateComments.bind(this);
     this.percentageFormatter = new Intl.NumberFormat(undefined, {
       style: 'percent',
@@ -172,6 +173,29 @@ class Configurator extends React.Component {
       .then(callback);
   }
 
+  saveConfiguration(callback) {
+    let url = this.props.baseUrl + `/system/configuration/save`;
+
+    let payload = {
+      system: this.state.system['id'],
+      identifier: this.props.identifier,
+      ...(this.props.subKitPath ? {sub_kit_path: this.props.subKitPath} : {}),
+      configuration: this.prepareConfiguration(),
+    };
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': this.props.csrf,
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(response => response.json())
+      .then(callback);
+  }
+
   updateSystem(system, validConfiguration) {
     this.setState({
       system: system,
@@ -224,6 +248,7 @@ class Configurator extends React.Component {
                                     validConfiguration={this.state.validConfiguration}
                                     validateConfiguration={this.validateConfiguration}
                                     updateConfiguration={this.updateConfiguration}
+                                    saveConfiguration={this.saveConfiguration}
                                     updateComments={this.updateComments}
                                     currencyFormatter={this.currencyFormatter}
                                     identifier={this.props.identifier} subKitPath={this.props.subKitPath}

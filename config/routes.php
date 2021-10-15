@@ -20,6 +20,7 @@ Router::plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builde
     $builder->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
 
     $builder->connect('/system/configuration/update', ['controller' => 'Systems', 'action' => 'updateConfiguration']);
+    $builder->connect('/system/configuration/save', ['controller' => 'Systems', 'action' => 'saveConfiguration']);
     $builder->connect('/system/configuration/validate', ['controller' => 'Systems', 'action' => 'validateConfiguration']);
     $builder->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
 });

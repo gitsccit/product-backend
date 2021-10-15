@@ -119,7 +119,7 @@ class SystemsController extends AppController
             }
         }
 
-        $identifier = $identifier ?: random_string(16);
+        $identifier = $identifier ?: random_string(8);
 
         $system = $this->Systems->find('details', $options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
@@ -245,6 +245,67 @@ class SystemsController extends AppController
         }
     }
 
+    public function saveConfiguration()
+    {
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $systemID = $data['system'];
+            $identifier = $data['identifier'];
+            $response = $this->updateConfiguration();
+
+            if (isset($data['sub_kit_path'])) {
+                return $response;
+            }
+
+            $session = $this->request->getSession();
+            $configuration = $session->read("configurations.$identifier");
+
+            $defaultOpportunityDetail = [
+                'opportunity_detail_type_id' => 4,
+                'opportunity_system' => [
+                    'system_id' => $systemID,
+                    'opportunity_system_data' => [
+                        'data' => json_encode($configuration),
+                    ],
+                ],
+            ];
+
+            $opportunity = [
+                'store_id' => $session->read('store'),
+                'environment_id' => $session->read('environment'),
+                'opportunity_details' => [$defaultOpportunityDetail],
+            ];
+
+            if ($session->check('opportunity')) {
+                $opportunity = $session->read('opportunity');
+                $updatingExistingSystem = false;
+
+                foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
+                    if ($opportunitySystem = $opportunityDetail['opportunity_system'] ?? null) {
+                        if ($opportunitySystem['opportunity_detail_type']['name'] === 'system' && $opportunitySystem['id'] === $identifier) {
+                            $opportunitySystem['opportunity_system_data']['data'] = json_encode($configuration);
+                            $updatingExistingSystem = true;
+
+                            break;
+                        }
+                    }
+                }
+
+                if (!$updatingExistingSystem) {
+                    $opportunity['opportunity_details'][] = $defaultOpportunityDetail;
+                }
+            }
+
+            $action = isset($opportunity['id']) ? 'commit' : 'prepare';
+            $opportunity = Configure::read("Functions.{$action}Opportunity")($opportunity);
+            $session->write("opportunity", $opportunity);
+
+            $result = compact('configuration');
+
+            return $this->response->withStringBody(json_encode($result))->withType('application/json');
+        }
+    }
+
     /**
      * Add method
      *
@@ -313,7 +374,8 @@ class SystemsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    protected function formatConfiguration($configuration) {
+    protected function formatConfiguration($configuration)
+    {
         $configItems = Hash::extract($configuration, 'config.{n}.{n}');
         $configItemsWithoutSubKit = Hash::filter($configItems, function ($item) {
             return !isset($item['subkit']);
