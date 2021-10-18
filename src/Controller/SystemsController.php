@@ -5,6 +5,7 @@ namespace ProductBackend\Controller;
 
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -18,6 +19,17 @@ use Cake\Utility\Hash;
  */
 class SystemsController extends AppController
 {
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $this->Authentication->addUnauthenticatedActions([
+            'validateConfiguration',
+            'updateConfiguration',
+            'saveConfiguration',
+        ]);
+    }
+
     /**
      * Index method
      *
