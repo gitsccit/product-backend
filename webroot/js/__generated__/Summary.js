@@ -1,17 +1,4 @@
 class Summary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      quantity: 1
-    };
-  }
-
-  _updateQuantity(event) {
-    this.setState({
-      quantity: parseInt(event.target.value)
-    });
-  }
-
   _saveConfiguration() {
     this.saveConfigurationModal.fetchContent(this.props.baseUrl + '/system/save');
   }
@@ -179,8 +166,8 @@ class Summary extends React.Component {
       },
       name: "quantity",
       min: "1",
-      defaultValue: this.state.quantity,
-      onChange: event => this._updateQuantity(event)
+      defaultValue: this.props.quantity,
+      onChange: event => this.props.updateQuality(event)
     })), /*#__PURE__*/React.createElement("hr", {
       className: "border-black"
     }), /*#__PURE__*/React.createElement("div", {
@@ -189,13 +176,13 @@ class Summary extends React.Component {
       className: "fw-bold"
     }, "Grand Total: "), /*#__PURE__*/React.createElement("span", {
       className: "h6"
-    }, this.props.currencyFormatter.format(this.props.system['price'] * this.state.quantity))), 'cost' in this.props.system && /*#__PURE__*/React.createElement("div", {
+    }, this.props.currencyFormatter.format(this.props.system['price'] * this.props.quantity))), 'cost' in this.props.system && /*#__PURE__*/React.createElement("div", {
       className: "h6"
     }, /*#__PURE__*/React.createElement("span", {
       className: "fw-bold"
     }, "Total Cost: "), /*#__PURE__*/React.createElement("span", {
       className: "h6"
-    }, this.props.currencyFormatter.format(this.props.system['cost'] * this.state.quantity)))), /*#__PURE__*/React.createElement("a", {
+    }, this.props.currencyFormatter.format(this.props.system['cost'] * this.props.quantity)))), /*#__PURE__*/React.createElement("a", {
       className: "btn btn-primary py-2 mt-1",
       href: "javascript:void(0)",
       onClick: () => this._addToOrder()

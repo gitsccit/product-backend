@@ -23,6 +23,7 @@ class Configurator extends React.Component {
     this.updateConfiguration = this.updateConfiguration.bind(this);
     this.saveConfiguration = this.saveConfiguration.bind(this);
     this.updateComments = this.updateComments.bind(this);
+    this.updateQuantity = this.updateQuantity.bind(this);
     this.percentageFormatter = new Intl.NumberFormat(undefined, {
       style: 'percent',
       minimumFractionDigits: 2,
@@ -88,6 +89,12 @@ class Configurator extends React.Component {
   updateComments(event) {
     this.setState({
       comments: event.target.value
+    });
+  }
+
+  updateQuantity(event) {
+    this.setState({
+      quantity: parseInt(event.target.value)
     });
   }
 
@@ -259,7 +266,9 @@ class Configurator extends React.Component {
             updateConfiguration: this.updateConfiguration,
             saveConfiguration: this.saveConfiguration,
             updateComments: this.updateComments,
+            updateQuality: this.updateQuantity,
             currencyFormatter: this.currencyFormatter,
+            quantity: this.state.quantity,
             identifier: this.props.identifier,
             subKitPath: this.props.subKitPath,
             comments: this.state.comments,

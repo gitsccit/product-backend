@@ -1,18 +1,4 @@
 class Summary extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      quantity: 1,
-    };
-  }
-
-  _updateQuantity(event) {
-    this.setState({
-      quantity: parseInt(event.target.value),
-    });
-  }
-
   _saveConfiguration() {
     this.saveConfigurationModal.fetchContent(this.props.baseUrl + '/system/save');
   }
@@ -170,21 +156,21 @@ class Summary extends React.Component {
                       <div className="h6">
                         <label htmlFor="quantity" className="fw-bold">Quantity:</label>
                         <input id="quantity" className="d-inline-block form-control ms-1" type="number"
-                               style={{width: "4rem"}} name="quantity" min="1" defaultValue={this.state.quantity}
-                               onChange={(event) => this._updateQuantity(event)}/>
+                               style={{width: "4rem"}} name="quantity" min="1" defaultValue={this.props.quantity}
+                               onChange={(event) => this.props.updateQuality(event)}/>
                       </div>
                       <hr className="border-black"/>
                       <div className="h6">
                         <span className="fw-bold">Grand Total: </span>
                         <span className="h6">
-                          {this.props.currencyFormatter.format(this.props.system['price'] * this.state.quantity)}</span>
+                          {this.props.currencyFormatter.format(this.props.system['price'] * this.props.quantity)}</span>
                       </div>
                       {
                         'cost' in this.props.system &&
                         <div className="h6">
                           <span className="fw-bold">Total Cost: </span>
                           <span className="h6">
-                            {this.props.currencyFormatter.format(this.props.system['cost'] * this.state.quantity)}
+                            {this.props.currencyFormatter.format(this.props.system['cost'] * this.props.quantity)}
                           </span>
                         </div>
                       }
