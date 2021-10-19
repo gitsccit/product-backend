@@ -228,7 +228,9 @@ class Configurator extends React.Component {
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
-          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
+          tab['content'] = <Configure ref={(configure) => {
+            window.configure = configure
+          }}
                                       system={this.state.system} buckets={nonStandaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
@@ -307,7 +309,7 @@ class Configurator extends React.Component {
           <div className="container py-5">
             <div className="row gx-5">
               <div className="col-md-4">
-                <div className="d-flex justify-content-center align-items-center p-5 h-100">
+                <div className="d-flex justify-content-center align-items-center" style={{height: 150}}>
                   <img className="mw-100 mh-100" src={this.state.system['image']}/>
                 </div>
               </div>

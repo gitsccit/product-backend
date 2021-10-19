@@ -316,7 +316,10 @@ class Configurator extends React.Component {
     }, /*#__PURE__*/React.createElement("div", {
       className: "col-md-4"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "d-flex justify-content-center align-items-center p-5 h-100"
+      className: "d-flex justify-content-center align-items-center",
+      style: {
+        height: 150
+      }
     }, /*#__PURE__*/React.createElement("img", {
       className: "mw-100 mh-100",
       src: this.state.system['image']
