@@ -285,14 +285,15 @@ class SystemsController extends AppController
                 ],
             ];
 
+            $opportunitySessionDataKey = "opportunities.$opportunityKey.current";
             $opportunity = [
                 'store_id' => $session->read('store.id'),
                 'environment_id' => $session->read('environment.id'),
                 'opportunity_details' => [$defaultOpportunityDetail],
             ];
 
-            if ($session->check('opportunity')) {
-                $opportunity = $session->read('opportunity');
+            if ($session->check($opportunitySessionDataKey)) {
+                $opportunity = $session->read($opportunitySessionDataKey);
                 $updatingExistingSystem = false;
 
                 foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
@@ -313,7 +314,7 @@ class SystemsController extends AppController
 
             $action = isset($opportunity['id']) ? 'commit' : 'prepare';
             $opportunity = Configure::read("Functions.{$action}Opportunity")($opportunity);
-            $session->write("opportunities.$opportunityKey.current", $opportunity);
+            $session->write($opportunitySessionDataKey, $opportunity);
 
             $result = compact('configuration');
 
