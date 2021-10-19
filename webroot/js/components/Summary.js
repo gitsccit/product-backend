@@ -19,7 +19,7 @@ class Summary extends React.Component {
         let [, query] = window.location.href.split('?');
         let path = this.props.subKitPath.split('.').slice(0, -4).join('.');
         path = path ? `/${btoa(path)}` : '';
-        url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.configKey}${path}` + (query ? `?${query}` : '');
+        url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.opportunityKey}/${this.props.configKey}${path}` + (query ? `?${query}` : '');
       }
 
       window.location.assign(url);
