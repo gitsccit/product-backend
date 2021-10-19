@@ -162,7 +162,7 @@ class Configurator extends React.Component {
     let url = this.props.baseUrl + `/system/configuration/update`;
 
     let payload = {
-      identifier: this.props.identifier,
+      config_key: this.props.configKey,
       ...(this.props.subKitPath ? {sub_kit_path: this.props.subKitPath} : {}),
       configuration: this.prepareConfiguration(),
     };
@@ -185,7 +185,8 @@ class Configurator extends React.Component {
 
     let payload = {
       system: this.state.system['id'],
-      identifier: this.props.identifier,
+      opportunity_key: this.props.opportunityKey,
+      config_key: this.props.configKey,
       ...(this.props.subKitPath ? {sub_kit_path: this.props.subKitPath} : {}),
       configuration: this.prepareConfiguration(),
     };
@@ -228,17 +229,15 @@ class Configurator extends React.Component {
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
-          tab['content'] = <Configure ref={(configure) => {
-            window.configure = configure
-          }}
+          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
                                       system={this.state.system} buckets={nonStandaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
                                       updateSystem={this.updateSystem} baseUrl={this.props.baseUrl}
                                       currencyFormatter={this.currencyFormatter}
                                       updateConfiguration={this.updateConfiguration}
-                                      identifier={this.props.identifier} subKitPath={this.props.subKitPath}
-                                      systemUrl={this.props.systemUrl}/>;
+                                      configKey={this.props.configKey} subKitPath={this.props.subKitPath}
+                                      systemUrl={this.props.systemUrl} opportunityKey={this.props.opportunityKey}/>;
           break;
         case 'Storage Setup':
           tab['content'] = <StorageSetup system={this.state.system} currentConfig={this.state.currentConfig}/>;
@@ -260,8 +259,9 @@ class Configurator extends React.Component {
                                     saveConfiguration={this.saveConfiguration}
                                     updateComments={this.updateComments} updateQuality={this.updateQuantity}
                                     currencyFormatter={this.currencyFormatter} quantity={this.state.quantity}
-                                    identifier={this.props.identifier} subKitPath={this.props.subKitPath}
-                                    comments={this.state.comments} systemUrl={this.props.systemUrl}/>;
+                                    configKey={this.props.configKey} subKitPath={this.props.subKitPath}
+                                    comments={this.state.comments} systemUrl={this.props.systemUrl}
+                                    opportunityKey={this.props.opportunityKey}/>;
           break;
       }
     }

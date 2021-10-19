@@ -154,7 +154,7 @@ class Configurator extends React.Component {
   updateConfiguration(callback) {
     let url = this.props.baseUrl + `/system/configuration/update`;
     let payload = {
-      identifier: this.props.identifier,
+      config_key: this.props.configKey,
       ...(this.props.subKitPath ? {
         sub_kit_path: this.props.subKitPath
       } : {}),
@@ -175,7 +175,8 @@ class Configurator extends React.Component {
     let url = this.props.baseUrl + `/system/configuration/save`;
     let payload = {
       system: this.state.system['id'],
-      identifier: this.props.identifier,
+      opportunity_key: this.props.opportunityKey,
+      config_key: this.props.configKey,
       ...(this.props.subKitPath ? {
         sub_kit_path: this.props.subKitPath
       } : {}),
@@ -228,9 +229,10 @@ class Configurator extends React.Component {
             baseUrl: this.props.baseUrl,
             currencyFormatter: this.currencyFormatter,
             updateConfiguration: this.updateConfiguration,
-            identifier: this.props.identifier,
+            configKey: this.props.configKey,
             subKitPath: this.props.subKitPath,
-            systemUrl: this.props.systemUrl
+            systemUrl: this.props.systemUrl,
+            opportunityKey: this.props.opportunityKey
           });
           break;
 
@@ -269,10 +271,11 @@ class Configurator extends React.Component {
             updateQuality: this.updateQuantity,
             currencyFormatter: this.currencyFormatter,
             quantity: this.state.quantity,
-            identifier: this.props.identifier,
+            configKey: this.props.configKey,
             subKitPath: this.props.subKitPath,
             comments: this.state.comments,
-            systemUrl: this.props.systemUrl
+            systemUrl: this.props.systemUrl,
+            opportunityKey: this.props.opportunityKey
           });
           break;
       }

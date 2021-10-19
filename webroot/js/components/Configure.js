@@ -227,7 +227,7 @@ class Configure extends React.Component {
     let path = this.props.subKitPath ? `${this.props.subKitPath}.${subKitPath}` : subKitPath;
     this.props.updateConfiguration(_ => {
       let [, query] = window.location.href.split('?');
-      let url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.identifier}/${btoa(path)}` + (query ? `?${query}` : '');
+      let url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.opportunityKey}/${this.props.configKey}/${btoa(path)}` + (query ? `?${query}` : '');
       window.location.assign(url);
     });
   }

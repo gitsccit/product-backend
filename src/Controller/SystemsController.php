@@ -49,11 +49,11 @@ class SystemsController extends AppController
      * View method
      *
      * @param string $url System url
-     * @param string $identifier config ID (opportunity_system_id) or base64 encoded opportunity detail line number.
+     * @param string $configKey config ID (opportunity_system_id) or base64 encoded opportunity detail line number.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(string $url, string $identifier = null, string $subKitPath = null)
+    public function view(string $url, string $opportunityKey = null, string $configKey = null, string $subKitPath = null)
     {
         $url = str_replace(' ', '+', $url);
         $systemUrl = $url;
@@ -76,16 +76,16 @@ class SystemsController extends AppController
 
         $configuration = null;
 
-        if ($identifier) {
-            $configuration = $this->request->getSession()->read("configurations.$identifier");
+        if ($configKey) {
+            $configuration = $this->request->getSession()->read("configurations.$configKey");
 
-            if (!is_numeric($identifier) && !$configuration) {
+            if (!is_numeric($configKey) && !$configuration) {
                 return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
             }
 
-            if (is_numeric($identifier) && !$configuration) { // load system by config ID
+            if (is_numeric($configKey) && !$configuration) { // load system by config ID
                 try {
-                    $opportunitySystem = Configure::read('Functions.getOpportunitySystem')($identifier);
+                    $opportunitySystem = Configure::read('Functions.getOpportunitySystem')($configKey);
                 } catch (NotFoundException $exception) {
                     return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
                 }
@@ -95,7 +95,7 @@ class SystemsController extends AppController
                 }
 
                 $configuration = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
-                $this->request->getSession()->write("configurations.$identifier", $configuration);
+                $this->request->getSession()->write("configurations.$configKey", $configuration);
             }
 
             if ($subKitPath) {
@@ -118,7 +118,8 @@ class SystemsController extends AppController
                         'action' => 'view',
                         '?' => $this->request->getQueryParams(),
                         $systemUrl,
-                        $identifier
+                        $opportunityKey,
+                        $configKey,
                     ]);
                 }
 
@@ -131,7 +132,8 @@ class SystemsController extends AppController
             }
         }
 
-        $identifier = $identifier ?: random_string(8);
+        $opportunityKey = $opportunityKey ?: random_string(6);
+        $configKey = $configKey ?: random_string(6);
 
         $system = $this->Systems->find('details', $options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
@@ -173,7 +175,7 @@ class SystemsController extends AppController
         }
 
         if (!$this->request->is('ajax')) {
-            $breadcrumbs = $rootSystem->getBreadcrumbs($identifier);
+            $breadcrumbs = $rootSystem->getBreadcrumbs("$opportunityKey/$configKey");
 
             if ($subKitPath) {
                 $breadcrumbs[] = [
@@ -185,7 +187,7 @@ class SystemsController extends AppController
             $this->set(compact('breadcrumbs'));
         }
 
-        $this->set(compact('system', 'tabs', 'identifier', 'subKitPath'));
+        $this->set(compact('system', 'tabs', 'opportunityKey', 'configKey', 'subKitPath'));
         $this->set(['systemUrl' => $url]);
 
         $layout = $this->request->getSession()->read('options.store.layout.system');
@@ -238,18 +240,18 @@ class SystemsController extends AppController
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            $identifier = $data['identifier'];
+            $configKey = $data['config_key'];
             $configuration = $data['configuration'];
             $subKitPath = $data['sub_kit_path'] ?? null;
 
             $configuration = $this->formatConfiguration($configuration);
 
             if ($subKitPath) {
-                $rootConfiguration = $this->request->getSession()->read("configurations.$identifier");
+                $rootConfiguration = $this->request->getSession()->read("configurations.$configKey");
                 $configuration = Hash::insert($rootConfiguration, $subKitPath, $configuration);
             }
 
-            $this->request->getSession()->write("configurations.$identifier", $configuration);
+            $this->request->getSession()->write("configurations.$configKey", $configuration);
 
             $result = compact('configuration');
 
@@ -262,7 +264,8 @@ class SystemsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $systemID = $data['system'];
-            $identifier = $data['identifier'];
+            $opportunityKey = $data['opportunity_key'];
+            $configKey = $data['config_key'];
             $response = $this->updateConfiguration();
 
             if (isset($data['sub_kit_path'])) {
@@ -270,7 +273,7 @@ class SystemsController extends AppController
             }
 
             $session = $this->request->getSession();
-            $configuration = $session->read("configurations.$identifier");
+            $configuration = $session->read("configurations.$configKey");
 
             $defaultOpportunityDetail = [
                 'opportunity_detail_type_id' => 4,
@@ -294,7 +297,7 @@ class SystemsController extends AppController
 
                 foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
                     if ($opportunitySystem = $opportunityDetail['opportunity_system'] ?? null) {
-                        if ($opportunityDetail['opportunity_detail_type']['name'] === 'system' && $opportunitySystem['id'] === $identifier) {
+                        if ($opportunityDetail['opportunity_detail_type']['name'] === 'system' && $opportunitySystem['id'] === $configKey) {
                             $opportunitySystem['opportunity_system_data']['data'] = json_encode($configuration);
                             $updatingExistingSystem = true;
 
@@ -310,7 +313,7 @@ class SystemsController extends AppController
 
             $action = isset($opportunity['id']) ? 'commit' : 'prepare';
             $opportunity = Configure::read("Functions.{$action}Opportunity")($opportunity);
-            $session->write("opportunity", $opportunity);
+            $session->write("opportunities.$opportunityKey.current", $opportunity);
 
             $result = compact('configuration');
 

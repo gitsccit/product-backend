@@ -44,7 +44,8 @@ $currentWarehouse = $this->request->getQuery(
      data-currency='<?= \Cake\I18n\Number::getDefaultCurrency() ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
      data-base-url='<?= trim($this->Url->build('/', ['fullBase' => true]), '/') ?>'
-     data-identifier='<?= $identifier ?>'
+     data-opportunity-key='<?= $opportunityKey ?>'
+     data-config-key='<?= $configKey ?>'
      data-sub-kit-path='<?= $subKitPath ?>'
      data-system-url='<?= $systemUrl ?>'
     <?= Configure::read('ProductBackend.showCost') ? "data-price-levels='$priceLevels'" : '' ?>

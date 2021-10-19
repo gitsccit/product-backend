@@ -13,13 +13,13 @@ class Summary extends React.Component {
 
   _addToOrder() {
     this.props.saveConfiguration(_ => {
-      let url = this.props.baseUrl + ('cost' in this.props.system ? '/sales/quotes' : '/order');
+      let url = this.props.baseUrl + ('cost' in this.props.system ? `/sales/quotes/load/${this.props.opportunityKey}` : '/order');
 
       if (this.props.subKitPath) {
         let [, query] = window.location.href.split('?');
         let path = this.props.subKitPath.split('.').slice(0, -4).join('.');
         path = path ? `/${btoa(path)}` : '';
-        url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.identifier}${path}` + (query ? `?${query}` : '');
+        url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.configKey}${path}` + (query ? `?${query}` : '');
       }
 
       window.location.assign(url);
