@@ -4,7 +4,7 @@
  * @var array $card
  */
 
-$url = $this->Url->build(['controller' => 'Systems', 'action' => 'view', $card['url'], $opportunityKey]);
+$url = $this->Url->build("/system/$card[url]" . ($opportunityKey ? "/$opportunityKey" : ''));
 
 $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('category')->toArray();
 ?>

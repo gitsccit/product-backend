@@ -77,6 +77,14 @@ class SystemsController extends AppController
         $configuration = null;
         $session = $this->request->getSession();
 
+        if (!Configure::read('ProductBackend.showCost')) {
+            $opportunityKey = $opportunityKey ?? array_keys($session->read('opportunities', []))[0] ?? null;
+        }
+
+        if ($opportunityKey && !$session->check("opportunities.$opportunityKey")) {
+            return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
+        }
+
         if ($configKey) {
             $configuration = $session->read("configurations.$configKey");
 
