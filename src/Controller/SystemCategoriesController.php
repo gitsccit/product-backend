@@ -20,7 +20,7 @@ class SystemCategoriesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index($opportunityKey = null)
     {
         $systemCategories = $this->SystemCategories->find('listing')->find('threaded');
 
@@ -58,7 +58,7 @@ class SystemCategoriesController extends AppController
         $firstChildCategoryBreadcrumbs = $firstChildCategory->getBreadcrumbs();
         $breadcrumbs = array_slice($firstChildCategoryBreadcrumbs, 0, count($firstChildCategoryBreadcrumbs) - 1);
 
-        $this->set(compact('systemCategories', 'breadcrumbs'));
+        $this->set(compact('systemCategories', 'breadcrumbs', 'opportunityKey'));
 
         $layout = $this->request->getSession()->read('options.store.layout.system-category-browsing');
         $this->viewBuilder()->setTemplate("index_$layout");
@@ -75,6 +75,14 @@ class SystemCategoriesController extends AppController
     {
         $systemCategories = $this->SystemCategories->find('listing')->find('threaded')->toList();
         $urlFilters = $url;
+
+        $opportunityKey = array_pop($url);
+
+        if (count($url) <= 1 && $this->request->getSession()->check("opportunities.$opportunityKey")) {
+            return $this->index($opportunityKey);
+        }
+
+        $url[] = $opportunityKey;
 
         foreach ($url as $index => $categoryUrl) {
             $systemCategories = array_filter($systemCategories, function ($systemCategory) use ($categoryUrl) {
@@ -151,7 +159,7 @@ class SystemCategoriesController extends AppController
         }, $urlFilters);
         $breadcrumbs = array_merge($breadcrumbs, $filterBreadcrumbs);
 
-        $this->set(compact('systemCategory', 'systems', 'tagCategories', 'breadcrumbs'));
+        $this->set(compact('systemCategory', 'systems', 'tagCategories', 'breadcrumbs', 'opportunityKey'));
 
         $layout = $this->request->getSession()->read('options.store.layout.system-browsing');
         $this->viewBuilder()->setTemplate("view_$layout");
