@@ -75,9 +75,10 @@ class SystemsController extends AppController
         }
 
         $configuration = null;
+        $session = $this->request->getSession();
 
         if ($configKey) {
-            $configuration = $this->request->getSession()->read("configurations.$configKey");
+            $configuration = $session->read("configurations.$configKey");
 
             if (!is_numeric($configKey) && !$configuration) {
                 return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
@@ -95,7 +96,7 @@ class SystemsController extends AppController
                 }
 
                 $configuration = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
-                $this->request->getSession()->write("configurations.$configKey", $configuration);
+                $session->write("configurations.$configKey", $configuration);
             }
 
             if ($subKitPath) {
@@ -149,7 +150,7 @@ class SystemsController extends AppController
                 ->select(['id', 'name'])
                 ->innerJoinWith('PriceLevelPerspectives')
                 ->where([
-                    'PriceLevelPerspectives.perspective_id' => $this->request->getSession()->read('options.store.perspective'),
+                    'PriceLevelPerspectives.perspective_id' => $session->read('options.store.perspective'),
                     'PriceLevelPerspectives.active' => 'yes',
                 ])
                 ->orderAsc('sort')
@@ -164,7 +165,7 @@ class SystemsController extends AppController
                 'headers' => [
                     'scctoken' => Configure::read('Security.thinkAPI_token'),
                     'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
-                        ->find()->where(['store_id' => $this->request->getSession()->read('store.id')])
+                        ->find()->where(['store_id' => $session->read('store.id') ?? $session->read("opportunities.$opportunityKey.store.id")])
                         ->first()->company_code,
                 ],
                 'ssl_verify_peer' => false,
@@ -190,7 +191,7 @@ class SystemsController extends AppController
         $this->set(compact('system', 'tabs', 'opportunityKey', 'configKey', 'subKitPath'));
         $this->set(['systemUrl' => $url]);
 
-        $layout = $this->request->getSession()->read('options.store.layout.system');
+        $layout = $session->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");
     }
 
