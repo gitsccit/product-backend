@@ -75,13 +75,14 @@ class SystemsController extends AppController
         }
 
         $configuration = null;
+        $opportunitySessionDataKey = "opportunities.$opportunityKey.current";
         $session = $this->request->getSession();
 
         if (!Configure::read('ProductBackend.showCost')) {
             $opportunityKey = $opportunityKey ?? array_keys($session->read('opportunities', []))[0] ?? null;
         }
 
-        if ($opportunityKey && !$session->check("opportunities.$opportunityKey")) {
+        if ($opportunityKey && !$session->check($opportunitySessionDataKey)) {
             return $this->redirect(['action' => 'view', '?' => $this->request->getQueryParams(), $systemUrl]);
         }
 
@@ -143,7 +144,7 @@ class SystemsController extends AppController
 
         if (!$opportunityKey) {
             $opportunityKey = random_string(6);
-            $session->write("opportunities.$opportunityKey", []);
+            $session->write($opportunitySessionDataKey, []);
         }
         $configKey = $configKey ?: random_string(6);
 
