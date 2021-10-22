@@ -143,6 +143,7 @@ class SystemsController extends AppController
 
         $opportunityKey = $opportunityKey ?: random_string(6);
         $configKey = $configKey ?: random_string(6);
+        $session->write("opportunities.$opportunityKey", null);
 
         $system = $this->Systems->find('details', $options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
