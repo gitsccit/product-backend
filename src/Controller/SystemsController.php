@@ -143,7 +143,7 @@ class SystemsController extends AppController
 
         if (!$opportunityKey) {
             $opportunityKey = random_string(6);
-            $session->write("opportunities.$opportunityKey", null);
+            $session->write("opportunities.$opportunityKey", []);
         }
         $configKey = $configKey ?: random_string(6);
 
