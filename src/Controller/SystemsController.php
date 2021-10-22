@@ -304,8 +304,8 @@ class SystemsController extends AppController
                 'opportunity_details' => [$defaultOpportunityDetail],
             ];
 
-            if ($session->check($opportunitySessionDataKey)) {
-                $opportunity = $session->read($opportunitySessionDataKey);
+            if ($currentOpportunity = $session->read($opportunitySessionDataKey)) {
+                $opportunity = $currentOpportunity;
                 $updatingExistingSystem = false;
 
                 foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
