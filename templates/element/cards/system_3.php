@@ -4,7 +4,7 @@
  * @var array $card
  */
 
-$url = $this->Url->build("/system/$card[url]" . ($opportunityKey ? "/$opportunityKey" : ''));
+$url = $this->Url->build("/system/$card[url]" . (isset($opportunityKey) ? "/$opportunityKey" : ''));
 ?>
 <div class="d-flex flex-column bg-3 h-100 shadow">
     <a class="d-flex p-3 bg-white text-decoration-none" href="<?= $url ?>">
