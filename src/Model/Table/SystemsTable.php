@@ -367,6 +367,7 @@ class SystemsTable extends Table
                     $system['buckets'] = $this->Kits->Buckets
                         ->find('configuration', ['kitID' => $system['kit_id']])
                         ->find('filters')
+                        ->all()
                         ->toList();
 
                     if (Configure::read('ProductBackend.showStock')) {

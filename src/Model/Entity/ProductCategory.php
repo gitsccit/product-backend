@@ -65,7 +65,9 @@ class ProductCategory extends Entity
 
         $this->products = FactoryLocator::get('Table')->get('ProductBackend.Products')->find('listing')
             ->where(['Products.product_category_id' => $this->id])
-            ->limit($count - $currentProductCount)->toList();
+            ->limit($count - $currentProductCount)
+            ->all()
+            ->toList();
 
         foreach ($this->children ?? $this->child_product_categories as $childCategory) {
             $currentProductCount = count($this->products ?? []);

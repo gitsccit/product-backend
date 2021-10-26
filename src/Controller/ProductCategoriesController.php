@@ -73,7 +73,7 @@ class ProductCategoriesController extends AppController
      */
     public function view(...$url)
     {
-        $productCategories = $this->ProductCategories->find('listing')->find('threaded')->toList();
+        $productCategories = $this->ProductCategories->find('listing')->find('threaded')->all()->toList();
 
         foreach ($url as $categoryUrl) {
             $productCategory = array_filter($productCategories, function ($productCategory) use ($categoryUrl) {
@@ -127,7 +127,7 @@ class ProductCategoriesController extends AppController
         }
 
         $products = $this->paginate($products);
-        $specifications = $specifications->toList();
+        $specifications = $specifications->all()->toList();
         $breadcrumbs = $productCategory->getBreadcrumbs();
 
         $this->set(compact('productCategory', 'products', 'specifications', 'breadcrumbs'));
@@ -141,6 +141,7 @@ class ProductCategoriesController extends AppController
         $products = $this->ProductCategories->Products
             ->find('compare')
             ->whereInList('Products.id', $ids)
+            ->all()
             ->toList();
 
         $products = array_combine(Hash::extract($products, '{n}.id'), $products);

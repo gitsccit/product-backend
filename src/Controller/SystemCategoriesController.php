@@ -73,7 +73,7 @@ class SystemCategoriesController extends AppController
      */
     public function view(...$url)
     {
-        $systemCategories = $this->SystemCategories->find('listing')->find('threaded')->toList();
+        $systemCategories = $this->SystemCategories->find('listing')->find('threaded')->all()->toList();
         $urlFilters = $url;
 
         foreach ($url as $index => $categoryUrl) {
@@ -142,7 +142,7 @@ class SystemCategoriesController extends AppController
         ]);
 
         $systems = $this->paginate($systems);
-        $tagCategories = $tagCategories->toList();
+        $tagCategories = $tagCategories->all()->toList();
         $breadcrumbs = $systemCategory->getBreadcrumbs();
         $filterBreadcrumbs = array_map(function ($filter) {
             return [

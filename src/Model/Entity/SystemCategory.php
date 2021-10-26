@@ -62,7 +62,7 @@ class SystemCategory extends Entity
         $currentSystemCount = count($this->systems ?? []);
 
         $this->systems = FactoryLocator::get('Table')->get('ProductBackend.Systems')->find('listing')
-            ->where(['Systems.system_category_id' => $this->id])->limit($count - $currentSystemCount)->toList();
+            ->where(['Systems.system_category_id' => $this->id])->limit($count - $currentSystemCount)->all()->toList();
 
         foreach ($this->children ?? $this->child_system_categories as $childCategory) {
             $currentSystemCount = count($this->products ?? []);
