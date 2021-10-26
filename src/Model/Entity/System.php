@@ -116,6 +116,7 @@ class System extends Entity
                 $subKitConfigItems = TableRegistry::getTableLocator()->get('ProductBackend.GroupItems')
                     ->find('configuration')
                     ->whereInList('GroupItems.id', $subKitConfigItemIDs)
+                    ->all()
                     ->indexBy('id')
                     ->toArray();
 

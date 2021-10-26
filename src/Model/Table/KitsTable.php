@@ -406,6 +406,7 @@ class KitsTable extends Table
             ->find('activeInKit', ['kitID' => $kitID])
             ->innerJoinWith('Groups.Buckets.Kits')
             ->where(['Kits.id' => $kitID])
+            ->all()
             ->extract('product_id')
             ->toArray();
 
@@ -504,7 +505,7 @@ class KitsTable extends Table
             $minPower = $specsTable->find()->select(['sort'])->where([
                 'specification_field_id' => $specificationFieldID,
 //                'product_id' => $productCategories[],
-            ])->extract('sort')->first();
+            ])->all()->extract('sort')->first();
 
             if ($minPower) {
                 $powerMap = [

@@ -121,6 +121,7 @@ class GroupItemsTable extends Table
                             return $q->find('specifications');
                         })
                         ->whereInList('Products.id', $productIDs)
+                        ->all()
                         ->indexBy('id')
                         ->toArray();
                 }
@@ -131,12 +132,14 @@ class GroupItemsTable extends Table
                         ->find('basic', $options)
                         ->find('image')
                         ->whereInList('Systems.id', $systemIDs)
+                        ->all()
                         ->indexBy('id')
                         ->toArray();
 
                     $configuration = $this->Systems->SystemItems
                         ->find('basic')
                         ->whereInList('SystemItems.system_id', $systemIDs)
+                        ->all()
                         ->groupBy('system_id')
                         ->toArray();
 

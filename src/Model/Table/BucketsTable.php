@@ -220,6 +220,7 @@ class BucketsTable extends Table
                             Hash::extract($bucket, 'groups.{n}.group_items.{n}.original_id')
                         )
                         ->group(['SpecificationFields.id', 'Specifications.text_value'])
+                        ->all()
                         ->groupBy('name')
                         ->toArray();
 
