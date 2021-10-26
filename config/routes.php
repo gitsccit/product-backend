@@ -1,9 +1,9 @@
 <?php
+/** @var \Cake\Routing\RouteBuilder $routes */
 
 use Cake\Routing\RouteBuilder;
-use Cake\Routing\Router;
 
-Router::plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builder) {
+$routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builder) {
 
     $builder->scope('/email', ['controller' => 'Email'], function (RouteBuilder $builder) {
         $builder->connect('/product', ['action' => 'product']);
@@ -21,6 +21,7 @@ Router::plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builde
 
     $builder->connect('/system/configuration/update', ['controller' => 'Systems', 'action' => 'updateConfiguration']);
     $builder->connect('/system/configuration/save', ['controller' => 'Systems', 'action' => 'saveConfiguration']);
-    $builder->connect('/system/configuration/validate', ['controller' => 'Systems', 'action' => 'validateConfiguration']);
+    $builder->connect('/system/configuration/validate',
+        ['controller' => 'Systems', 'action' => 'validateConfiguration']);
     $builder->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
 });
