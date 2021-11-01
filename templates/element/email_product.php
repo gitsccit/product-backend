@@ -6,7 +6,7 @@
 ?>
 
 <div class="modal fade" id="email-a-product" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content bg-3 p-4">
             <div class="d-flex justify-content-end">
                 <a href="#close-modal" data-bs-dismiss="modal" aria-label="Close">
