@@ -108,8 +108,11 @@ class System extends Entity
                 ->getConfigurationCostAndPrice($configuration['config'], ['systemID' => $this['id']]);
 
             if (count($subKitItems) > 0) {
-                $allItems = Hash::combine($this['buckets'], '{n}.groups.{n}.group_items.{n}.id',
-                    '{n}.groups.{n}.group_items.{n}');
+                $allItems = Hash::combine(
+                    $this['buckets'],
+                    '{n}.groups.{n}.group_items.{n}.id',
+                    '{n}.groups.{n}.group_items.{n}'
+                );
 
                 // fill in sub-kits' details
                 $subKitConfigItemIDs = array_unique(Hash::extract($subKitItems, '{n}.subkit.config.{n}.{n}.item_id'));

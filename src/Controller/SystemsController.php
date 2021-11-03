@@ -49,7 +49,7 @@ class SystemsController extends AppController
      * View method
      *
      * @param string $url System url
-     * @param string $configKey config ID (opportunity_system_id) or base64 encoded opportunity detail line number.
+     * @param string $opportunityKey config ID (opportunity_system_id) or base64 encoded opportunity detail line number.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

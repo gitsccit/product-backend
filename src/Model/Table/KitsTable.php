@@ -385,7 +385,7 @@ class KitsTable extends Table
     public function validateProductRules(int $kitID, array $configuration)
     {
         $errors = $warnings = [];
-        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');;
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
         $selectedItemIDs = array_keys($selectedItemsQuantities);
 
         $selectedItemProductIDMap = $this->KitItems->GroupItems->Products
@@ -472,7 +472,7 @@ class KitsTable extends Table
         $productCategories = [];
         $nodes = 1;
 
-        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');;
+        $selectedItemsQuantities = Hash::combine($configuration, '{n}.{n}.item_id', '{n}.{n}.qty');
         $selectedItemIDs = array_keys($selectedItemsQuantities);
         $selectedProducts = $this->KitItems->GroupItems->Products
             ->find()

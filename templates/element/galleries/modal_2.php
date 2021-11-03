@@ -47,7 +47,7 @@ $hasOneSlide = count($images) <= $slideSize;
                                                      $image['file_id'],
                                                      300,
                                                      200
-                                                      ) ?>">
+                                                 ) ?>">
                                         </a>
                                     </li>
                                 <?php endforeach; ?>

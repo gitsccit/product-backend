@@ -8,7 +8,7 @@
 <div class="py-3">
     <div class="h4 fw-bold"><?= $category['name'] ?></div>
     <div class="row">
-        <?php foreach ($category['children'] as $subCategory): ?>
+        <?php foreach ($category['children'] as $subCategory) : ?>
             <?php $categoryUrl = \Cake\Routing\Router::url($this->request->getPath() . (isset($category['url']) ? "/$category[url]" : '') . "/$subCategory[url]") ?>
             <div class="col-xl-4 col-md-6 py-3">
                 <div class="d-flex flex-row bg-3 h-100 shadow">
