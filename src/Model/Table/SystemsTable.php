@@ -388,7 +388,7 @@ class SystemsTable extends Table
                             "/sage100/items/availability.json?warehousecode=$warehouseCode",
                             json_encode($itemCodes)
                         );
-                        $itemCodesAvaiability = Hash::combine(
+                        $itemCodesAvailability = Hash::combine(
                             $result->getJson()['items'],
                             '{n}.ItemCode',
                             '{n}.Warehouses.{n}.Available'
@@ -399,8 +399,8 @@ class SystemsTable extends Table
                                     if (!isset($groupItem['sage_itemcode'])) {
                                         continue;
                                     }
-                                    if (isset($itemCodesAvaiability[$groupItem['sage_itemcode']])) {
-                                        $groupItem['availableQuantity'] = $itemCodesAvaiability[$groupItem['sage_itemcode']];
+                                    if (isset($itemCodesAvailability[$groupItem['sage_itemcode']])) {
+                                        $groupItem['availableQuantity'] = $itemCodesAvailability[$groupItem['sage_itemcode']];
                                     }
                                     unset($groupItem['sage_itemcode']);
                                 }
