@@ -393,6 +393,7 @@ class KitsTable extends Table
             ->select(['id', 'item_id' => 'GroupItems.id'])
             ->innerJoinWith('GroupItems')
             ->whereInList('GroupItems.id', $selectedItemIDs)
+            ->all()
             ->combine('item_id', 'id')
             ->toArray();
 

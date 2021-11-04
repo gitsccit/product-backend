@@ -165,6 +165,7 @@ class SystemsController extends AppController
                     'PriceLevelPerspectives.active' => 'yes',
                 ])
                 ->orderAsc('sort')
+                ->all()
                 ->combine('id', 'name')
                 ->toArray();
             $this->set(compact('priceLevels'));
