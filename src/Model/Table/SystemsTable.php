@@ -469,6 +469,7 @@ class SystemsTable extends Table
             $fpa = $this->find('price', $options)
                 ->select(['fpa' => 'SystemPriceLevels.fpa'])
                 ->whereInList('Systems.id', $selectedSystemIDs)
+                ->all()
                 ->sumOf('fpa');
         }
 
