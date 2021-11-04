@@ -33,8 +33,7 @@ $url = $this->Url->build("/product/$card[url]");
                     <p><?= $card['status'] ?></p>
                 </div>
                 <p class="h4 fw-bold mb-3"><?= $this->Number->currency($card['price']) ?></p>
-                <a class="btn btn-primary text-nowrap" href="<?= $this->Url->build("/order/add/$card[id]") ?>"
-                   data-bs-target="#cart-modal" data-bs-toggle="modal">
+                <a class="btn btn-primary text-nowrap" href="<?= $this->Url->build("/order/add/$card[id]") ?>">
                     Add To Order
                 </a>
             </div>
