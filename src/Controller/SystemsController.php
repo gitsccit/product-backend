@@ -53,8 +53,12 @@ class SystemsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(string $url, string $opportunityKey = null, string $configKey = null, string $subKitPath = null)
-    {
+    public function view(
+        string $url,
+        string $opportunityKey = null,
+        string $configKey = null,
+        string $subKitPath = null
+    ) {
         $url = str_replace(' ', '+', $url);
         $systemUrl = $url;
 
@@ -275,17 +279,18 @@ class SystemsController extends AppController
     public function saveConfiguration()
     {
         if ($this->request->is('post')) {
+            $session = $this->request->getSession();
             $data = $this->request->getData();
             $systemID = $data['system'];
             $opportunityKey = $data['opportunity_key'];
             $configKey = $data['config_key'];
+            $oldConfig = $session->read("configrations.$configKey");
             $response = $this->updateConfiguration();
 
             if (isset($data['sub_kit_path'])) {
                 return $response;
             }
 
-            $session = $this->request->getSession();
             $configuration = $session->read("configurations.$configKey");
 
             $defaultOpportunityDetail = [
@@ -311,7 +316,7 @@ class SystemsController extends AppController
 
                 foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
                     if ($opportunitySystem = $opportunityDetail['opportunity_system'] ?? null) {
-                        if ($opportunityDetail['opportunity_detail_type']['name'] === 'system' && $opportunitySystem['id'] === $configKey) {
+                        if ($opportunitySystem['opportunity_system_data']['data'] === json_encode($oldConfig)) {
                             $opportunitySystem['opportunity_system_data']['data'] = json_encode($configuration);
                             $updatingExistingSystem = true;
 
