@@ -284,7 +284,7 @@ class SystemsController extends AppController
             $systemID = $data['system'];
             $opportunityKey = $data['opportunity_key'];
             $configKey = $data['config_key'];
-            $oldConfig = $session->read("configrations.$configKey");
+            $oldConfig = $session->read("configurations.$configKey");
             $response = $this->updateConfiguration();
 
             if (isset($data['sub_kit_path'])) {
