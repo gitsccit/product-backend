@@ -19,7 +19,8 @@ $url = $this->Url->build("/product/$card[url]");
                 <label class="mt-3 my-2 d-flex align-items-center" for="compare">
                     <input class="product-compare" type="checkbox" name="<?= $card['id'] ?>">
                     <a class="ms-1 text-dark" href="javascript:void(0)" data-bs-toggle="modal"
-                       data-bs-target="#compare-modal" onclick="product_compare('<?= $this->Url->build('/') ?>', <?= $card['id'] ?>)">
+                       data-bs-target="#compare-modal"
+                       onclick="product_compare('<?= $this->Url->build('/') ?>', <?= $card['id'] ?>)">
                         Compare
                     </a>
                 </label>
@@ -49,7 +50,12 @@ $url = $this->Url->build("/product/$card[url]");
                         <input class="form-control mb-3" style="width: 4rem" type="number" name="quantity"
                                min="1" value="1">
                         <a class="btn btn-primary text-nowrap"
-                           href="<?= $this->Url->build(['controller' => 'Orders', 'action' => 'add', $card['id']]) ?>>">
+                           href="<?= $this->Url->build([
+                               'controller' => 'Orders',
+                               'action' => 'add',
+                               'plugin' => null,
+                               $card['id']
+                           ]) ?>>">
                             Add To Order
                         </a>
                     </div>

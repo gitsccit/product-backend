@@ -34,7 +34,12 @@ $url = $this->Url->build("/product/$card[url]");
                 </div>
                 <p class="h4 fw-bold mb-3"><?= $this->Number->currency($card['price']) ?></p>
                 <a class="btn btn-primary text-nowrap"
-                   href="<?= $this->Url->build(['controller' => 'Orders', 'action' => 'add', $card['id']]) ?>">
+                   href="<?= $this->Url->build([
+                       'controller' => 'Orders',
+                       'action' => 'add',
+                       'plugin' => null,
+                       $card['id']
+                   ]) ?>">
                     Add To Order
                 </a>
             </div>
