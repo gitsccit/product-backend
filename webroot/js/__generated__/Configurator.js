@@ -121,7 +121,7 @@ class Configurator extends React.Component {
         comments: this.state.comments
       } : {}),
       config: Object.fromEntries(selectedBucketObjects),
-      configured_at: parseInt(Date.now().toString().slice(0, -3))
+      created_at: this.state.system['config_json']['created_at'] ?? parseInt(Date.now().toString().slice(0, -3))
     };
   }
 
