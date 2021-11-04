@@ -15,7 +15,10 @@ $this->Html->script('order', ['block' => true]);
     </div>
     <input class="form-control me-3 mb-xl-0 mb-md-3" style="width: 4rem" type="number" name="quantity"
            min="1" value="1">
-    <a class="btn btn-primary text-nowrap mt-3" href="#" onclick="add_to_order('products', <?= $card['id'] ?>)">Add To Order</a>
+    <a class="btn btn-primary text-nowrap mt-3"
+       href="<?= $this->Url->build(['controller' => 'Orders', 'action' => 'add', 'plugin' => null, $card['id']]) ?>">
+        Add To Order
+    </a>
     <?= $this->element('ProductBackend.email_product') ?>
     <a class="btn btn-primary text-nowrap mt-3" href="#email-a-product" data-bs-toggle="modal"
        data-bs-target="#email-a-product">Email</a>
