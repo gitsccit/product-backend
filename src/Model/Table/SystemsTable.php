@@ -484,7 +484,7 @@ class SystemsTable extends Table
         $price = $fpa;
         foreach ($selectedItemsQuantities as $itemID => $quantity) {
             $selectedItem = $selectedItems[$itemID];
-            $cost += $selectedItem['cost'] * $quantity;
+            $cost += $selectedItem['cost'] ?? 0 * $quantity;
             $price += $selectedItem['price'] * $quantity;
         }
 
