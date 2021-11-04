@@ -48,7 +48,7 @@ $url = $this->Url->build("/product/$card[url]");
                         </div>
                         <input class="form-control mb-3" style="width: 4rem" type="number" name="quantity"
                                min="1" value="1">
-                        <a class="btn btn-primary text-nowrap" href="<?= $this->Url->build('/order') ?>>">
+                        <a class="btn btn-primary text-nowrap" href="<?= $this->Url->build("/order/add/$card[id]") ?>>">
                             Add To Order
                         </a>
                     </div>
