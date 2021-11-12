@@ -256,7 +256,7 @@ class Configure extends React.Component {
   }
 
   render() {
-    let buckets = this.states.buckets;
+    let buckets = this.state.buckets;
     let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
