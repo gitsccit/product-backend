@@ -54,7 +54,7 @@ class Configurator extends React.Component {
   }
 
   _back() {
-    if (!window.configure.back()) {
+    if (this.state.currentTab !== 0 || !window.configure.back()) {
       this.setState({
         currentTab: Math.max(0, this.state.currentTab - 1)
       });
@@ -62,7 +62,7 @@ class Configurator extends React.Component {
   }
 
   _continue() {
-    if (!window.configure.continue()) {
+    if (this.state.currentTab !== 0 || !window.configure.continue()) {
       this.setState({
         currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1)
       });
