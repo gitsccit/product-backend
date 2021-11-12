@@ -17,7 +17,7 @@ class Configure extends React.Component {
 
     this.state = {
       system: props.system,
-      bucket: buckets,
+      buckets: buckets,
       currentTab: 0,
       currentConfig: props.currentConfig,
       selectedFilters: selectedFilters,
