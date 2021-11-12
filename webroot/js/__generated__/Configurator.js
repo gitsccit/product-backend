@@ -54,15 +54,19 @@ class Configurator extends React.Component {
   }
 
   _back() {
-    this.setState({
-      currentTab: Math.max(0, this.state.currentTab - 1)
-    });
+    if (!window.configure.back()) {
+      this.setState({
+        currentTab: Math.max(0, this.state.currentTab - 1)
+      });
+    }
   }
 
   _continue() {
-    this.setState({
-      currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1)
-    });
+    if (!window.configure.continue()) {
+      this.setState({
+        currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1)
+      });
+    }
   }
 
   _handleSubmit(event) {

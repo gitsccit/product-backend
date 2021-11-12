@@ -25,6 +25,30 @@ class Configure extends React.Component {
     };
   }
 
+  back() {
+    if (this.state.currentTab === 0) {
+      return false;
+    }
+
+    this.setState({
+      currentTab: this.state.currentTab - 1,
+    });
+
+    return true;
+  }
+
+  continue() {
+    if (this.props.buckets.length - 1 === this.state.currentTab) {
+      return false;
+    }
+
+    this.setState({
+      currentTab: this.state.currentTab + 1,
+    });
+
+    return true;
+  }
+
   _getBucketImage(bucketID) {
     let itemsInBucket = this.state.currentConfig[bucketID];
     let lastSelectedItem = itemsInBucket.filter(item => item['selected_at']).sort((a, b) => a['selected_at'] - b['selected_at']).pop()
