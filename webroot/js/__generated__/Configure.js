@@ -2,7 +2,8 @@ class Configure extends React.Component {
   constructor(props) {
     super(props);
     let selectedFilters = {};
-    props.buckets.forEach(bucket => {
+    let buckets = props.buckets.filter(bucket => !bucket['hidden']);
+    buckets.forEach(bucket => {
       let bucketFilters = {};
       Object.entries(bucket['filters']).forEach(([name, options]) => {
         bucketFilters[name] = Object.values(options)[0];
@@ -11,6 +12,7 @@ class Configure extends React.Component {
     });
     this.state = {
       system: props.system,
+      bucket: buckets,
       currentTab: 0,
       currentConfig: props.currentConfig,
       selectedFilters: selectedFilters,
@@ -21,7 +23,7 @@ class Configure extends React.Component {
   }
 
   back() {
-    if (this.state.currentTab === 0) {
+    if (this.state.currentTab <= 0) {
       return false;
     }
 
@@ -32,7 +34,7 @@ class Configure extends React.Component {
   }
 
   continue() {
-    if (this.props.buckets.length - 1 === this.state.currentTab) {
+    if (this.state.currentTab >= this.state.buckets.length - 1) {
       return false;
     }
 
@@ -55,7 +57,7 @@ class Configure extends React.Component {
   }
 
   _getBucketGroupImage(bucketID, groupIndex) {
-    let groupItems = this.props.buckets.filter(bucket => bucket['id'] === bucketID)[0]['groups'][groupIndex]['group_items'];
+    let groupItems = this.state.buckets.filter(bucket => bucket['id'] === bucketID)[0]['groups'][groupIndex]['group_items'];
     let lastSelectedItemInGroup = groupItems.filter(item => item['selected_at']).sort((a, b) => a['selected_at'] - b['selected_at']).pop();
 
     if (lastSelectedItemInGroup) {
@@ -110,7 +112,7 @@ class Configure extends React.Component {
   _selectItem(bucketID, itemIndexInBucket) {
     let newConfig = Object.assign({}, this.state.currentConfig);
     let item = newConfig[bucketID][itemIndexInBucket];
-    let bucket = this.props.buckets.find(bucket => bucket['id'] === bucketID);
+    let bucket = this.state.buckets.find(bucket => bucket['id'] === bucketID);
 
     if (bucket['multiple']) {
       let itemsInBucket = this.state.currentConfig[bucket['id']];
@@ -254,7 +256,7 @@ class Configure extends React.Component {
   }
 
   render() {
-    let buckets = this.props.buckets.filter(bucket => !bucket['hidden']);
+    let buckets = this.states.buckets;
     let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
@@ -281,7 +283,7 @@ class Configure extends React.Component {
         if (Array.isArray(prompt)) {
           let bucketID = null;
           [bucketID, prompt] = prompt;
-          bucketTab = this.props.buckets.findIndex(bucket => bucket['id'] === parseInt(bucketID));
+          bucketTab = this.state.buckets.findIndex(bucket => bucket['id'] === parseInt(bucketID));
         }
 
         return /*#__PURE__*/React.createElement("div", {
