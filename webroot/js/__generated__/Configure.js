@@ -244,6 +244,12 @@ class Configure extends React.Component {
     this.props.updateConfiguration(_ => {
       let [, query] = window.location.href.split('?');
       let url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.opportunityKey}/${this.props.configKey}/${btoa(path)}` + (query ? `?${query}` : '');
+
+      if ('cost' in this.state.system) {
+        lightbox(url);
+        return;
+      }
+
       window.location.assign(url);
     });
   }

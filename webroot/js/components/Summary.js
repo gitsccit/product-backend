@@ -22,6 +22,11 @@ class Summary extends React.Component {
         url = `${this.props.baseUrl}/system/${this.props.systemUrl}/${this.props.opportunityKey}/${this.props.configKey}${path}` + (query ? `?${query}` : '');
       }
 
+      if ('cost' in this.props.system && this.props.subKitPath) {
+        lightbox(url);
+        return;
+      }
+
       window.location.assign(url);
     });
   }
