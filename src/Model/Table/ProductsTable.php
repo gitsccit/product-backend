@@ -385,16 +385,7 @@ class ProductsTable extends Table
                 'Products.product_category_id',
                 'Products.description',
                 'show_related_systems' => "IFNULL(Products.show_related_systems, ProductCategories.show_related_systems) = 'yes'",
-                'specs_overview' => $this->Specifications->find()
-                    ->select([
-                        'description' => "GROUP_CONCAT(Specifications.text_value ORDER BY
-                         SpecificationGroups.sort ASC, SpecificationFields.sort ASC, Specifications.sort ASC
-                         SEPARATOR ', ')",
-                    ])
-                    ->innerJoinWith('SpecificationFields.SpecificationGroups')
-                    ->where(['Specifications.product_id = Products.id'])
-                    ->group('Specifications.product_id')
-                    ->limit(10),
+                'specs_overview' => $this->Specifications->find('overview')->where(['Specifications.product_id = Products.id']),
                 'url' => 'IFNULL(ProductPerspectives.url, Products.url)',
                 'name' => 'IFNULL(ProductPerspectives.name, Products.name)',
             ])

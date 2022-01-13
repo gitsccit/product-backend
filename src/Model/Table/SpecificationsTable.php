@@ -140,6 +140,19 @@ class SpecificationsTable extends Table
             ]);
     }
 
+    public function findOverview(Query $query, array $options)
+    {
+        return $query
+            ->select([
+                'description' => "GROUP_CONCAT(Specifications.text_value ORDER BY
+                         SpecificationGroups.sort ASC, SpecificationFields.sort ASC, Specifications.sort ASC
+                         SEPARATOR ', ')",
+            ])
+            ->innerJoinWith('SpecificationFields.SpecificationGroups')
+            ->group('Specifications.product_id')
+            ->limit(10);
+    }
+
     /**
      * Returns the database connection name to use by default.
      *
