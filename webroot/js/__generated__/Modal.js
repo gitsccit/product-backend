@@ -32,7 +32,7 @@ class Modal extends React.Component {
       id: this.props.id,
       "aria-hidden": "true"
     }, /*#__PURE__*/React.createElement("div", {
-      className: `modal-dialog modal-dialog-centered modal-dialog-scrollable justify-content-center ${this.props.size != null && `modal-${this.props.size}`}`,
+      className: `modal-dialog modal-dialog-centered justify-content-center ${this.props.size != null && `modal-${this.props.size}`}`,
       dangerouslySetInnerHTML: {
         __html: this.state.html
       }

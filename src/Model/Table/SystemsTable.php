@@ -491,6 +491,37 @@ class SystemsTable extends Table
         return [$cost, $price];
     }
 
+    public function getTechSpecs($configuration, $options = [])
+    {
+        $flattenedConfiguration = Hash::flatten($configuration);
+        $itemIDs = array_values(array_filter($flattenedConfiguration, function ($key) {
+            return endsWith($key, 'item_id');
+        }, ARRAY_FILTER_USE_KEY));
+
+        return $this->GroupItems->find()
+            ->select([
+                'category' => 'BucketCategories.name',
+                'name' => 'SpecificationFields.name',
+                'text_value' => 'Specifications.text_value',
+                'unit_value' => 'Specifications.unit_value',
+            ])
+            ->innerJoinWith('Groups.Buckets.BucketCategories')
+            ->innerJoinWith('Products.Specifications', function ($q) {
+                return $q->innerJoinWith('SpecificationFields', function ($q) {
+                    return $q->leftJoinWith('SpecificationUnitGroups');
+                })->leftJoinWith('SpecificationUnits');
+            })
+            ->where(['SpecificationFields.techspec' => 'yes'])
+            ->order(['BucketCategories.sort', 'SpecificationFields.sort', 'Specifications.sequence'])
+            ->whereInList('GroupItems.id', array_unique($itemIDs))
+            ->all()
+            ->groupBy('category')
+            ->map(function ($group) {
+                return (new Collection($group))->groupBy('name')->toArray();
+            })
+            ->toArray();
+    }
+
     /**
      * Returns the database connection name to use by default.
      *

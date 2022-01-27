@@ -47,12 +47,12 @@ class Utility
         return $fileName;
     }
 
-    static public function getFileUrl($id, $width = null, $height = null)
+    static public function getFileUrl($id, $width = null, $height = null, $full = false)
     {
         if (empty($id)) {
             return 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
         }
 
-        return Router::url('/files/' . self::getFileName($id, $width, $height));
+        return Router::url('/files/' . self::getFileName($id, $width, $height), $full);
     }
 }

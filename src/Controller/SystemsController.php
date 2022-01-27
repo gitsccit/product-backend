@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
@@ -24,6 +25,7 @@ class SystemsController extends AppController
         parent::beforeFilter($event);
 
         $this->Authentication->addUnauthenticatedActions([
+            'specs',
             'validateConfiguration',
             'updateConfiguration',
             'saveConfiguration',
@@ -149,11 +151,12 @@ class SystemsController extends AppController
             $opportunityKey = random_string(6);
             $session->write("opportunities.$opportunityKey.current", []);
         }
-        $configKey = $configKey ?: random_string(6);
 
         $system = $this->Systems->find('details', $options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
+
+        $configKey = $configKey ?: random_string(6);
 
         $system->loadConfiguration($configuration);
 
@@ -209,6 +212,81 @@ class SystemsController extends AppController
 
         $layout = $session->read('options.store.layout.system');
         $this->viewBuilder()->setTemplate("view_$layout");
+    }
+
+    public function specs()
+    {
+        $systemID = $this->request->getQuery('system');
+        $configKey = $this->request->getQuery('configKey');
+        $subKitPath = $this->request->getQuery('subKitPath');
+        $session = $this->request->getSession();
+        $configuration = $session->read("configurations.$configKey" . ($subKitPath ? ('.' . base64_decode($subKitPath)) : ''));
+        $configurationJson = json_encode($configuration);
+
+        $perspectiveID = $session->read('options.store.perspective');
+
+        $system = $this->Systems
+            ->find('active')
+            ->find('image', ['type' => 'System'])
+            ->select([
+                'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
+                'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
+            ])
+            ->select($this->Systems->SystemCategories->Banners)
+            ->select($this->Systems->Kits)
+            ->innerJoinWith('SystemCategories', function ($q) use ($perspectiveID) {
+                return $q->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
+                    return $query->where([
+                        'SystemCategoryPerspectives.perspective_id' => $perspectiveID,
+                    ]);
+                })->innerJoinWith('Banners', function ($q) {
+                    return $q->where([
+                        'Banners.id = IFNULL(SystemCategoryPerspectives.banner_id, SystemCategories.banner_id)'
+                    ]);
+                });
+            })
+            ->contain('Kits.Icons')
+            ->where([
+                'Systems.id' => $systemID,
+                'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
+            ])
+            ->first();
+
+        $system->banner = $system->_matchingData['Banners'];
+        $banner = $system->generateBannerImage();
+
+        $defaultOpportunityDetail = [
+            'opportunity_detail_type_id' => 4,
+            'opportunity_system' => [
+                'system_id' => $systemID,
+                'opportunity_system_data' => [
+                    'data' => $configurationJson,
+                ],
+            ],
+            'display_specs' => 'yes',
+        ];
+        $opportunity = [
+            'store_id' => $session->read('store.id'),
+            'environment_id' => $session->read('environment.id'),
+            'opportunity_details' => [
+                $defaultOpportunityDetail
+            ],
+        ];
+        $opportunity = Configure::read("Functions.prepareOpportunity")($opportunity);
+
+        $specificationGroups = null;
+        $system = null;
+        foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
+            if ($opportunitySystem = $opportunityDetail['opportunity_system'] ?? null) {
+                if ($opportunitySystem['opportunity_system_data']['data'] === $configurationJson) {
+                    $specificationGroups = $opportunityDetail['specs'];
+                    $system = $opportunityDetail['opportunity_system'];
+                    break;
+                }
+            }
+        }
+
+        $this->set(compact('system', 'specificationGroups', 'banner'));
     }
 
     public function validateConfiguration()

@@ -19,6 +19,7 @@ $routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $build
     $builder->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
     $builder->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
 
+    $builder->connect('/system/specs', ['controller' => 'Systems', 'action' => 'specs']);
     $builder->connect('/system/configuration/update', ['controller' => 'Systems', 'action' => 'updateConfiguration']);
     $builder->connect('/system/configuration/save', ['controller' => 'Systems', 'action' => 'saveConfiguration']);
     $builder->connect('/system/configuration/validate',

@@ -8,7 +8,9 @@ class Summary extends React.Component {
   }
 
   _viewSpecs() {
-    this.viewSpecsModal.fetchContent(this.props.baseUrl + '/system/specs');
+    this.props.updateConfiguration(_ => {
+      this.viewSpecsModal.fetchContent(`${this.props.baseUrl}/system/specs?system=${this.props.system['id']}&configKey=${this.props.configKey}` + (this.props.subKitPath ? `&subKitPath=${btoa(this.props.subKitPath)}` : ''));
+    });
   }
 
   _addToOrder() {

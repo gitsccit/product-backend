@@ -9,6 +9,7 @@ use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use ProductBackend\Core\Utility;
 
 /**
  * System Entity
@@ -204,5 +205,209 @@ class System extends Entity
                 return $group;
             }, $bucket['groups']);
         }
+    }
+
+    public function generateBannerImage($width = 700, $height = 220)
+    {
+        $image = imagecreatetruecolor($width, $height);
+        imagesavealpha($image, true);
+        $color_transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
+        imagefill($image, 0, 0, $color_transparent);
+
+        $banner = $this->banner;
+        $icons = $this->kit->icons;
+
+        // add tile
+        if ($tileID = $banner['tile_id'] ?? null) {
+            $tile = @imagecreatefrompng(Utility::getFileUrl($tileID, null, null, true));
+
+            if ($tile === false) {
+                $tile = $this->generate_system_banner_error(150, 25, "Error Loading tile $tileID");
+            }
+
+            $tileWidth = imagesx($tile);
+            $tileHeight = imagesy($tile);
+
+            for ($xpos = 0; $xpos <= $width; $xpos += $tileWidth) {
+                for ($ypos = 0; $ypos <= $height; $ypos += $tileHeight) {
+                    imagecopy($image, $tile, $xpos, $ypos, 0, 0, $tileWidth, $tileHeight);
+                }
+            }
+
+            imagedestroy($tile);
+        }
+
+        // add background
+        if ($bannerID = $banner['banner_id'] ?? null) {
+            $background = @imagecreatefrompng(Utility::getFileUrl($bannerID, null, null, true));
+
+            if ($background === false) {
+                $background = $this->generate_system_banner_error(500, 220, "Error Loading banner $bannerID");
+            }
+
+            $backgroundWidth = imagesx($background);
+            $backgroundHeight = imagesy($background);
+            $left = 0;
+            $top = 0;
+
+            if ($banner['posx'] == "c") {
+                $left = round(($width / 2) - ($backgroundWidth / 2), 2);
+            }
+            if ($banner['posx'] == "r") {
+                $left = $width - $backgroundWidth;
+            }
+            if ($banner['posy'] == "c") {
+                $top = round(($height / 2) - ($backgroundHeight / 2), 2);
+            }
+            if ($banner['posy'] == "b") {
+                $top = $height - $backgroundHeight;
+            }
+
+            imagecopy($image, $background, $left, $top, 0, 0, $backgroundWidth, $backgroundHeight);
+            imagedestroy($background);
+        }
+
+        // add system name
+        $maxWidth = round($width * .6, 0) - 60;
+        $freduce = 0;
+        $fontFile = WWW_ROOT . "font/latoblack.ttf";
+
+        while (true) {
+            [$w1, $h1] = $this->generate_system_banner_ftbboxwh(21 - $freduce, $this->name_line_1, $fontFile);
+            if ($w1 > $maxWidth) {
+                $freduce++;
+            } else {
+                break;
+            }
+        }
+
+        while (true) {
+            [$w2, $h2] = $this->generate_system_banner_ftbboxwh(24 - $freduce, $this->name_line_2, $fontFile);
+            if ($w2 > $maxWidth) {
+                $freduce++;
+            } else {
+                break;
+            }
+        }
+
+        [$w1, $h1] = $this->generate_system_banner_ftbboxwh(21 - $freduce, $this->name_line_1, $fontFile);
+
+        $lineHeight = $h1 + 8;
+        $textTop = (int)floor($height / 4);
+
+        $colorText1 = imagecolorallocatealpha($image, 178, 178, 178, 0);
+        $colorText2 = imagecolorallocatealpha($image, 255, 255, 255, 0);
+        $colorText3 = imagecolorallocatealpha($image, 55, 55, 55, 75);
+
+        imagettftext($image, 21 - $freduce, 0, 32, $textTop + 1, $colorText3, $fontFile,
+            $this->name_line_1);
+        imagettftext($image, 21 - $freduce, 0, 30, $textTop, $colorText1, $fontFile,
+            $this->name_line_1);
+        imagettftext($image, 24 - $freduce, 0, 32, $textTop + 1 + $lineHeight, $colorText3, $fontFile,
+            $this->name_line_2);
+        imagettftext($image, 24 - $freduce, 0, 30, $textTop + $lineHeight, $colorText2, $fontFile,
+            $this->name_line_2);
+
+        // add system image
+        $maxSystemImageWidth = floor($width * .4) - 30;
+        $maxSystemImageHeight = floor($height) - 70;
+
+        $systemImage = @imagecreatefrompng(Utility::getFileUrl($this->image_id, null, null, true));
+
+        if ($systemImage === false) {
+            $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $systemimage");
+        }
+
+        $systemImageWidth = imagesx($systemImage);
+        $systemImageHeight = imagesy($systemImage);
+        $resize = false;
+
+        if ($maxSystemImageWidth < $systemImageWidth || $maxSystemImageHeight < $systemImageHeight) {
+            $resize = min($maxSystemImageWidth / $systemImageWidth, $maxSystemImageHeight / $systemImageHeight);
+            $systemImageWidth = (int)floor($systemImageWidth * $resize);
+            $systemImageHeight = (int)floor($systemImageHeight * $resize);
+        }
+
+        // add system shadow
+        $shadow = @imagecreatefrompng(WWW_ROOT . 'img/shadow.png');
+        if ($shadow === false) {
+            $shadow = $this->generate_system_banner_error(200, 150, "Error Loading shadow.png");
+        }
+
+        $systemImageLeftPosition = (int)round($width - $maxSystemImageWidth, 0) - 30;
+        $systemImageTopPosition = (int)round(($height - $systemImageHeight - imagesy($shadow)) / 2, 0);
+
+        imagecopyresampled($image, $systemImage, $systemImageLeftPosition, $systemImageTopPosition, 0, 0,
+            $systemImageWidth, $systemImageHeight, imagesx($systemImage), imagesy($systemImage));
+        imagecopyresampled($image, $shadow, $systemImageLeftPosition, $systemImageTopPosition + $systemImageHeight, 0,
+            0, $systemImageWidth, imagesy($shadow), imagesx($shadow), imagesy($shadow));
+        imagedestroy($systemImage);
+        imagedestroy($shadow);
+
+        // add system icons
+        if (!empty($icons)) {
+            $maxIconHeight = 0;
+
+            foreach ($icons as $index => $icon) {
+                $icon = @imagecreatefrompng(Utility::getFileUrl($icon['image_id'], null, null, true));
+
+                if ($icon === false) {
+                    $icon = $this->generate_system_banner_error(48, 48, "Error");
+                }
+
+                $icons[$index] = $icon;
+                $iconHeight = imagesx($icon);
+
+                if ($iconHeight > $maxIconHeight) {
+                    $maxIconHeight = $iconHeight;
+                }
+            }
+
+            $iconTopPosition = $height - 30 - $maxIconHeight;
+            $iconLeftPosition = 30;
+            $maxIconWidth = floor($width * .6);
+
+            while (!empty($icons)) {
+                $icon = array_shift($icons);
+                $iconWidth = imagesx($icon);
+                $iconHeight = imagesy($icon);
+
+                if ($iconLeftPosition + $iconWidth < $maxIconWidth) {
+                    $verticalPostionAdjustment = (int)round(($maxIconHeight - $iconHeight) / 2, 0);
+                    imagecopyresampled($image, $icon, $iconLeftPosition, $iconTopPosition + $verticalPostionAdjustment,
+                        0, 0, $iconWidth, $iconHeight, $iconWidth, $iconHeight);
+                    $iconLeftPosition += $iconWidth + 10;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        ob_start();
+        imagepng($image);
+        imagedestroy($image);
+
+        return base64_encode(ob_get_clean());
+    }
+
+    private function generate_system_banner_ftbboxwh($size, $text, $font)
+    {
+        $rect = imagettfbbox($size, 0, $font, $text);
+
+        return [
+            max([$rect[0], $rect[2], $rect[4], $rect[6]]) - min([$rect[0], $rect[2], $rect[4], $rect[6]]),
+            max([$rect[1], $rect[3], $rect[5], $rect[7]]) - min([$rect[1], $rect[3], $rect[5], $rect[7]])
+        ];
+    }
+
+    private function generate_system_banner_error($width, $height, $text)
+    {
+        $image = imagecreatetruecolor($width, $height);
+        $fontColor = imagecolorallocate($image, 255, 255, 0);
+        $backgroundColor = imagecolorallocate($image, 0, 0, 0);
+        imagefilledrectangle($image, 0, 0, $width, $height, $backgroundColor);
+        imagestring($image, 1, 3, 3, $text, $fontColor);
+
+        return $image;
     }
 }
