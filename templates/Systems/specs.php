@@ -52,8 +52,8 @@
             </tbody>
         </table>
     <?php endforeach; ?>
-    <div class="d-flex justify-content-center my-3">Quotation Date: <?= $system['updated_at'] ?>. All prices subject to
-        change.
+    <div class="d-flex justify-content-center my-3">
+        Quotation Date: <?= (new DateTime($system['updated_at']))->format('F dS, Y, h:i A T') ?>. All prices subject to change.
     </div>
     <div class="row justify-content-center">
         <div class="col-3">
