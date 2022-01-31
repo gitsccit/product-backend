@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\System $system
+ * @var \ProductBackend\Model\Entity\System $system
  */
 
 use Cake\Core\Configure;

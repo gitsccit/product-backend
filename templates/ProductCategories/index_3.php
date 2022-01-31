@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ProductCategory[]|\Cake\Collection\CollectionInterface $productCategories
+ * @var \ProductBackend\Model\Entity\ProductCategory[]|\Cake\Collection\CollectionInterface $productCategories
  */
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 ?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Product[] $products
+ * @var \ProductBackend\Model\Entity\Product[] $products
  */
 
 $this->Html->scriptBlock('print');

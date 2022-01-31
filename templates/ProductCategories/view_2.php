@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ProductCategory $productCategory
- * @var \App\Model\Entity\Product[] $products
+ * @var \ProductBackend\Model\Entity\ProductCategory $productCategory
+ * @var \ProductBackend\Model\Entity\Product[] $products
  * @var array $specifications
  */
 $this->Breadcrumbs->add($breadcrumbs ?? []);

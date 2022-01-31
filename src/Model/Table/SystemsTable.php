@@ -443,6 +443,43 @@ class SystemsTable extends Table
             ]);
     }
 
+    public function findBanner(Query $query, array $options)
+    {
+        $session = new Session();
+        $perspectiveID = $session->read('options.store.perspective');
+
+        return $query
+            ->find('active')
+            ->find('image', ['type' => 'System'])
+            ->select([
+                'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
+                'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
+            ])
+            ->select($this->Systems->SystemCategories->Banners)
+            ->select($this->Systems->Kits)
+            ->innerJoinWith('SystemCategories', function ($q) use ($perspectiveID) {
+                return $q->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
+                    return $query->where([
+                        'SystemCategoryPerspectives.perspective_id' => $perspectiveID,
+                    ]);
+                })->innerJoinWith('Banners', function ($q) {
+                    return $q->where([
+                        'Banners.id = IFNULL(SystemCategoryPerspectives.banner_id, SystemCategories.banner_id)'
+                    ]);
+                });
+            })
+            ->contain('Kits.Icons')
+            ->where([
+                'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
+            ])
+            ->formatResults(function ($result) {
+                return $result->each(function ($system) {
+                    $system->banner = $system->_matchingData['Banners'];
+                    $system->banner = $system->generateBannerImage();
+                });
+            });
+    }
+
     public function getConfigurationCostAndPrice($configuration, $options = [])
     {
         $flattenedConfiguration = Hash::flatten($configuration);

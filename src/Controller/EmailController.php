@@ -6,7 +6,7 @@ namespace ProductBackend\Controller;
 /**
  * Email Controller
  *
- * @method \App\Model\Entity\Email[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \ProductBackend\Model\Entity\Email[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class EmailController extends AppController
 {

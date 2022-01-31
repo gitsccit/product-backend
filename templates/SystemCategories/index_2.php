@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\SystemCategory[]|\Cake\Collection\CollectionInterface $systemCategories
+ * @var \ProductBackend\Model\Entity\SystemCategory[]|\Cake\Collection\CollectionInterface $systemCategories
  */
 
 $subCategories = $this->request->getParam('pass');

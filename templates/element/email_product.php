@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Product $product
+ * @var \ProductBackend\Model\Entity\Product $product
  */
 ?>
 

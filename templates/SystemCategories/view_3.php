@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\SystemCategory $systemCategory
- * @var \App\Model\Entity\System[] $systems
+ * @var \ProductBackend\Model\Entity\SystemCategory $systemCategory
+ * @var \ProductBackend\Model\Entity\System[] $systems
  * @var array $tagCategories
  */
 $this->Breadcrumbs->add($breadcrumbs ?? []);

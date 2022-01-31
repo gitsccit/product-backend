@@ -223,37 +223,8 @@ class SystemsController extends AppController
         $configuration = $session->read("configurations.$configKey" . ($subKitPath ? ('.' . base64_decode($subKitPath)) : ''));
         $configurationJson = json_encode($configuration);
 
-        $perspectiveID = $session->read('options.store.perspective');
-
-        $system = $this->Systems
-            ->find('active')
-            ->find('image', ['type' => 'System'])
-            ->select([
-                'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
-                'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
-            ])
-            ->select($this->Systems->SystemCategories->Banners)
-            ->select($this->Systems->Kits)
-            ->innerJoinWith('SystemCategories', function ($q) use ($perspectiveID) {
-                return $q->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
-                    return $query->where([
-                        'SystemCategoryPerspectives.perspective_id' => $perspectiveID,
-                    ]);
-                })->innerJoinWith('Banners', function ($q) {
-                    return $q->where([
-                        'Banners.id = IFNULL(SystemCategoryPerspectives.banner_id, SystemCategories.banner_id)'
-                    ]);
-                });
-            })
-            ->contain('Kits.Icons')
-            ->where([
-                'Systems.id' => $systemID,
-                'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
-            ])
-            ->first();
-
-        $system->banner = $system->_matchingData['Banners'];
-        $banner = $system->generateBannerImage();
+        $system = $this->Systems->find('banner')->where(['Systems.id' => $systemID])->first();
+        $banner = $system->banner;
 
         $defaultOpportunityDetail = [
             'opportunity_detail_type_id' => 4,

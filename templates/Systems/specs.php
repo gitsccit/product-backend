@@ -1,7 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Product $product
+ * @var \ProductBackend\Model\Entity\System $system
+ * @var array $specificationGroups
+ * @var string $banner
  */
 ?>
 
@@ -53,7 +55,8 @@
         </table>
     <?php endforeach; ?>
     <div class="d-flex justify-content-center my-3">
-        Quotation Date: <?= (new DateTime($system['updated_at']))->format('F dS, Y, h:i A T') ?>. All prices subject to change.
+        Quotation Date: <?= (new DateTime($system['updated_at']))->format('F dS, Y, h:i A T') ?>. All prices subject to
+        change.
     </div>
     <div class="row justify-content-center">
         <div class="col-3">
