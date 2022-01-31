@@ -455,8 +455,8 @@ class SystemsTable extends Table
                 'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
                 'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
             ])
-            ->select($this->Systems->SystemCategories->Banners)
-            ->select($this->Systems->Kits)
+            ->select($this->SystemCategories->Banners)
+            ->select($this->Kits)
             ->innerJoinWith('SystemCategories', function ($q) use ($perspectiveID) {
                 return $q->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
                     return $query->where([
