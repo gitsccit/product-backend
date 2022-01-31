@@ -217,6 +217,7 @@ class SystemsController extends AppController
     public function specs()
     {
         $systemID = $this->request->getQuery('system');
+        $opportunityKey = $this->request->getQuery('opportunityKey');
         $configKey = $this->request->getQuery('configKey');
         $subKitPath = $this->request->getQuery('subKitPath');
         $session = $this->request->getSession();
@@ -237,8 +238,8 @@ class SystemsController extends AppController
             'display_specs' => 'yes',
         ];
         $opportunity = [
-            'store_id' => $session->read('store.id'),
-            'environment_id' => $session->read('environment.id'),
+            'store_id' => $session->read('store.id') ?? $session->read("opportunities.$opportunityKey.store.id"),
+            'environment_id' => $session->read('environment.id') ?? $session->read("opportunities.$opportunityKey.environment.id"),
             'opportunity_details' => [
                 $defaultOpportunityDetail
             ],
@@ -354,8 +355,8 @@ class SystemsController extends AppController
 
             $opportunitySessionDataKey = "opportunities.$opportunityKey.current";
             $opportunity = [
-                'store_id' => $session->read('store.id'),
-                'environment_id' => $session->read('environment.id'),
+                'store_id' => $session->read('store.id') ?? $session->read("opportunities.$opportunityKey.store.id"),
+                'environment_id' => $session->read('environment.id') ?? $session->read("opportunities.$opportunityKey.environment.id"),
                 'opportunity_details' => [$defaultOpportunityDetail],
             ];
 
