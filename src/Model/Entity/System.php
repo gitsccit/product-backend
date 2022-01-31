@@ -315,7 +315,7 @@ class System extends Entity
         $systemImage = @imagecreatefrompng(Utility::getFileUrl($this->image_id, null, null, true));
 
         if ($systemImage === false) {
-            $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $systemimage");
+            $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $this->image_id");
         }
 
         $systemImageWidth = imagesx($systemImage);
