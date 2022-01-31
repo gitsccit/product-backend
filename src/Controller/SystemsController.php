@@ -184,7 +184,7 @@ class SystemsController extends AppController
                 'headers' => [
                     'scctoken' => Configure::read('Security.thinkAPI_token'),
                     'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
-                        ->find()->where(['store_id' => $session->read('store.id') ?? $session->read("opportunities.$opportunityKey.store.id")])
+                        ->find()->where(['store_id' => $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id')])
                         ->first()->company_code,
                 ],
                 'ssl_verify_peer' => false,
@@ -238,8 +238,8 @@ class SystemsController extends AppController
             'display_specs' => 'yes',
         ];
         $opportunity = [
-            'store_id' => $session->read('store.id') ?? $session->read("opportunities.$opportunityKey.store.id"),
-            'environment_id' => $session->read('environment.id') ?? $session->read("opportunities.$opportunityKey.environment.id"),
+            'store_id' => $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id'),
+            'environment_id' => $session->read("opportunities.$opportunityKey.environment.id") ?? $session->read('environment.id'),
             'opportunity_details' => [
                 $defaultOpportunityDetail
             ],
@@ -355,8 +355,8 @@ class SystemsController extends AppController
 
             $opportunitySessionDataKey = "opportunities.$opportunityKey.current";
             $opportunity = [
-                'store_id' => $session->read('store.id') ?? $session->read("opportunities.$opportunityKey.store.id"),
-                'environment_id' => $session->read('environment.id') ?? $session->read("opportunities.$opportunityKey.environment.id"),
+                'store_id' => $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id'),
+                'environment_id' => $session->read("opportunities.$opportunityKey.environment.id") ?? $session->read('environment.id'),
                 'opportunity_details' => [$defaultOpportunityDetail],
             ];
 
