@@ -4,11 +4,6 @@ declare(strict_types=1);
 use Cake\Core\Configure;
 
 /*
- * Add custom functions.
- */
-require 'Utility.php';
-
-/*
  * Read configuration file and inject configuration into various
  * CakePHP classes.
  *
