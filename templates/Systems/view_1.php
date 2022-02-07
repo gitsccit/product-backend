@@ -8,12 +8,12 @@ use Cake\Core\Configure;
 
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 
-$system['image'] = \ProductBackend\Core\Utility::getFileUrl($system['image_id'], 200, 200);
+$system['image'] = $filesApiHandler->getFileUrl($system['image_id'], 200, 200);
 
 foreach ($system['buckets'] as &$bucket) {
     foreach ($bucket['groups'] as &$group) {
         foreach ($group['group_items'] as &$groupItem) {
-            $groupItem['image'] = $groupItem['image_id'] ? \ProductBackend\Core\Utility::getFileUrl(
+            $groupItem['image'] = $groupItem['image_id'] ? $filesApiHandler->getFileUrl(
                 $groupItem['image_id'],
                 100,
                 100

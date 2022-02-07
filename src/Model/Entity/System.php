@@ -209,6 +209,7 @@ class System extends Entity
 
     public function generateBannerImage($width = 700, $height = 220)
     {
+        $filesApiHandler = new \FilesApiHandler();
         $image = imagecreatetruecolor($width, $height);
         imagesavealpha($image, true);
         $color_transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
@@ -219,7 +220,7 @@ class System extends Entity
 
         // add tile
         if ($tileID = $banner['tile_id'] ?? null) {
-            $tile = @imagecreatefrompng(Utility::getFileUrl($tileID, null, null, true));
+            $tile = @imagecreatefrompng($filesApiHandler->getFileUrl($tileID, null, null, true));
 
             if ($tile === false) {
                 $tile = $this->generate_system_banner_error(150, 25, "Error Loading tile $tileID");
@@ -239,7 +240,7 @@ class System extends Entity
 
         // add background
         if ($bannerID = $banner['banner_id'] ?? null) {
-            $background = @imagecreatefrompng(Utility::getFileUrl($bannerID, null, null, true));
+            $background = @imagecreatefrompng($filesApiHandler->getFileUrl($bannerID, null, null, true));
 
             if ($background === false) {
                 $background = $this->generate_system_banner_error(500, 220, "Error Loading banner $bannerID");
@@ -312,7 +313,7 @@ class System extends Entity
         $maxSystemImageWidth = floor($width * .4) - 30;
         $maxSystemImageHeight = floor($height) - 70;
 
-        $systemImage = @imagecreatefrompng(Utility::getFileUrl($this->image_id, null, null, true));
+        $systemImage = @imagecreatefrompng($filesApiHandler->getFileUrl($this->image_id, null, null, true));
 
         if ($systemImage === false) {
             $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $this->image_id");
@@ -349,7 +350,7 @@ class System extends Entity
             $maxIconHeight = 0;
 
             foreach ($icons as $index => $icon) {
-                $icon = @imagecreatefrompng(Utility::getFileUrl($icon['image_id'], null, null, true));
+                $icon = @imagecreatefrompng($filesApiHandler->getFileUrl($icon['image_id'], null, null, true));
 
                 if ($icon === false) {
                     $icon = $this->generate_system_banner_error(48, 48, "Error");

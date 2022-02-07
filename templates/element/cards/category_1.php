@@ -17,7 +17,7 @@
                             <a class="w-100 h-100 d-flex align-items-center justify-content-center p-5 bg-white"
                                href="<?= $categoryUrl ?>">
                                 <img class="mw-100 mh-100"
-                                     src="<?= \ProductBackend\Core\Utility::getFileUrl(($subCategory['products'] ?? $subCategory['systems'])[0]['image_id'], 100) ?>"
+                                     src="<?= $filesApiHandler->getFileUrl(($subCategory['products'] ?? $subCategory['systems'])[0]['image_id'], 100) ?>"
                                      alt="<?= $subCategory['name'] ?>">
                             </a>
                         </div>

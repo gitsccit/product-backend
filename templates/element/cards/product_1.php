@@ -13,7 +13,7 @@ $url = $this->Url->build("/product/$card[url]");
                 <a class="d-flex align-items-center justify-content-center p-5 w-100" href="<?= $url ?>"
                    style="height: 150px">
                     <img class="mw-100 mh-100"
-                         src="<?= \ProductBackend\Core\Utility::getFileUrl($card['image_id'], 100, 70) ?>"
+                         src="<?= $filesApiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
                          alt="<?= $card['name'] ?>">
                 </a>
                 <label class="mt-3 my-2 d-flex align-items-center" for="compare">

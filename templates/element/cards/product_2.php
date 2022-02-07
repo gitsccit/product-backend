@@ -10,7 +10,7 @@ $url = $this->Url->build("/product/$card[url]");
     <div class="d-flex flex-column">
         <a class="d-flex justify-content-center align-items-center p-5 bg-white" href="<?= $url ?>"
            style="height: 150px">
-            <img class="mw-100 mh-100" src="<?= \ProductBackend\Core\Utility::getFileUrl($card['image_id'], 100, 70) ?>"
+            <img class="mw-100 mh-100" src="<?= $filesApiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
                  alt="<?= $card['name'] ?>">
         </a>
         <div class="d-flex flex-row bg-4 justify-content-center align-items-center">
