@@ -28,7 +28,7 @@ $hasOneSlide = count($images) <= $slideSize;
                                                id="modal-image-<?= $image['id'] ?>-tab" data-bs-toggle="tab"
                                                href="#modal-image-<?= $image['id'] ?>" role="tab" style="height: 80px">
                                                 <img class="mw-100 mh-100"
-                                                     src="<?= $filesApiHandler->getFileUrl(
+                                                     src="<?= $this->filesApiHandler->getFileUrl(
                                                          $image['file_id'],
                                                          300,
                                                          200
@@ -60,7 +60,7 @@ $hasOneSlide = count($images) <= $slideSize;
                             <div class="d-flex justify-content-center align-items-center bg-white image-tab p-5"
                                  style="height: 300px">
                                 <img class="mw-100 mh-100"
-                                     src="<?= $filesApiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                                     src="<?= $this->filesApiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
                             </div>
                         </div>
                     <?php endforeach; ?>

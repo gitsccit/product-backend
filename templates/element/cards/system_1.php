@@ -21,7 +21,7 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
                     </span>
                 </div>
                 <img class="mw-100 my-2"
-                     src="<?= $filesApiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
+                     src="<?= $this->filesApiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
                      style="height: 70px" alt="<?= $card['name'] ?>">
             </a>
         </div>
@@ -38,7 +38,7 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
                                             <div style="width:20px; height: 20px"
                                                  class="d-flex justify-content-center align-items-center me-1">
                                                 <img class="mw-100 mh-100"
-                                                     src="<?= $filesApiHandler->getFileUrl($tag['image_id']) ?>">
+                                                     src="<?= $this->filesApiHandler->getFileUrl($tag['image_id']) ?>">
                                             </div>
                                             <div class="text-small">
                                                 <?php if ($tag['value']) : ?>

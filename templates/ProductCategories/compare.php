@@ -30,7 +30,7 @@ $selectedProducts = $selectedProducts ? explode(',', $selectedProducts) : [];
 $section = [];
 foreach ($products as $index => $product) {
     $url = $this->Url->build("/product/$product[url]");
-    $image = $filesApiHandler->getFileUrl($product['image_id'], 200, 100);
+    $image = $this->filesApiHandler->getFileUrl($product['image_id'], 200, 100);
     $section['Product'][] = "
     <div class='d-flex flex-column justify-content-between h-100'>
         <a class='mb-3 text-black' href='$url'>

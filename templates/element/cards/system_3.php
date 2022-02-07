@@ -18,7 +18,7 @@ $url = $this->Url->build("/system/$card[url]" . (isset($opportunityKey) ? "/$opp
                     <?= $card['support_badge'] ?? '' ?>
                 </span>
             </div>
-            <img class="mw-100 mb-4" src="<?= $filesApiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
+            <img class="mw-100 mb-4" src="<?= $this->filesApiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
                  style="height: 70px" alt="<?= $card['name'] ?>">
         </div>
     </a>
@@ -29,7 +29,7 @@ $url = $this->Url->build("/system/$card[url]" . (isset($opportunityKey) ? "/$opp
                 <div class="d-flex">
                     <div style="width:20px; height: 20px" class="d-flex justify-content-center align-items-center me-2">
                         <img class="mw-100 mh-100"
-                             src="<?= $filesApiHandler->getFileUrl($tag['image_id']) ?>">
+                             src="<?= $this->filesApiHandler->getFileUrl($tag['image_id']) ?>">
                     </div>
                     <div>
                         <?php if ($tag['value']) : ?>
