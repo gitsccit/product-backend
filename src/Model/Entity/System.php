@@ -220,7 +220,7 @@ class System extends Entity
 
         // add tile
         if ($tileID = $banner['tile_id'] ?? null) {
-            $tile = @imagecreatefrompng($filesApiHandler->getFileUrl($tileID, null, null, true));
+            $tile = @imagecreatefrompng($filesApiHandler->getFileUrl($tileID));
 
             if ($tile === false) {
                 $tile = $this->generate_system_banner_error(150, 25, "Error Loading tile $tileID");
@@ -240,7 +240,7 @@ class System extends Entity
 
         // add background
         if ($bannerID = $banner['banner_id'] ?? null) {
-            $background = @imagecreatefrompng($filesApiHandler->getFileUrl($bannerID, null, null, true));
+            $background = @imagecreatefrompng($filesApiHandler->getFileUrl($bannerID));
 
             if ($background === false) {
                 $background = $this->generate_system_banner_error(500, 220, "Error Loading banner $bannerID");
@@ -313,7 +313,7 @@ class System extends Entity
         $maxSystemImageWidth = floor($width * .4) - 30;
         $maxSystemImageHeight = floor($height) - 70;
 
-        $systemImage = @imagecreatefrompng($filesApiHandler->getFileUrl($this->image_id, null, null, true));
+        $systemImage = @imagecreatefrompng($filesApiHandler->getFileUrl($this->image_id));
 
         if ($systemImage === false) {
             $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $this->image_id");
@@ -350,7 +350,7 @@ class System extends Entity
             $maxIconHeight = 0;
 
             foreach ($icons as $index => $icon) {
-                $icon = @imagecreatefrompng($filesApiHandler->getFileUrl($icon['image_id'], null, null, true));
+                $icon = @imagecreatefrompng($filesApiHandler->getFileUrl($icon['image_id']));
 
                 if ($icon === false) {
                     $icon = $this->generate_system_banner_error(48, 48, "Error");
