@@ -4,7 +4,7 @@
  * @var array $card
  */
 
-$url = $this->Url->build("/product/$card[url]");
+$url = $this->Url->build("/product/$card[url]" . (isset($opportunityKey) ? "/$opportunityKey" : ''));
 ?>
 <div class="bg-3 my-3 shadow">
     <div class="row">
@@ -55,7 +55,7 @@ $url = $this->Url->build("/product/$card[url]");
                                'action' => 'add',
                                'plugin' => null,
                                $card['id']
-                           ]) ?>>">
+                           ]) ?>">
                             Add To Order
                         </a>
                     </div>

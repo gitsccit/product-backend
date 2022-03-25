@@ -14,6 +14,7 @@ $routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $build
     $builder->connect('/hardware/compare/*', ['controller' => 'ProductCategories', 'action' => 'compare']);
     $builder->connect('/hardware/*', ['controller' => 'ProductCategories', 'action' => 'view']);
 
+    $builder->connect('/product/save/*', ['controller' => 'Products', 'action' => 'save']);
     $builder->connect('/product/**', ['controller' => 'Products', 'action' => 'view']);
 
     $builder->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
