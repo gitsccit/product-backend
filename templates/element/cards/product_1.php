@@ -51,10 +51,11 @@ $url = $this->Url->build("/product/$card[url]" . (isset($opportunityKey) ? "/$op
                                min="1" value="1">
                         <a class="btn btn-primary text-nowrap"
                            href="<?= $this->Url->build([
-                               'controller' => 'Orders',
-                               'action' => 'add',
-                               'plugin' => null,
-                               $card['id']
+                               'controller' => 'Products',
+                               'action' => 'save',
+                               'plugin' => 'ProductBackend',
+                               $card['id'],
+                               $opportunityKey ?? null,
                            ]) ?>">
                             Add To Order
                         </a>
