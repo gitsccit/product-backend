@@ -34,13 +34,7 @@ $url = $this->Url->build("/product/$card[url]" . (isset($opportunityKey) ? "/$op
                 </div>
                 <p class="h4 fw-bold mb-3"><?= $this->Number->currency($card['price']) ?></p>
                 <a class="btn btn-primary text-nowrap"
-                   href="<?= $this->Url->build([
-                       'controller' => 'Products',
-                       'action' => 'save',
-                       'plugin' => 'ProductBackend',
-                       $card['id'],
-                       $opportunityKey ?? null,
-                   ]) ?>">
+                   href="<?= $this->Url->build("/product/save/$card[id]" . (isset($opportunityKey) ? "/$opportunityKey" : '')) ?>">
                     Add To Order
                 </a>
             </div>

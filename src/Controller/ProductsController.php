@@ -211,7 +211,7 @@ class ProductsController extends AppController
         $session->write("opportunities.$opportunityKey.current", $opportunity);
 
         if (Configure::read('ProductBackend.showCost')) {
-            return $this->redirect(['controller' => 'Quotes', 'action' => 'index', 'prefix' => 'Sales']);
+            return $this->redirect(['controller' => 'Quotes', 'action' => 'load', 'prefix' => 'Sales', 'plugin' => null, $opportunityKey]);
         }
 
         return $this->redirect(['controller' => 'Order', 'action' => 'index']);

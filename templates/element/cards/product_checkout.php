@@ -16,7 +16,7 @@ $this->Html->script('order', ['block' => true]);
     <input class="form-control me-3 mb-xl-0 mb-md-3" style="width: 4rem" type="number" name="quantity"
            min="1" value="1">
     <a class="btn btn-primary text-nowrap mt-3"
-       href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'save', 'plugin' => 'ProductBackend', $card['id'], $opportunityKey ?? null]) ?>">
+       href="<?= $this->Url->build("/product/save/$card[id]" . (isset($opportunityKey) ? "/$opportunityKey" : '')) ?>">
         Add To Order
     </a>
     <?= $this->element('ProductBackend.email_product') ?>
