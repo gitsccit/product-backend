@@ -222,6 +222,6 @@ class ProductsController extends AppController
             return $this->redirect(['controller' => 'Quotes', 'action' => 'load', 'prefix' => 'Sales', 'plugin' => null, $opportunityKey]);
         }
 
-        return $this->redirect(['controller' => 'Order', 'action' => 'index']);
+        return $this->redirect(['controller' => 'Order', 'action' => 'index', 'plugin' => null]);
     }
 }
