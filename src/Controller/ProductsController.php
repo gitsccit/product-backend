@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ProductBackend\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 
 /**
@@ -14,6 +15,13 @@ use Cake\Http\Exception\NotFoundException;
  */
 class ProductsController extends AppController
 {
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $this->Authentication->addUnauthenticatedActions(['save']);
+    }
+
     /**
      * Index method
      *
