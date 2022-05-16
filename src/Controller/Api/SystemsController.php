@@ -38,7 +38,7 @@ class SystemsController extends AppController
         $url = str_replace(' ', '+', $url);
         $systemUrl = $url;
 
-        $system = $this->Systems->find('active')
+        $system = $this->Systems->find('details')
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
 
