@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace ProductBackend\Controller\Api;
 
 use Cake\Http\Exception\NotFoundException;
-use ProductBackend\Controller\AppController;
 
 /**
  * Systems Controller
