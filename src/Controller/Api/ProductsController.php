@@ -30,10 +30,6 @@ class ProductsController extends AppController
             ])
             ->first();
 
-        if (is_null($product)) {
-            throw new NotFoundException();
-        }
-
         $this->Crud->serialize(compact('product'));
     }
 }
