@@ -33,12 +33,15 @@ class SystemsController extends AppController
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(string $url)
     {
-        $environment = $this->Systems->get($id, [
-            'contain' => ['Permissions', 'OptionStores', 'StoreIpMaps'],
-        ]);
+        $url = str_replace(' ', '+', $url);
+        $systemUrl = $url;
 
-        $this->Crud->serialize(compact('environment'));
+        $system = $this->Systems->find('active')
+            ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
+            ->first();
+
+        $this->Crud->serialize(compact('system'));
     }
 }
