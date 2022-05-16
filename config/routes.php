@@ -3,27 +3,36 @@
 
 use Cake\Routing\RouteBuilder;
 
-$routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $builder) {
+$routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $route) {
 
-    $builder->scope('/email', ['controller' => 'Email'], function (RouteBuilder $builder) {
+    $route->scope('/email', ['controller' => 'Email'], function (RouteBuilder $builder) {
         $builder->connect('/product', ['action' => 'product']);
         $builder->connect('/system', ['action' => 'system']);
     });
 
-    $builder->connect('/hardware', ['controller' => 'ProductCategories', 'action' => 'index']);
-    $builder->connect('/hardware/compare/*', ['controller' => 'ProductCategories', 'action' => 'compare']);
-    $builder->connect('/hardware/*', ['controller' => 'ProductCategories', 'action' => 'view']);
+    $route->connect('/hardware', ['controller' => 'ProductCategories', 'action' => 'index']);
+    $route->connect('/hardware/compare/*', ['controller' => 'ProductCategories', 'action' => 'compare']);
+    $route->connect('/hardware/*', ['controller' => 'ProductCategories', 'action' => 'view']);
 
-    $builder->connect('/product/save/*', ['controller' => 'Products', 'action' => 'save']);
-    $builder->connect('/product/**', ['controller' => 'Products', 'action' => 'view']);
+    $route->connect('/product/save/*', ['controller' => 'Products', 'action' => 'save']);
+    $route->connect('/product/**', ['controller' => 'Products', 'action' => 'view']);
 
-    $builder->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
-    $builder->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
+    $route->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
+    $route->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
 
-    $builder->connect('/system/specs', ['controller' => 'Systems', 'action' => 'specs']);
-    $builder->connect('/system/configuration/update', ['controller' => 'Systems', 'action' => 'updateConfiguration']);
-    $builder->connect('/system/configuration/save', ['controller' => 'Systems', 'action' => 'saveConfiguration']);
-    $builder->connect('/system/configuration/validate',
+    $route->connect('/system/specs', ['controller' => 'Systems', 'action' => 'specs']);
+    $route->connect('/system/configuration/update', ['controller' => 'Systems', 'action' => 'updateConfiguration']);
+    $route->connect('/system/configuration/save', ['controller' => 'Systems', 'action' => 'saveConfiguration']);
+    $route->connect('/system/configuration/validate',
         ['controller' => 'Systems', 'action' => 'validateConfiguration']);
-    $builder->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
+    $route->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
+
+    $route->prefix('Api', function (RouteBuilder $route) {
+        $route->connect('/hardware', ['controller' => 'ProductCategories', 'action' => 'index']);
+        $route->connect('/hardware/*', ['controller' => 'ProductCategories', 'action' => 'view']);
+
+        $route->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
+        $route->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
+        $route->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
+    });
 });

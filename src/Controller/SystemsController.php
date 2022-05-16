@@ -8,7 +8,6 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
-use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
@@ -60,7 +59,8 @@ class SystemsController extends AppController
         string $opportunityKey = null,
         string $configKey = null,
         string $subKitPath = null
-    ) {
+    )
+    {
         $url = str_replace(' ', '+', $url);
         $systemUrl = $url;
 
