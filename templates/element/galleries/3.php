@@ -6,7 +6,7 @@
 ?>
 <div class="row" style="margin-left: -.25rem; margin-right: -.25rem">
     <?= $this->element(
-        'ProductBackend.galleries/modal_' . $this->request->getSession()->read('options.store.layout.gallery'),
+        'ProductBackend.galleries/modal_' . $this->request->getSession()->read('store.layout_gallery'),
         compact('images')
     ) ?>
     <ul class="col-3 px-1 item-group-vertical d-flex flex-column nav" id="gallery-nav-bar" role="tablist">

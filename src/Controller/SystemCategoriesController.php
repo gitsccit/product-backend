@@ -60,7 +60,7 @@ class SystemCategoriesController extends AppController
 
         $this->set(compact('systemCategories', 'breadcrumbs'));
 
-        $layout = $this->request->getSession()->read('options.store.layout.system-category-browsing');
+        $layout = $this->request->getSession()->read('store.layout_system_category_browsing');
         $this->viewBuilder()->setTemplate("index_$layout");
     }
 
@@ -153,7 +153,7 @@ class SystemCategoriesController extends AppController
 
         $this->set(compact('systemCategory', 'systems', 'tagCategories', 'breadcrumbs'));
 
-        $layout = $this->request->getSession()->read('options.store.layout.system-browsing');
+        $layout = $this->request->getSession()->read('store.layout_system_browsing');
         $this->viewBuilder()->setTemplate("view_$layout");
     }
 

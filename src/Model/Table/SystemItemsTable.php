@@ -103,7 +103,7 @@ class SystemItemsTable extends Table
     public function findBasic(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
+        $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
             ->select([

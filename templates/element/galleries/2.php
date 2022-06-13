@@ -6,7 +6,7 @@
 ?>
 <div>
     <?= $this->element(
-        'ProductBackend.galleries/modal_' . $this->request->getSession()->read('options.store.layout.gallery'),
+        'ProductBackend.galleries/modal_' . $this->request->getSession()->read('store.layout_gallery'),
         compact('images')
     ) ?>
     <div class="tab-content" id="gallery-content">

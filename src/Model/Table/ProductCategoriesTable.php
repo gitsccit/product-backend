@@ -151,7 +151,7 @@ class ProductCategoriesTable extends Table
     public function findListing(Query $query, $options)
     {
         $session = new Session();
-        $perspectiveID = $session->read('options.store.perspective');
+        $perspectiveID = $session->read('store.perspective');
 
         return $query
             ->select([

@@ -60,7 +60,7 @@ class ProductCategoriesController extends AppController
 
         $this->set(compact('productCategories', 'breadcrumbs'));
 
-        $layout = $this->request->getSession()->read('options.store.layout.product-category-browsing');
+        $layout = $this->request->getSession()->read('store.layout_product_category_browsing');
         $this->viewBuilder()->setTemplate("index_$layout");
     }
 
@@ -132,7 +132,7 @@ class ProductCategoriesController extends AppController
 
         $this->set(compact('productCategory', 'products', 'specifications', 'breadcrumbs'));
 
-        $layout = $this->request->getSession()->read('options.store.layout.product-browsing');
+        $layout = $this->request->getSession()->read('store.layout_product_browsing');
         $this->viewBuilder()->setTemplate("view_$layout");
     }
 

@@ -168,7 +168,7 @@ class SystemsController extends AppController
                 ->select(['id', 'name'])
                 ->innerJoinWith('PriceLevelPerspectives')
                 ->where([
-                    'PriceLevelPerspectives.perspective_id' => $session->read('options.store.perspective'),
+                    'PriceLevelPerspectives.perspective_id' => $session->read('store.perspective'),
                     'PriceLevelPerspectives.active' => 'yes',
                 ])
                 ->orderAsc('sort')
@@ -210,7 +210,7 @@ class SystemsController extends AppController
         $this->set(compact('system', 'tabs', 'opportunityKey', 'configKey', 'subKitPath'));
         $this->set(['systemUrl' => $url]);
 
-        $layout = $session->read('options.store.layout.system');
+        $layout = $session->read('store.layout_system');
         $this->viewBuilder()->setTemplate("view_$layout");
     }
 
@@ -267,7 +267,7 @@ class SystemsController extends AppController
             $data = $this->request->getData();
             $kitID = $data['kit'];
             $configuration = $this->formatConfiguration($data['configuration'])['config'];
-            $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('options.store.price-level');
+            $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('store.price-level');
 
             $errors = $this->Systems->Kits->validateBucketItems($kitID, $configuration);
             [$kitRuleWarnings, $kitRuleErrors] = $this->Systems->Kits->validateKitRules($kitID, $configuration);

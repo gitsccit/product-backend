@@ -140,7 +140,7 @@ class SystemCategoriesTable extends Table
     public function findListing(Query $query, $options)
     {
         $session = new Session();
-        $perspectiveID = $session->read('options.store.perspective');
+        $perspectiveID = $session->read('store.perspective');
 
         return $this->find()
             ->select([

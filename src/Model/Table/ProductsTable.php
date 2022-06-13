@@ -315,8 +315,8 @@ class ProductsTable extends Table
     public function findBasic(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
-        $priceLevelID = $options['priceLevel'] ?? $session->read('options.store.price-level');
+        $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
+        $priceLevelID = $options['priceLevel'] ?? $session->read('store.price-level');
 
         if (Configure::read('ProductBackend.showCost')) {
             $query->select([
@@ -421,7 +421,7 @@ class ProductsTable extends Table
     public function findSpecifications(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $session->read('options.store.perspective');
+        $perspectiveID = $session->read('store.perspective');
         $productCategoryID = $options['productCategoryID'];
 
         return $query

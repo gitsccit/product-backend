@@ -6,6 +6,7 @@ namespace ProductBackend\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
 
 /**
  * Products Controller
@@ -71,7 +72,7 @@ class ProductsController extends AppController
 
         $this->set(compact('product'));
 
-        $layout = $this->request->getSession()->read('options.store.layout.product');
+        $layout = $this->request->getSession()->read('store.layout_product');
         $this->viewBuilder()->setTemplate("view_$layout");
     }
 

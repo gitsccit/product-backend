@@ -192,7 +192,7 @@ class SystemsTable extends Table
     public function findPrice(Query $query, array $options)
     {
         $session = new Session();
-        $priceLevelID = $options['priceLevel'] ?? $session->read('options.store.price-level');
+        $priceLevelID = $options['priceLevel'] ?? $session->read('store.price-level');
 
         return $query
             ->select([
@@ -227,7 +227,7 @@ class SystemsTable extends Table
     public function findBasic(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
+        $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
             ->find('price', $options)
@@ -252,7 +252,7 @@ class SystemsTable extends Table
     public function findActive(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $options['perspective'] ?? $session->read('options.store.perspective');
+        $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
             ->select([
@@ -379,7 +379,7 @@ class SystemsTable extends Table
                             'ssl_verify_peer' => false,
                         ]);
                         $session = new Session();
-                        $warehouseCode = $options['warehouse'] ?? $session->read('options.store.warehouse');
+                        $warehouseCode = $options['warehouse'] ?? $session->read('store.warehouse');
                         $itemCodes = array_values(array_unique(Hash::extract(
                             $system->buckets,
                             '{n}.groups.{n}.group_items.{n}.sage_itemcode'
@@ -446,7 +446,7 @@ class SystemsTable extends Table
     public function findBanner(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $session->read('options.store.perspective');
+        $perspectiveID = $session->read('store.perspective');
 
         return $query
             ->find('active')
