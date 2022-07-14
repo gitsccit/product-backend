@@ -316,7 +316,7 @@ class ProductsTable extends Table
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
-        $priceLevelID = $options['priceLevel'] ?? $session->read('store.price-level');
+        $priceLevelID = $options['priceLevel'] ?? $session->read('store.price_level');
 
         if (Configure::read('ProductBackend.showCost')) {
             $query->select([

@@ -267,7 +267,7 @@ class SystemsController extends AppController
             $data = $this->request->getData();
             $kitID = $data['kit'];
             $configuration = $this->formatConfiguration($data['configuration'])['config'];
-            $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('store.price-level');
+            $priceLevel = $data['priceLevel'] ?? $this->request->getSession()->read('store.price_level');
 
             $errors = $this->Systems->Kits->validateBucketItems($kitID, $configuration);
             [$kitRuleWarnings, $kitRuleErrors] = $this->Systems->Kits->validateKitRules($kitID, $configuration);

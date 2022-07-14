@@ -596,7 +596,7 @@ AND srgs.sage_itemcode IN ($sageItemCodePlaceholders)", array_merge([$rule['id']
 
             $session = new Session();
             $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
-            $priceLevelID = $options['priceLevel'] ?? $session->read('store.price-level');
+            $priceLevelID = $options['priceLevel'] ?? $session->read('store.price_level');
             $stm = $this->getConnection()->execute("SELECT sras.*,IFNULL(pp.name,p.name) AS name,p.cost,ppl.price
 FROM sku_rule_additional_skus sras
 INNER JOIN products p ON p.sage_itemcode = sras.sage_itemcode

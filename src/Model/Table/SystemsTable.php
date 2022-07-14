@@ -192,7 +192,7 @@ class SystemsTable extends Table
     public function findPrice(Query $query, array $options)
     {
         $session = new Session();
-        $priceLevelID = $options['priceLevel'] ?? $session->read('store.price-level');
+        $priceLevelID = $options['priceLevel'] ?? $session->read('store.price_level');
 
         return $query
             ->select([

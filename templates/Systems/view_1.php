@@ -24,7 +24,7 @@ foreach ($system['buckets'] as &$bucket) {
 $priceLevels = json_encode($priceLevels ?? null, JSON_HEX_APOS);
 $currentPriceLevel = $this->request->getQuery(
     'priceLevel',
-    $this->request->getSession()->read('store.price-level')
+    $this->request->getSession()->read('store.price_level')
 );
 $warehouses = json_encode($warehouses ?? null, JSON_HEX_APOS);
 $currentWarehouse = $this->request->getQuery(
