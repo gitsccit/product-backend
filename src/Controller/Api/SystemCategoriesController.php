@@ -5,7 +5,6 @@ namespace ProductBackend\Controller\Api;
 
 use Cake\Collection\Collection;
 use Cake\Http\Exception\NotFoundException;
-use function ProductBackend\Controller\;
 
 /**
  * Systems Controller
