@@ -22,6 +22,24 @@ class ProductCategoriesController extends AppController
     {
         $productCategories = $this->ProductCategories->find('listing')->find('threaded')->all()->toList();
 
+        if ($parentID = $this->request->getAttribute('parent_id')) {
+            $findSubCategories = function ($categories) use (&$findSubCategories, $parentID) {
+                $matchingCategories = [];
+
+                foreach ($categories as $category) {
+                    if ($category->parent_id == $parentID) {
+                        $matchingCategories[] = $category;
+                    }
+
+                    $matchingCategories = array_merge($matchingCategories, $findSubCategories($category->children));
+                }
+
+                return $matchingCategories;
+            };
+
+            $productCategories = $findSubCategories($productCategories);
+        }
+
         $this->Crud->serialize(compact('productCategories'));
     }
 
@@ -51,6 +69,12 @@ class ProductCategoriesController extends AppController
 
         $products = $this->ProductCategories->Products->find('listing')
             ->where(['Products.product_category_id' => $productCategory->id]);
+
+        if ($products->count() === 0) {
+            $this->request = $this->request->withAttribute('parent_id', $productCategory->id);
+
+            return $this->index();
+        }
 
         $products = $this->paginate($products);
 
