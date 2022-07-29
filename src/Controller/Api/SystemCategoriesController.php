@@ -49,7 +49,6 @@ class SystemCategoriesController extends AppController
      *
      * @param string|null $id Environment id.
      * @return \Cake\Http\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(...$url)
     {
@@ -71,7 +70,10 @@ class SystemCategoriesController extends AppController
         }
 
         if (!isset($systemCategory)) {
-            throw new NotFoundException();
+            $systems = null;
+            $this->Crud->serialize(compact('systems'));
+
+            return;
         }
 
         $systems = $this->SystemCategories->Systems->find('listing')
@@ -79,7 +81,10 @@ class SystemCategoriesController extends AppController
 
         if ($systems->count() === 0) {
             if ($urlFilters) {
-                throw new NotFoundException();
+                $systems = null;
+                $this->Crud->serialize(compact('systems'));
+
+                return;
             }
 
             $this->request = $this->request->withAttribute('parent_id', $systemCategory->id);
