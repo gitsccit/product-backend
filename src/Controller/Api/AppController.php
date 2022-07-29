@@ -17,5 +17,9 @@ class AppController extends BaseController
         if ($perspective = $this->request->getQuery('perspective')) {
             $this->request->getSession()->write('store.perspective', $perspective);
         }
+
+        if ($priceLevel = $this->request->getQuery('price-level')) {
+            $this->request->getSession()->write('store.price_level', $priceLevel);
+        }
     }
 }
