@@ -61,7 +61,7 @@ class Configurator extends React.Component {
   }
 
   _back() {
-    if (this.state.currentTab !== 0 || !window.configure.back()) {
+    if (this.state.currentTab !== 0) {
       this.setState({
         currentTab: Math.max(0, this.state.currentTab - 1),
       });
@@ -69,7 +69,7 @@ class Configurator extends React.Component {
   }
 
   _continue() {
-    if (this.state.currentTab !== 0 || !window.configure.continue()) {
+    if (this.state.currentTab !== this.state.tabs.length - 1) {
       this.setState({
         currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1),
       });
@@ -89,12 +89,6 @@ class Configurator extends React.Component {
     <div>${this.currencyFormatter.format(this.state.system['price'] / 24)}/mo for 24 months</div>
     <div>${this.currencyFormatter.format(this.state.system['price'] / 36)}/mo for 36 months</div>
     <div class="text-muted">Requires credit approval, rates subject to changes.</div>`;
-  }
-
-  _updateName(event) {
-    this.setState({
-      name: event.target.value,
-    });
   }
 
   updateComments(event) {
@@ -233,7 +227,9 @@ class Configurator extends React.Component {
     for (const tab of tabs) {
       switch (tab['name']) {
         case 'Configure':
-          tab['content'] = <Configure ref={(configure) => {window.configure = configure}}
+          tab['content'] = <Configure ref={(configure) => {
+            window.configure = configure
+          }}
                                       system={this.state.system} buckets={nonStandaloneBuckets}
                                       currentConfig={this.state.currentConfig}
                                       csrf={this.props.csrf} validateConfiguration={this.validateConfiguration}
@@ -341,8 +337,6 @@ class Configurator extends React.Component {
                     </div>
                   }
                 </div>
-                <input className="form-control form-control-sm mb-3" type="text" value={this.state.name}
-                       onChange={(event) => this._updateName(event)}/>
                 <div>
                   Configure your system by selecting the desired item or items from each required
                   parts category below.

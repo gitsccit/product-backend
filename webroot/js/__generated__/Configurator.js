@@ -54,7 +54,7 @@ class Configurator extends React.Component {
   }
 
   _back() {
-    if (this.state.currentTab !== 0 || !window.configure.back()) {
+    if (this.state.currentTab !== 0) {
       this.setState({
         currentTab: Math.max(0, this.state.currentTab - 1)
       });
@@ -62,7 +62,7 @@ class Configurator extends React.Component {
   }
 
   _continue() {
-    if (this.state.currentTab !== 0 || !window.configure.continue()) {
+    if (this.state.currentTab !== this.state.tabs.length - 1) {
       this.setState({
         currentTab: Math.min(this.state.tabs.length - 1, this.state.currentTab + 1)
       });
@@ -82,12 +82,6 @@ class Configurator extends React.Component {
     <div>${this.currencyFormatter.format(this.state.system['price'] / 24)}/mo for 24 months</div>
     <div>${this.currencyFormatter.format(this.state.system['price'] / 36)}/mo for 36 months</div>
     <div class="text-muted">Requires credit approval, rates subject to changes.</div>`;
-  }
-
-  _updateName(event) {
-    this.setState({
-      name: event.target.value
-    });
   }
 
   updateComments(event) {
@@ -344,12 +338,7 @@ class Configurator extends React.Component {
       className: "d-flex align-items-center"
     }, /*#__PURE__*/React.createElement("span", {
       className: "h4 mb-0 icon-flash"
-    }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, "Noise Level"), /*#__PURE__*/React.createElement("div", null, this.state.system['nose_level'])))), /*#__PURE__*/React.createElement("input", {
-      className: "form-control form-control-sm mb-3",
-      type: "text",
-      value: this.state.name,
-      onChange: event => this._updateName(event)
-    }), /*#__PURE__*/React.createElement("div", null, "Configure your system by selecting the desired item or items from each required parts category below.")), /*#__PURE__*/React.createElement("div", {
+    }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, "Noise Level"), /*#__PURE__*/React.createElement("div", null, this.state.system['nose_level'])))), /*#__PURE__*/React.createElement("div", null, "Configure your system by selecting the desired item or items from each required parts category below.")), /*#__PURE__*/React.createElement("div", {
       className: "col-md-4 d-flex flex-column justify-content-center align-items-start"
     }, this.state.validConfiguration ? /*#__PURE__*/React.createElement(React.Fragment, null, 'cost' in this.state.system ? [['CONFIGURED PRICE', this.currencyFormatter.format(this.state.system['price'])], ['COST', this.currencyFormatter.format(this.state.system['cost'])], ['GROSS MARGIN', this.percentageFormatter.format(this.state.system['margin'])]].map(([title, value]) => /*#__PURE__*/React.createElement("div", {
       className: "mb-1"

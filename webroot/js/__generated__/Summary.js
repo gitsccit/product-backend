@@ -1,4 +1,11 @@
 class Summary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: props.name
+    };
+  }
+
   _saveConfiguration() {
     this.saveConfigurationModal.fetchContent(this.props.baseUrl + '/system/save');
   }
@@ -10,6 +17,12 @@ class Summary extends React.Component {
   _viewSpecs() {
     this.props.updateConfiguration(_ => {
       this.viewSpecsModal.fetchContent(`${this.props.baseUrl}/system/specs?system=${this.props.system['id']}&opportunityKey=${this.props.opportunityKey}&configKey=${this.props.configKey}` + (this.props.subKitPath ? `&subKitPath=${btoa(this.props.subKitPath)}` : ''));
+    });
+  }
+
+  _updateName(event) {
+    this.setState({
+      name: event.target.value
     });
   }
 
@@ -94,9 +107,16 @@ class Summary extends React.Component {
       className: "d-flex"
     }, /*#__PURE__*/React.createElement("th", {
       className: "col-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "row"
     }, /*#__PURE__*/React.createElement("h5", {
       className: "mb-0 fw-bold"
-    }, this.props.system['name'])), /*#__PURE__*/React.createElement("th", {
+    }, this.props.system['name']), /*#__PURE__*/React.createElement("input", {
+      className: "form-control form-control-sm",
+      type: "text",
+      value: this.state.name,
+      onChange: event => this._updateName(event)
+    }))), /*#__PURE__*/React.createElement("th", {
       className: "col-9"
     }, /*#__PURE__*/React.createElement("div", {
       className: "item-group justify-content-end align-items-end h-100"

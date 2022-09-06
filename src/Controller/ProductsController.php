@@ -57,7 +57,7 @@ class ProductsController extends AppController
         $product = $this->Products
             ->find('details')
             ->where([
-                'Products.url' => $url,
+                'IFNULL(ProductPerspectives.url, Products.url) =' => $url,
             ])
             ->first();
 
@@ -187,7 +187,6 @@ class ProductsController extends AppController
         ];
         $opportunity = [
             'store_id' => $session->read('store.id'),
-            'environment_id' => $session->read('environment.id'),
             'opportunity_details' => [$defaultOpportunityDetail],
         ];
 

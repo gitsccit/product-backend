@@ -27,30 +27,6 @@ class Configure extends React.Component {
     };
   }
 
-  back() {
-    if (this.state.currentTab <= 0) {
-      return false;
-    }
-
-    this.setState({
-      currentTab: this.state.currentTab - 1,
-    });
-
-    return true;
-  }
-
-  continue() {
-    if (this.state.currentTab >= this.state.buckets.length - 1) {
-      return false;
-    }
-
-    this.setState({
-      currentTab: this.state.currentTab + 1,
-    });
-
-    return true;
-  }
-
   _getBucketImage(bucketID) {
     let itemsInBucket = this.state.currentConfig[bucketID];
     let lastSelectedItem = itemsInBucket.filter(item => item['selected_at']).sort((a, b) => a['selected_at'] - b['selected_at']).pop()
@@ -272,6 +248,21 @@ class Configure extends React.Component {
     return `<div class="text-start">${summary}</div>`;
   }
 
+  _bucketsScrolled(event) {
+    const containerRect = event.currentTarget.getBoundingClientRect();
+
+    for (const [index, bucket] of this.state.buckets.entries()) {
+      const bucketContainer = document.getElementById(bucket['id']);
+      const {bottom, height, top} = bucketContainer.getBoundingClientRect();
+
+      if (containerRect.bottom > top && top > containerRect.top && (top - containerRect.top < containerRect.height / 2) ||
+        (containerRect.bottom > bottom && bottom > top && (containerRect.bottom - bottom < containerRect.height / 2))) {
+        this._changeTab(index);
+        return;
+      }
+    }
+  }
+
   render() {
     let buckets = this.state.buckets;
     let currentBucket = buckets[this.state.currentTab];
@@ -343,7 +334,7 @@ class Configure extends React.Component {
           {
             !standaloneBucket &&
             <div className="col-md-3 col-lg-2">
-              <div className="bg-3 shadow-sm d-flex flex-column">
+              <div id="buckets" className="bg-3 shadow-sm d-flex flex-column">
                 <div className="p-2 bg-black text-white">
                   <span className="icon-sliders"></span>Configurator
                 </div>
@@ -363,7 +354,7 @@ class Configure extends React.Component {
                       <a
                         key={bucket['id']}
                         className={`p-2 border-3 border-end bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted')}
-                        href="javascript:void(0)"
+                        href={`#${bucket['id']}`}
                         onClick={() => this._changeTab(index)}>
                         {bucket['category']}
                       </a>
@@ -374,284 +365,289 @@ class Configure extends React.Component {
             </div>
           }
           <div className={standaloneBucket ? 'col-12' : 'col-md-9 col-lg-10'}>
-            {
-              buckets.map((bucket, bucketIndex) => {
-                let itemsInBucket = this.state.currentConfig[bucket['id']];
-                let selectedItemsInBucket = itemsInBucket.filter(item => item['selected_at']);
-                let bucketQuantity = selectedItemsInBucket.reduce((a, b) => a + b['quantity'], 0);
-                let reachedMaxQuantity = bucket['maxqty'] == null ? false : bucketQuantity >= bucket['maxqty'];
-                let isMultiSelect = bucket['multiple'];
-                let filteredGroups = this._filterBucketGroups(bucket);
-                let filters = [];
+            <div {...(standaloneBucket ? {} : {style: {height: 600, overflowY: 'auto', overflowX: 'hidden'}})} data-bs-spy="scroll" data-bs-target="#buckets"
+                 data-bs-offset="100"
+                 onScroll={this._bucketsScrolled.bind(this)}>
+              {
+                buckets.map((bucket, bucketIndex) => {
+                  let itemsInBucket = this.state.currentConfig[bucket['id']];
+                  let selectedItemsInBucket = itemsInBucket.filter(item => item['selected_at']);
+                  let bucketQuantity = selectedItemsInBucket.reduce((a, b) => a + b['quantity'], 0);
+                  let reachedMaxQuantity = bucket['maxqty'] == null ? false : bucketQuantity >= bucket['maxqty'];
+                  let isMultiSelect = bucket['multiple'];
+                  let filteredGroups = this._filterBucketGroups(bucket);
+                  let filters = [];
 
-                Object.entries(bucket['filters']).forEach(([filterGroup, options]) => {
-                  let filteredOptions = options.filter(option => {
-                    if (option === 'All') {
-                      return true;
-                    }
-
-                    for (const group of filteredGroups) {
-                      for (const item of group['group_items']) {
-                        for (const spec of item['specs']) {
-                          if (spec['name'] === filterGroup && spec['value'] === option) {
-                            return true;
-                          }
-                        }
+                  Object.entries(bucket['filters']).forEach(([filterGroup, options]) => {
+                    let filteredOptions = options.filter(option => {
+                      if (option === 'All') {
+                        return true;
                       }
-                    }
 
-                    return false;
-                  });
-
-                  // ignore filter groups that are just ['All']
-                  if (filteredOptions.length > 1) {
-                    filters.push([filterGroup, filteredOptions]);
-                  }
-                });
-
-                // add counts to filter options
-                filters = filters.map(([filterGroup, options]) => {
-                  options = options.map(option => {
-                    let count = 0;
-
-                    for (const group of filteredGroups) {
-                      for (const item of group['group_items']) {
-                        for (const spec of item['specs']) {
-                          if (spec['name'] === filterGroup && spec['value'] === option) {
-                            count += 1;
-                            break;
-                          }
-                        }
-                      }
-                    }
-
-                    return [option, count];
-                  });
-
-                  return [filterGroup, options];
-                });
-
-                return (
-                  <div key={bucket['id']}
-                       className={'item-group-vertical fade ' + (this.state.currentTab === bucketIndex ? 'show' : 'd-none')}>
-                    {
-                      !standaloneBucket &&
-                      <div className="item-group flex-nowrap">
-                        <div className="d-flex justify-content-center align-items-center p-3 bg-white border"
-                             style={{width: 100, height: 100}}>
-                          <img style={{maxWidth: 75, maxHeight: 75}} src={this._getBucketImage(bucket['id'])}/>
-                        </div>
-                        <div className="bg-3 p-3 d-flex flex-column justify-content-center flex-fill">
-                          <div className="d-flex flex-wrap align-items-center">
-                            <h6 className="mb-0 pe-2 me-2 border-end border-1 border-dark">{bucket['name']}</h6>
-                            {
-                              currentBucket['compare'] ?
-                                <a className="text-primary text-on-hover-primary-highlight"
-                                   href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#compare-modal"
-                                   onClick={() => this._compareProducts(currentBucket)}>Compare</a> :
-                                <a className="text-muted">
-                                  Compare
-                                </a>
+                      for (const group of filteredGroups) {
+                        for (const item of group['group_items']) {
+                          for (const spec of item['specs']) {
+                            if (spec['name'] === filterGroup && spec['value'] === option) {
+                              return true;
                             }
-                            {
-                              !standaloneBucket &&
-                              <div className="ms-auto fw-bold text-muted">
-                                <span>MIN QUANTITY: {currentBucket['multiple'] ? (currentBucket['minqty'] ?? 0) : 1}</span>
-                                <span className="ms-3">
-                                  MAX QUANTITY: {currentBucket['multiple'] ? (currentBucket['maxqty'] ??
-                                  <i className="icon-infinity"></i>) : currentBucket['quantity'].slice(-1)[0]}
+                          }
+                        }
+                      }
+
+                      return false;
+                    });
+
+                    // ignore filter groups that are just ['All']
+                    if (filteredOptions.length > 1) {
+                      filters.push([filterGroup, filteredOptions]);
+                    }
+                  });
+
+                  // add counts to filter options
+                  filters = filters.map(([filterGroup, options]) => {
+                    options = options.map(option => {
+                      let count = 0;
+
+                      for (const group of filteredGroups) {
+                        for (const item of group['group_items']) {
+                          for (const spec of item['specs']) {
+                            if (spec['name'] === filterGroup && spec['value'] === option) {
+                              count += 1;
+                              break;
+                            }
+                          }
+                        }
+                      }
+
+                      return [option, count];
+                    });
+
+                    return [filterGroup, options];
+                  });
+
+                  return (
+                    <div key={bucket['id']} id={bucket['id']}
+                         className={"item-group-vertical" + (bucketIndex == buckets.length - 1 ? '' : ' mb-5')}>
+                      <h3>{bucket['name']}</h3>
+                      {
+                        !standaloneBucket &&
+                        <div className="item-group flex-nowrap">
+                          <div className="d-flex justify-content-center align-items-center p-3 bg-white border"
+                               style={{width: 100, height: 100}}>
+                            <img style={{maxWidth: 75, maxHeight: 75}} src={this._getBucketImage(bucket['id'])}/>
+                          </div>
+                          <div className="bg-3 p-3 d-flex flex-column justify-content-center flex-fill">
+                            <div className="d-flex flex-wrap align-items-center">
+                              <h6 className="mb-0 pe-2 me-2 border-end border-1 border-dark">{bucket['name']}</h6>
+                              {
+                                bucket['compare'] ?
+                                  <a className="text-primary text-on-hover-primary-highlight"
+                                     href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#compare-modal"
+                                     onClick={() => this._compareProducts(bucket)}>Compare</a> :
+                                  <a className="text-muted">
+                                    Compare
+                                  </a>
+                              }
+                              {
+                                !standaloneBucket &&
+                                <div className="ms-auto fw-bold text-muted">
+                                  <span>MIN QUANTITY: {bucket['multiple'] ? (bucket['minqty'] ?? 0) : 1}</span>
+                                  <span className="ms-3">
+                                  MAX QUANTITY: {bucket['multiple'] ? (bucket['maxqty'] ??
+                                    <i className="icon-infinity"></i>) : bucket['quantity'].slice(-1)[0]}
                                 </span>
-                              </div>
+                                </div>
+                              }
+                            </div>
+                            {
+                              bucket['notes'] !== '' &&
+                              <div dangerouslySetInnerHTML={{__html: bucket['notes']}} className="mt-3"></div>
                             }
                           </div>
-                          {
-                            bucket['notes'] !== '' &&
-                            <div dangerouslySetInnerHTML={{__html: bucket['notes']}} className="mt-3"></div>
-                          }
                         </div>
-                      </div>
-                    }
-                    {
-                      !standaloneBucket && filters.length > 0 &&
-                      <div
-                        className="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3">
-                        <div className="row -mx-2 flex-fill">
-                          {
-                            filters.slice(0, 4).map(([filterGroup, options]) => {
-                              let currentGroupSelectedFilter = this.state.selectedFilters[bucket['id']][filterGroup];
+                      }
+                      {
+                        !standaloneBucket && filters.length > 0 &&
+                        <div
+                          className="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3">
+                          <div className="row -mx-2 flex-fill">
+                            {
+                              filters.slice(0, 4).map(([filterGroup, options]) => {
+                                let currentGroupSelectedFilter = this.state.selectedFilters[bucket['id']][filterGroup];
 
-                              return (<div className="col-6 col-lg-3 px-2">
-                                <div className="fw-bold mb-2 text-nowrap">{filterGroup}:</div>
-                                <select
-                                  className={'form-control form-control-sm' + (currentGroupSelectedFilter === 'All' ? '' : ' border-primary text-primary')}
-                                  value={currentGroupSelectedFilter}
-                                  onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
-                                  {
-                                    options.map(([option, count]) => (
-                                      <option
-                                        className={(option === currentGroupSelectedFilter && option !== 'All') ? 'text-primary' : 'text-black'}
-                                        key={option} value={option}>
-                                        {option + (count > 0 ? ` (${count})` : '')}
-                                      </option>
-                                    ))
-                                  }
-                                </select>
-                              </div>);
-                            })
-                          }
+                                return (<div className="col-6 col-lg-3 px-2">
+                                  <div className="fw-bold mb-2 text-nowrap">{filterGroup}:</div>
+                                  <select
+                                    className={'form-control form-control-sm' + (currentGroupSelectedFilter === 'All' ? '' : ' border-primary text-primary')}
+                                    value={currentGroupSelectedFilter}
+                                    onChange={(event) => this._updateFilter(bucket['id'], filterGroup, event)}>
+                                    {
+                                      options.map(([option, count]) => (
+                                        <option
+                                          className={(option === currentGroupSelectedFilter && option !== 'All') ? 'text-primary' : 'text-black'}
+                                          key={option} value={option}>
+                                          {option + (count > 0 ? ` (${count})` : '')}
+                                        </option>
+                                      ))
+                                    }
+                                  </select>
+                                </div>);
+                              })
+                            }
+                          </div>
+                          <a
+                            className="text-primary text-decoration-none text-nowrap ms-3 text-on-hover-primary-highlight"
+                            href="javascript:void(0)" onClick={() => this._clearFilters(bucket['id'])}>
+                            Clear Filters
+                          </a>
                         </div>
-                        <a
-                          className="text-primary text-decoration-none text-nowrap ms-3 text-on-hover-primary-highlight"
-                          href="javascript:void(0)" onClick={() => this._clearFilters(bucket['id'])}>
-                          Clear Filters
-                        </a>
-                      </div>
-                    }
-                    {
-                      filteredGroups.map((group, groupIndex) => (
-                        <ConditionalWrapper condition={standaloneBucket}
-                                            wrapper={children => <div className="row -mx-2">{children}</div>}>
-                          {
-                            standaloneBucket &&
-                            <div className="col-md-3 col-lg-2 px-2">
-                              <div
-                                className="d-flex justify-content-center align-items-center p-3 bg-white border h-100">
-                                <img className="mw-100 mh-100"
-                                     src={this._getBucketGroupImage(bucket['id'], groupIndex)}/>
-                              </div>
-                            </div>
-                          }
+                      }
+                      {
+                        filteredGroups.map((group, groupIndex) => (
                           <ConditionalWrapper condition={standaloneBucket}
-                                              wrapper={children => <div
-                                                className="col-md-9 col-lg-10 px-2">{children}</div>}>
-                            <div
-                              className={'bg-white p-4 shadow-sm'}>
-                              {
-                                group['name'] &&
-                                <>
-                                  <div className="fw-bold">{group['name']}</div>
-                                  <hr className="-mx-4"/>
-                                </>
-                              }
-                              {
-                                group['group_items'].map((item) => {
-                                  let itemIndexInBucket = itemsInBucket.indexOf(item);
-                                  let itemInConfiguration = itemsInBucket[itemIndexInBucket];
-                                  let checked = itemInConfiguration['selected_at'] != null;
-                                  let itemQuantity = itemInConfiguration['quantity'];
-                                  let isSystemItem = item['type'] === 'system';
-                                  let options = bucket['quantity'].filter(quantityOption => {
-                                    if (bucket['maxqty'] == null) {
-                                      return true;
+                                              wrapper={children => <div className="row -mx-2">{children}</div>}>
+                            {
+                              standaloneBucket &&
+                              <div className="col-md-3 col-lg-2 px-2">
+                                <div
+                                  className="d-flex justify-content-center align-items-center p-3 bg-white border h-100">
+                                  <img className="mw-100 mh-100"
+                                       src={this._getBucketGroupImage(bucket['id'], groupIndex)}/>
+                                </div>
+                              </div>
+                            }
+                            <ConditionalWrapper condition={standaloneBucket}
+                                                wrapper={children => <div
+                                                  className="col-md-9 col-lg-10 px-2">{children}</div>}>
+                              <div
+                                className={'bg-white p-4 shadow-sm'}>
+                                {
+                                  group['name'] &&
+                                  <>
+                                    <div className="fw-bold">{group['name']}</div>
+                                    <hr className="-mx-4"/>
+                                  </>
+                                }
+                                {
+                                  group['group_items'].map((item) => {
+                                    let itemIndexInBucket = itemsInBucket.indexOf(item);
+                                    let itemInConfiguration = itemsInBucket[itemIndexInBucket];
+                                    let checked = itemInConfiguration['selected_at'] != null;
+                                    let itemQuantity = itemInConfiguration['quantity'];
+                                    let isSystemItem = item['type'] === 'system';
+                                    let options = bucket['quantity'].filter(quantityOption => {
+                                      if (bucket['maxqty'] == null) {
+                                        return true;
+                                      }
+
+                                      let selectableQuantity = bucket['maxqty'] - bucketQuantity;
+
+                                      if (checked) {
+                                        return quantityOption - itemQuantity <= selectableQuantity;
+                                      }
+
+                                      return quantityOption <= selectableQuantity;
+                                    });
+
+                                    if (options.length === 0) {
+                                      options = [0];
                                     }
 
-                                    let selectableQuantity = bucket['maxqty'] - bucketQuantity;
-
-                                    if (checked) {
-                                      return quantityOption - itemQuantity <= selectableQuantity;
+                                    if (itemQuantity === 0 || itemQuantity > options[options.length - 1]) {
+                                      itemQuantity = options[0];
+                                      itemInConfiguration['quantity'] = options[0];
                                     }
 
-                                    return quantityOption <= selectableQuantity;
-                                  });
+                                    let costDifference = 'cost' in item ? this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'cost') : null;
+                                    let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'price');
 
-                                  if (options.length === 0) {
-                                    options = [0];
-                                  }
-
-                                  if (itemQuantity === 0 || itemQuantity > options[options.length - 1]) {
-                                    itemQuantity = options[0];
-                                    itemInConfiguration['quantity'] = options[0];
-                                  }
-
-                                  let costDifference = 'cost' in item ? this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'cost') : null;
-                                  let priceDifference = this._priceDiff(bucket['id'], itemIndexInBucket, isMultiSelect, 'price');
-
-                                  return (
-                                    <>
-                                      <div className="item-group align-items-center my-1">
-                                        {
-                                          (bucket['quantity'].length > 1 || bucket['quantity'][0] > 1) &&
-                                          <>
-                                            {
-                                              bucket['quantity'].length > 1 ?
-                                                <select className="form-control form-control-sm w-auto"
-                                                        disabled={!checked && reachedMaxQuantity}
-                                                        value={itemQuantity}
-                                                        onChange={(event) => this._changeQuantity(bucket['id'], itemIndexInBucket, event)}>
-                                                  {
-                                                    options.map(quantity => (
-                                                      <option key={quantity} value={quantity}>{quantity}</option>))
-                                                  }
-                                                </select> :
-                                                <span>{bucket['quantity'][0]}</span>
-                                            }
-                                            <span className="icon-cancel text-muted"/>
-                                          </>
-                                        }
-                                        <label className={'d-flex align-items-center' + (checked ? ' fw-bold' : '')}>
-                                          <input
-                                            className="me-1"
-                                            type={isMultiSelect ? 'checkbox' : 'radio'}
-                                            value={itemQuantity}
-                                            checked={checked}
-                                            disabled={isMultiSelect && !checked && reachedMaxQuantity}
-                                            onChange={() => this._selectItem(bucket['id'], itemIndexInBucket)}/>
-                                          {item['name']}
-                                        </label>
-                                        {
-                                          'availableQuantity' in item &&
-                                          <span className={item['availableQuantity'] <= 0 ? 'text-danger' : ''}>
+                                    return (
+                                      <>
+                                        <div className="item-group align-items-center my-1">
+                                          {
+                                            (bucket['quantity'].length > 1 || bucket['quantity'][0] > 1) &&
+                                            <>
+                                              {
+                                                bucket['quantity'].length > 1 ?
+                                                  <select className="form-control form-control-sm w-auto"
+                                                          disabled={!checked && reachedMaxQuantity}
+                                                          value={itemQuantity}
+                                                          onChange={(event) => this._changeQuantity(bucket['id'], itemIndexInBucket, event)}>
+                                                    {
+                                                      options.map(quantity => (
+                                                        <option key={quantity} value={quantity}>{quantity}</option>))
+                                                    }
+                                                  </select> :
+                                                  <span>{bucket['quantity'][0]}</span>
+                                              }
+                                              <span className="icon-cancel text-muted"/>
+                                            </>
+                                          }
+                                          <label className={'d-flex align-items-center' + (checked ? ' fw-bold' : '')}>
+                                            <input
+                                              className="me-1"
+                                              type={isMultiSelect ? 'checkbox' : 'radio'}
+                                              value={itemQuantity}
+                                              checked={checked}
+                                              disabled={isMultiSelect && !checked && reachedMaxQuantity}
+                                              onChange={() => this._selectItem(bucket['id'], itemIndexInBucket)}/>
+                                            {item['name']}
+                                          </label>
+                                          {
+                                            'availableQuantity' in item &&
+                                            <span className={item['availableQuantity'] <= 0 ? 'text-danger' : ''}>
                                           [qty: {item['availableQuantity']}]
                                         </span>
-                                        }
-                                        {
-                                          costDifference === null ?
-                                            <span>[ {priceDifference} ]</span> :
-                                            <span>[ {costDifference} | {priceDifference} ]</span>
-                                        }
-                                        {
-                                          (item['warning'] || item['status_text']) &&
-                                          <span className="bg-warning px-1"
-                                                title={item['status_text']}>{item['status']}</span>
-                                        }
-                                      </div>
-                                      {
-                                        isSystemItem && checked &&
-                                        <div className="item-group align-items-center mt-1"
-                                             style={{marginLeft: '5rem'}}>
-                                          <div>
-                                            <b>{item['config_name'] ?? 'Base Configuration'}</b>:
-                                            <span className="text-primary">
-                                                &nbsp;{this.props.currencyFormatter.format(item['price'])}
-                                            </span> each
-                                          </div>
-                                          <a href="javascript:void(0)" className="text-dark" data-bs-toggle="tooltip"
-                                             data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
-                                             title={this._getSubKitSummary(item)}>
-                                            Detail <i className="icon-info-circled"></i>
-                                          </a>
+                                          }
                                           {
-                                            this.state.errors.length === 0 &&
-                                            <a className="btn btn-sm btn-primary"
-                                               onClick={() => this._configureSubKit(bucket['id'], itemIndexInBucket)}>
-                                              {'config_name' in item ? 'Reconfigure' : 'Configure'} Sub-Kit
-                                            </a>
+                                            costDifference === null ?
+                                              <span>[ {priceDifference} ]</span> :
+                                              <span>[ {costDifference} | {priceDifference} ]</span>
+                                          }
+                                          {
+                                            (item['warning'] || item['status_text']) &&
+                                            <span className="bg-warning px-1"
+                                                  title={item['status_text']}>{item['status']}</span>
                                           }
                                         </div>
-                                      }
-                                    </>
-                                  );
-                                })
-                              }
-                            </div>
+                                        {
+                                          isSystemItem && checked &&
+                                          <div className="item-group align-items-center mt-1"
+                                               style={{marginLeft: '5rem'}}>
+                                            <div>
+                                              <b>{item['config_name'] ?? 'Base Configuration'}</b>:
+                                              <span className="text-primary">
+                                                &nbsp;{this.props.currencyFormatter.format(item['price'])}
+                                            </span> each
+                                            </div>
+                                            <a href="javascript:void(0)" className="text-dark" data-bs-toggle="tooltip"
+                                               data-bs-html="true" data-bs-placement="bottom" data-bs-trigger="hover"
+                                               title={this._getSubKitSummary(item)}>
+                                              Detail <i className="icon-info-circled"></i>
+                                            </a>
+                                            {
+                                              this.state.errors.length === 0 &&
+                                              <a className="btn btn-sm btn-primary"
+                                                 onClick={() => this._configureSubKit(bucket['id'], itemIndexInBucket)}>
+                                                {'config_name' in item ? 'Reconfigure' : 'Configure'} Sub-Kit
+                                              </a>
+                                            }
+                                          </div>
+                                        }
+                                      </>
+                                    );
+                                  })
+                                }
+                              </div>
+                            </ConditionalWrapper>
                           </ConditionalWrapper>
-                        </ConditionalWrapper>
-                      ))
-                    }
-                  </div>
-                )
-              })
-            }
+                        ))
+                      }
+                    </div>
+                  )
+                })
+              }
+            </div>
           </div>
         </div>
       </>

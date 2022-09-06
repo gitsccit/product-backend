@@ -239,7 +239,6 @@ class SystemsController extends AppController
         ];
         $opportunity = [
             'store_id' => $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id'),
-            'environment_id' => $session->read("opportunities.$opportunityKey.environment.id") ?? $session->read('environment.id'),
             'opportunity_details' => [
                 $defaultOpportunityDetail
             ],
@@ -356,7 +355,6 @@ class SystemsController extends AppController
             $opportunitySessionDataKey = "opportunities.$opportunityKey.current";
             $opportunity = [
                 'store_id' => $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id'),
-                'environment_id' => $session->read("opportunities.$opportunityKey.environment.id") ?? $session->read('environment.id'),
                 'opportunity_details' => [$defaultOpportunityDetail],
             ];
 
