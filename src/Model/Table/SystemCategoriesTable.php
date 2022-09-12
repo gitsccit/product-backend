@@ -148,6 +148,9 @@ class SystemCategoriesTable extends Table
                 'SystemCategories.parent_id',
                 'url' => 'IFNULL(SystemCategoryPerspectives.url, SystemCategories.url)',
                 'name' => 'IFNULL(SystemCategoryPerspectives.name, SystemCategories.name)',
+                'SystemCategories.classification',
+                'SystemCategories.description',
+                'SystemCategories.short_description',
                 'product_count' => 'IFNULL(SystemCategoryPerspectives.children, SystemCategories.children)',
             ])
             ->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {

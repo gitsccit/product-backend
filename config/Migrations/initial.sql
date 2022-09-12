@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.22, for macos10.15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for macos12 (x86_64)
 --
 -- Host: localhost    Database: product_backend
 -- ------------------------------------------------------
@@ -14,21 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
-
---
--- Table structure for table `active_backend_database`
---
-
-DROP TABLE IF EXISTS `active_backend_database`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `active_backend_database`
-(
-    `name`      varchar(30) NOT NULL,
-    `timestamp` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `banners`
@@ -49,7 +34,6 @@ CREATE TABLE `banners`
     `timestamp`  timestamp                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -71,7 +55,6 @@ CREATE TABLE `bucket_categories`
     KEY `FK_bucket_categories_bucket_categories` (`parent_id`),
     CONSTRAINT `FK_bucket_categories_bucket_categories` FOREIGN KEY (`parent_id`) REFERENCES `bucket_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 169
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -99,7 +82,6 @@ CREATE TABLE `buckets`
     KEY `FK_buckets_bucket_categories` (`bucket_category_id`),
     CONSTRAINT `FK_buckets_bucket_categories` FOREIGN KEY (`bucket_category_id`) REFERENCES `bucket_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 7254
   DEFAULT CHARSET = utf8mb4 COMMENT ='need to provide an include of related script code; today "notes" is processed as PHP code but this isn''t compliant';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -141,7 +123,6 @@ CREATE TABLE `customer_bom_detail_additional_skus`
     KEY `FK_customer_bom_detail_additional_skus_customer_bom_details` (`customer_bom_detail_id`),
     CONSTRAINT `FK_customer_bom_detail_additional_skus_customer_bom_details` FOREIGN KEY (`customer_bom_detail_id`) REFERENCES `customer_bom_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 903
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -166,7 +147,6 @@ CREATE TABLE `customer_bom_details`
     KEY `FK_customer_bom_details_customer_boms` (`customer_bom_id`),
     CONSTRAINT `FK_customer_bom_details_customer_boms` FOREIGN KEY (`customer_bom_id`) REFERENCES `customer_boms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 20270
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -204,7 +184,6 @@ CREATE TABLE `customer_boms`
     CONSTRAINT `FK_customer_boms_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_customer_boms_locations` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 6292
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -229,7 +208,6 @@ CREATE TABLE `customer_categories`
     CONSTRAINT `FK_customer_categories_customer_categories` FOREIGN KEY (`parent_id`) REFERENCES `customer_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_customer_categories_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 164
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -260,7 +238,6 @@ CREATE TABLE `customer_products`
     CONSTRAINT `FK_customer_products_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_customer_products_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 120
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -282,7 +259,6 @@ CREATE TABLE `customers`
     KEY `FK_customers_perspectives` (`perspective_id`),
     CONSTRAINT `FK_customers_perspectives` FOREIGN KEY (`perspective_id`) REFERENCES `perspectives` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 149
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -308,7 +284,6 @@ CREATE TABLE `galleries`
     CONSTRAINT `FK_galleries_gallery_images_2` FOREIGN KEY (`browse_gallery_image_id`) REFERENCES `gallery_images` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT `FK_galleries_gallery_images_3` FOREIGN KEY (`system_gallery_image_id`) REFERENCES `gallery_images` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 16358
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -330,7 +305,6 @@ CREATE TABLE `gallery_images`
     KEY `FK_gallery_images_galleries` (`gallery_id`),
     CONSTRAINT `FK_gallery_images_galleries` FOREIGN KEY (`gallery_id`) REFERENCES `galleries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 23387
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -355,7 +329,6 @@ CREATE TABLE `generics`
     KEY `FK_generics_products` (`product_id`),
     CONSTRAINT `FK_generics_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1163
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -399,7 +372,6 @@ CREATE TABLE `group_items`
     CONSTRAINT `FK_group_items_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_group_items_systems` FOREIGN KEY (`system_id`) REFERENCES `systems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 11062
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -418,7 +390,6 @@ CREATE TABLE `groups`
     `sort`   int(10) unsigned       NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4003
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -439,7 +410,6 @@ CREATE TABLE `icons`
     `timestamp` timestamp                                  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 67
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -484,7 +454,6 @@ CREATE TABLE `kit_buckets`
     CONSTRAINT `FK_kit_buckets_buckets` FOREIGN KEY (`bucket_id`) REFERENCES `buckets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_kit_buckets_kits` FOREIGN KEY (`kit_id`) REFERENCES `kits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 27872
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -507,7 +476,6 @@ CREATE TABLE `kit_items`
     CONSTRAINT `FK_kit_items_bucket_items` FOREIGN KEY (`group_item_id`) REFERENCES `group_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_kit_items_kits` FOREIGN KEY (`kit_id`) REFERENCES `kits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 7472
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -536,7 +504,6 @@ CREATE TABLE `kit_rule_details`
     CONSTRAINT `FK_kit_rule_details_group_items` FOREIGN KEY (`group_item_id`) REFERENCES `group_items` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT `FK_kit_rule_details_kit_rules` FOREIGN KEY (`kit_rule_id`) REFERENCES `kit_rules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 294623
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -558,7 +525,6 @@ CREATE TABLE `kit_rules`
     KEY `FK_system_rules_systems` (`kit_id`) USING BTREE,
     CONSTRAINT `FK_kit_rules_kits` FOREIGN KEY (`kit_id`) REFERENCES `kits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 8209
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -595,7 +561,6 @@ CREATE TABLE `kits`
     CONSTRAINT `FK_kits_locations` FOREIGN KEY (`ship_from_id`) REFERENCES `locations` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT `FK_kits_ship_boxes` FOREIGN KEY (`ship_box_id`) REFERENCES `ship_boxes` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4467
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -637,7 +602,6 @@ CREATE TABLE `kits_tags`
     CONSTRAINT `FK_kits_tags_kits` FOREIGN KEY (`kit_id`) REFERENCES `kits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_kits_tags_tags` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 18685
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -657,7 +621,6 @@ CREATE TABLE `locations`
     `sage_warehouse_code` varchar(3)  DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 18
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -678,7 +641,6 @@ CREATE TABLE `manufacturers`
     KEY `FK_manufacturers_locations` (`countryoforigin_id`),
     CONSTRAINT `FK_manufacturers_locations` FOREIGN KEY (`countryoforigin_id`) REFERENCES `locations` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 235
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -697,7 +659,6 @@ CREATE TABLE `perspectives`
     `type`   enum ('store','customer') NOT NULL DEFAULT 'store',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 18
   DEFAULT CHARSET = utf8mb4 COMMENT ='an abstract way of grouping products, categories, and price levels for use by stores and customers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -741,7 +702,6 @@ CREATE TABLE `plugins`
     `active`      enum ('yes','no') DEFAULT 'no',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 6
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -764,7 +724,6 @@ CREATE TABLE `price_level_perspectives`
     CONSTRAINT `FK_price_level_perspectives_perspectives` FOREIGN KEY (`perspective_id`) REFERENCES `perspectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_price_level_perspectives_price_levels` FOREIGN KEY (`price_level_id`) REFERENCES `price_levels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 29
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -783,7 +742,6 @@ CREATE TABLE `price_levels`
     `sort`   int(10) unsigned NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 31
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -806,7 +764,6 @@ CREATE TABLE `product_additional_skus`
     KEY `FK_product_additional_skus_products` (`product_id`),
     CONSTRAINT `FK_product_additional_skus_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 322
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -833,7 +790,6 @@ CREATE TABLE `product_categories`
     KEY `FK_product_categories_product_categories` (`parent_id`),
     CONSTRAINT `FK_product_categories_product_categories` FOREIGN KEY (`parent_id`) REFERENCES `product_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 204
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -851,7 +807,9 @@ CREATE TABLE `product_category_perspectives`
     `product_category_id`  int(10) unsigned NOT NULL,
     `url`                  varchar(80)       DEFAULT NULL,
     `name`                 varchar(80)       DEFAULT NULL,
+    `short_description`    varchar(50)       DEFAULT NULL,
     `description`          varchar(250)      DEFAULT NULL,
+    `classification`       varchar(50)       DEFAULT NULL,
     `active`               enum ('yes','no') DEFAULT NULL,
     `show_related_systems` enum ('yes','no') DEFAULT NULL,
     `children`             int(10) unsigned  DEFAULT NULL,
@@ -861,7 +819,6 @@ CREATE TABLE `product_category_perspectives`
     CONSTRAINT `FK_product_category_perspectives_perspectives` FOREIGN KEY (`perspective_id`) REFERENCES `perspectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_product_category_perspectives_product_categories` FOREIGN KEY (`product_category_id`) REFERENCES `product_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1650
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -907,7 +864,6 @@ CREATE TABLE `product_perspectives`
     CONSTRAINT `FK__perspectives` FOREIGN KEY (`perspective_id`) REFERENCES `perspectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_product_perspectives_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2497
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -933,7 +889,6 @@ CREATE TABLE `product_price_levels`
     CONSTRAINT `FK_product_price_levels_price_levels` FOREIGN KEY (`price_level_id`) REFERENCES `price_levels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_product_price_levels_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 190037
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -961,7 +916,6 @@ CREATE TABLE `product_rules`
     KEY `FK_product_rules_products` (`product_id`),
     CONSTRAINT `FK_product_rules_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 875
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1000,7 +954,6 @@ CREATE TABLE `product_statuses`
     `sort`    int(10) unsigned NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 12
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1067,7 +1020,6 @@ CREATE TABLE `products`
     CONSTRAINT `FK_products_ship_boxes` FOREIGN KEY (`ship_box_id`) REFERENCES `ship_boxes` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT `FK_products_statuses` FOREIGN KEY (`status_id`) REFERENCES `product_statuses` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 16359
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1134,7 +1086,6 @@ CREATE TABLE `raid_maps`
     CONSTRAINT `FK_raid_maps_specifications_8` FOREIGN KEY (`capacity_spec_id`) REFERENCES `specifications` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `FK_raid_maps_specifications_9` FOREIGN KEY (`backplane_spec_id`) REFERENCES `specifications` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 23
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1155,7 +1106,6 @@ CREATE TABLE `ship_boxes`
     PRIMARY KEY (`id`),
     KEY `name` (`name`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 53
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1197,7 +1147,6 @@ CREATE TABLE `ship_rate_ship_region_prices`
     CONSTRAINT `FK_ship_rate_ship_region_prices_ship_rates` FOREIGN KEY (`ship_rate_id`) REFERENCES `ship_rates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_ship_rate_ship_region_prices_ship_regions` FOREIGN KEY (`ship_region_id`) REFERENCES `ship_regions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1216,7 +1165,6 @@ CREATE TABLE `ship_rates`
     `sage_shipvia` varchar(15)      NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1237,7 +1185,6 @@ CREATE TABLE `ship_region_locations`
     KEY `FK_ship_region_locations_ship_regions` (`ship_region_id`),
     CONSTRAINT `FK_ship_region_locations_ship_regions` FOREIGN KEY (`ship_region_id`) REFERENCES `ship_regions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 49
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1255,7 +1202,6 @@ CREATE TABLE `ship_regions`
     `ship_box_only` enum ('yes','no') NOT NULL DEFAULT 'no',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 10
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1281,7 +1227,6 @@ CREATE TABLE `sku_rule_additional_skus`
     CONSTRAINT `FK_sku_rule_additional_skus_sku_rule_groups` FOREIGN KEY (`sku_rule_group_id`) REFERENCES `sku_rule_groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT `FK_sku_rule_additional_skus_sku_rules` FOREIGN KEY (`sku_rule_id`) REFERENCES `sku_rules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 448
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1302,7 +1247,6 @@ CREATE TABLE `sku_rule_categories`
     KEY `FK_sku_rule_categories_sku_rule_categories` (`parent_id`),
     CONSTRAINT `FK_sku_rule_categories_sku_rule_categories` FOREIGN KEY (`parent_id`) REFERENCES `sku_rule_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 31
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1322,7 +1266,6 @@ CREATE TABLE `sku_rule_group_skus`
     KEY `FK_sku_rule_group_skus_sku_rule_groups` (`sku_rule_group_id`),
     CONSTRAINT `FK_sku_rule_group_skus_sku_rule_groups` FOREIGN KEY (`sku_rule_group_id`) REFERENCES `sku_rule_groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 19281
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1343,7 +1286,6 @@ CREATE TABLE `sku_rule_groups`
     `sort`        int(10) unsigned       NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 742
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1371,7 +1313,6 @@ CREATE TABLE `sku_rules`
     CONSTRAINT `FK_sku_rules_sku_rule_categories` FOREIGN KEY (`sku_rule_category_id`) REFERENCES `sku_rule_categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT `FK_sku_rules_sku_rule_groups` FOREIGN KEY (`sku_rule_group_id`) REFERENCES `sku_rule_groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 537
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1407,7 +1348,6 @@ CREATE TABLE `spare_categories`
     `sort`     int(10) unsigned    NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 6
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1452,7 +1392,6 @@ CREATE TABLE `spares`
     CONSTRAINT `FK_spares_products_2` FOREIGN KEY (`related_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE,
     CONSTRAINT `FK_spares_spare_categories` FOREIGN KEY (`spare_category_id`) REFERENCES `spare_categories` (`id`) ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1558
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1479,7 +1418,6 @@ CREATE TABLE `specification_fields`
     CONSTRAINT `FK_specification_fields_specification_groups` FOREIGN KEY (`specification_group_id`) REFERENCES `specification_groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_specification_fields_specification_unit_groups` FOREIGN KEY (`specification_unit_group_id`) REFERENCES `specification_unit_groups` (`id`) ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2550
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1499,7 +1437,6 @@ CREATE TABLE `specification_groups`
     `sort`        int(10) unsigned  NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 503
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1516,7 +1453,6 @@ CREATE TABLE `specification_unit_groups`
     `name` varchar(30)      NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1539,7 +1475,6 @@ CREATE TABLE `specification_units`
     KEY `FK_specification_units_specification_unit_groups` (`specification_unit_group_id`),
     CONSTRAINT `FK_specification_units_specification_unit_groups` FOREIGN KEY (`specification_unit_group_id`) REFERENCES `specification_unit_groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 34
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1568,7 +1503,6 @@ CREATE TABLE `specifications`
     CONSTRAINT `FK_specifications_specification_fields` FOREIGN KEY (`specification_field_id`) REFERENCES `specification_fields` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_specifications_specification_units` FOREIGN KEY (`specification_unit_id`) REFERENCES `specification_units` (`id`) ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2961698
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1585,7 +1519,9 @@ CREATE TABLE `system_categories`
     `parent_id`         int(10) unsigned           DEFAULT NULL,
     `url`               varchar(80)       NOT NULL,
     `name`              varchar(80)       NOT NULL,
+    `short_description` varchar(50)       NOT NULL,
     `description`       varchar(250)      NOT NULL,
+    `classification`    varchar(50)       NOT NULL,
     `force_perspective` int(10) unsigned           DEFAULT NULL,
     `banner_id`         int(10) unsigned           DEFAULT NULL,
     `spares_kits`       enum ('yes','no') NOT NULL DEFAULT 'no',
@@ -1600,7 +1536,6 @@ CREATE TABLE `system_categories`
     CONSTRAINT `FK_system_categories_perspectives` FOREIGN KEY (`force_perspective`) REFERENCES `perspectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_system_categories_system_categories` FOREIGN KEY (`parent_id`) REFERENCES `system_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 313
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1630,7 +1565,6 @@ CREATE TABLE `system_category_perspectives`
     CONSTRAINT `FK_system_category_perspectives_perspectives` FOREIGN KEY (`perspective_id`) REFERENCES `perspectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_system_category_perspectives_system_categories` FOREIGN KEY (`system_category_id`) REFERENCES `system_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2007
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1653,7 +1587,6 @@ CREATE TABLE `system_items`
     CONSTRAINT `FK_system_items_bucket_items` FOREIGN KEY (`item_id`) REFERENCES `group_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_system_items_systems` FOREIGN KEY (`system_id`) REFERENCES `systems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 18168
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1686,7 +1619,6 @@ CREATE TABLE `system_perspectives`
     CONSTRAINT `FK_system_perspectives_perspectives` FOREIGN KEY (`perspective_id`) REFERENCES `perspectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_system_perspectives_systems` FOREIGN KEY (`system_id`) REFERENCES `systems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 725
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1713,8 +1645,56 @@ CREATE TABLE `system_price_levels`
     CONSTRAINT `FK_system_price_levels_price_levels` FOREIGN KEY (`price_level_id`) REFERENCES `price_levels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_system_price_levels_products` FOREIGN KEY (`system_id`) REFERENCES `systems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 9501
   DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `system_rule_details`
+--
+
+DROP TABLE IF EXISTS `system_rule_details`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `system_rule_details`
+(
+    `id`             int(10) unsigned                                                                                    NOT NULL AUTO_INCREMENT,
+    `system_rule_id` int(10) unsigned                                                                                    NOT NULL,
+    `logic`          enum ('AND','OR','(',')','BUCKET_SELECTED','BUCKET_QUANTITY','PRODUCT_SELECTED','PRODUCT_QUANTITY') NOT NULL,
+    `relation`       enum ('=','!=','<','<=','>=','>') DEFAULT NULL,
+    `value`          int(10) unsigned                  DEFAULT NULL,
+    `bucket_id`      int(10) unsigned                  DEFAULT NULL,
+    `group_item_id`  int(10) unsigned                  DEFAULT NULL,
+    `sort`           int(10) unsigned                                                                                    NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `FK_system_rule_details_system_rules` (`system_rule_id`),
+    KEY `FK_system_rule_details_group_items` (`group_item_id`),
+    KEY `FK_system_rule_details_buckets` (`bucket_id`),
+    CONSTRAINT `FK_system_rule_details_buckets` FOREIGN KEY (`bucket_id`) REFERENCES `buckets` (`id`) ON UPDATE CASCADE,
+    CONSTRAINT `FK_system_rule_details_group_items` FOREIGN KEY (`group_item_id`) REFERENCES `group_items` (`id`) ON UPDATE CASCADE,
+    CONSTRAINT `FK_system_rule_details_system_rules` FOREIGN KEY (`system_rule_id`) REFERENCES `system_rules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `system_rules`
+--
+
+DROP TABLE IF EXISTS `system_rules`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `system_rules`
+(
+    `id`          int(10) unsigned        NOT NULL AUTO_INCREMENT,
+    `system_id`   int(10) unsigned        NOT NULL,
+    `name`        varchar(80)             NOT NULL,
+    `action`      set ('WARNING','ERROR') NOT NULL,
+    `description` text,
+    PRIMARY KEY (`id`),
+    KEY `FK_system_rules_systems` (`system_id`),
+    CONSTRAINT `FK_system_rules_systems` FOREIGN KEY (`system_id`) REFERENCES `systems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1754,7 +1734,6 @@ CREATE TABLE `systems`
     CONSTRAINT `FK_systems_perspectives` FOREIGN KEY (`force_perspective`) REFERENCES `perspectives` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `FK_systems_system_categories` FOREIGN KEY (`system_category_id`) REFERENCES `system_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4467
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1801,7 +1780,6 @@ CREATE TABLE `tabs`
     KEY `FK_tabs_plugins` (`plugin_id`),
     CONSTRAINT `FK_tabs_plugins` FOREIGN KEY (`plugin_id`) REFERENCES `plugins` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1823,7 +1801,6 @@ CREATE TABLE `tag_categories`
     `support_sequence` int(10) unsigned           DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 22
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1845,7 +1822,6 @@ CREATE TABLE `tags`
     KEY `FK_tags_tags` (`tag_category_id`),
     CONSTRAINT `FK_tags_tags` FOREIGN KEY (`tag_category_id`) REFERENCES `tags` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 512
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -1858,4 +1834,4 @@ CREATE TABLE `tags`
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-05 13:42:09
+-- Dump completed on 2022-09-12 16:52:12
