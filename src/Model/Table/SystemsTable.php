@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ProductBackend\Model\Table;
 
 use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Session;
@@ -440,7 +441,16 @@ class SystemsTable extends Table
                 'ProductCategories.gallery_priority' => 'DESC',
                 'Products.cost' => 'DESC',
                 'Products.sort',
-            ]);
+            ])
+            ->formatResults(function (CollectionInterface $results) {
+                $filesApiHandler = new \FilesApiHandler();
+
+                foreach ($results as $system) {
+                    $system['image'] = $filesApiHandler->getFileUrl($system['image_id'], 100, 100);
+                }
+
+                return $results;
+            });
     }
 
     public function findBanner(Query $query, array $options)

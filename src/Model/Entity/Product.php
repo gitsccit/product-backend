@@ -130,6 +130,10 @@ class Product extends Entity
         'specifications' => true,
     ];
 
+    protected $_hidden = [
+        '_matchingData',
+    ];
+
     public function getBreadcrumbs()
     {
         if (!isset($this->product_category)) {

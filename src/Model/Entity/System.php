@@ -81,6 +81,10 @@ class System extends Entity
         'system_price_levels' => true,
     ];
 
+    protected $_hidden = [
+        '_matchingData',
+    ];
+
     public function getBreadcrumbs($identifier = null)
     {
         if (!isset($this->system_category)) {

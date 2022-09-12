@@ -415,7 +415,16 @@ class ProductsTable extends Table
             ->select([
                 'image_id' => 'ProductGalleryImages.file_id',
             ])
-            ->leftJoinWith('Galleries.ProductGalleryImages');
+            ->leftJoinWith('Galleries.ProductGalleryImages')
+            ->formatResults(function (CollectionInterface $results) {
+                $filesApiHandler = new \FilesApiHandler();
+
+                foreach ($results as $product) {
+                    $product['image'] = $filesApiHandler->getFileUrl($product['image_id'], 100, 100);
+                }
+
+                return $results;
+            });
     }
 
     public function findSpecifications(Query $query, array $options)

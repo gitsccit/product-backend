@@ -10,17 +10,6 @@ $this->Breadcrumbs->add($breadcrumbs ?? []);
 
 $system['image'] = $this->filesApiHandler->getFileUrl($system['image_id'], 200, 200);
 
-foreach ($system['buckets'] as &$bucket) {
-    foreach ($bucket['groups'] as &$group) {
-        foreach ($group['group_items'] as &$groupItem) {
-            $groupItem['image'] = $groupItem['image_id'] ? $this->filesApiHandler->getFileUrl(
-                $groupItem['image_id'],
-                100,
-                100
-            ) : null;
-        }
-    }
-}
 $priceLevels = json_encode($priceLevels ?? null, JSON_HEX_APOS);
 $currentPriceLevel = $this->request->getQuery(
     'priceLevel',
