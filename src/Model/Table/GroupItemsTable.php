@@ -152,7 +152,7 @@ class GroupItemsTable extends Table
                     ->filter(function ($groupItem) use ($products, $systems) {
                         return isset($products[$groupItem['product_id']]) || isset($systems[$groupItem['system_id']]);
                     })
-                    ->map(function ($groupItem) use ($products, $systems, $options, $filesApiHandler) {
+                    ->map(function ($groupItem) use ($products, $systems, $options) {
                         $item = $products[$groupItem['product_id']] ?? $systems[$groupItem['system_id']];
                         $unifiedItem['id'] = $groupItem['id'];
                         $unifiedItem['original_id'] = $item['id'];
