@@ -112,7 +112,6 @@ class GroupItemsTable extends Table
         return $query
             ->formatResults(function (CollectionInterface $result) use ($options) {
                 $products = $systems = [];
-                $filesApiHandler = new \FilesApiHandler();
 
                 if ($productIDs = array_filter($result->extract('product_id')->toList())) {
                     $products = $this->Products
@@ -168,7 +167,6 @@ class GroupItemsTable extends Table
                         $unifiedItem['price'] = $item['price'];
                         $unifiedItem['specs'] = $item['specifications'];
                         $unifiedItem['selected'] = false;
-                        $unifiedItem['image'] = $unifiedItem['image_id'] ? $filesApiHandler->getFileUrl($unifiedItem['image_id'], 100, 100) : null;
 
                         if ($groupItem['system_id']) {
                             $unifiedItem['configuration'] = $item['configuration'];

@@ -371,6 +371,17 @@ class SystemsTable extends Table
                         ->all()
                         ->toList();
 
+                    $filesApiHandler = new \FilesApiHandler();
+                    $imageIDs = Hash::extract($system, 'buckets.{n}.groups.{n}.group_items.{n}.image_id');
+                    $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
+                    foreach ($system['buckets'] as &$bucket) {
+                        foreach ($bucket['groups'] as &$group) {
+                            foreach ($group['group_items'] as &$groupItem) {
+                                $groupItem['image'] = $images[$groupItem['id']];
+                            }
+                        }
+                    }
+
                     if (Configure::read('ProductBackend.showStock')) {
                         $thinkAPI = Client::createFromUrl(Configure::read('Urls.thinkAPI'));
                         $thinkAPI->setConfig([
