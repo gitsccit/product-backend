@@ -372,12 +372,12 @@ class SystemsTable extends Table
                         ->toList();
 
                     $filesApiHandler = new \FilesApiHandler();
-                    $imageIDs = Hash::extract($system, 'buckets.{n}.groups.{n}.group_items.{n}.image_id');
+                    $imageIDs = array_filter(Hash::extract($system, 'buckets.{n}.groups.{n}.group_items.{n}.image_id'));
                     $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
                     foreach ($system['buckets'] as &$bucket) {
                         foreach ($bucket['groups'] as &$group) {
                             foreach ($group['group_items'] as &$groupItem) {
-                                $groupItem['image'] = $images[$groupItem['id']];
+                                $groupItem['image'] = $images[$groupItem['image_id']] ?? null;
                             }
                         }
                     }
