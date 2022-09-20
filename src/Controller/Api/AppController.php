@@ -12,7 +12,10 @@ class AppController extends BaseController
     {
         parent::initialize();
 
-        Configure::write('ProductBackend', []);
+        Configure::write('ProductBackend', [
+            'showStock' => false,
+            'showCost' => false,
+        ]);
 
         if ($perspective = $this->request->getQuery('perspective')) {
             $this->request->getSession()->write('store.perspective', $perspective);
