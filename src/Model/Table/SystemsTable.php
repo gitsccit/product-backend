@@ -9,6 +9,7 @@ use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Session;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
@@ -304,8 +305,12 @@ class SystemsTable extends Table
                 },
             ])
             ->select($this->Kits)
-            ->formatResults(function ($result) {
-                return $result->each(function ($system) {
+            ->formatResults(function (ResultSet $result) {
+                $filesApiHandler = new \FilesApiHandler();
+                $imageIDs = array_filter(array_unique(Hash::extract($result->toArray(), '{n}.kit.tags.{n}.image_id')));
+                $tagImages = $filesApiHandler->getFileUrls($imageIDs);
+
+                return $result->each(function ($system) use ($tagImages) {
                     $tags = new Collection($system->kit->tags);
                     $tagCategories = $tags->groupBy('category')->toArray();
                     $system->tags = [];
@@ -313,6 +318,9 @@ class SystemsTable extends Table
 
                     while (count($system->tags) < $tagCount && count($tagCategories) > 0) {
                         foreach ($tagCategories as $tagCategory => $tags) {
+                            foreach ($tags as $tag) {
+                                $tag['image'] = $tagImages[$tag['image_id']];
+                            }
                             $system->tags[] = array_shift($tags);
                             $tagCategories[$tagCategory] = $tags;
 
