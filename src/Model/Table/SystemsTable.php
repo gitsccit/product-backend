@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace ProductBackend\Model\Table;
 
 use Cake\Collection\Collection;
-use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Session;
@@ -306,11 +305,7 @@ class SystemsTable extends Table
             ])
             ->select($this->Kits)
             ->formatResults(function (ResultSet $result) {
-                $filesApiHandler = new \FilesApiHandler();
-                $imageIDs = array_filter(array_unique(Hash::extract($result->toArray(), '{n}.kit.tags.{n}.image_id')));
-                $tagImages = $filesApiHandler->getFileUrls($imageIDs);
-
-                return $result->each(function ($system) use ($tagImages) {
+                return $result->each(function ($system) {
                     $tags = new Collection($system->kit->tags);
                     $tagCategories = $tags->groupBy('category')->toArray();
                     $system->tags = [];
@@ -318,9 +313,6 @@ class SystemsTable extends Table
 
                     while (count($system->tags) < $tagCount && count($tagCategories) > 0) {
                         foreach ($tagCategories as $tagCategory => $tags) {
-                            foreach ($tags as $tag) {
-                                $tag['image'] = $tagImages[$tag['image_id']];
-                            }
                             $system->tags[] = array_shift($tags);
                             $tagCategories[$tagCategory] = $tags;
 
@@ -461,11 +453,15 @@ class SystemsTable extends Table
                 'Products.cost' => 'DESC',
                 'Products.sort',
             ])
-            ->formatResults(function (CollectionInterface $results) {
+            ->formatResults(function (ResultSet $results) {
                 $filesApiHandler = new \FilesApiHandler();
+                $imageIDs = array_values(array_filter(Hash::flatten(json_decode(json_encode($results), true)), function ($key) {
+                    return str_ends_with($key, 'image_id');
+                }, ARRAY_FILTER_USE_KEY));
+                $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
 
                 foreach ($results as $system) {
-                    $system['image'] = $filesApiHandler->getFileUrl($system['image_id'], 100, 100);
+                    $system['image'] = $images[$system['image_id']] ?? null;
                 }
 
                 return $results;
@@ -513,10 +509,10 @@ class SystemsTable extends Table
     {
         $flattenedConfiguration = Hash::flatten($configuration);
         $itemIDs = array_values(array_filter($flattenedConfiguration, function ($key) {
-            return endsWith($key, 'item_id');
+            return str_ends_with($key, 'item_id');
         }, ARRAY_FILTER_USE_KEY));
         $quantities = array_values(array_filter($flattenedConfiguration, function ($key) {
-            return endsWith($key, 'qty');
+            return str_ends_with($key, 'qty');
         }, ARRAY_FILTER_USE_KEY));
 
         $selectedItems = $this->GroupItems->find('configuration', $options)

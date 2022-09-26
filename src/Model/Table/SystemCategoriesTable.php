@@ -5,6 +5,7 @@ namespace ProductBackend\Model\Table;
 
 use Cake\Http\Session;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -153,6 +154,9 @@ class SystemCategoriesTable extends Table
                 'SystemCategories.short_description',
                 'product_count' => 'IFNULL(SystemCategoryPerspectives.children, SystemCategories.children)',
             ])
+            ->contain(['Systems' => function (Query $query) {
+                return $query->find('active')->find('image')->limit(1);
+            }])
             ->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
                 return $query->where([
                     'SystemCategoryPerspectives.perspective_id' => $perspectiveID,
@@ -162,7 +166,13 @@ class SystemCategoriesTable extends Table
                 'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
                 'IFNULL(SystemCategoryPerspectives.children, SystemCategories.children) >' => 0,
             ])
-            ->orderAsc('SystemCategories.sort');
+            ->orderAsc('SystemCategories.sort')
+            ->formatResults(function (ResultSet $result) {
+                return $result->each(function ($systemCategory) {
+                    $systemCategory['image'] = $systemCategory['system']['image'];
+                    unset($systemCategory['system']);
+                });
+            });
     }
 
     /**

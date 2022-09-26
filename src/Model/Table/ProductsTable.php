@@ -418,9 +418,13 @@ class ProductsTable extends Table
             ->leftJoinWith('Galleries.ProductGalleryImages')
             ->formatResults(function (CollectionInterface $results) {
                 $filesApiHandler = new \FilesApiHandler();
+                $imageIDs = array_values(array_filter(Hash::flatten(json_decode(json_encode($results), true)), function ($key) {
+                    return str_ends_with($key, 'image_id');
+                }, ARRAY_FILTER_USE_KEY));
+                $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
 
                 foreach ($results as $product) {
-                    $product['image'] = $filesApiHandler->getFileUrl($product['image_id'], 100, 100);
+                    $product['image'] = $images[$product['image_id']] ?? null;
                 }
 
                 return $results;

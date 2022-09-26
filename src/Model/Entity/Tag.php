@@ -38,4 +38,8 @@ class Tag extends Entity
         'image' => true,
         'kits' => true,
     ];
+
+    protected $_hidden = [
+        '_joinData'
+    ];
 }
