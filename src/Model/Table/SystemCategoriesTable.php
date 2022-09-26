@@ -154,9 +154,6 @@ class SystemCategoriesTable extends Table
                 'SystemCategories.short_description',
                 'product_count' => 'IFNULL(SystemCategoryPerspectives.children, SystemCategories.children)',
             ])
-            ->contain(['Systems' => function (Query $query) {
-                return $query->find('active')->find('image')->limit(1);
-            }])
             ->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
                 return $query->where([
                     'SystemCategoryPerspectives.perspective_id' => $perspectiveID,
@@ -168,9 +165,18 @@ class SystemCategoriesTable extends Table
             ])
             ->orderAsc('SystemCategories.sort')
             ->formatResults(function (ResultSet $result) {
-                return $result->each(function ($systemCategory) {
-                    $systemCategory['image'] = $systemCategory['system']['image'];
-                    unset($systemCategory['system']);
+                $systemCategories = $result->listNested()->extract('id')->toList();
+                $systems = $this->Systems
+                    ->find('active')
+                    ->find('image')
+                    ->distinct('system_category_id')
+                    ->whereInList('system_category_id', $systemCategories)
+                    ->all()
+                    ->indexBy('system_category_id')
+                    ->toArray();
+
+                return $result->each(function ($systemCategory) use ($systems) {
+                    $systemCategory['image'] = $systems[$systemCategory['id']]['image'] ?? null;
                 });
             });
     }

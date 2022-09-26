@@ -455,9 +455,9 @@ class SystemsTable extends Table
             ])
             ->formatResults(function (ResultSet $results) {
                 $filesApiHandler = new \FilesApiHandler();
-                $imageIDs = array_values(array_filter(Hash::flatten(json_decode(json_encode($results), true)), function ($key) {
+                $imageIDs = array_values(array_unique(array_filter(Hash::flatten(json_decode(json_encode($results), true)), function ($key) {
                     return str_ends_with($key, 'image_id');
-                }, ARRAY_FILTER_USE_KEY));
+                }, ARRAY_FILTER_USE_KEY)));
                 $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
 
                 foreach ($results as $system) {
