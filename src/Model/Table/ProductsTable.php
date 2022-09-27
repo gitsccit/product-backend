@@ -418,16 +418,18 @@ class ProductsTable extends Table
             ->leftJoinWith('Galleries.ProductGalleryImages')
             ->formatResults(function (CollectionInterface $results) {
                 $filesApiHandler = new \FilesApiHandler();
-                $imageIDs = array_values(array_unique(array_filter(Hash::flatten(json_decode(json_encode($results), true)), function ($key) {
+                $results = json_decode(json_encode($results), true);
+                $imagePathIdMap = array_filter(Hash::flatten($results), function ($key) {
                     return str_ends_with($key, 'image_id');
-                }, ARRAY_FILTER_USE_KEY)));
+                }, ARRAY_FILTER_USE_KEY);
+                $imageIDs = array_unique(array_values($imagePathIdMap));
                 $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
 
-                foreach ($results as $product) {
-                    $product['image'] = $images[$product['image_id']] ?? null;
+                foreach ($imagePathIdMap as $imagePath => $imageID) {
+                    $results = Hash::insert($results, str_replace('image_id', 'image', $imagePath), $images[$imageID] ?? null);
                 }
 
-                return $results;
+                return new Collection($results);
             });
     }
 
@@ -464,12 +466,12 @@ class ProductsTable extends Table
                 'Specifications.sort',
                 'Specifications.text_value',
             ])
-            ->formatResults(function (CollectionInterface $results) {
+            ->formatResults(function ($results) {
                 return $results->groupBy('id')
                     ->map(function ($specificationSet) {
                         return [
-                            'id' => $specificationSet[0]->id,
-                            'name' => $specificationSet[0]->name,
+                            'id' => $specificationSet[0]['id'],
+                            'name' => $specificationSet[0]['name'],
                             'options' => array_map(function ($specification) {
                                 return [
                                     'id' => $specification['id'],
@@ -505,7 +507,7 @@ class ProductsTable extends Table
             ])
             ->formatResults(function ($result) {
                 return $result->map(function ($product) {
-                    $product->specification_groups = (new Collection($product->specifications))->groupBy('category')->toArray();
+                    $product['specification_groups'] = (new Collection($product['specifications']))->groupBy('category')->toArray();
 
                     return $product;
                 });
@@ -518,13 +520,13 @@ class ProductsTable extends Table
             ->contain('GroupItems.Groups.Buckets.KitBuckets.Kits.Systems', function (Query $q) {
                 return $q->find('listing');
             })
-            ->formatResults(function (CollectionInterface $result) {
+            ->formatResults(function ($result) {
                 return $result->map(function ($product) {
-                    $product->related_systems = Hash::extract(
+                    $product['related_systems'] = Hash::extract(
                         $product,
                         'group_items.{n}.group.buckets.{n}.kit_buckets.{n}.kit.systems.{n}'
                     );
-                    unset($product->group_items);
+                    unset($product['group_items']);
 
                     return $product;
                 });

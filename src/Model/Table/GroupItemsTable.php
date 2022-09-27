@@ -163,7 +163,7 @@ class GroupItemsTable extends Table
                         $unifiedItem['image_id'] = $item['image_id'];
                         $unifiedItem['status'] = $item['status'];
                         $unifiedItem['status_text'] = $item['status_text'];
-                        $unifiedItem['warning'] = $item['warning'];
+                        $unifiedItem['warning'] = $item['warning'] ?? null;
                         $unifiedItem['price'] = $item['price'];
                         $unifiedItem['specs'] = $item['specifications'];
                         $unifiedItem['selected'] = false;

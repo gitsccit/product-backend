@@ -8,7 +8,6 @@ use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Session;
 use Cake\ORM\Query;
-use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
@@ -304,29 +303,29 @@ class SystemsTable extends Table
                 },
             ])
             ->select($this->Kits)
-            ->formatResults(function (ResultSet $result) {
+            ->formatResults(function ($result) {
                 return $result->each(function ($system) {
-                    $tags = new Collection($system->kit->tags);
+                    $tags = new Collection($system['kit']['tags']);
                     $tagCategories = $tags->groupBy('category')->toArray();
-                    $system->tags = [];
+                    $system['tags'] = [];
                     $tagCount = 7;
 
-                    while (count($system->tags) < $tagCount && count($tagCategories) > 0) {
+                    while (count($system['tags']) < $tagCount && count($tagCategories) > 0) {
                         foreach ($tagCategories as $tagCategory => $tags) {
-                            $system->tags[] = array_shift($tags);
+                            $system['tags'][] = array_shift($tags);
                             $tagCategories[$tagCategory] = $tags;
 
                             if (empty($tags)) {
                                 unset($tagCategories[$tagCategory]);
                             }
 
-                            if (count($system->tags) === $tagCount) {
+                            if (count($system['tags']) === $tagCount) {
                                 break;
                             }
                         }
                     }
 
-                    unset($system->kit);
+                    unset($system['kit']);
                 });
             });
     }
@@ -348,8 +347,8 @@ class SystemsTable extends Table
     {
         return $query
             ->find('basic', $options)
-            ->find('image', ['type' => 'System'])
             ->find('baseConfiguration', $options)
+            ->find('image', ['type' => 'System'])
             ->select([
                 'description' => 'IFNULL(SystemPerspectives.description, Systems.description)',
                 'meta_title' => 'IFNULL(SystemPerspectives.meta_title, Systems.meta_title)',
@@ -363,8 +362,8 @@ class SystemsTable extends Table
             ->innerJoinWith('Kits')
             ->formatResults(function ($result) use ($options) {
                 return $result->map(function ($system) use ($options) {
-                    $system['noise_level'] = $system->noise_level === 'yes';
-                    $system['power_estimate'] = $system->power_estimate === 'yes';
+                    $system['noise_level'] = $system['noise_level'] === 'yes';
+                    $system['power_estimate'] = $system['power_estimate'] === 'yes';
                     $system['buckets'] = $this->Kits->Buckets
                         ->find('configuration', ['kitID' => $system['kit_id']])
                         ->find('filters')
@@ -453,18 +452,20 @@ class SystemsTable extends Table
                 'Products.cost' => 'DESC',
                 'Products.sort',
             ])
-            ->formatResults(function (ResultSet $results) {
+            ->formatResults(function ($results) {
                 $filesApiHandler = new \FilesApiHandler();
-                $imageIDs = array_values(array_unique(array_filter(Hash::flatten(json_decode(json_encode($results), true)), function ($key) {
+                $results = json_decode(json_encode($results), true);
+                $imagePathIdMap = array_filter(Hash::flatten($results), function ($key) {
                     return str_ends_with($key, 'image_id');
-                }, ARRAY_FILTER_USE_KEY)));
+                }, ARRAY_FILTER_USE_KEY);
+                $imageIDs = array_unique(array_values($imagePathIdMap));
                 $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
 
-                foreach ($results as $system) {
-                    $system['image'] = $images[$system['image_id']] ?? null;
+                foreach ($imagePathIdMap as $imagePath => $imageID) {
+                    $results = Hash::insert($results, str_replace('image_id', 'image', $imagePath), $images[$imageID] ?? null);
                 }
 
-                return $results;
+                return new Collection($results);
             });
     }
 
