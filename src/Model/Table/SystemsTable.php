@@ -337,10 +337,9 @@ class SystemsTable extends Table
                 'support_badge' => 'Tags.name',
                 'support_badge_info' => 'KitsTags.value',
             ])
-            ->innerJoinWith('Kits', function (Query $q) {
-                return $q->leftJoinWith('Tags');
-            })
-            ->where(['Tags.tag_category_id' => 18]);
+            ->leftJoinWith('Kits.Tags', function (Query $q) {
+                return $q->where(['Tags.tag_category_id' => 18]);
+            });
     }
 
     public function findDetails(Query $query, array $options)
