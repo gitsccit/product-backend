@@ -333,6 +333,7 @@ class ProductsTable extends Table
         return $query
             ->select([
                 'Products.id',
+                'Products.product_category_id',
                 'url' => 'IFNULL(ProductPerspectives.url, Products.url)',
                 'name' => 'IFNULL(ProductPerspectives.name, Products.name)',
                 'price' => 'ProductPriceLevels.price',
@@ -382,7 +383,6 @@ class ProductsTable extends Table
             ->find('active')
             ->find('image')
             ->select([
-                'Products.product_category_id',
                 'Products.description',
                 'show_related_systems' => "IFNULL(Products.show_related_systems, ProductCategories.show_related_systems) = 'yes'",
                 'specs_overview' => $this->Specifications->find('overview')->where(['Specifications.product_id = Products.id']),
