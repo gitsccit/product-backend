@@ -5,6 +5,7 @@ namespace ProductBackend\Model\Table;
 
 use Cake\Http\Session;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -171,7 +172,31 @@ class ProductCategoriesTable extends Table
                 'IFNULL(ProductCategoryPerspectives.active, ProductCategories.active) =' => 'yes',
                 'IFNULL(ProductCategoryPerspectives.children, ProductCategories.children) >' => 0,
             ])
-            ->orderAsc('ProductCategories.sort');
+            ->orderAsc('ProductCategories.sort')
+            ->formatResults(function (ResultSet $result) {
+                $productCategories = $result->extract('id')->toList();
+                $products = $this->Products
+                    ->find('active')
+                    ->find('image')
+                    ->distinct('product_category_id')
+                    ->whereInList('product_category_id', $productCategories)
+                    ->all()
+                    ->indexBy('product_category_id')
+                    ->toArray();
+
+                foreach ($result as $productCategory) {
+                    $productCategory['image'] = $products[$productCategory['id']]['image'] ?? null;
+                }
+
+                $resultNested = $result->nest('id', 'parent_id')->indexBy('id')->toArray();
+                foreach ($result as $productCategory) {
+                    if (!isset($productCategory['image'])) {
+                        $productCategory['image'] = $resultNested[$productCategory['id']]['children'][0]['image'] ?? null;
+                    }
+                }
+
+                return $result;
+            });
     }
 
     /**

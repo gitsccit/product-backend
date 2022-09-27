@@ -165,7 +165,7 @@ class SystemCategoriesTable extends Table
             ])
             ->orderAsc('SystemCategories.sort')
             ->formatResults(function (ResultSet $result) {
-                $systemCategories = $result->listNested()->extract('id')->toList();
+                $systemCategories = $result->extract('id')->toList();
                 $systems = $this->Systems
                     ->find('active')
                     ->find('image')
@@ -175,9 +175,18 @@ class SystemCategoriesTable extends Table
                     ->indexBy('system_category_id')
                     ->toArray();
 
-                return $result->each(function ($systemCategory) use ($systems) {
+                foreach ($result as $systemCategory) {
                     $systemCategory['image'] = $systems[$systemCategory['id']]['image'] ?? null;
-                });
+                }
+
+                $resultNested = $result->nest('id', 'parent_id')->indexBy('id')->toArray();
+                foreach ($result as $systemCategory) {
+                    if (!isset($systemCategory['image'])) {
+                        $systemCategory['image'] = $resultNested[$systemCategory['id']]['children'][0]['image'] ?? null;
+                    }
+                }
+
+                return $result;
             });
     }
 

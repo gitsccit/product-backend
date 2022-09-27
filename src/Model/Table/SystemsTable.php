@@ -557,7 +557,7 @@ class SystemsTable extends Table
     {
         $flattenedConfiguration = Hash::flatten($configuration);
         $itemIDs = array_values(array_filter($flattenedConfiguration, function ($key) {
-            return endsWith($key, 'item_id');
+            return str_ends_with($key, 'item_id');
         }, ARRAY_FILTER_USE_KEY));
 
         return $this->GroupItems->find()
