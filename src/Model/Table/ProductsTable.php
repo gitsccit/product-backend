@@ -403,10 +403,24 @@ class ProductsTable extends Table
             ->select(['Products.gallery_id'])
             ->select($this->Galleries)
             ->contain([
-                'Galleries.GalleryImages' => function ($q) {
-                    return $q->where(['GalleryImages.active' => 'yes'])->order('GalleryImages.sort');
+                'Galleries.GalleryImages' => function (Query $q) {
+                    return $q
+                        ->select([
+                            'gallery_id',
+                            'image_id' => 'file_id',
+                        ])
+                        ->where(['GalleryImages.active' => 'yes'])
+                        ->order('GalleryImages.sort');
                 },
-            ]);
+            ])
+            ->formatResults(function ($result) {
+                return $result->map(function ($product) {
+                    $filesApiHandler = new \FilesApiHandler();
+                    $product['gallery'] = array_values($filesApiHandler->getFileUrls(Hash::extract($product, 'gallery.gallery_images.{n}.image_id'), 300, 300));
+
+                    return $product;
+                });
+            });
     }
 
     public function findImage(Query $query, array $options)

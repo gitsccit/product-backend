@@ -211,12 +211,14 @@ class SystemsTable extends Table
                     return $query->find('configuration', $options);
                 })
                 ->formatResults(function ($result) {
-                    return $result->each(function ($system) {
-                        $system->cost = 0;
-                        foreach ($system->system_items as &$systemItem) {
-                            $system->cost += $systemItem['group_item']['cost'] * $systemItem['quantity'];
+                    return $result->map(function ($system) {
+                        $system['cost'] = 0;
+                        foreach ($system['system_items'] as &$systemItem) {
+                            $system['cost'] += $systemItem['group_item']['cost'] * $systemItem['quantity'];
                         }
-                        $system->margin = ($system->price - $system->cost) / $system->price;
+                        $system['margin'] = ($system['price'] - $system['cost']) / $system['price'];
+
+                        return $system;
                     });
                 });
         }
@@ -304,7 +306,7 @@ class SystemsTable extends Table
             ])
             ->select($this->Kits)
             ->formatResults(function ($result) {
-                return $result->each(function ($system) {
+                return $result->map(function ($system) {
                     $tags = new Collection($system['kit']['tags']);
                     $tagCategories = $tags->groupBy('category')->toArray();
                     $system['tags'] = [];
@@ -326,6 +328,8 @@ class SystemsTable extends Table
                     }
 
                     unset($system['kit']);
+
+                    return $system;
                 });
             });
     }
@@ -498,9 +502,11 @@ class SystemsTable extends Table
                 'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
             ])
             ->formatResults(function ($result) {
-                return $result->each(function ($system) {
-                    $system->banner = $system->_matchingData['Banners'];
-                    $system->banner = $system->generateBannerImage();
+                return $result->map(function ($system) {
+                    $system['banner'] = $system->_matchingData['Banners'];
+                    $system['banner'] = $system->generateBannerImage();
+
+                    return $system;
                 });
             });
     }
