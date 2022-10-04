@@ -10,6 +10,7 @@ use Cake\Http\Session;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
@@ -385,14 +386,17 @@ class SystemsTable extends Table
                     }
 
                     if (Configure::read('ProductBackend.showStock')) {
+                        $session = new Session();
                         $thinkAPI = Client::createFromUrl(Configure::read('Urls.thinkAPI'));
                         $thinkAPI->setConfig([
                             'headers' => [
                                 'scctoken' => Configure::read('Security.thinkAPI_token'),
+                                'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
+                                    ->find()->where(['store_id' => $options['store'] ?? $session->read('store.id')])
+                                    ->first()->company_code,
                             ],
                             'ssl_verify_peer' => false,
                         ]);
-                        $session = new Session();
                         $warehouseCode = $options['warehouse'] ?? $session->read('store.warehouse');
                         $itemCodes = array_values(array_unique(Hash::extract(
                             $system['buckets'],

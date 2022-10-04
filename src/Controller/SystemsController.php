@@ -152,6 +152,7 @@ class SystemsController extends AppController
             $session->write("opportunities.$opportunityKey.current", []);
         }
 
+        $options['store'] = $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id');
         $system = $this->Systems->find('details', $options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
@@ -184,7 +185,7 @@ class SystemsController extends AppController
                 'headers' => [
                     'scctoken' => Configure::read('Security.thinkAPI_token'),
                     'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
-                        ->find()->where(['store_id' => $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id')])
+                        ->find()->where(['store_id' => $options['store']])
                         ->first()->company_code,
                 ],
                 'ssl_verify_peer' => false,
