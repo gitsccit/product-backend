@@ -395,7 +395,7 @@ class SystemsTable extends Table
                         $session = new Session();
                         $warehouseCode = $options['warehouse'] ?? $session->read('store.warehouse');
                         $itemCodes = array_values(array_unique(Hash::extract(
-                            $system->buckets,
+                            $system['buckets'],
                             '{n}.groups.{n}.group_items.{n}.sage_itemcode'
                         )));
                         $result = $thinkAPI->post(
@@ -407,7 +407,7 @@ class SystemsTable extends Table
                             '{n}.ItemCode',
                             '{n}.Warehouses.{n}.Available'
                         );
-                        foreach ($system->buckets as &$bucket) {
+                        foreach ($system['buckets'] as &$bucket) {
                             foreach ($bucket->groups as &$group) {
                                 foreach ($group->group_items as &$groupItem) {
                                     if (!isset($groupItem['sage_itemcode'])) {
