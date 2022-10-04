@@ -10,6 +10,7 @@ use Cake\Http\Client;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use ProductBackend\Model\Entity\System;
 
 /**
  * Systems Controller
@@ -159,7 +160,7 @@ class SystemsController extends AppController
 
         $configKey = $configKey ?: random_string(6);
 
-        $system->loadConfiguration($configuration);
+        (new System($system))->loadConfiguration($configuration);
 
         $tabs = TableRegistry::getTableLocator()->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
 
