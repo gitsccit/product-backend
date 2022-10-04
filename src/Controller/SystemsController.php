@@ -186,7 +186,7 @@ class SystemsController extends AppController
                     'scctoken' => Configure::read('Security.thinkAPI_token'),
                     'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
                         ->find()->where(['store_id' => $options['store']])
-                        ->first()->company_code,
+                        ->first()->company_code ?? 'SCC',
                 ],
                 'ssl_verify_peer' => false,
             ]);

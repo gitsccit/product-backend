@@ -393,7 +393,7 @@ class SystemsTable extends Table
                                 'scctoken' => Configure::read('Security.thinkAPI_token'),
                                 'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
                                     ->find()->where(['store_id' => $options['store'] ?? $session->read('store.id')])
-                                    ->first()->company_code,
+                                    ->first()->company_code ?? 'SCC',
                             ],
                             'ssl_verify_peer' => false,
                         ]);
