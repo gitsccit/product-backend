@@ -13,6 +13,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use ProductBackend\Model\Entity\System;
 
 /**
  * Systems Model
@@ -392,8 +393,8 @@ class SystemsTable extends Table
                             'headers' => [
                                 'scctoken' => Configure::read('Security.thinkAPI_token'),
                                 'CompanyCode' => TableRegistry::getTableLocator()->get('StoreDivisions')
-                                    ->find()->where(['store_id' => $options['store'] ?? $session->read('store.id')])
-                                    ->first()->company_code ?? 'SCC',
+                                        ->find()->where(['store_id' => $options['store'] ?? $session->read('store.id')])
+                                        ->first()->company_code ?? 'SCC',
                             ],
                             'ssl_verify_peer' => false,
                         ]);
@@ -488,7 +489,6 @@ class SystemsTable extends Table
                 'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
                 'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
             ])
-            ->select($this->SystemCategories->Banners)
             ->select($this->Kits)
             ->innerJoinWith('SystemCategories', function ($q) use ($perspectiveID) {
                 return $q->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
@@ -501,14 +501,17 @@ class SystemsTable extends Table
                     ]);
                 });
             })
-            ->contain('Kits.Icons')
+            ->contain([
+                'Kits.Icons', 'SystemCategories.Banners'
+            ])
             ->where([
                 'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
             ])
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
-                    $system['banner'] = $system->_matchingData['Banners'];
-                    $system['banner'] = $system->generateBannerImage();
+                    $system['banner'] = $system['system_category']['banner'];
+                    $system['banner'] = (new System($system))->generateBannerImage();
+                    unset($system['system_category']);
 
                     return $system;
                 });

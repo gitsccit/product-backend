@@ -87,15 +87,15 @@ class System extends Entity
 
     public function getBreadcrumbs($identifier = null)
     {
-        if (!isset($this->system_category)) {
-            $this->system_category = FactoryLocator::get('Table')->get('ProductBackend.SystemCategories')
-                ->get($this->system_category_id);
+        if (!isset($this['system_category'])) {
+            $this['system_category'] = FactoryLocator::get('Table')->get('ProductBackend.SystemCategories')
+                ->get($this['system_category_id']);
         }
 
-        $breadcrumbs = $this->system_category->getBreadcrumbs();
+        $breadcrumbs = $this['system_category']->getBreadcrumbs();
         $breadcrumbs[] = [
-            'title' => $this->name,
-            'url' => "/system/$this->url" . ($identifier ? "/$identifier" : ''),
+            'title' => $this['name'],
+            'url' => "/system/$this[url]" . ($identifier ? "/$identifier" : ''),
         ];
 
         return $breadcrumbs;
@@ -219,8 +219,8 @@ class System extends Entity
         $color_transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
         imagefill($image, 0, 0, $color_transparent);
 
-        $banner = $this->banner;
-        $icons = $this->kit->icons;
+        $banner = $this['banner'];
+        $icons = $this['kit']['icons'];
 
         // add tile
         if ($tileID = $banner['tile_id'] ?? null) {
@@ -278,7 +278,7 @@ class System extends Entity
         $fontFile = WWW_ROOT . "font/latoblack.ttf";
 
         while (true) {
-            [$w1, $h1] = $this->generate_system_banner_ftbboxwh(21 - $freduce, $this->name_line_1, $fontFile);
+            [$w1, $h1] = $this->generate_system_banner_ftbboxwh(21 - $freduce, $this['name_line_1'], $fontFile);
             if ($w1 > $maxWidth) {
                 $freduce++;
             } else {
@@ -287,7 +287,7 @@ class System extends Entity
         }
 
         while (true) {
-            [$w2, $h2] = $this->generate_system_banner_ftbboxwh(24 - $freduce, $this->name_line_2, $fontFile);
+            [$w2, $h2] = $this->generate_system_banner_ftbboxwh(24 - $freduce, $this['name_line_2'], $fontFile);
             if ($w2 > $maxWidth) {
                 $freduce++;
             } else {
@@ -295,7 +295,7 @@ class System extends Entity
             }
         }
 
-        [$w1, $h1] = $this->generate_system_banner_ftbboxwh(21 - $freduce, $this->name_line_1, $fontFile);
+        [$w1, $h1] = $this->generate_system_banner_ftbboxwh(21 - $freduce, $this['name_line_1'], $fontFile);
 
         $lineHeight = $h1 + 8;
         $textTop = (int)floor($height / 4);
@@ -305,22 +305,22 @@ class System extends Entity
         $colorText3 = imagecolorallocatealpha($image, 55, 55, 55, 75);
 
         imagettftext($image, 21 - $freduce, 0, 32, $textTop + 1, $colorText3, $fontFile,
-            $this->name_line_1);
+            $this['name_line_1']);
         imagettftext($image, 21 - $freduce, 0, 30, $textTop, $colorText1, $fontFile,
-            $this->name_line_1);
+            $this['name_line_1']);
         imagettftext($image, 24 - $freduce, 0, 32, $textTop + 1 + $lineHeight, $colorText3, $fontFile,
-            $this->name_line_2);
+            $this['name_line_2']);
         imagettftext($image, 24 - $freduce, 0, 30, $textTop + $lineHeight, $colorText2, $fontFile,
-            $this->name_line_2);
+            $this['name_line_2']);
 
         // add system image
         $maxSystemImageWidth = floor($width * .4) - 30;
         $maxSystemImageHeight = floor($height) - 70;
 
-        $systemImage = @imagecreatefrompng($filesApiHandler->getFileUrl($this->image_id));
+        $systemImage = @imagecreatefrompng($filesApiHandler->getFileUrl($this['image_id']));
 
         if ($systemImage === false) {
-            $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $this->image_id");
+            $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $this[image_id]");
         }
 
         $systemImageWidth = imagesx($systemImage);
