@@ -361,7 +361,7 @@ class ProductsTable extends Table
     public function findActive(Query $query, array $options)
     {
         return $query
-            ->find('basic')
+            ->find('basic', $options)
             ->where([
                 'IFNULL(ProductPerspectives.active, Products.active) =' => 'yes',
             ]);
@@ -370,9 +370,9 @@ class ProductsTable extends Table
     public function findCompare(Query $query, array $options)
     {
         return $query
-            ->find('basic')
-            ->find('image')
-            ->find('specificationGroups')
+            ->find('basic', $options)
+            ->find('image', $options)
+            ->find('specificationGroups', $options)
             ->select($this->Manufacturers)
             ->contain(['Manufacturers']);
     }
@@ -380,8 +380,8 @@ class ProductsTable extends Table
     public function findListing(Query $query, array $options)
     {
         return $query
-            ->find('active')
-            ->find('image')
+            ->find('active', $options)
+            ->find('image', $options)
             ->select([
                 'Products.description',
                 'show_related_systems' => "IFNULL(Products.show_related_systems, ProductCategories.show_related_systems) = 'yes'",
@@ -397,9 +397,9 @@ class ProductsTable extends Table
     public function findDetails(Query $query, array $options)
     {
         return $query
-            ->find('listing')
-            ->find('relatedSystems')
-            ->find('specificationGroups')
+            ->find('listing', $options)
+            ->find('relatedSystems', $options)
+            ->find('specificationGroups', $options)
             ->select(['Products.gallery_id'])
             ->select($this->Galleries)
             ->contain([
