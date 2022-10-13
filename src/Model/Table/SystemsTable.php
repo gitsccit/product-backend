@@ -480,7 +480,7 @@ class SystemsTable extends Table
     public function findBanner(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $session->read('store.perspective');
+        $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
             ->find('active')

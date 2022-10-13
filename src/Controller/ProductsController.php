@@ -186,7 +186,7 @@ class ProductsController extends AppController
             'product_id' => $productID,
         ];
         $opportunity = [
-            'store_id' => $session->read('store.id'),
+            'store_id' => $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id'),
             'opportunity_details' => [$defaultOpportunityDetail],
         ];
 

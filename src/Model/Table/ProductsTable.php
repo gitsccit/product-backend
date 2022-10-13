@@ -450,7 +450,7 @@ class ProductsTable extends Table
     public function findSpecifications(Query $query, array $options)
     {
         $session = new Session();
-        $perspectiveID = $session->read('store.perspective');
+        $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
         $productCategoryID = $options['productCategoryID'];
 
         return $query
