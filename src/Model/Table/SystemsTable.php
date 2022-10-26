@@ -368,7 +368,7 @@ class SystemsTable extends Table
             ->innerJoinWith('Kits')
             ->formatResults(function ($result) use ($options) {
                 return $result->map(function ($system) use ($options) {
-                    $system['banner'] = Router::url("/system/banner/$system[url]", true);
+                    $system['banner'] = Router::url("/api/system/banner/$system[url]", true);
                     $system['noise_level'] = $system['noise_level'] === 'yes';
                     $system['power_estimate'] = $system['power_estimate'] === 'yes';
                     $system['buckets'] = $this->Kits->Buckets
