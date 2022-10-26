@@ -25,6 +25,7 @@ $routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $route
     $route->connect('/system/configuration/save', ['controller' => 'Systems', 'action' => 'saveConfiguration']);
     $route->connect('/system/configuration/validate',
         ['controller' => 'Systems', 'action' => 'validateConfiguration']);
+    $route->connect('/system/banner/*', ['controller' => 'Systems', 'action' => 'banner']);
     $route->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
 
     $route->prefix('Api', function (RouteBuilder $route) {
@@ -34,7 +35,6 @@ $routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $route
 
         $route->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
         $route->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
-        $route->connect('/system/banner/*', ['controller' => 'Systems', 'action' => 'banner']);
         $route->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
     });
 });
