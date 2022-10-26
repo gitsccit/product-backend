@@ -54,6 +54,6 @@ class SystemsController extends AppController
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
 
-        return $this->getResponse()->withStringBody($system['banner']);
+        return $this->getResponse()->withStringBody(base64_decode($system['banner']))->withType('image/png');
     }
 }
