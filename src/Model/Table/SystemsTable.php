@@ -352,8 +352,9 @@ class SystemsTable extends Table
     {
         return $query
             ->find('basic', $options)
+            ->find('banner', $options)
+            ->find('gallery', $options)
             ->find('baseConfiguration', $options)
-            ->find('image', ['type' => 'System'])
             ->select([
                 'description' => 'IFNULL(SystemPerspectives.description, Systems.description)',
                 'meta_title' => 'IFNULL(SystemPerspectives.meta_title, Systems.meta_title)',
@@ -512,6 +513,24 @@ class SystemsTable extends Table
                     $system['banner'] = $system['system_category']['banner'];
                     $system['banner'] = (new System($system))->generateBannerImage();
                     unset($system['system_category']);
+
+                    return $system;
+                });
+            });
+    }
+
+    public function findGallery(Query $query, array $options)
+    {
+        return $query
+            ->formatResults(function ($result) {
+                return $result->map(function ($system) {
+                    $gallery = [];
+                    foreach ($system['buckets'] as $bucket) {
+                        if (in_array($bucket['name'], ['Barebones', 'Chassis'])) {
+                            $gallery = array_merge($gallery, Hash::extract($bucket, 'groups.{n}.group_items.{n}.image'));
+                        }
+                    }
+                    $system['gallery'] = $gallery;
 
                     return $system;
                 });
