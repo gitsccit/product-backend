@@ -44,4 +44,16 @@ class SystemsController extends AppController
 
         $this->Crud->serialize(compact('system'));
     }
+
+    public function banner(string $url)
+    {
+        $url = str_replace(' ', '+', $url);
+        $systemUrl = $url;
+
+        $system = $this->Systems->find('banner')
+            ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
+            ->first();
+
+        return $this->getResponse()->withStringBody($system['banner']);
+    }
 }
