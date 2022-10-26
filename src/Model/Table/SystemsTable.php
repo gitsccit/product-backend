@@ -11,6 +11,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 use ProductBackend\Model\Entity\System;
@@ -352,9 +353,8 @@ class SystemsTable extends Table
     {
         return $query
             ->find('basic', $options)
-            ->find('banner', $options)
-            ->find('gallery', $options)
             ->find('baseConfiguration', $options)
+            ->find('image', ['type' => 'System'])
             ->select([
                 'description' => 'IFNULL(SystemPerspectives.description, Systems.description)',
                 'meta_title' => 'IFNULL(SystemPerspectives.meta_title, Systems.meta_title)',
@@ -368,6 +368,7 @@ class SystemsTable extends Table
             ->innerJoinWith('Kits')
             ->formatResults(function ($result) use ($options) {
                 return $result->map(function ($system) use ($options) {
+                    $system['banner'] = Router::url("/system/banner/$system[url]", true);
                     $system['noise_level'] = $system['noise_level'] === 'yes';
                     $system['power_estimate'] = $system['power_estimate'] === 'yes';
                     $system['buckets'] = $this->Kits->Buckets
@@ -430,7 +431,8 @@ class SystemsTable extends Table
 
                     return $system;
                 });
-            });
+            })
+            ->find('gallery', $options);
     }
 
     public function findBaseConfiguration(Query $query, array $options)

@@ -34,6 +34,7 @@ $routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $route
 
         $route->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
         $route->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
+        $route->connect('/system/banner/*', ['controller' => 'Systems', 'action' => 'banner']);
         $route->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
     });
 });
