@@ -16,8 +16,7 @@
                         <div class="square-container">
                             <a class="w-100 h-100 d-flex align-items-center justify-content-center p-5 bg-white"
                                href="<?= $categoryUrl ?>">
-                                <img class="mw-100 mh-100"
-                                     src="<?= ($subCategory['products'] ?? $subCategory['systems'])[0]['image'] ?>"
+                                <img class="mw-100 mh-100" src="<?= $subCategory['image'] ?>"
                                      alt="<?= $subCategory['name'] ?>">
                             </a>
                         </div>

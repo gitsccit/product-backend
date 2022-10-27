@@ -10,7 +10,7 @@ $emptyFieldValue = '—';
 
 $specificationGroups = [];
 foreach ($products as $product) {
-    foreach ($product->specification_groups as $groupName => $specificationGroup) {
+    foreach ($product['specification_groups'] as $groupName => $specificationGroup) {
         if (!array_key_exists($groupName, $specificationGroups)) {
             $specificationGroups[$groupName] = [];
         }

@@ -22,7 +22,7 @@ class SystemCategoriesController extends AppController
      */
     public function index()
     {
-        $systemCategories = $this->SystemCategories->find('listing')->find('threaded');
+        $systemCategories = $this->SystemCategories->find('listing')->find('threaded')->all();
 
         if ($parentID = $this->request->getAttribute('parent_id')) {
             $findSubCategories = function ($categories) use (&$findSubCategories, $parentID) {
@@ -42,19 +42,7 @@ class SystemCategoriesController extends AppController
             $systemCategories = new Collection($findSubCategories($systemCategories));
         }
 
-        # Add a few systems to the system categories for category preview.
-        foreach ($systemCategories as $systemCategory) {
-            if ($this->request->getParam('pass')) {
-                $systemCategory->loadSystems(1);
-            } else {
-                foreach ($systemCategory->children as $subCategory) {
-                    $subCategory->loadSystems(1);
-                }
-            }
-        }
-
         $firstChildCategory = $systemCategories->first();
-
         $firstChildCategoryBreadcrumbs = $firstChildCategory->getBreadcrumbs();
         $breadcrumbs = array_slice($firstChildCategoryBreadcrumbs, 0, count($firstChildCategoryBreadcrumbs) - 1);
 

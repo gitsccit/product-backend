@@ -14,8 +14,7 @@
                 <div class="d-flex flex-column bg-3 h-100 shadow">
                     <a class="d-flex align-items-center justify-content-center p-5 bg-white" href="<?= $categoryUrl ?>"
                        style="height: 150px">
-                        <img class="mw-100 mh-100"
-                             src="<?= ($subCategory['products'] ?? $subCategory['systems'])[0]['image'] ?>"
+                        <img class="mw-100 mh-100" src="<?= $subCategory['image'] ?>"
                              alt="<?= $subCategory['name'] ?>">
                     </a>
                     <div class="d-flex flex-column p-4 flex-grow-1 align-items-center">
