@@ -8,7 +8,7 @@ $url = $this->Url->build("/system/$card[url]" . (isset($opportunityKey) ? "/$opp
 ?>
 <div class="d-flex flex-column bg-3 h-100 shadow">
     <a class="d-flex justify-content-center align-items-center p-5 bg-white" href="<?= $url ?>" style="height: 150px">
-        <img class="mw-100 mh-100" src="<?= $this->filesApiHandler->getFileUrl($card['image_id'], 100, 70) ?>"
+        <img class="mw-100 mh-100" src="<?= $card['image'] ?>"
              alt="<?= $card['name'] ?>">
     </a>
     <div class="d-flex flex-column flex-fill p-4">
@@ -18,7 +18,7 @@ $url = $this->Url->build("/system/$card[url]" . (isset($opportunityKey) ? "/$opp
                 <div class="d-flex">
                     <div style="width:20px; height: 20px" class="d-flex justify-content-center align-items-center me-1">
                         <img class="mw-100 mh-100"
-                             src="<?= $this->filesApiHandler->getFileUrl($tag['image_id']) ?>">
+                             src="<?= $tag['image'] ?>">
                     </div>
                     <div>
                         <?php if ($tag['value']) : ?>

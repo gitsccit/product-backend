@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 
 $this->Breadcrumbs->add($breadcrumbs ?? []);
 
-$system['image'] = $this->filesApiHandler->getFileUrl($system['image_id'], 200, 200);
+$system['image'] = $this->filesApiHandler->getFileUrl($system['image'], 200, 200);
 
 $priceLevels = json_encode($priceLevels ?? null, JSON_HEX_APOS);
 $currentPriceLevel = $this->request->getQuery(

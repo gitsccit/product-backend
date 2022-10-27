@@ -30,14 +30,13 @@ $selectedProducts = $selectedProducts ? explode(',', $selectedProducts) : [];
 $section = [];
 foreach ($products as $index => $product) {
     $url = $this->Url->build("/product/$product[url]");
-    $image = $this->filesApiHandler->getFileUrl($product['image_id'], 200, 100);
     $section['Product'][] = "
     <div class='d-flex flex-column justify-content-between h-100'>
         <a class='mb-3 text-black' href='$url'>
             {$this->Text->truncate($product['name'], 100, ['exact' => false])}
         </a>
         <a class='d-flex justify-content-center align-items-center bg-white p-1' style='height: 100px' href='$url'>
-            <img class='mw-100 mh-100' src='$image'>
+            <img class='mw-100 mh-100' src='$product[image]'>
         </a>
     </div>";
     $checked = $index === 0 ? 'checked' : '';
