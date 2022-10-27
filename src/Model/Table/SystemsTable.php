@@ -236,7 +236,7 @@ class SystemsTable extends Table
 
         return $query
             ->find('price', $options)
-            ->find('cost', $options)
+//            ->find('cost', $options)
             ->select([
                 'Systems.id',
                 'Systems.kit_id',
