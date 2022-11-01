@@ -8,7 +8,7 @@ $this->Breadcrumbs->add($breadcrumbs ?? []);
 <div class="container py-5">
     <div class="row">
         <div class="col-lg-5">
-            <?= $this->element('ProductBackend.galleries/3', ['images' => $product->gallery->gallery_images]) ?>
+            <?= $this->element('ProductBackend.galleries/3', ['images' => $product['gallery']]) ?>
         </div>
         <div class="col-lg-4">
             <div class="d-flex flex-column justify-content-around">
