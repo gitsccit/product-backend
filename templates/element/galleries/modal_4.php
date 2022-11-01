@@ -27,12 +27,7 @@ $hasOneSlide = count($images) <= $slideSize;
                                             <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $i === 0 && $j === 0 ? ' active' : '' ?>"
                                                id="modal-image-<?= $image['id'] ?>-tab" data-bs-toggle="tab"
                                                href="#modal-image-<?= $image['id'] ?>" role="tab" style="height: 80px">
-                                                <img class="mw-100 mh-100"
-                                                     src="<?= $this->filesApiHandler->getFileUrl(
-                                                         $image['file_id'],
-                                                         300,
-                                                         200
-                                                     ) ?>">
+                                                <img class="mw-100 mh-100" src="<?= $image ?>">
                                             </a>
                                         </li>
                                     <?php endforeach; ?>
@@ -56,11 +51,10 @@ $hasOneSlide = count($images) <= $slideSize;
                 <div class="tab-content" id="modal-gallery-content">
                     <?php foreach ($images as $index => $image) : ?>
                         <div class="tab-pane fade<?= $index === 0 ? ' show active' : '' ?>"
-                             id="modal-image-<?= $image['id'] ?>" role="tabpanel">
+                             id="modal-image-<?= $index ?>" role="tabpanel">
                             <div class="d-flex justify-content-center align-items-center bg-white image-tab p-5"
                                  style="height: 300px">
-                                <img class="mw-100 mh-100"
-                                     src="<?= $this->filesApiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                                <img class="mw-100 mh-100" src="<?= $image ?>">
                             </div>
                         </div>
                     <?php endforeach; ?>

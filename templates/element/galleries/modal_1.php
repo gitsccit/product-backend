@@ -13,8 +13,8 @@
                         <?php foreach ($images as $index => $image) : ?>
                             <li class="col-6 p-2">
                                 <a class="d-flex justify-content-center align-items-center bg-white image-tab p-1<?= $index === 0 ? ' active' : '' ?>"
-                                   id="modal-image-<?= $image['id'] ?>-tab" data-bs-toggle="tab" href="#modal-image-<?= $image['id'] ?>" role="tab" style="height: 60px">
-                                    <img class="mw-100 mh-100" src="<?= $this->filesApiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                                   id="modal-image-<?= $index ?>-tab" data-bs-toggle="tab" href="#modal-image-<?= $index ?>" role="tab" style="height: 60px">
+                                    <img class="mw-100 mh-100" src="<?= $image ?>">
                                 </a>
                             </li>
                         <?php endforeach; ?>
@@ -31,10 +31,10 @@
                         <div class="tab-content" id="modal-gallery-content">
                             <?php foreach ($images as $index => $image) : ?>
                                 <div class="tab-pane fade<?= $index === 0 ? ' show active' : '' ?>"
-                                     id="modal-image-<?= $image['id'] ?>" role="tabpanel">
+                                     id="modal-image-<?= $index ?>" role="tabpanel">
                                     <div class="d-flex justify-content-center align-items-center bg-white image-tab p-5"
                                          style="height: 300px">
-                                        <img class="mw-100 mh-100" src="<?= $this->filesApiHandler->getFileUrl($image['file_id'], 300, 200) ?>">
+                                        <img class="mw-100 mh-100" src="<?= $image ?>">
                                     </div>
                                 </div>
                             <?php endforeach; ?>

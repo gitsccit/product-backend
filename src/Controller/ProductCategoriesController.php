@@ -51,11 +51,6 @@ class ProductCategoriesController extends AppController
             $productCategories = $findSubCategories($productCategories);
         }
 
-        # Add a few products to the product categories for category preview.
-        foreach ($productCategories as $systemCategory) {
-            $systemCategory->loadProducts(1);
-        }
-
         $breadcrumbs = ProductCategory::getBreadcrumbBase();
 
         $this->set(compact('productCategories', 'breadcrumbs'));

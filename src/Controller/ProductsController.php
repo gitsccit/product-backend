@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
+use ProductBackend\Model\Entity\Product;
 
 /**
  * Products Controller
@@ -66,7 +67,7 @@ class ProductsController extends AppController
         }
 
         if (!$this->request->is('ajax')) {
-            $breadcrumbs = $product->getBreadcrumbs();
+            $breadcrumbs = (new Product($product))->getBreadcrumbs();
             $this->set(compact('breadcrumbs'));
         }
 
