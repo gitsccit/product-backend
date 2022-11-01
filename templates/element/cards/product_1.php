@@ -49,8 +49,8 @@ $url = $this->Url->build("/product/$card[url]" . (isset($opportunityKey) ? "/$op
                         </div>
                         <input class="form-control mb-3" style="width: 4rem" type="number" name="quantity"
                                min="1" value="1">
-                        <a class="btn btn-primary text-nowrap"
-                           href="<?= $this->Url->build("/product/save/$card[id]" . (isset($opportunityKey) ? "/$opportunityKey" : '')) ?>">
+                        <a class="btn btn-primary text-nowrap" href="javascript:void(0)"
+                           onclick="window.location.assign('<?= $this->Url->build("/product/save/$card[id]" . (isset($opportunityKey) ? "/$opportunityKey" : '')) ?>')">
                             Add To Order
                         </a>
                     </div>
