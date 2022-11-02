@@ -212,7 +212,7 @@ class SystemsController extends AppController
         $this->set(compact('system', 'tabs', 'opportunityKey', 'configKey', 'subKitPath'));
         $this->set(['systemUrl' => $url]);
 
-        $layout = $session->read('store.layout_system');
+        $layout = $session->read("opportunities.$opportunityKey.store.layout_system") ?? $session->read('store.layout_system');
         $this->viewBuilder()->setTemplate("view_$layout");
     }
 
