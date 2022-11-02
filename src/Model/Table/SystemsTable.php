@@ -211,7 +211,7 @@ class SystemsTable extends Table
         if (Configure::read('ProductBackend.showCost')) {
             $query
                 ->contain('SystemItems.GroupItems', function ($query) use ($options) {
-                    return $query->find('configuration', $options);
+                    return $query->find('cost', $options);
                 })
                 ->formatResults(function ($result) {
                     return $result->map(function ($system) {
@@ -236,7 +236,7 @@ class SystemsTable extends Table
 
         return $query
             ->find('price', $options)
-//            ->find('cost', $options)
+            ->find('cost', $options)
             ->select([
                 'Systems.id',
                 'Systems.kit_id',

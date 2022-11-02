@@ -107,6 +107,15 @@ class GroupItemsTable extends Table
         return $rules;
     }
 
+    public function findCost(Query $query, array $options = [])
+    {
+        if (Configure::read('ProductBackend.showCost')) {
+            $query->select(['GroupItems.id', 'cost' => 'Products.cost'])->leftJoinWith('Products');
+        }
+
+        return $query;
+    }
+
     public function findConfiguration(Query $query, array $options = [])
     {
         return $query
