@@ -309,7 +309,6 @@ class SystemsTable extends Table
                 },
             ])
             ->select($this->Kits)
-            ->where(['Systems.category_browse' => 'yes'])
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
                     $tags = new Collection($system['kit']['tags']);
