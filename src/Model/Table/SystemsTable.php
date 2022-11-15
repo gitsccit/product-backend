@@ -452,12 +452,13 @@ class SystemsTable extends Table
             ->select([
                 'image_id' => 'file_id',
             ])
-            ->leftJoinWith("SystemItems.GroupItems.Products.Galleries.${imageType}GalleryImages")
+            ->leftJoinWith("SystemItems.GroupItems.Products.Galleries.${imageType}GalleryImages", function ($q) use ($imageType) {
+                return $q->where([
+                    "${imageType}GalleryImages.id IS NOT NULL",
+                    "${imageType}GalleryImages.active" => 'yes',
+                ]);
+            })
             ->leftJoinWith('SystemItems.GroupItems.Products.ProductCategories')
-            ->where([
-                "${imageType}GalleryImages.id IS NOT NULL",
-                "${imageType}GalleryImages.active" => 'yes',
-            ])
             ->order([
                 'ProductCategories.gallery_priority' => 'DESC',
                 'Products.cost' => 'DESC',
