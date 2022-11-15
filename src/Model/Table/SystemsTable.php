@@ -280,6 +280,7 @@ class SystemsTable extends Table
             ->select([
                 'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
                 'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
+                'Systems.category_browse',
             ])
             ->find('active', $options)
             ->find('basic', $options)
@@ -308,6 +309,7 @@ class SystemsTable extends Table
                 },
             ])
             ->select($this->Kits)
+            ->where(['Systems.category_browse' => 'yes'])
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
                     $tags = new Collection($system['kit']['tags']);
