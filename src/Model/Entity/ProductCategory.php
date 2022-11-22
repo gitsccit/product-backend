@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Entity;
 
+use Cake\Datasource\FactoryLocator;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Entity;
 
 /**
@@ -56,4 +58,41 @@ class ProductCategory extends Entity
         'raid_maps' => true,
         'spare_category_relations' => true,
     ];
+
+    public static function getBreadcrumbBase()
+    {
+        return [
+            [
+                'title' => 'Hardware',
+                'url' => '/hardware',
+            ],
+        ];
+    }
+
+    public function getBreadcrumbs()
+    {
+        if ($this->parent_id && !isset($this->parent_product_category)) {
+            $this->parent_product_category = FactoryLocator::get('Table')->get('ProductBackend.ProductCategories')
+                ->get($this->parent_id, ['finder' => 'listing']);
+
+            if (is_null($this->parent_product_category)) {
+                throw new NotFoundException();
+            }
+
+            $breadcrumbs = $this->parent_product_category->getBreadcrumbs();
+        }
+
+        if (!isset($breadcrumbs)) {
+            $breadcrumbs = ProductCategory::getBreadcrumbBase();
+        }
+
+        $parentCrumb = end($breadcrumbs);
+
+        $breadcrumbs[] = [
+            'title' => $this->name,
+            'url' => "$parentCrumb[url]/$this->url",
+        ];
+
+        return $breadcrumbs;
+    }
 }
