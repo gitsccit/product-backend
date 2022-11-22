@@ -216,7 +216,8 @@ class KitsTable extends Table
             ->select([
                 'Kits.id',
                 'Tags.id',
-                'group' => 'TagGroups.name',
+                'category_name' => 'TagCategories.name',
+                'group_name' => 'TagGroups.name',
                 'name' => 'Tags.name',
                 'image_id' => 'Tags.image_id',
                 'value' => "IF(TagGroups.display_value = 'yes', KitsTags.value, NULL)",
@@ -614,11 +615,11 @@ GROUP BY sras.id", [$priceLevelID, $perspectiveID, $rule['id']])->fetchAll('asso
                 $quantity += (float)$l['quantity_modifier'];
                 if ($quantity > 0) {
                     $additionalItems[] = ($quantity > 1 ? $quantity . ' x ' : '') . "$l[name] [+" . number_format(
-                        $l['price'] * $quantity,
-                        2,
-                        '.',
-                        ','
-                    ) . ']';
+                            $l['price'] * $quantity,
+                            2,
+                            '.',
+                            ','
+                        ) . ']';
                     $price += $l['price'] * $quantity;
                     $cost += $l['cost'] * $quantity;
                 }

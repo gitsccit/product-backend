@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -114,6 +115,43 @@ class SpecificationsTable extends Table
         $rules->add($rules->existsIn('specification_unit_id', 'SpecificationUnits'), ['errorField' => 'specification_unit_id']);
 
         return $rules;
+    }
+
+    public function findSpecifications(Query $query, array $options)
+    {
+        return $query
+            ->select([
+                'id' => 'SpecificationFields.id',
+                'Specifications.product_id',
+                'name' => 'SpecificationFields.name',
+                'value' => 'Specifications.text_value',
+            ])
+            ->innerJoinWith('SpecificationFields.SpecificationGroups')
+            ->where([
+                'SpecificationFields.techspec' => 'yes',
+            ])
+            ->order([
+                'SpecificationGroups.sort',
+                'SpecificationGroups.name',
+                'SpecificationFields.sort',
+                'SpecificationGroups.name',
+                'Specifications.sequence',
+                'Specifications.sort',
+                'Specifications.text_value',
+            ]);
+    }
+
+    public function findOverview(Query $query, array $options)
+    {
+        return $query
+            ->select([
+                'description' => "GROUP_CONCAT(Specifications.text_value ORDER BY
+                         SpecificationGroups.sort ASC, SpecificationFields.sort ASC, Specifications.sort ASC
+                         SEPARATOR ', ')",
+            ])
+            ->innerJoinWith('SpecificationFields.SpecificationGroups')
+            ->group('Specifications.product_id')
+            ->limit(10);
     }
 
     /**

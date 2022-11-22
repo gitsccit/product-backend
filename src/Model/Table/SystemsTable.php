@@ -296,7 +296,7 @@ class SystemsTable extends Table
                             'Tags.name',
                             'Tags.image_id',
                             'value' => "IF(TagGroups.display_value = 'yes', KitsTags.value, NULL)",
-                            'group' => 'TagGroups.name',
+                            'group_name' => 'TagGroups.name',
                         ])
                         ->innerJoinWith('TagGroups.TagCategories')
                         ->where([
@@ -313,7 +313,7 @@ class SystemsTable extends Table
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
                     $tags = new Collection($system['kit']['tags']);
-                    $tagGroups = $tags->groupBy('group')->toArray();
+                    $tagGroups = $tags->groupBy('group_name')->toArray();
                     $system['tags'] = [];
                     $tagCount = 7;
 
@@ -346,8 +346,8 @@ class SystemsTable extends Table
                 'support_badge' => 'Tags.name',
                 'support_badge_info' => 'KitsTags.value',
             ])
-            ->leftJoinWith('Kits.Tags', function (Query $q) {
-                return $q->where(['Tags.tag_category_id' => 18]);
+            ->leftJoinWith('Kits.Tags.TagGroups.TagCategories', function (Query $q) {
+                return $q->where(['TagCategories.name' => 'Support Badge']);
             });
     }
 

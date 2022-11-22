@@ -6,7 +6,7 @@
 
 $url = $this->Url->build("/system/$card[url]" . (isset($opportunityKey) ? "/$opportunityKey" : ''));
 
-$card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('category')->toArray();
+$card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('group_name')->toArray();
 ?>
 <div class="bg-3 my-3 shadow">
     <div class="row">
