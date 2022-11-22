@@ -43,8 +43,11 @@ foreach ($products as $index => $product) {
 //    $table['Remove'][] = "<a href='#' onclick='product_compare($product[id], false)'><span class='icon-cancel'></span></a>";
     $productSelected = in_array($product['id'], $selectedProducts);
     $buttonText = isset($bucket) ? ($productSelected ? 'Unselect' : 'Select') : 'Add To Order';
-    $section[$emptyFieldValue][] = (isset($bucket) && !$bucket['multiple'] && $productSelected) ? 'Current Selection' : "<a class='btn btn-primary' data-bs-dismiss='modal' onclick='window.configure._selectItem($bucket[id], $index)'>$buttonText</a>";
-    if (!isset($bucket)) {
+    if (isset($bucket)) {
+        $section[$emptyFieldValue][] = !$bucket['multiple'] && $productSelected ? 'Current Selection' : "<a class='btn btn-primary' data-bs-dismiss='modal' onclick='window.configure._selectItem($bucket[id], $index)'>$buttonText</a>";
+    } else {
+        $url = $this->Url->build("/product/save/$product[id]" . (isset($opportunityKey) ? "/$opportunityKey" : ''));
+        $section[$emptyFieldValue][] = "<a class='btn btn-primary' href='javascript:void(0)' onclick=\"window.location.assign('$url')\">$buttonText</a>";
         $section['Base Model'][] = "<input type='radio' name='$product[id]' $checked onchange=\"product_compare('{$this->Url->build('/')}', $product[id])\">";
     }
     $section['Price'][] = $this->Number->currency($product['price']);
@@ -65,9 +68,9 @@ foreach ($specificationGroups as $groupName => $specificationGroup) {
     foreach ($specificationGroup as $specification) {
         foreach ($products as $product) {
             $section[$specification][] = \Cake\Utility\Hash::extract(
-                    $product['specification_groups'][$groupName],
-                    "{n}[name=$specification].text_value"
-                )[0] ?? $emptyFieldValue;
+                $product['specification_groups'][$groupName],
+                "{n}[name=$specification].text_value"
+            )[0] ?? $emptyFieldValue;
         }
     }
     $sections[$groupName] = $section;
