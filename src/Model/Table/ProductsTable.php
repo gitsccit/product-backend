@@ -30,11 +30,13 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ProductPerspectivesTable&\Cake\ORM\Association\HasMany $ProductPerspectives
  * @property \ProductBackend\Model\Table\ProductPriceLevelsTable&\Cake\ORM\Association\HasMany $ProductPriceLevels
  * @property \ProductBackend\Model\Table\ProductRulesTable&\Cake\ORM\Association\HasMany $ProductRules
+ * @property \ProductBackend\Model\Table\ProductsRelationsTable&\Cake\ORM\Association\HasMany $ProductsRelations
  * @property \ProductBackend\Model\Table\SparesTable&\Cake\ORM\Association\HasMany $Spares
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\HasMany $Specifications
+ * @property \ProductBackend\Model\Table\ViewProductBrowseImagesTable&\Cake\ORM\Association\HasMany $ViewProductBrowseImages
  * @property \ProductBackend\Model\Table\GenericsTable&\Cake\ORM\Association\BelongsToMany $Generics
  * @property \ProductBackend\Model\Table\ProductRulesTable&\Cake\ORM\Association\BelongsToMany $ProductRules
- * @property \ProductBackend\Model\Table\ProductsRelationsTable&\Cake\ORM\Association\BelongsToMany $RelatedProducts
+ *
  * @method \ProductBackend\Model\Entity\Product newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Product newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Product[] newEntities(array $data, array $options = [])
@@ -121,6 +123,10 @@ class ProductsTable extends Table
             'foreignKey' => 'product_id',
             'className' => 'ProductBackend.ProductRules',
         ]);
+        $this->hasMany('ProductsRelations', [
+            'foreignKey' => 'product_id',
+            'className' => 'ProductBackend.ProductsRelations',
+        ]);
         $this->hasMany('Spares', [
             'foreignKey' => 'product_id',
             'className' => 'ProductBackend.Spares',
@@ -158,10 +164,6 @@ class ProductsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('url')
             ->maxLength('url', 80)
             ->requirePresence('url', 'create')
@@ -175,6 +177,18 @@ class ProductsTable extends Table
         $validator
             ->scalar('description')
             ->allowEmptyString('description');
+
+        $validator
+            ->nonNegativeInteger('product_category_id')
+            ->allowEmptyString('product_category_id');
+
+        $validator
+            ->nonNegativeInteger('gallery_id')
+            ->allowEmptyString('gallery_id');
+
+        $validator
+            ->nonNegativeInteger('manufacturer_id')
+            ->allowEmptyString('manufacturer_id');
 
         $validator
             ->scalar('part_number')
@@ -191,6 +205,10 @@ class ProductsTable extends Table
             ->scalar('upc')
             ->maxLength('upc', 14)
             ->allowEmptyString('upc');
+
+        $validator
+            ->nonNegativeInteger('status_id')
+            ->allowEmptyString('status_id');
 
         $validator
             ->scalar('status_text')
@@ -229,6 +247,10 @@ class ProductsTable extends Table
             ->allowEmptyString('show_related_systems');
 
         $validator
+            ->nonNegativeInteger('ship_box_id')
+            ->allowEmptyString('ship_box_id');
+
+        $validator
             ->scalar('ship_type')
             ->notEmptyString('ship_type');
 
@@ -250,6 +272,14 @@ class ProductsTable extends Table
             ->numeric('height')
             ->greaterThanOrEqual('height', 0)
             ->allowEmptyString('height');
+
+        $validator
+            ->nonNegativeInteger('country_of_origin_id')
+            ->allowEmptyString('country_of_origin_id');
+
+        $validator
+            ->nonNegativeInteger('ship_from_id')
+            ->allowEmptyString('ship_from_id');
 
         $validator
             ->scalar('lithium_battery')
@@ -298,16 +328,13 @@ class ProductsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add(
-            $rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']
-        );
-        $rules->add($rules->existsIn(['gallery_id'], 'Galleries'), ['errorField' => 'gallery_id']);
-        $rules->add($rules->existsIn(['manufacturer_id'], 'Manufacturers'), ['errorField' => 'manufacturer_id']);
-        $rules->add($rules->existsIn(['status_id'], 'ProductStatuses'), ['errorField' => 'status_id']);
-        $rules->add($rules->existsIn(['ship_box_id'], 'ShipBoxes'), ['errorField' => 'ship_box_id']);
-        $rules->add($rules->existsIn(['country_of_origin_id'], 'Locations'), ['errorField' => 'country_of_origin_id']);
-        $rules->add($rules->existsIn(['ship_from_id'], 'Locations'), ['errorField' => 'ship_from_id']);
+        $rules->add($rules->existsIn('product_category_id', 'ProductCategories'), ['errorField' => 'product_category_id']);
+        $rules->add($rules->existsIn('gallery_id', 'Galleries'), ['errorField' => 'gallery_id']);
+        $rules->add($rules->existsIn('manufacturer_id', 'Manufacturers'), ['errorField' => 'manufacturer_id']);
+        $rules->add($rules->existsIn('status_id', 'ProductStatuses'), ['errorField' => 'status_id']);
+        $rules->add($rules->existsIn('ship_box_id', 'ShipBoxes'), ['errorField' => 'ship_box_id']);
+        $rules->add($rules->existsIn('country_of_origin_id', 'Locations'), ['errorField' => 'country_of_origin_id']);
+        $rules->add($rules->existsIn('ship_from_id', 'Locations'), ['errorField' => 'ship_from_id']);
 
         return $rules;
     }

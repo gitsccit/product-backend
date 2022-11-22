@@ -6,18 +6,17 @@ namespace ProductBackend\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * SystemRule Entity
+ * TagCategoriesTagGroup Entity
  *
  * @property int $id
- * @property int $system_id
- * @property string $name
- * @property string $action
- * @property string|null $description
+ * @property int $tag_category_id
+ * @property int $tag_group_id
+ * @property int $sort
  *
- * @property \ProductBackend\Model\Entity\System $system
- * @property \ProductBackend\Model\Entity\SystemRuleDetail[] $system_rule_details
+ * @property \ProductBackend\Model\Entity\TagCategory $tag_category
+ * @property \ProductBackend\Model\Entity\TagGroup $tag_group
  */
-class SystemRule extends Entity
+class TagCategoriesTagGroup extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -26,14 +25,13 @@ class SystemRule extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
-        'system_id' => true,
-        'name' => true,
-        'action' => true,
-        'description' => true,
-        'system' => true,
-        'system_rule_details' => true,
+        'tag_category_id' => true,
+        'tag_group_id' => true,
+        'sort' => true,
+        'tag_category' => true,
+        'tag_group' => true,
     ];
 }

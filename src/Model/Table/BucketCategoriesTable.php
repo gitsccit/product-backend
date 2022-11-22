@@ -14,6 +14,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\TabsTable&\Cake\ORM\Association\BelongsTo $Tabs
  * @property \ProductBackend\Model\Table\BucketCategoriesTable&\Cake\ORM\Association\HasMany $ChildBucketCategories
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\HasMany $Buckets
+ *
  * @method \ProductBackend\Model\Entity\BucketCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\BucketCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\BucketCategory[] newEntities(array $data, array $options = [])
@@ -71,8 +72,12 @@ class BucketCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('parent_id')
+            ->allowEmptyString('parent_id');
+
+        $validator
+            ->nonNegativeInteger('tab_id')
+            ->allowEmptyString('tab_id');
 
         $validator
             ->scalar('name')
@@ -96,8 +101,8 @@ class BucketCategoriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['parent_id'], 'ParentBucketCategories'), ['errorField' => 'parent_id']);
-        $rules->add($rules->existsIn(['tab_id'], 'Tabs'), ['errorField' => 'tab_id']);
+        $rules->add($rules->existsIn('parent_id', 'ParentBucketCategories'), ['errorField' => 'parent_id']);
+        $rules->add($rules->existsIn('tab_id', 'Tabs'), ['errorField' => 'tab_id']);
 
         return $rules;
     }

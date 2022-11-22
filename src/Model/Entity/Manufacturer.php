@@ -14,7 +14,6 @@ use Cake\ORM\Entity;
  * @property int|null $image_id
  *
  * @property \ProductBackend\Model\Entity\Location $location
- * @property \ProductBackend\Model\Entity\Image $image
  * @property \ProductBackend\Model\Entity\Product[] $products
  */
 class Manufacturer extends Entity
@@ -26,14 +25,13 @@ class Manufacturer extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'name' => true,
         'countryoforigin_id' => true,
         'image_id' => true,
         'location' => true,
-        'image' => true,
         'products' => true,
     ];
 }

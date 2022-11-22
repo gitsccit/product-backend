@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\ShipRatesTable&\Cake\ORM\Association\BelongsTo $ShipRates
  * @property \ProductBackend\Model\Table\ShipRegionsTable&\Cake\ORM\Association\BelongsTo $ShipRegions
+ *
  * @method \ProductBackend\Model\Entity\ShipRateShipRegionPrice newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipRateShipRegionPrice newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipRateShipRegionPrice[] newEntities(array $data, array $options = [])
@@ -63,8 +64,12 @@ class ShipRateShipRegionPricesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('ship_rate_id')
+            ->notEmptyString('ship_rate_id');
+
+        $validator
+            ->nonNegativeInteger('ship_region_id')
+            ->notEmptyString('ship_region_id');
 
         $validator
             ->decimal('price')
@@ -84,8 +89,8 @@ class ShipRateShipRegionPricesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['ship_rate_id'], 'ShipRates'), ['errorField' => 'ship_rate_id']);
-        $rules->add($rules->existsIn(['ship_region_id'], 'ShipRegions'), ['errorField' => 'ship_region_id']);
+        $rules->add($rules->existsIn('ship_rate_id', 'ShipRates'), ['errorField' => 'ship_rate_id']);
+        $rules->add($rules->existsIn('ship_region_id', 'ShipRegions'), ['errorField' => 'ship_region_id']);
 
         return $rules;
     }

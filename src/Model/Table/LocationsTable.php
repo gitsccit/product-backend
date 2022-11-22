@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * Locations Model
  *
  * @property \ProductBackend\Model\Table\CustomerBomsTable&\Cake\ORM\Association\HasMany $CustomerBoms
+ *
  * @method \ProductBackend\Model\Entity\Location newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Location newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Location[] newEntities(array $data, array $options = [])
@@ -54,10 +55,6 @@ class LocationsTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
         $validator
             ->scalar('name')
             ->maxLength('name', 50)

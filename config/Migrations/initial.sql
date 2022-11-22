@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.30, for macos12 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for macos12 (x86_64)
 --
 -- Host: localhost    Database: product_backend
 -- ------------------------------------------------------
@@ -495,6 +495,49 @@ CREATE TABLE `kit_items`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `kit_option_code_items`
+--
+
+DROP TABLE IF EXISTS `kit_option_code_items`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `kit_option_code_items`
+(
+    `id`                 int(10) unsigned    NOT NULL AUTO_INCREMENT,
+    `kit_option_code_id` int(10) unsigned    NOT NULL,
+    `kit_item_id`        int(10) unsigned    NOT NULL,
+    `position`           tinyint(3) unsigned NOT NULL,
+    `part_number`        varchar(20) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `FK_kit_option_code_items_kit_option_codes` (`kit_option_code_id`),
+    KEY `FK_kit_option_code_items_kit_items` (`kit_item_id`),
+    CONSTRAINT `FK_kit_option_code_items_kit_items` FOREIGN KEY (`kit_item_id`) REFERENCES `kit_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `FK_kit_option_code_items_kit_option_codes` FOREIGN KEY (`kit_option_code_id`) REFERENCES `kit_option_codes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `kit_option_codes`
+--
+
+DROP TABLE IF EXISTS `kit_option_codes`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `kit_option_codes`
+(
+    `id`          int(10) unsigned    NOT NULL AUTO_INCREMENT,
+    `kit_id`      int(10) unsigned    NOT NULL,
+    `part_number` varchar(50)         NOT NULL,
+    `positions`   tinyint(3) unsigned NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `FK_kit_option_codes_kits` (`kit_id`),
+    CONSTRAINT `FK_kit_option_codes_kits` FOREIGN KEY (`kit_id`) REFERENCES `kits` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `kit_rule_details`
 --
 
@@ -905,6 +948,28 @@ CREATE TABLE `product_price_levels`
     CONSTRAINT `FK_product_price_levels_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `product_replacements`
+--
+
+DROP TABLE IF EXISTS `product_replacements`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_replacements`
+(
+    `id`                     int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `name`                   varchar(120)     DEFAULT NULL,
+    `product_category_path`  varchar(240)     DEFAULT NULL,
+    `manufacturer`           varchar(50)      DEFAULT NULL,
+    `part_number`            varchar(40)      DEFAULT NULL,
+    `replacement_product_id` int(10) unsigned DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `FK__products` (`replacement_product_id`),
+    CONSTRAINT `FK__products` FOREIGN KEY (`replacement_product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1664,52 +1729,23 @@ CREATE TABLE `system_price_levels`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `system_rule_details`
+-- Table structure for table `system_replacements`
 --
 
-DROP TABLE IF EXISTS `system_rule_details`;
+DROP TABLE IF EXISTS `system_replacements`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `system_rule_details`
+CREATE TABLE `system_replacements`
 (
-    `id`             int(10) unsigned                                                                                    NOT NULL AUTO_INCREMENT,
-    `system_rule_id` int(10) unsigned                                                                                    NOT NULL,
-    `logic`          enum ('AND','OR','(',')','BUCKET_SELECTED','BUCKET_QUANTITY','PRODUCT_SELECTED','PRODUCT_QUANTITY') NOT NULL,
-    `relation`       enum ('=','!=','<','<=','>=','>') DEFAULT NULL,
-    `value`          int(10) unsigned                  DEFAULT NULL,
-    `bucket_id`      int(10) unsigned                  DEFAULT NULL,
-    `group_item_id`  int(10) unsigned                  DEFAULT NULL,
-    `sort`           int(10) unsigned                                                                                    NOT NULL,
+    `id`                    int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `name`                  varchar(80)      DEFAULT NULL,
+    `system_category_path`  varchar(240)     DEFAULT NULL,
+    `replacement_system_id` int(10) unsigned DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `FK_system_rule_details_system_rules` (`system_rule_id`),
-    KEY `FK_system_rule_details_group_items` (`group_item_id`),
-    KEY `FK_system_rule_details_buckets` (`bucket_id`),
-    CONSTRAINT `FK_system_rule_details_buckets` FOREIGN KEY (`bucket_id`) REFERENCES `buckets` (`id`) ON UPDATE CASCADE,
-    CONSTRAINT `FK_system_rule_details_group_items` FOREIGN KEY (`group_item_id`) REFERENCES `group_items` (`id`) ON UPDATE CASCADE,
-    CONSTRAINT `FK_system_rule_details_system_rules` FOREIGN KEY (`system_rule_id`) REFERENCES `system_rules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    KEY `FK__systems` (`replacement_system_id`),
+    CONSTRAINT `FK__systems` FOREIGN KEY (`replacement_system_id`) REFERENCES `systems` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `system_rules`
---
-
-DROP TABLE IF EXISTS `system_rules`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `system_rules`
-(
-    `id`          int(10) unsigned        NOT NULL AUTO_INCREMENT,
-    `system_id`   int(10) unsigned        NOT NULL,
-    `name`        varchar(80)             NOT NULL,
-    `action`      set ('WARNING','ERROR') NOT NULL,
-    `description` text,
-    PRIMARY KEY (`id`),
-    KEY `FK_system_rules_systems` (`system_id`),
-    CONSTRAINT `FK_system_rules_systems` FOREIGN KEY (`system_id`) REFERENCES `systems` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1807,16 +1843,50 @@ DROP TABLE IF EXISTS `tag_categories`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tag_categories`
 (
-    `id`               int(10) unsigned  NOT NULL AUTO_INCREMENT,
-    `name`             varchar(80)       NOT NULL,
-    `filter`           enum ('yes','no') NOT NULL DEFAULT 'no',
-    `filter_sequence`  int(10) unsigned           DEFAULT NULL,
-    `support`          enum ('yes','no') NOT NULL DEFAULT 'no',
-    `support_text`     enum ('yes','no') NOT NULL DEFAULT 'no',
-    `support_sequence` int(10) unsigned           DEFAULT NULL,
+    `id`   int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(80)      NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tag_categories_tag_groups`
+--
+
+DROP TABLE IF EXISTS `tag_categories_tag_groups`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tag_categories_tag_groups`
+(
+    `id`              int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `tag_category_id` int(10) unsigned NOT NULL,
+    `tag_group_id`    int(10) unsigned NOT NULL,
+    `sort`            int(10) unsigned NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    KEY `FK_tag_categories_tag_groups_tag_categories` (`tag_category_id`),
+    KEY `FK_tag_categories_tag_groups_tag_groups` (`tag_group_id`),
+    CONSTRAINT `FK_tag_categories_tag_groups_tag_categories` FOREIGN KEY (`tag_category_id`) REFERENCES `tag_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `FK_tag_categories_tag_groups_tag_groups` FOREIGN KEY (`tag_group_id`) REFERENCES `tag_groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tag_groups`
+--
+
+DROP TABLE IF EXISTS `tag_groups`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tag_groups`
+(
+    `id`            int(10) unsigned  NOT NULL AUTO_INCREMENT,
+    `name`          varchar(80)       NOT NULL,
+    `display_value` enum ('yes','no') NOT NULL DEFAULT 'no',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1828,17 +1898,254 @@ DROP TABLE IF EXISTS `tags`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tags`
 (
-    `id`              int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `tag_category_id` int(10) unsigned          DEFAULT NULL,
-    `name`            varchar(50)      NOT NULL,
-    `image_id`        int(10) unsigned          DEFAULT NULL,
-    `sort`            int(10) unsigned NOT NULL DEFAULT '0',
+    `id`           int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `tag_group_id` int(10) unsigned          DEFAULT NULL,
+    `name`         varchar(50)      NOT NULL,
+    `image_id`     int(10) unsigned          DEFAULT NULL,
+    `sort`         int(10) unsigned NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
-    KEY `FK_tags_tags` (`tag_category_id`),
-    CONSTRAINT `FK_tags_tags` FOREIGN KEY (`tag_category_id`) REFERENCES `tags` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+    KEY `FK_tags_tags` (`tag_group_id`) USING BTREE,
+    CONSTRAINT `FK_tags_tag_groups` FOREIGN KEY (`tag_group_id`) REFERENCES `tag_groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `view_kit_browse_tags`
+--
+
+DROP TABLE IF EXISTS `view_kit_browse_tags`;
+/*!50001 DROP VIEW IF EXISTS `view_kit_browse_tags`*/;
+SET @saved_cs_client = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_kit_browse_tags` AS
+SELECT 1 AS `kit_id`,
+       1 AS `category`,
+       1 AS `group`,
+       1 AS `name`,
+       1 AS `value`,
+       1 AS `image_id`
+        */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_kit_card_tags`
+--
+
+DROP TABLE IF EXISTS `view_kit_card_tags`;
+/*!50001 DROP VIEW IF EXISTS `view_kit_card_tags`*/;
+SET @saved_cs_client = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_kit_card_tags` AS
+SELECT 1 AS `kit_id`,
+       1 AS `name`,
+       1 AS `value`
+        */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_kit_tags`
+--
+
+DROP TABLE IF EXISTS `view_kit_tags`;
+/*!50001 DROP VIEW IF EXISTS `view_kit_tags`*/;
+SET @saved_cs_client = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_kit_tags` AS
+SELECT 1 AS `kit_id`,
+       1 AS `category`,
+       1 AS `group`,
+       1 AS `name`,
+       1 AS `value`,
+       1 AS `image_id`
+        */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_product_browse_images`
+--
+
+DROP TABLE IF EXISTS `view_product_browse_images`;
+/*!50001 DROP VIEW IF EXISTS `view_product_browse_images`*/;
+SET @saved_cs_client = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_product_browse_images` AS
+SELECT 1 AS `product_id`,
+       1 AS `image_id`
+        */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_system_browse_images`
+--
+
+DROP TABLE IF EXISTS `view_system_browse_images`;
+/*!50001 DROP VIEW IF EXISTS `view_system_browse_images`*/;
+SET @saved_cs_client = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_system_browse_images` AS
+SELECT 1 AS `system_id`,
+       1 AS `image_id`
+        */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `view_system_system_images`
+--
+
+DROP TABLE IF EXISTS `view_system_system_images`;
+/*!50001 DROP VIEW IF EXISTS `view_system_system_images`*/;
+SET @saved_cs_client = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `view_system_system_images` AS
+SELECT 1 AS `system_id`,
+       1 AS `image_id`
+        */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Final view structure for view `view_kit_browse_tags`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_kit_browse_tags`*/;
+/*!50001 SET @saved_cs_client = @@character_set_client */;
+/*!50001 SET @saved_cs_results = @@character_set_results */;
+/*!50001 SET @saved_col_connection = @@collation_connection */;
+/*!50001 SET character_set_client = utf8mb4 */;
+/*!50001 SET character_set_results = utf8mb4 */;
+/*!50001 SET collation_connection = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_browse_tags` AS
+select `view_kit_tags`.`kit_id`   AS `kit_id`,
+       `view_kit_tags`.`category` AS `category`,
+       `view_kit_tags`.`group`    AS `group`,
+       `view_kit_tags`.`name`     AS `name`,
+       `view_kit_tags`.`value`    AS `value`,
+       `view_kit_tags`.`image_id` AS `image_id`
+from `view_kit_tags`
+where (`view_kit_tags`.`category` = 'Support')
+        */;
+/*!50001 SET character_set_client = @saved_cs_client */;
+/*!50001 SET character_set_results = @saved_cs_results */;
+/*!50001 SET collation_connection = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_kit_card_tags`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_kit_card_tags`*/;
+/*!50001 SET @saved_cs_client = @@character_set_client */;
+/*!50001 SET @saved_cs_results = @@character_set_results */;
+/*!50001 SET @saved_col_connection = @@collation_connection */;
+/*!50001 SET character_set_client = utf8mb4 */;
+/*!50001 SET character_set_results = utf8mb4 */;
+/*!50001 SET collation_connection = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_card_tags` AS
+select `view_kit_tags`.`kit_id` AS `kit_id`, `view_kit_tags`.`name` AS `name`, `view_kit_tags`.`value` AS `value`
+from `view_kit_tags`
+where (`view_kit_tags`.`category` = 'Support Badge')
+        */;
+/*!50001 SET character_set_client = @saved_cs_client */;
+/*!50001 SET character_set_results = @saved_cs_results */;
+/*!50001 SET collation_connection = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_kit_tags`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_kit_tags`*/;
+/*!50001 SET @saved_cs_client = @@character_set_client */;
+/*!50001 SET @saved_cs_results = @@character_set_results */;
+/*!50001 SET @saved_col_connection = @@collation_connection */;
+/*!50001 SET character_set_client = utf8mb4 */;
+/*!50001 SET character_set_results = utf8mb4 */;
+/*!50001 SET collation_connection = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_tags` AS
+select `kt`.`kit_id`                                          AS `kit_id`,
+       `tc`.`name`                                            AS `category`,
+       `tg`.`name`                                            AS `group`,
+       `t`.`name`                                             AS `name`,
+       if((`tg`.`display_value` = 'yes'), `kt`.`value`, NULL) AS `value`,
+       `t`.`image_id`                                         AS `image_id`
+from ((((`kits_tags` `kt` join `tags` `t` on ((`t`.`id` = `kt`.`tag_id`))) join `tag_groups` `tg`
+        on ((`tg`.`id` = `t`.`tag_group_id`))) join `tag_categories_tag_groups` `tctg`
+       on ((`tctg`.`tag_group_id` = `tg`.`id`))) join `tag_categories` `tc` on ((`tc`.`id` = `tctg`.`tag_category_id`)))
+order by `tc`.`name`, `tctg`.`sort`, `t`.`sort`, `t`.`name`
+        */;
+/*!50001 SET character_set_client = @saved_cs_client */;
+/*!50001 SET character_set_results = @saved_cs_results */;
+/*!50001 SET collation_connection = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_product_browse_images`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_product_browse_images`*/;
+/*!50001 SET @saved_cs_client = @@character_set_client */;
+/*!50001 SET @saved_cs_results = @@character_set_results */;
+/*!50001 SET @saved_col_connection = @@collation_connection */;
+/*!50001 SET character_set_client = utf8mb4 */;
+/*!50001 SET character_set_results = utf8mb4 */;
+/*!50001 SET collation_connection = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_product_browse_images` AS
+select `p`.`id` AS `product_id`, `i`.`file_id` AS `image_id`
+from ((`products` `p` join `galleries` `g` on ((`g`.`id` = `p`.`gallery_id`))) join `gallery_images` `i`
+      on ((`i`.`id` = `g`.`product_gallery_image_id`)))
+        */;
+/*!50001 SET character_set_client = @saved_cs_client */;
+/*!50001 SET character_set_results = @saved_cs_results */;
+/*!50001 SET collation_connection = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_system_browse_images`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_system_browse_images`*/;
+/*!50001 SET @saved_cs_client = @@character_set_client */;
+/*!50001 SET @saved_cs_results = @@character_set_results */;
+/*!50001 SET @saved_col_connection = @@collation_connection */;
+/*!50001 SET character_set_client = utf8mb4 */;
+/*!50001 SET character_set_results = utf8mb4 */;
+/*!50001 SET collation_connection = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_system_browse_images` AS
+select `s`.`id` AS `system_id`, `i`.`file_id` AS `image_id`
+from ((((((`systems` `s` join `system_items` `si` on ((`si`.`system_id` = `s`.`id`))) join `group_items` `gi`
+          on ((`gi`.`id` = `si`.`item_id`))) join `products` `p`
+         on ((`p`.`id` = `gi`.`product_id`))) join `galleries` `g`
+        on ((`g`.`id` = `p`.`gallery_id`))) join `gallery_images` `i`
+       on ((`i`.`id` = `g`.`browse_gallery_image_id`))) join `product_categories` `pc`
+      on ((`pc`.`id` = `p`.`product_category_id`)))
+where ((`g`.`browse_gallery_image_id` is not null) and (`i`.`active` = 'yes'))
+order by `pc`.`gallery_priority` desc, `p`.`cost` desc, `p`.`sort`
+        */;
+/*!50001 SET character_set_client = @saved_cs_client */;
+/*!50001 SET character_set_results = @saved_cs_results */;
+/*!50001 SET collation_connection = @saved_col_connection */;
+
+--
+-- Final view structure for view `view_system_system_images`
+--
+
+/*!50001 DROP VIEW IF EXISTS `view_system_system_images`*/;
+/*!50001 SET @saved_cs_client = @@character_set_client */;
+/*!50001 SET @saved_cs_results = @@character_set_results */;
+/*!50001 SET @saved_col_connection = @@collation_connection */;
+/*!50001 SET character_set_client = utf8mb4 */;
+/*!50001 SET character_set_results = utf8mb4 */;
+/*!50001 SET collation_connection = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_system_system_images` AS
+select `s`.`id` AS `system_id`, `i`.`file_id` AS `image_id`
+from ((((((`systems` `s` join `system_items` `si` on ((`si`.`system_id` = `s`.`id`))) join `group_items` `gi`
+          on ((`gi`.`id` = `si`.`item_id`))) join `products` `p`
+         on ((`p`.`id` = `gi`.`product_id`))) join `galleries` `g`
+        on ((`g`.`id` = `p`.`gallery_id`))) join `gallery_images` `i`
+       on ((`i`.`id` = `g`.`system_gallery_image_id`))) join `product_categories` `pc`
+      on ((`pc`.`id` = `p`.`product_category_id`)))
+where ((`g`.`system_gallery_image_id` is not null) and (`i`.`active` = 'yes'))
+order by `pc`.`gallery_priority` desc, `p`.`cost` desc, `p`.`sort`
+        */;
+/*!50001 SET character_set_client = @saved_cs_client */;
+/*!50001 SET character_set_results = @saved_cs_results */;
+/*!50001 SET collation_connection = @saved_col_connection */;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
@@ -1849,4 +2156,4 @@ CREATE TABLE `tags`
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-12 16:52:12
+-- Dump completed on 2022-11-21 15:36:53

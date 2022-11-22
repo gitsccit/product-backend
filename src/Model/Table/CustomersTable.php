@@ -14,6 +14,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\CustomerBomsTable&\Cake\ORM\Association\HasMany $CustomerBoms
  * @property \ProductBackend\Model\Table\CustomerCategoriesTable&\Cake\ORM\Association\HasMany $CustomerCategories
  * @property \ProductBackend\Model\Table\CustomerProductsTable&\Cake\ORM\Association\HasMany $CustomerProducts
+ *
  * @method \ProductBackend\Model\Entity\Customer newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Customer newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Customer[] newEntities(array $data, array $options = [])
@@ -71,8 +72,8 @@ class CustomersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('perspective_id')
+            ->allowEmptyString('perspective_id');
 
         $validator
             ->scalar('name')
@@ -101,7 +102,7 @@ class CustomersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
+        $rules->add($rules->existsIn('perspective_id', 'Perspectives'), ['errorField' => 'perspective_id']);
 
         return $rules;
     }

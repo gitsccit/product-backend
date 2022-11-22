@@ -10,9 +10,9 @@ use Cake\Validation\Validator;
 /**
  * Tags Model
  *
- * @property \ProductBackend\Model\Table\TagCategoriesTable&\Cake\ORM\Association\BelongsTo $TagCategories
- * @property \ProductBackend\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsTo $Images
+ * @property \ProductBackend\Model\Table\TagGroupsTable&\Cake\ORM\Association\BelongsTo $TagGroups
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsToMany $Kits
+ *
  * @method \ProductBackend\Model\Entity\Tag newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Tag newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Tag[] newEntities(array $data, array $options = [])
@@ -43,13 +43,9 @@ class TagsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('TagCategories', [
-            'foreignKey' => 'tag_category_id',
-            'className' => 'ProductBackend.TagCategories',
-        ]);
-        $this->belongsTo('Images', [
-            'foreignKey' => 'image_id',
-            'className' => 'ProductBackend.Images',
+        $this->belongsTo('TagGroups', [
+            'foreignKey' => 'tag_group_id',
+            'className' => 'ProductBackend.TagGroups',
         ]);
         $this->belongsToMany('Kits', [
             'foreignKey' => 'tag_id',
@@ -68,14 +64,18 @@ class TagsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('tag_group_id')
+            ->allowEmptyString('tag_group_id');
 
         $validator
             ->scalar('name')
             ->maxLength('name', 50)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
+
+        $validator
+            ->nonNegativeInteger('image_id')
+            ->allowEmptyFile('image_id');
 
         $validator
             ->nonNegativeInteger('sort')
@@ -93,8 +93,7 @@ class TagsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['tag_category_id'], 'TagCategories'), ['errorField' => 'tag_category_id']);
-        $rules->add($rules->existsIn(['image_id'], 'Images'), ['errorField' => 'image_id']);
+        $rules->add($rules->existsIn('tag_group_id', 'TagGroups'), ['errorField' => 'tag_group_id']);
 
         return $rules;
     }

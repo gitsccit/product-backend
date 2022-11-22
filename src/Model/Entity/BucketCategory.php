@@ -14,9 +14,9 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property int $sort
  *
- * @property \ProductBackend\Model\Entity\BucketCategory $parent_bucket_category
+ * @property \ProductBackend\Model\Entity\ParentBucketCategory $parent_bucket_category
  * @property \ProductBackend\Model\Entity\Tab $tab
- * @property \ProductBackend\Model\Entity\BucketCategory[] $child_bucket_categories
+ * @property \ProductBackend\Model\Entity\ChildBucketCategory[] $child_bucket_categories
  * @property \ProductBackend\Model\Entity\Bucket[] $buckets
  */
 class BucketCategory extends Entity
@@ -28,7 +28,7 @@ class BucketCategory extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'parent_id' => true,

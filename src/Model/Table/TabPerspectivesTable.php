@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\TabsTable&\Cake\ORM\Association\BelongsTo $Tabs
  * @property \ProductBackend\Model\Table\FilesTable&\Cake\ORM\Association\BelongsTo $Files
+ *
  * @method \ProductBackend\Model\Entity\TabPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\TabPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\TabPerspective[] newEntities(array $data, array $options = [])
@@ -68,8 +69,12 @@ class TabPerspectivesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('perspective_id')
+            ->notEmptyString('perspective_id');
+
+        $validator
+            ->nonNegativeInteger('tab_id')
+            ->notEmptyString('tab_id');
 
         $validator
             ->scalar('name')
@@ -80,6 +85,10 @@ class TabPerspectivesTable extends Table
             ->scalar('description')
             ->maxLength('description', 250)
             ->allowEmptyString('description');
+
+        $validator
+            ->nonNegativeInteger('file_id')
+            ->allowEmptyFile('file_id');
 
         return $validator;
     }
@@ -93,9 +102,9 @@ class TabPerspectivesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
-        $rules->add($rules->existsIn(['tab_id'], 'Tabs'), ['errorField' => 'tab_id']);
-        $rules->add($rules->existsIn(['file_id'], 'Files'), ['errorField' => 'file_id']);
+        $rules->add($rules->existsIn('perspective_id', 'Perspectives'), ['errorField' => 'perspective_id']);
+        $rules->add($rules->existsIn('tab_id', 'Tabs'), ['errorField' => 'tab_id']);
+        $rules->add($rules->existsIn('file_id', 'Files'), ['errorField' => 'file_id']);
 
         return $rules;
     }

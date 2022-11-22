@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsTo $Buckets
+ *
  * @method \ProductBackend\Model\Entity\KitBucket newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitBucket newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitBucket[] newEntities(array $data, array $options = [])
@@ -63,8 +64,12 @@ class KitBucketsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('kit_id')
+            ->notEmptyString('kit_id');
+
+        $validator
+            ->nonNegativeInteger('bucket_id')
+            ->notEmptyString('bucket_id');
 
         $validator
             ->scalar('quantity')
@@ -94,8 +99,8 @@ class KitBucketsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
-        $rules->add($rules->existsIn(['bucket_id'], 'Buckets'), ['errorField' => 'bucket_id']);
+        $rules->add($rules->existsIn('kit_id', 'Kits'), ['errorField' => 'kit_id']);
+        $rules->add($rules->existsIn('bucket_id', 'Buckets'), ['errorField' => 'bucket_id']);
 
         return $rules;
     }

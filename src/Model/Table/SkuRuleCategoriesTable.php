@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SkuRuleCategoriesTable&\Cake\ORM\Association\BelongsTo $ParentSkuRuleCategories
  * @property \ProductBackend\Model\Table\SkuRuleCategoriesTable&\Cake\ORM\Association\HasMany $ChildSkuRuleCategories
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\HasMany $SkuRules
+ *
  * @method \ProductBackend\Model\Entity\SkuRuleCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleCategory[] newEntities(array $data, array $options = [])
@@ -66,8 +67,8 @@ class SkuRuleCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('parent_id')
+            ->allowEmptyString('parent_id');
 
         $validator
             ->scalar('name')
@@ -91,7 +92,7 @@ class SkuRuleCategoriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['parent_id'], 'ParentSkuRuleCategories'), ['errorField' => 'parent_id']);
+        $rules->add($rules->existsIn('parent_id', 'ParentSkuRuleCategories'), ['errorField' => 'parent_id']);
 
         return $rules;
     }

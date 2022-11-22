@@ -11,36 +11,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 class ProductPerspectivesFixture extends TestFixture
 {
     /**
-     * Fields
-     *
-     * @var array
-     */
-    // phpcs:disable
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'perspective_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'product_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'url' => ['type' => 'string', 'length' => 80, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'name' => ['type' => 'string', 'length' => 120, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'description' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'show_related_systems' => ['type' => 'string', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'active' => ['type' => 'string', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        '_indexes' => [
-            'FK__perspectives' => ['type' => 'index', 'columns' => ['perspective_id'], 'length' => []],
-            'FK_product_perspectives_products' => ['type' => 'index', 'columns' => ['product_id'], 'length' => []],
-        ],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'FK_product_perspectives_products' => ['type' => 'foreign', 'columns' => ['product_id'], 'references' => ['products', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-            'FK__perspectives' => ['type' => 'foreign', 'columns' => ['perspective_id'], 'references' => ['perspectives', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-        ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
-        ],
-    ];
-    // phpcs:enable
-    /**
      * Init method
      *
      * @return void

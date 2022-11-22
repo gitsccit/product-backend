@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  * CustomerBomDetailAdditionalSkus Model
  *
  * @property \ProductBackend\Model\Table\CustomerBomDetailsTable&\Cake\ORM\Association\BelongsTo $CustomerBomDetails
+ *
  * @method \ProductBackend\Model\Entity\CustomerBomDetailAdditionalSkus newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerBomDetailAdditionalSkus newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerBomDetailAdditionalSkus[] newEntities(array $data, array $options = [])
@@ -57,8 +58,8 @@ class CustomerBomDetailAdditionalSkusTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('customer_bom_detail_id')
+            ->notEmptyString('customer_bom_detail_id');
 
         $validator
             ->scalar('sage_itemcode')
@@ -90,10 +91,7 @@ class CustomerBomDetailAdditionalSkusTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add(
-            $rules->existsIn(['customer_bom_detail_id'], 'CustomerBomDetails'),
-            ['errorField' => 'customer_bom_detail_id']
-        );
+        $rules->add($rules->existsIn('customer_bom_detail_id', 'CustomerBomDetails'), ['errorField' => 'customer_bom_detail_id']);
 
         return $rules;
     }

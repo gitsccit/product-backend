@@ -11,8 +11,8 @@ use Cake\Validation\Validator;
  * Manufacturers Model
  *
  * @property \ProductBackend\Model\Table\LocationsTable&\Cake\ORM\Association\BelongsTo $Locations
- * @property \ProductBackend\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsTo $Images
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\HasMany $Products
+ *
  * @method \ProductBackend\Model\Entity\Manufacturer newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Manufacturer newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Manufacturer[] newEntities(array $data, array $options = [])
@@ -47,10 +47,6 @@ class ManufacturersTable extends Table
             'foreignKey' => 'countryoforigin_id',
             'className' => 'ProductBackend.Locations',
         ]);
-        $this->belongsTo('Images', [
-            'foreignKey' => 'image_id',
-            'className' => 'ProductBackend.Images',
-        ]);
         $this->hasMany('Products', [
             'foreignKey' => 'manufacturer_id',
             'className' => 'ProductBackend.Products',
@@ -66,14 +62,18 @@ class ManufacturersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 50)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
+
+        $validator
+            ->nonNegativeInteger('countryoforigin_id')
+            ->allowEmptyString('countryoforigin_id');
+
+        $validator
+            ->nonNegativeInteger('image_id')
+            ->allowEmptyFile('image_id');
 
         return $validator;
     }
@@ -87,8 +87,7 @@ class ManufacturersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['countryoforigin_id'], 'Locations'), ['errorField' => 'countryoforigin_id']);
-        $rules->add($rules->existsIn(['image_id'], 'Images'), ['errorField' => 'image_id']);
+        $rules->add($rules->existsIn('countryoforigin_id', 'Locations'), ['errorField' => 'countryoforigin_id']);
 
         return $rules;
     }

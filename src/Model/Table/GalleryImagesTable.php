@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\GalleriesTable&\Cake\ORM\Association\BelongsTo $Galleries
  * @property \ProductBackend\Model\Table\FilesTable&\Cake\ORM\Association\BelongsTo $Files
+ *
  * @method \ProductBackend\Model\Entity\GalleryImage newEmptyEntity()
  * @method \ProductBackend\Model\Entity\GalleryImage newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\GalleryImage[] newEntities(array $data, array $options = [])
@@ -63,8 +64,12 @@ class GalleryImagesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('gallery_id')
+            ->notEmptyString('gallery_id');
+
+        $validator
+            ->nonNegativeInteger('file_id')
+            ->notEmptyFile('file_id');
 
         $validator
             ->scalar('active')
@@ -86,8 +91,8 @@ class GalleryImagesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['gallery_id'], 'Galleries'), ['errorField' => 'gallery_id']);
-        $rules->add($rules->existsIn(['file_id'], 'Files'), ['errorField' => 'file_id']);
+        $rules->add($rules->existsIn('gallery_id', 'Galleries'), ['errorField' => 'gallery_id']);
+        $rules->add($rules->existsIn('file_id', 'Files'), ['errorField' => 'file_id']);
 
         return $rules;
     }

@@ -15,6 +15,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\BucketCategoriesTable&\Cake\ORM\Association\HasMany $BucketCategories
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\HasMany $Buckets
  * @property \ProductBackend\Model\Table\TabPerspectivesTable&\Cake\ORM\Association\HasMany $TabPerspectives
+ *
  * @method \ProductBackend\Model\Entity\Tab newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Tab newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Tab[] newEntities(array $data, array $options = [])
@@ -76,10 +77,6 @@ class TabsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 50)
             ->allowEmptyString('name');
@@ -88,6 +85,14 @@ class TabsTable extends Table
             ->scalar('description')
             ->maxLength('description', 250)
             ->allowEmptyString('description');
+
+        $validator
+            ->nonNegativeInteger('file_id')
+            ->allowEmptyFile('file_id');
+
+        $validator
+            ->nonNegativeInteger('plugin_id')
+            ->allowEmptyString('plugin_id');
 
         $validator
             ->nonNegativeInteger('sort')
@@ -105,8 +110,8 @@ class TabsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['file_id'], 'Files'), ['errorField' => 'file_id']);
-        $rules->add($rules->existsIn(['plugin_id'], 'Plugins'), ['errorField' => 'plugin_id']);
+        $rules->add($rules->existsIn('file_id', 'Files'), ['errorField' => 'file_id']);
+        $rules->add($rules->existsIn('plugin_id', 'Plugins'), ['errorField' => 'plugin_id']);
 
         return $rules;
     }

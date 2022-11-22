@@ -15,10 +15,10 @@ use Cake\ORM\Entity;
  * @property int $children
  * @property string $name
  *
- * @property \ProductBackend\Model\Entity\CustomerCategory $parent_customer_category
+ * @property \ProductBackend\Model\Entity\ParentCustomerCategory $parent_customer_category
  * @property \ProductBackend\Model\Entity\Customer $customer
  * @property \ProductBackend\Model\Entity\CustomerBom[] $customer_boms
- * @property \ProductBackend\Model\Entity\CustomerCategory[] $child_customer_categories
+ * @property \ProductBackend\Model\Entity\ChildCustomerCategory[] $child_customer_categories
  * @property \ProductBackend\Model\Entity\CustomerProduct[] $customer_products
  */
 class CustomerCategory extends Entity
@@ -30,7 +30,7 @@ class CustomerCategory extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'parent_id' => true,

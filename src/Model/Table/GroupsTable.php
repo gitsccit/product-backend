@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsToMany $Products
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsToMany $Systems
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsToMany $Buckets
+ *
  * @method \ProductBackend\Model\Entity\Group newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Group newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Group[] newEntities(array $data, array $options = [])
@@ -69,10 +70,6 @@ class GroupsTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
         $validator
             ->scalar('name')
             ->maxLength('name', 80)

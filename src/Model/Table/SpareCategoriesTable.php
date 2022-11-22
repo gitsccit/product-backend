@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SpareCategoryRelationsTable&\Cake\ORM\Association\HasMany $SpareCategoryRelations
  * @property \ProductBackend\Model\Table\SparesTable&\Cake\ORM\Association\HasMany $Spares
+ *
  * @method \ProductBackend\Model\Entity\SpareCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SpareCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SpareCategory[] newEntities(array $data, array $options = [])
@@ -59,10 +60,6 @@ class SpareCategoriesTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
         $validator
             ->scalar('name')
             ->maxLength('name', 50)

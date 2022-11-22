@@ -11,37 +11,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 class SkuRulesFixture extends TestFixture
 {
     /**
-     * Fields
-     *
-     * @var array
-     */
-    // phpcs:disable
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'sku_rule_category_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'name' => ['type' => 'string', 'length' => 80, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'scheduler_notes' => ['type' => 'text', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'sku_rule_group_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'eval_logic' => ['type' => 'string', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'eval_quantity' => ['type' => 'tinyinteger', 'length' => null, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
-        'active' => ['type' => 'string', 'length' => null, 'null' => false, 'default' => 'no', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
-        'sort' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        '_indexes' => [
-            'FK_sku_rules_sku_rule_categories' => ['type' => 'index', 'columns' => ['sku_rule_category_id'], 'length' => []],
-            'FK_sku_rules_sku_rule_groups' => ['type' => 'index', 'columns' => ['sku_rule_group_id'], 'length' => []],
-        ],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'FK_sku_rules_sku_rule_groups' => ['type' => 'foreign', 'columns' => ['sku_rule_group_id'], 'references' => ['sku_rule_groups', 'id'], 'update' => 'cascade', 'delete' => 'setNull', 'length' => []],
-            'FK_sku_rules_sku_rule_categories' => ['type' => 'foreign', 'columns' => ['sku_rule_category_id'], 'references' => ['sku_rule_categories', 'id'], 'update' => 'cascade', 'delete' => 'setNull', 'length' => []],
-        ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
-        ],
-    ];
-    // phpcs:enable
-    /**
      * Init method
      *
      * @return void

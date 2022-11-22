@@ -9,13 +9,12 @@ use Cake\ORM\Entity;
  * Tag Entity
  *
  * @property int $id
- * @property int|null $tag_category_id
+ * @property int|null $tag_group_id
  * @property string $name
  * @property int|null $image_id
  * @property int $sort
  *
- * @property \ProductBackend\Model\Entity\TagCategory $tag_category
- * @property \ProductBackend\Model\Entity\Image $image
+ * @property \ProductBackend\Model\Entity\TagGroup $tag_group
  * @property \ProductBackend\Model\Entity\Kit[] $kits
  */
 class Tag extends Entity
@@ -27,15 +26,14 @@ class Tag extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
-        'tag_category_id' => true,
+        'tag_group_id' => true,
         'name' => true,
         'image_id' => true,
         'sort' => true,
-        'tag_category' => true,
-        'image' => true,
+        'tag_group' => true,
         'kits' => true,
     ];
 

@@ -3,17 +3,15 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
  * Banners Model
  *
- * @property \ProductBackend\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsTo $Images
- * @property \ProductBackend\Model\Table\TilesTable&\Cake\ORM\Association\BelongsTo $Tiles
  * @property \ProductBackend\Model\Table\SystemCategoriesTable&\Cake\ORM\Association\HasMany $SystemCategories
  * @property \ProductBackend\Model\Table\SystemCategoryPerspectivesTable&\Cake\ORM\Association\HasMany $SystemCategoryPerspectives
+ *
  * @method \ProductBackend\Model\Entity\Banner newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Banner newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Banner[] newEntities(array $data, array $options = [])
@@ -44,14 +42,6 @@ class BannersTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Images', [
-            'foreignKey' => 'image_id',
-            'className' => 'ProductBackend.Images',
-        ]);
-        $this->belongsTo('Tiles', [
-            'foreignKey' => 'tile_id',
-            'className' => 'ProductBackend.Tiles',
-        ]);
         $this->hasMany('SystemCategories', [
             'foreignKey' => 'banner_id',
             'className' => 'ProductBackend.SystemCategories',
@@ -71,8 +61,12 @@ class BannersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('image_id')
+            ->allowEmptyFile('image_id');
+
+        $validator
+            ->nonNegativeInteger('tile_id')
+            ->allowEmptyString('tile_id');
 
         $validator
             ->scalar('horizontal')
@@ -95,21 +89,6 @@ class BannersTable extends Table
             ->notEmptyDateTime('timestamp');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add($rules->existsIn(['image_id'], 'Images'), ['errorField' => 'image_id']);
-        $rules->add($rules->existsIn(['tile_id'], 'Tiles'), ['errorField' => 'tile_id']);
-
-        return $rules;
     }
 
     /**

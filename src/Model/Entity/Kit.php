@@ -31,6 +31,7 @@ use Cake\ORM\Entity;
  * @property \ProductBackend\Model\Entity\ShipBox $ship_box
  * @property \ProductBackend\Model\Entity\KitBucket[] $kit_buckets
  * @property \ProductBackend\Model\Entity\KitItem[] $kit_items
+ * @property \ProductBackend\Model\Entity\KitOptionCode[] $kit_option_codes
  * @property \ProductBackend\Model\Entity\KitRule[] $kit_rules
  * @property \ProductBackend\Model\Entity\System[] $systems
  * @property \ProductBackend\Model\Entity\Icon[] $icons
@@ -46,7 +47,7 @@ class Kit extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'name' => true,
@@ -70,6 +71,7 @@ class Kit extends Entity
         'ship_box' => true,
         'kit_buckets' => true,
         'kit_items' => true,
+        'kit_option_codes' => true,
         'kit_rules' => true,
         'systems' => true,
         'icons' => true,

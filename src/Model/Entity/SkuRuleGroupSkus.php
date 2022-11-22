@@ -23,7 +23,7 @@ class SkuRuleGroupSkus extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'sku_rule_group_id' => true,

@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsToMany $Products
+ *
  * @method \ProductBackend\Model\Entity\Generic newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Generic newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Generic[] newEntities(array $data, array $options = [])
@@ -64,8 +65,8 @@ class GenericsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('product_id')
+            ->notEmptyString('product_id');
 
         $validator
             ->scalar('sage_itemcode')
@@ -106,7 +107,7 @@ class GenericsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
+        $rules->add($rules->existsIn('product_id', 'Products'), ['errorField' => 'product_id']);
 
         return $rules;
     }

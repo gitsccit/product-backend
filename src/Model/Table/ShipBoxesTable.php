@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\HasMany $Kits
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\HasMany $Products
  * @property \ProductBackend\Model\Table\ShipRatesTable&\Cake\ORM\Association\BelongsToMany $ShipRates
+ *
  * @method \ProductBackend\Model\Entity\ShipBox newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipBox newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipBox[] newEntities(array $data, array $options = [])
@@ -66,10 +67,6 @@ class ShipBoxesTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
         $validator
             ->scalar('name')
             ->maxLength('name', 30)

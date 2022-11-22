@@ -19,6 +19,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\KitItemsTable&\Cake\ORM\Association\HasMany $KitItems
  * @property \ProductBackend\Model\Table\KitRuleDetailsTable&\Cake\ORM\Association\HasMany $KitRuleDetails
  * @property \ProductBackend\Model\Table\SystemItemsTable&\Cake\ORM\Association\HasMany $SystemItems
+ *
  * @method \ProductBackend\Model\Entity\GroupItem newEmptyEntity()
  * @method \ProductBackend\Model\Entity\GroupItem newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\GroupItem[] newEntities(array $data, array $options = [])
@@ -85,8 +86,16 @@ class GroupItemsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('group_id')
+            ->notEmptyString('group_id');
+
+        $validator
+            ->nonNegativeInteger('product_id')
+            ->allowEmptyString('product_id');
+
+        $validator
+            ->nonNegativeInteger('system_id')
+            ->allowEmptyString('system_id');
 
         return $validator;
     }
@@ -100,9 +109,9 @@ class GroupItemsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['group_id'], 'Groups'), ['errorField' => 'group_id']);
-        $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
-        $rules->add($rules->existsIn(['system_id'], 'Systems'), ['errorField' => 'system_id']);
+        $rules->add($rules->existsIn('group_id', 'Groups'), ['errorField' => 'group_id']);
+        $rules->add($rules->existsIn('product_id', 'Products'), ['errorField' => 'product_id']);
+        $rules->add($rules->existsIn('system_id', 'Systems'), ['errorField' => 'system_id']);
 
         return $rules;
     }

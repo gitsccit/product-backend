@@ -5,12 +5,14 @@ namespace ProductBackend\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 /**
  * ProductCategoryRelations Model
  *
  * @property \ProductBackend\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\BelongsTo $ProductCategories
  * @property \ProductBackend\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\BelongsTo $ProductCategories
+ *
  * @method \ProductBackend\Model\Entity\ProductCategoryRelation newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductCategoryRelation newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductCategoryRelation[] newEntities(array $data, array $options = [])
@@ -52,6 +54,25 @@ class ProductCategoryRelationsTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->nonNegativeInteger('product_category_id')
+            ->notEmptyString('product_category_id');
+
+        $validator
+            ->nonNegativeInteger('related_product_category_id')
+            ->notEmptyString('related_product_category_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
@@ -60,14 +81,8 @@ class ProductCategoryRelationsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add(
-            $rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']
-        );
-        $rules->add(
-            $rules->existsIn(['related_product_category_id'], 'ProductCategories'),
-            ['errorField' => 'related_product_category_id']
-        );
+        $rules->add($rules->existsIn('product_category_id', 'ProductCategories'), ['errorField' => 'product_category_id']);
+        $rules->add($rules->existsIn('related_product_category_id', 'ProductCategories'), ['errorField' => 'related_product_category_id']);
 
         return $rules;
     }

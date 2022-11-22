@@ -5,12 +5,14 @@ namespace ProductBackend\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 /**
  * ProductsRelations Model
  *
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
+ *
  * @method \ProductBackend\Model\Entity\ProductsRelation newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductsRelation newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductsRelation[] newEntities(array $data, array $options = [])
@@ -52,6 +54,25 @@ class ProductsRelationsTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->nonNegativeInteger('product_id')
+            ->notEmptyString('product_id');
+
+        $validator
+            ->nonNegativeInteger('related_id')
+            ->notEmptyString('related_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
@@ -60,8 +81,8 @@ class ProductsRelationsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
-        $rules->add($rules->existsIn(['related_id'], 'Products'), ['errorField' => 'related_id']);
+        $rules->add($rules->existsIn('product_id', 'Products'), ['errorField' => 'product_id']);
+        $rules->add($rules->existsIn('related_id', 'Products'), ['errorField' => 'related_id']);
 
         return $rules;
     }

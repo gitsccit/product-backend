@@ -9,7 +9,6 @@ use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
-use ProductBackend\Core\Utility;
 
 /**
  * System Entity
@@ -51,7 +50,7 @@ class System extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'kit_id' => true,

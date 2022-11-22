@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\SystemCategoriesTable&\Cake\ORM\Association\BelongsTo $SystemCategories
  * @property \ProductBackend\Model\Table\BannersTable&\Cake\ORM\Association\BelongsTo $Banners
+ *
  * @method \ProductBackend\Model\Entity\SystemCategoryPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemCategoryPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemCategoryPerspective[] newEntities(array $data, array $options = [])
@@ -68,8 +69,12 @@ class SystemCategoryPerspectivesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('perspective_id')
+            ->notEmptyString('perspective_id');
+
+        $validator
+            ->nonNegativeInteger('system_category_id')
+            ->notEmptyString('system_category_id');
 
         $validator
             ->scalar('url')
@@ -85,6 +90,10 @@ class SystemCategoryPerspectivesTable extends Table
             ->scalar('description')
             ->maxLength('description', 250)
             ->allowEmptyString('description');
+
+        $validator
+            ->nonNegativeInteger('banner_id')
+            ->allowEmptyString('banner_id');
 
         $validator
             ->scalar('active')
@@ -106,12 +115,9 @@ class SystemCategoryPerspectivesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
-        $rules->add(
-            $rules->existsIn(['system_category_id'], 'SystemCategories'),
-            ['errorField' => 'system_category_id']
-        );
-        $rules->add($rules->existsIn(['banner_id'], 'Banners'), ['errorField' => 'banner_id']);
+        $rules->add($rules->existsIn('perspective_id', 'Perspectives'), ['errorField' => 'perspective_id']);
+        $rules->add($rules->existsIn('system_category_id', 'SystemCategories'), ['errorField' => 'system_category_id']);
+        $rules->add($rules->existsIn('banner_id', 'Banners'), ['errorField' => 'banner_id']);
 
         return $rules;
     }

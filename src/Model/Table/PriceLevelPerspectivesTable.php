@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\PriceLevelsTable&\Cake\ORM\Association\BelongsTo $PriceLevels
+ *
  * @method \ProductBackend\Model\Entity\PriceLevelPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\PriceLevelPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\PriceLevelPerspective[] newEntities(array $data, array $options = [])
@@ -63,8 +64,12 @@ class PriceLevelPerspectivesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('perspective_id')
+            ->notEmptyString('perspective_id');
+
+        $validator
+            ->nonNegativeInteger('price_level_id')
+            ->notEmptyString('price_level_id');
 
         $validator
             ->scalar('active')
@@ -82,8 +87,8 @@ class PriceLevelPerspectivesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
-        $rules->add($rules->existsIn(['price_level_id'], 'PriceLevels'), ['errorField' => 'price_level_id']);
+        $rules->add($rules->existsIn('perspective_id', 'Perspectives'), ['errorField' => 'perspective_id']);
+        $rules->add($rules->existsIn('price_level_id', 'PriceLevels'), ['errorField' => 'price_level_id']);
 
         return $rules;
     }

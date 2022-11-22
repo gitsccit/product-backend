@@ -11,39 +11,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 class SystemCategoryPerspectivesFixture extends TestFixture
 {
     /**
-     * Fields
-     *
-     * @var array
-     */
-    // phpcs:disable
-    public $fields = [
-        'id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'perspective_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'system_category_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'url' => ['type' => 'string', 'length' => 80, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
-        'name' => ['type' => 'string', 'length' => 80, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
-        'description' => ['type' => 'string', 'length' => 250, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
-        'banner_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'active' => ['type' => 'string', 'length' => null, 'null' => true, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
-        'children' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        '_indexes' => [
-            'FK_system_category_perspectives_banners' => ['type' => 'index', 'columns' => ['banner_id'], 'length' => []],
-            'FK_system_category_perspectives_perspectives' => ['type' => 'index', 'columns' => ['perspective_id'], 'length' => []],
-            'FK_system_category_perspectives_system_categories' => ['type' => 'index', 'columns' => ['system_category_id'], 'length' => []],
-        ],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'FK_system_category_perspectives_system_categories' => ['type' => 'foreign', 'columns' => ['system_category_id'], 'references' => ['system_categories', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-            'FK_system_category_perspectives_perspectives' => ['type' => 'foreign', 'columns' => ['perspective_id'], 'references' => ['perspectives', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-            'FK_system_category_perspectives_banners' => ['type' => 'foreign', 'columns' => ['banner_id'], 'references' => ['banners', 'id'], 'update' => 'cascade', 'delete' => 'setNull', 'length' => []],
-        ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8mb4_general_ci'
-        ],
-    ];
-    // phpcs:enable
-    /**
      * Init method
      *
      * @return void

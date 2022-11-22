@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\KitRuleDetailsTable&\Cake\ORM\Association\HasMany $KitRuleDetails
+ *
  * @method \ProductBackend\Model\Entity\KitRule newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitRule newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitRule[] newEntities(array $data, array $options = [])
@@ -62,8 +63,8 @@ class KitRulesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('kit_id')
+            ->notEmptyString('kit_id');
 
         $validator
             ->scalar('name')
@@ -92,7 +93,7 @@ class KitRulesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
+        $rules->add($rules->existsIn('kit_id', 'Kits'), ['errorField' => 'kit_id']);
 
         return $rules;
     }

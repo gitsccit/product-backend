@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
  * Icons Model
  *
- * @property \ProductBackend\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsTo $Images
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsToMany $Kits
+ *
  * @method \ProductBackend\Model\Entity\Icon newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Icon newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Icon[] newEntities(array $data, array $options = [])
@@ -42,10 +41,6 @@ class IconsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Images', [
-            'foreignKey' => 'image_id',
-            'className' => 'ProductBackend.Images',
-        ]);
         $this->belongsToMany('Kits', [
             'foreignKey' => 'icon_id',
             'targetForeignKey' => 'kit_id',
@@ -63,14 +58,14 @@ class IconsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 50)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
+
+        $validator
+            ->nonNegativeInteger('image_id')
+            ->allowEmptyFile('image_id');
 
         $validator
             ->scalar('style')
@@ -85,20 +80,6 @@ class IconsTable extends Table
             ->notEmptyDateTime('timestamp');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add($rules->existsIn(['image_id'], 'Images'), ['errorField' => 'image_id']);
-
-        return $rules;
     }
 
     /**

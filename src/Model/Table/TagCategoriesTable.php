@@ -9,7 +9,8 @@ use Cake\Validation\Validator;
 /**
  * TagCategories Model
  *
- * @property \ProductBackend\Model\Table\TagsTable&\Cake\ORM\Association\HasMany $Tags
+ * @property \ProductBackend\Model\Table\TagGroupsTable&\Cake\ORM\Association\BelongsToMany $TagGroups
+ *
  * @method \ProductBackend\Model\Entity\TagCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\TagCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\TagCategory[] newEntities(array $data, array $options = [])
@@ -40,9 +41,11 @@ class TagCategoriesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Tags', [
+        $this->belongsToMany('TagGroups', [
             'foreignKey' => 'tag_category_id',
-            'className' => 'ProductBackend.Tags',
+            'targetForeignKey' => 'tag_group_id',
+            'joinTable' => 'tag_categories_tag_groups',
+            'className' => 'ProductBackend.TagGroups',
         ]);
     }
 
@@ -55,34 +58,10 @@ class TagCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 80)
             ->requirePresence('name', 'create')
             ->notEmptyString('name');
-
-        $validator
-            ->scalar('filter')
-            ->notEmptyString('filter');
-
-        $validator
-            ->nonNegativeInteger('filter_sequence')
-            ->allowEmptyString('filter_sequence');
-
-        $validator
-            ->scalar('support')
-            ->notEmptyString('support');
-
-        $validator
-            ->scalar('support_text')
-            ->notEmptyString('support_text');
-
-        $validator
-            ->nonNegativeInteger('support_sequence')
-            ->allowEmptyString('support_sequence');
 
         return $validator;
     }

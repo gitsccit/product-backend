@@ -16,7 +16,6 @@ use Cake\ORM\Entity;
  * @property int $sort
  *
  * @property \ProductBackend\Model\Entity\SkuRule[] $sku_rules
- * @property \ProductBackend\Model\Entity\Spec $spec
  * @property \ProductBackend\Model\Entity\SkuRuleAdditionalSkus[] $sku_rule_additional_skus
  * @property \ProductBackend\Model\Entity\SkuRuleGroupSkus[] $sku_rule_group_skus
  */
@@ -29,7 +28,7 @@ class SkuRuleGroup extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'sku_rule_id' => true,
@@ -38,7 +37,6 @@ class SkuRuleGroup extends Entity
         'value' => true,
         'sort' => true,
         'sku_rules' => true,
-        'spec' => true,
         'sku_rule_additional_skus' => true,
         'sku_rule_group_skus' => true,
     ];

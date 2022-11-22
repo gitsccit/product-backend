@@ -29,7 +29,6 @@ use Cake\ORM\Entity;
  * @property \ProductBackend\Model\Entity\Customer $customer
  * @property \ProductBackend\Model\Entity\CustomerCategory $customer_category
  * @property \ProductBackend\Model\Entity\Location $location
- * @property \ProductBackend\Model\Entity\Image $image
  * @property \ProductBackend\Model\Entity\CustomerBomDetail[] $customer_bom_details
  */
 class CustomerBom extends Entity
@@ -41,7 +40,7 @@ class CustomerBom extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'customer_id' => true,
@@ -63,7 +62,6 @@ class CustomerBom extends Entity
         'customer' => true,
         'customer_category' => true,
         'location' => true,
-        'image' => true,
         'customer_bom_details' => true,
     ];
 }

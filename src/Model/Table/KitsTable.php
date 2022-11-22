@@ -19,12 +19,14 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ShipBoxesTable&\Cake\ORM\Association\BelongsTo $ShipBoxes
  * @property \ProductBackend\Model\Table\KitBucketsTable&\Cake\ORM\Association\HasMany $KitBuckets
  * @property \ProductBackend\Model\Table\KitItemsTable&\Cake\ORM\Association\HasMany $KitItems
+ * @property \ProductBackend\Model\Table\KitOptionCodesTable&\Cake\ORM\Association\HasMany $KitOptionCodes
  * @property \ProductBackend\Model\Table\KitRulesTable&\Cake\ORM\Association\HasMany $KitRules
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\HasMany $Systems
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsToMany $Buckets
  * @property \ProductBackend\Model\Table\IconsTable&\Cake\ORM\Association\BelongsToMany $Icons
  * @property \ProductBackend\Model\Table\PluginsTable&\Cake\ORM\Association\BelongsToMany $Plugins
  * @property \ProductBackend\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
+ *
  * @method \ProductBackend\Model\Entity\Kit newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Kit newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Kit[] newEntities(array $data, array $options = [])
@@ -71,6 +73,10 @@ class KitsTable extends Table
             'foreignKey' => 'kit_id',
             'className' => 'ProductBackend.KitItems',
         ]);
+        $this->hasMany('KitOptionCodes', [
+            'foreignKey' => 'kit_id',
+            'className' => 'ProductBackend.KitOptionCodes',
+        ]);
         $this->hasMany('KitRules', [
             'foreignKey' => 'kit_id',
             'className' => 'ProductBackend.KitRules',
@@ -114,10 +120,6 @@ class KitsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 80)
             ->requirePresence('name', 'create')
@@ -154,6 +156,14 @@ class KitsTable extends Table
         $validator
             ->scalar('spares_kit')
             ->allowEmptyString('spares_kit');
+
+        $validator
+            ->nonNegativeInteger('ship_from_id')
+            ->allowEmptyString('ship_from_id');
+
+        $validator
+            ->nonNegativeInteger('ship_box_id')
+            ->allowEmptyString('ship_box_id');
 
         $validator
             ->numeric('length')
@@ -194,8 +204,8 @@ class KitsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['ship_from_id'], 'Locations'), ['errorField' => 'ship_from_id']);
-        $rules->add($rules->existsIn(['ship_box_id'], 'ShipBoxes'), ['errorField' => 'ship_box_id']);
+        $rules->add($rules->existsIn('ship_from_id', 'Locations'), ['errorField' => 'ship_from_id']);
+        $rules->add($rules->existsIn('ship_box_id', 'ShipBoxes'), ['errorField' => 'ship_box_id']);
 
         return $rules;
     }
@@ -206,21 +216,16 @@ class KitsTable extends Table
             ->select([
                 'Kits.id',
                 'Tags.id',
+                'group' => 'TagGroups.name',
                 'name' => 'Tags.name',
                 'image_id' => 'Tags.image_id',
-                'value' => "IF(TagCategories.support_text = 'yes', KitsTags.value, '')",
+                'value' => "IF(TagGroups.display_value = 'yes', KitsTags.value, NULL)",
             ])
-            ->matching('Tags', function ($q) {
-                return $q->innerJoinWith('TagCategories', function ($q) {
-                    return $q->where([
-                        'TagCategories.support' => 'yes',
-                    ]);
-                });
-            })
+            ->innerJoinWith('Tags.TagGroups.TagCategories')
             ->group('Tags.id')
             ->order([
-                'TagCategories.support_sequence',
                 'TagCategories.name',
+                'TagCategoriesTagGroups.sort',
                 'Tags.sort',
                 'Tags.name',
             ]);
@@ -232,33 +237,32 @@ class KitsTable extends Table
 
         return $query
             ->select([
-                'category_id' => 'TagCategories.id',
-                'category_name' => 'TagCategories.name',
+                'group_id' => 'TagGroups.id',
+                'group_name' => 'TagGroups.name',
                 'id' => 'Tags.id',
                 'name' => 'Tags.name',
                 'count' => 'COUNT(DISTINCT Kits.id)',
             ])
-            ->innerJoinWith('Tags.TagCategories')
+            ->innerJoinWith('Tags.TagGroups.TagCategories')
             ->whereInList('Kits.id', $kits)
             ->where([
-                'TagCategories.filter' => 'yes',
+                'TagCategories.name' => 'Filter',
             ])
             ->group('Tags.id')
             ->order([
-                'TagCategories.filter_sequence',
-                'TagCategories.name',
+                'TagCategoriesTagGroups.sort',
                 'Tags.sort',
                 'Tags.name',
             ])
             ->formatResults(function (CollectionInterface $results) {
-                return $results->groupBy('category_id')
-                    ->map(function ($tagCategories) {
+                return $results->groupBy('group_id')
+                    ->map(function ($tagGroups) {
                         return [
-                            'id' => $tagCategories[0]->category_id,
-                            'name' => $tagCategories[0]->category_name,
-                            'options' => array_map(function ($tagCategory) {
-                                return $tagCategory->toArray();
-                            }, $tagCategories),
+                            'id' => $tagGroups[0]['group_id'],
+                            'name' => $tagGroups[0]['group_name'],
+                            'options' => array_map(function ($tagGroup) {
+                                return $tagGroup->toArray();
+                            }, $tagGroups),
                         ];
                     });
             });

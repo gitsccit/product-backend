@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
  * @property \ProductBackend\Model\Table\SpareCategoriesTable&\Cake\ORM\Association\BelongsTo $SpareCategories
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
+ *
  * @method \ProductBackend\Model\Entity\Spare newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Spare newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Spare[] newEntities(array $data, array $options = [])
@@ -69,8 +70,16 @@ class SparesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('product_id')
+            ->notEmptyString('product_id');
+
+        $validator
+            ->nonNegativeInteger('spare_category_id')
+            ->notEmptyString('spare_category_id');
+
+        $validator
+            ->nonNegativeInteger('related_id')
+            ->notEmptyString('related_id');
 
         $validator
             ->scalar('active')
@@ -88,9 +97,9 @@ class SparesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
-        $rules->add($rules->existsIn(['spare_category_id'], 'SpareCategories'), ['errorField' => 'spare_category_id']);
-        $rules->add($rules->existsIn(['related_id'], 'Products'), ['errorField' => 'related_id']);
+        $rules->add($rules->existsIn('product_id', 'Products'), ['errorField' => 'product_id']);
+        $rules->add($rules->existsIn('spare_category_id', 'SpareCategories'), ['errorField' => 'spare_category_id']);
+        $rules->add($rules->existsIn('related_id', 'Products'), ['errorField' => 'related_id']);
 
         return $rules;
     }

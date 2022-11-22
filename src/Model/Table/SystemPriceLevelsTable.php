@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PriceLevelsTable&\Cake\ORM\Association\BelongsTo $PriceLevels
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsTo $Systems
+ *
  * @method \ProductBackend\Model\Entity\SystemPriceLevel newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemPriceLevel newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemPriceLevel[] newEntities(array $data, array $options = [])
@@ -61,8 +62,12 @@ class SystemPriceLevelsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('price_level_id')
+            ->allowEmptyString('price_level_id');
+
+        $validator
+            ->nonNegativeInteger('system_id')
+            ->allowEmptyString('system_id');
 
         $validator
             ->scalar('logic')
@@ -96,8 +101,8 @@ class SystemPriceLevelsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['price_level_id'], 'PriceLevels'), ['errorField' => 'price_level_id']);
-        $rules->add($rules->existsIn(['system_id'], 'Systems'), ['errorField' => 'system_id']);
+        $rules->add($rules->existsIn('price_level_id', 'PriceLevels'), ['errorField' => 'price_level_id']);
+        $rules->add($rules->existsIn('system_id', 'Systems'), ['errorField' => 'system_id']);
 
         return $rules;
     }

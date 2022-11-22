@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  * ShipRegionLocations Model
  *
  * @property \ProductBackend\Model\Table\ShipRegionsTable&\Cake\ORM\Association\BelongsTo $ShipRegions
+ *
  * @method \ProductBackend\Model\Entity\ShipRegionLocation newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipRegionLocation newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipRegionLocation[] newEntities(array $data, array $options = [])
@@ -57,8 +58,8 @@ class ShipRegionLocationsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('ship_region_id')
+            ->notEmptyString('ship_region_id');
 
         $validator
             ->scalar('country')
@@ -83,7 +84,7 @@ class ShipRegionLocationsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['ship_region_id'], 'ShipRegions'), ['errorField' => 'ship_region_id']);
+        $rules->add($rules->existsIn('ship_region_id', 'ShipRegions'), ['errorField' => 'ship_region_id']);
 
         return $rules;
     }

@@ -20,6 +20,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\BelongsTo $PergroupSpecs
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\BelongsTo $CapacitySpecs
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\BelongsTo $BackplaneSpecs
+ *
  * @method \ProductBackend\Model\Entity\RaidMap newEmptyEntity()
  * @method \ProductBackend\Model\Entity\RaidMap newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\RaidMap[] newEntities(array $data, array $options = [])
@@ -101,8 +102,8 @@ class RaidMapsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('product_category_id')
+            ->allowEmptyString('product_category_id');
 
         $validator
             ->scalar('device')
@@ -112,6 +113,42 @@ class RaidMapsTable extends Table
         $validator
             ->scalar('interface')
             ->allowEmptyString('interface');
+
+        $validator
+            ->nonNegativeInteger('interface_spec_id')
+            ->allowEmptyString('interface_spec_id');
+
+        $validator
+            ->nonNegativeInteger('interface2_spec_id')
+            ->allowEmptyString('interface2_spec_id');
+
+        $validator
+            ->nonNegativeInteger('name_spec_id')
+            ->allowEmptyString('name_spec_id');
+
+        $validator
+            ->nonNegativeInteger('raid_spec_id')
+            ->allowEmptyString('raid_spec_id');
+
+        $validator
+            ->nonNegativeInteger('ports_spec_id')
+            ->allowEmptyString('ports_spec_id');
+
+        $validator
+            ->nonNegativeInteger('devices_spec_id')
+            ->allowEmptyString('devices_spec_id');
+
+        $validator
+            ->nonNegativeInteger('pergroup_spec_id')
+            ->allowEmptyString('pergroup_spec_id');
+
+        $validator
+            ->nonNegativeInteger('capacity_spec_id')
+            ->allowEmptyString('capacity_spec_id');
+
+        $validator
+            ->nonNegativeInteger('backplane_spec_id')
+            ->allowEmptyString('backplane_spec_id');
 
         return $validator;
     }
@@ -125,22 +162,16 @@ class RaidMapsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add(
-            $rules->existsIn(['product_category_id'], 'ProductCategories'),
-            ['errorField' => 'product_category_id']
-        );
-        $rules->add($rules->existsIn(['interface_spec_id'], 'InterfaceSpecs'), ['errorField' => 'interface_spec_id']);
-        $rules->add(
-            $rules->existsIn(['interface2_spec_id'], 'Interface2Specs'),
-            ['errorField' => 'interface2_spec_id']
-        );
-        $rules->add($rules->existsIn(['name_spec_id'], 'NameSpecs'), ['errorField' => 'name_spec_id']);
-        $rules->add($rules->existsIn(['raid_spec_id'], 'RaidSpecs'), ['errorField' => 'raid_spec_id']);
-        $rules->add($rules->existsIn(['ports_spec_id'], 'PortsSpecs'), ['errorField' => 'ports_spec_id']);
-        $rules->add($rules->existsIn(['devices_spec_id'], 'DevicesSpecs'), ['errorField' => 'devices_spec_id']);
-        $rules->add($rules->existsIn(['pergroup_spec_id'], 'PergroupSpecs'), ['errorField' => 'pergroup_spec_id']);
-        $rules->add($rules->existsIn(['capacity_spec_id'], 'CapacitySpecs'), ['errorField' => 'capacity_spec_id']);
-        $rules->add($rules->existsIn(['backplane_spec_id'], 'BackplaneSpecs'), ['errorField' => 'backplane_spec_id']);
+        $rules->add($rules->existsIn('product_category_id', 'ProductCategories'), ['errorField' => 'product_category_id']);
+        $rules->add($rules->existsIn('interface_spec_id', 'InterfaceSpecs'), ['errorField' => 'interface_spec_id']);
+        $rules->add($rules->existsIn('interface2_spec_id', 'Interface2Specs'), ['errorField' => 'interface2_spec_id']);
+        $rules->add($rules->existsIn('name_spec_id', 'NameSpecs'), ['errorField' => 'name_spec_id']);
+        $rules->add($rules->existsIn('raid_spec_id', 'RaidSpecs'), ['errorField' => 'raid_spec_id']);
+        $rules->add($rules->existsIn('ports_spec_id', 'PortsSpecs'), ['errorField' => 'ports_spec_id']);
+        $rules->add($rules->existsIn('devices_spec_id', 'DevicesSpecs'), ['errorField' => 'devices_spec_id']);
+        $rules->add($rules->existsIn('pergroup_spec_id', 'PergroupSpecs'), ['errorField' => 'pergroup_spec_id']);
+        $rules->add($rules->existsIn('capacity_spec_id', 'CapacitySpecs'), ['errorField' => 'capacity_spec_id']);
+        $rules->add($rules->existsIn('backplane_spec_id', 'BackplaneSpecs'), ['errorField' => 'backplane_spec_id']);
 
         return $rules;
     }

@@ -13,8 +13,8 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property int $sort
  *
- * @property \ProductBackend\Model\Entity\SkuRuleCategory $parent_sku_rule_category
- * @property \ProductBackend\Model\Entity\SkuRuleCategory[] $child_sku_rule_categories
+ * @property \ProductBackend\Model\Entity\ParentSkuRuleCategory $parent_sku_rule_category
+ * @property \ProductBackend\Model\Entity\ChildSkuRuleCategory[] $child_sku_rule_categories
  * @property \ProductBackend\Model\Entity\SkuRule[] $sku_rules
  */
 class SkuRuleCategory extends Entity
@@ -26,7 +26,7 @@ class SkuRuleCategory extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'parent_id' => true,

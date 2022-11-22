@@ -5,12 +5,14 @@ namespace ProductBackend\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 /**
  * IconsKits Model
  *
  * @property \ProductBackend\Model\Table\IconsTable&\Cake\ORM\Association\BelongsTo $Icons
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
+ *
  * @method \ProductBackend\Model\Entity\IconsKit newEmptyEntity()
  * @method \ProductBackend\Model\Entity\IconsKit newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\IconsKit[] newEntities(array $data, array $options = [])
@@ -52,6 +54,25 @@ class IconsKitsTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->nonNegativeInteger('icon_id')
+            ->notEmptyString('icon_id');
+
+        $validator
+            ->nonNegativeInteger('kit_id')
+            ->notEmptyString('kit_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
@@ -60,8 +81,8 @@ class IconsKitsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['icon_id'], 'Icons'), ['errorField' => 'icon_id']);
-        $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
+        $rules->add($rules->existsIn('icon_id', 'Icons'), ['errorField' => 'icon_id']);
+        $rules->add($rules->existsIn('kit_id', 'Kits'), ['errorField' => 'kit_id']);
 
         return $rules;
     }

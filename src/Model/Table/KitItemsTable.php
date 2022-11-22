@@ -12,6 +12,8 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\GroupItemsTable&\Cake\ORM\Association\BelongsTo $GroupItems
+ * @property \ProductBackend\Model\Table\KitOptionCodeItemsTable&\Cake\ORM\Association\HasMany $KitOptionCodeItems
+ *
  * @method \ProductBackend\Model\Entity\KitItem newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitItem newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitItem[] newEntities(array $data, array $options = [])
@@ -52,6 +54,10 @@ class KitItemsTable extends Table
             'joinType' => 'INNER',
             'className' => 'ProductBackend.GroupItems',
         ]);
+        $this->hasMany('KitOptionCodeItems', [
+            'foreignKey' => 'kit_item_id',
+            'className' => 'ProductBackend.KitOptionCodeItems',
+        ]);
     }
 
     /**
@@ -63,8 +69,12 @@ class KitItemsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('kit_id')
+            ->notEmptyString('kit_id');
+
+        $validator
+            ->nonNegativeInteger('group_item_id')
+            ->notEmptyString('group_item_id');
 
         $validator
             ->scalar('active')
@@ -82,8 +92,8 @@ class KitItemsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
-        $rules->add($rules->existsIn(['group_item_id'], 'GroupItems'), ['errorField' => 'group_item_id']);
+        $rules->add($rules->existsIn('kit_id', 'Kits'), ['errorField' => 'kit_id']);
+        $rules->add($rules->existsIn('group_item_id', 'GroupItems'), ['errorField' => 'group_item_id']);
 
         return $rules;
     }

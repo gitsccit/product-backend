@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\PluginsTable&\Cake\ORM\Association\BelongsTo $Plugins
+ *
  * @method \ProductBackend\Model\Entity\PluginPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\PluginPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\PluginPerspective[] newEntities(array $data, array $options = [])
@@ -63,8 +64,12 @@ class PluginPerspectivesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('perspective_id')
+            ->notEmptyString('perspective_id');
+
+        $validator
+            ->nonNegativeInteger('plugin_id')
+            ->notEmptyString('plugin_id');
 
         $validator
             ->scalar('name')
@@ -92,8 +97,8 @@ class PluginPerspectivesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
-        $rules->add($rules->existsIn(['plugin_id'], 'Plugins'), ['errorField' => 'plugin_id']);
+        $rules->add($rules->existsIn('perspective_id', 'Perspectives'), ['errorField' => 'perspective_id']);
+        $rules->add($rules->existsIn('plugin_id', 'Plugins'), ['errorField' => 'plugin_id']);
 
         return $rules;
     }

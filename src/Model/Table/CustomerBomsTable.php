@@ -13,8 +13,8 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \ProductBackend\Model\Table\CustomerCategoriesTable&\Cake\ORM\Association\BelongsTo $CustomerCategories
  * @property \ProductBackend\Model\Table\LocationsTable&\Cake\ORM\Association\BelongsTo $Locations
- * @property \ProductBackend\Model\Table\ImagesTable&\Cake\ORM\Association\BelongsTo $Images
  * @property \ProductBackend\Model\Table\CustomerBomDetailsTable&\Cake\ORM\Association\HasMany $CustomerBomDetails
+ *
  * @method \ProductBackend\Model\Entity\CustomerBom newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerBom newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerBom[] newEntities(array $data, array $options = [])
@@ -58,10 +58,6 @@ class CustomerBomsTable extends Table
             'foreignKey' => 'location_id',
             'className' => 'ProductBackend.Locations',
         ]);
-        $this->belongsTo('Images', [
-            'foreignKey' => 'image_id',
-            'className' => 'ProductBackend.Images',
-        ]);
         $this->hasMany('CustomerBomDetails', [
             'foreignKey' => 'customer_bom_id',
             'className' => 'ProductBackend.CustomerBomDetails',
@@ -77,8 +73,12 @@ class CustomerBomsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('customer_id')
+            ->notEmptyString('customer_id');
+
+        $validator
+            ->nonNegativeInteger('customer_category_id')
+            ->allowEmptyString('customer_category_id');
 
         $validator
             ->scalar('name')
@@ -89,6 +89,14 @@ class CustomerBomsTable extends Table
         $validator
             ->scalar('description')
             ->allowEmptyString('description');
+
+        $validator
+            ->nonNegativeInteger('location_id')
+            ->allowEmptyString('location_id');
+
+        $validator
+            ->nonNegativeInteger('image_id')
+            ->allowEmptyFile('image_id');
 
         $validator
             ->scalar('bstock')
@@ -149,13 +157,9 @@ class CustomerBomsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
-        $rules->add(
-            $rules->existsIn(['customer_category_id'], 'CustomerCategories'),
-            ['errorField' => 'customer_category_id']
-        );
-        $rules->add($rules->existsIn(['location_id'], 'Locations'), ['errorField' => 'location_id']);
-        $rules->add($rules->existsIn(['image_id'], 'Images'), ['errorField' => 'image_id']);
+        $rules->add($rules->existsIn('customer_id', 'Customers'), ['errorField' => 'customer_id']);
+        $rules->add($rules->existsIn('customer_category_id', 'CustomerCategories'), ['errorField' => 'customer_category_id']);
+        $rules->add($rules->existsIn('location_id', 'Locations'), ['errorField' => 'location_id']);
 
         return $rules;
     }

@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  *
  * @property \ProductBackend\Model\Entity\Kit $kit
  * @property \ProductBackend\Model\Entity\GroupItem $group_item
+ * @property \ProductBackend\Model\Entity\KitOptionCodeItem[] $kit_option_code_items
  */
 class KitItem extends Entity
 {
@@ -25,7 +26,7 @@ class KitItem extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'kit_id' => true,
@@ -33,5 +34,6 @@ class KitItem extends Entity
         'active' => true,
         'kit' => true,
         'group_item' => true,
+        'kit_option_code_items' => true,
     ];
 }

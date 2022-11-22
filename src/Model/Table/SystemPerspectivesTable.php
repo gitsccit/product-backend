@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\PerspectivesTable&\Cake\ORM\Association\BelongsTo $Perspectives
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsTo $Systems
+ *
  * @method \ProductBackend\Model\Entity\SystemPerspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemPerspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemPerspective[] newEntities(array $data, array $options = [])
@@ -63,8 +64,12 @@ class SystemPerspectivesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('perspective_id')
+            ->notEmptyString('perspective_id');
+
+        $validator
+            ->nonNegativeInteger('system_id')
+            ->notEmptyString('system_id');
 
         $validator
             ->scalar('price_lock')
@@ -127,8 +132,8 @@ class SystemPerspectivesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['perspective_id'], 'Perspectives'), ['errorField' => 'perspective_id']);
-        $rules->add($rules->existsIn(['system_id'], 'Systems'), ['errorField' => 'system_id']);
+        $rules->add($rules->existsIn('perspective_id', 'Perspectives'), ['errorField' => 'perspective_id']);
+        $rules->add($rules->existsIn('system_id', 'Systems'), ['errorField' => 'system_id']);
 
         return $rules;
     }

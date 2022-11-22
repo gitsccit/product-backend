@@ -14,6 +14,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\BelongsTo $Systems
  * @property \ProductBackend\Model\Table\GroupItemsTable&\Cake\ORM\Association\BelongsTo $GroupItems
+ *
  * @method \ProductBackend\Model\Entity\SystemItem newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemItem newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemItem[] newEntities(array $data, array $options = [])
@@ -65,8 +66,12 @@ class SystemItemsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('system_id')
+            ->notEmptyString('system_id');
+
+        $validator
+            ->nonNegativeInteger('item_id')
+            ->notEmptyString('item_id');
 
         $validator
             ->requirePresence('quantity', 'create')
@@ -84,8 +89,8 @@ class SystemItemsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['system_id'], 'Systems'), ['errorField' => 'system_id']);
-        $rules->add($rules->existsIn(['item_id'], 'GroupItems'), ['errorField' => 'item_id']);
+        $rules->add($rules->existsIn('system_id', 'Systems'), ['errorField' => 'system_id']);
+        $rules->add($rules->existsIn('item_id', 'GroupItems'), ['errorField' => 'item_id']);
 
         return $rules;
     }

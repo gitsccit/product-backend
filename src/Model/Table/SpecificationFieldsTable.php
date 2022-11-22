@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SpecificationGroupsTable&\Cake\ORM\Association\BelongsTo $SpecificationGroups
  * @property \ProductBackend\Model\Table\SpecificationUnitGroupsTable&\Cake\ORM\Association\BelongsTo $SpecificationUnitGroups
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\HasMany $Specifications
+ *
  * @method \ProductBackend\Model\Entity\SpecificationField newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SpecificationField newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SpecificationField[] newEntities(array $data, array $options = [])
@@ -66,8 +67,12 @@ class SpecificationFieldsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('specification_group_id')
+            ->allowEmptyString('specification_group_id');
+
+        $validator
+            ->nonNegativeInteger('specification_unit_group_id')
+            ->allowEmptyString('specification_unit_group_id');
 
         $validator
             ->scalar('techspec')
@@ -107,14 +112,8 @@ class SpecificationFieldsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add(
-            $rules->existsIn(['specification_group_id'], 'SpecificationGroups'),
-            ['errorField' => 'specification_group_id']
-        );
-        $rules->add(
-            $rules->existsIn(['specification_unit_group_id'], 'SpecificationUnitGroups'),
-            ['errorField' => 'specification_unit_group_id']
-        );
+        $rules->add($rules->existsIn('specification_group_id', 'SpecificationGroups'), ['errorField' => 'specification_group_id']);
+        $rules->add($rules->existsIn('specification_unit_group_id', 'SpecificationUnitGroups'), ['errorField' => 'specification_unit_group_id']);
 
         return $rules;
     }

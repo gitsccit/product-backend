@@ -5,12 +5,14 @@ namespace ProductBackend\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 /**
  * ShipBoxesShipRates Model
  *
  * @property \ProductBackend\Model\Table\ShipBoxesTable&\Cake\ORM\Association\BelongsTo $ShipBoxes
  * @property \ProductBackend\Model\Table\ShipRatesTable&\Cake\ORM\Association\BelongsTo $ShipRates
+ *
  * @method \ProductBackend\Model\Entity\ShipBoxesShipRate newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipBoxesShipRate newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipBoxesShipRate[] newEntities(array $data, array $options = [])
@@ -52,6 +54,25 @@ class ShipBoxesShipRatesTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->nonNegativeInteger('ship_box_id')
+            ->notEmptyString('ship_box_id');
+
+        $validator
+            ->nonNegativeInteger('ship_rate_id')
+            ->notEmptyString('ship_rate_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
@@ -60,8 +81,8 @@ class ShipBoxesShipRatesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['ship_box_id'], 'ShipBoxes'), ['errorField' => 'ship_box_id']);
-        $rules->add($rules->existsIn(['ship_rate_id'], 'ShipRates'), ['errorField' => 'ship_rate_id']);
+        $rules->add($rules->existsIn('ship_box_id', 'ShipBoxes'), ['errorField' => 'ship_box_id']);
+        $rules->add($rules->existsIn('ship_rate_id', 'ShipRates'), ['errorField' => 'ship_rate_id']);
 
         return $rules;
     }

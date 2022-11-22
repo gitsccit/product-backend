@@ -125,12 +125,12 @@ class SystemCategoriesController extends AppController
             return $this->index();
         }
 
-        $tagCategories = $this->SystemCategories->Systems->Kits->find('filter', [
+        $tagGroups = $this->SystemCategories->Systems->Kits->find('filter', [
             'kits' => $systems->all()->extract('kit_id')->toList(),
         ]);
 
         $systems = $this->paginate($systems);
-        $tagCategories = $tagCategories->all()->toList();
+        $tagGroups = $tagGroups->all()->toList();
         $breadcrumbs = $systemCategory->getBreadcrumbs();
         $filterBreadcrumbs = array_map(function ($filter) {
             return [
@@ -139,7 +139,7 @@ class SystemCategoriesController extends AppController
         }, $urlFilters);
         $breadcrumbs = array_merge($breadcrumbs, $filterBreadcrumbs);
 
-        $this->set(compact('systemCategory', 'systems', 'tagCategories', 'breadcrumbs'));
+        $this->set(compact('systemCategory', 'systems', 'tagGroups', 'breadcrumbs'));
 
         $layout = $this->request->getSession()->read('store.layout_system_browsing');
         $this->viewBuilder()->setTemplate("view_$layout");

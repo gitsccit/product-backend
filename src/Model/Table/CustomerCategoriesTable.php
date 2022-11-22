@@ -15,6 +15,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\CustomerBomsTable&\Cake\ORM\Association\HasMany $CustomerBoms
  * @property \ProductBackend\Model\Table\CustomerCategoriesTable&\Cake\ORM\Association\HasMany $ChildCustomerCategories
  * @property \ProductBackend\Model\Table\CustomerProductsTable&\Cake\ORM\Association\HasMany $CustomerProducts
+ *
  * @method \ProductBackend\Model\Entity\CustomerCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerCategory[] newEntities(array $data, array $options = [])
@@ -77,8 +78,12 @@ class CustomerCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('parent_id')
+            ->allowEmptyString('parent_id');
+
+        $validator
+            ->nonNegativeInteger('customer_id')
+            ->notEmptyString('customer_id');
 
         $validator
             ->scalar('active')
@@ -106,8 +111,8 @@ class CustomerCategoriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['parent_id'], 'ParentCustomerCategories'), ['errorField' => 'parent_id']);
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
+        $rules->add($rules->existsIn('parent_id', 'ParentCustomerCategories'), ['errorField' => 'parent_id']);
+        $rules->add($rules->existsIn('customer_id', 'Customers'), ['errorField' => 'customer_id']);
 
         return $rules;
     }

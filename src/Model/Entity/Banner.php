@@ -17,8 +17,6 @@ use Cake\ORM\Entity;
  * @property int $sort
  * @property \Cake\I18n\FrozenTime $timestamp
  *
- * @property \ProductBackend\Model\Entity\Image $image
- * @property \ProductBackend\Model\Entity\Tile $tile
  * @property \ProductBackend\Model\Entity\SystemCategory[] $system_categories
  * @property \ProductBackend\Model\Entity\SystemCategoryPerspective[] $system_category_perspectives
  */
@@ -31,7 +29,7 @@ class Banner extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'image_id' => true,
@@ -41,8 +39,6 @@ class Banner extends Entity
         'style' => true,
         'sort' => true,
         'timestamp' => true,
-        'image' => true,
-        'tile' => true,
         'system_categories' => true,
         'system_category_perspectives' => true,
     ];

@@ -14,7 +14,9 @@ use Cake\ORM\Entity;
  * @property int|null $parent_id
  * @property string $url
  * @property string $name
+ * @property string $short_description
  * @property string $description
+ * @property string $classification
  * @property int|null $force_perspective
  * @property int|null $banner_id
  * @property string $spares_kits
@@ -37,13 +39,15 @@ class SystemCategory extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'parent_id' => true,
         'url' => true,
         'name' => true,
+        'short_description' => true,
         'description' => true,
+        'classification' => true,
         'force_perspective' => true,
         'banner_id' => true,
         'spares_kits' => true,
@@ -56,23 +60,6 @@ class SystemCategory extends Entity
         'system_category_perspectives' => true,
         'systems' => true,
     ];
-
-    public function loadSystems($count = 4)
-    {
-        $currentSystemCount = count($this->systems ?? []);
-
-        $this->systems = FactoryLocator::get('Table')->get('ProductBackend.Systems')->find('listing')
-            ->where(['Systems.system_category_id' => $this->id])->limit($count - $currentSystemCount)->all()->toList();
-
-        foreach ($this->children ?? $this->child_system_categories as $childCategory) {
-            $currentSystemCount = count($this->products ?? []);
-
-            if ($currentSystemCount < $count) {
-                $childCategory->loadSystems($count - $currentSystemCount);
-                $this->systems = array_merge($this->systems, $childCategory->systems);
-            }
-        }
-    }
 
     public static function getBreadcrumbBase()
     {

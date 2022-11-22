@@ -17,6 +17,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SystemCategoryPerspectivesTable&\Cake\ORM\Association\HasMany $SystemCategoryPerspectives
  * @property \ProductBackend\Model\Table\SystemPerspectivesTable&\Cake\ORM\Association\HasMany $SystemPerspectives
  * @property \ProductBackend\Model\Table\TabPerspectivesTable&\Cake\ORM\Association\HasMany $TabPerspectives
+ *
  * @method \ProductBackend\Model\Entity\Perspective newEmptyEntity()
  * @method \ProductBackend\Model\Entity\Perspective newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\Perspective[] newEntities(array $data, array $options = [])
@@ -89,10 +90,6 @@ class PerspectivesTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
         $validator
             ->scalar('name')
             ->maxLength('name', 80)

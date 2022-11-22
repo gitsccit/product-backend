@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\KitRulesTable&\Cake\ORM\Association\BelongsTo $KitRules
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsTo $Buckets
  * @property \ProductBackend\Model\Table\GroupItemsTable&\Cake\ORM\Association\BelongsTo $GroupItems
+ *
  * @method \ProductBackend\Model\Entity\KitRuleDetail newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitRuleDetail newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitRuleDetail[] newEntities(array $data, array $options = [])
@@ -67,8 +68,8 @@ class KitRuleDetailsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('kit_rule_id')
+            ->notEmptyString('kit_rule_id');
 
         $validator
             ->scalar('logic')
@@ -82,6 +83,14 @@ class KitRuleDetailsTable extends Table
         $validator
             ->nonNegativeInteger('value')
             ->allowEmptyString('value');
+
+        $validator
+            ->nonNegativeInteger('bucket_id')
+            ->allowEmptyString('bucket_id');
+
+        $validator
+            ->nonNegativeInteger('group_item_id')
+            ->allowEmptyString('group_item_id');
 
         $validator
             ->nonNegativeInteger('sort')
@@ -100,9 +109,9 @@ class KitRuleDetailsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['kit_rule_id'], 'KitRules'), ['errorField' => 'kit_rule_id']);
-        $rules->add($rules->existsIn(['bucket_id'], 'Buckets'), ['errorField' => 'bucket_id']);
-        $rules->add($rules->existsIn(['group_item_id'], 'GroupItems'), ['errorField' => 'group_item_id']);
+        $rules->add($rules->existsIn('kit_rule_id', 'KitRules'), ['errorField' => 'kit_rule_id']);
+        $rules->add($rules->existsIn('bucket_id', 'Buckets'), ['errorField' => 'bucket_id']);
+        $rules->add($rules->existsIn('group_item_id', 'GroupItems'), ['errorField' => 'group_item_id']);
 
         return $rules;
     }

@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\CustomerBomsTable&\Cake\ORM\Association\BelongsTo $CustomerBoms
  * @property \ProductBackend\Model\Table\CustomerBomDetailAdditionalSkusTable&\Cake\ORM\Association\HasMany $CustomerBomDetailAdditionalSkus
+ *
  * @method \ProductBackend\Model\Entity\CustomerBomDetail newEmptyEntity()
  * @method \ProductBackend\Model\Entity\CustomerBomDetail newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\CustomerBomDetail[] newEntities(array $data, array $options = [])
@@ -62,8 +63,8 @@ class CustomerBomDetailsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('customer_bom_id')
+            ->notEmptyString('customer_bom_id');
 
         $validator
             ->requirePresence('sequence', 'create')
@@ -103,7 +104,7 @@ class CustomerBomDetailsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['customer_bom_id'], 'CustomerBoms'), ['errorField' => 'customer_bom_id']);
+        $rules->add($rules->existsIn('customer_bom_id', 'CustomerBoms'), ['errorField' => 'customer_bom_id']);
 
         return $rules;
     }

@@ -5,12 +5,14 @@ namespace ProductBackend\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 /**
  * BucketsGroups Model
  *
  * @property \ProductBackend\Model\Table\BucketsTable&\Cake\ORM\Association\BelongsTo $Buckets
  * @property \ProductBackend\Model\Table\GroupsTable&\Cake\ORM\Association\BelongsTo $Groups
+ *
  * @method \ProductBackend\Model\Entity\BucketsGroup newEmptyEntity()
  * @method \ProductBackend\Model\Entity\BucketsGroup newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\BucketsGroup[] newEntities(array $data, array $options = [])
@@ -52,6 +54,25 @@ class BucketsGroupsTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->nonNegativeInteger('bucket_id')
+            ->notEmptyString('bucket_id');
+
+        $validator
+            ->nonNegativeInteger('group_id')
+            ->notEmptyString('group_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
@@ -60,8 +81,8 @@ class BucketsGroupsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['bucket_id'], 'Buckets'), ['errorField' => 'bucket_id']);
-        $rules->add($rules->existsIn(['group_id'], 'Groups'), ['errorField' => 'group_id']);
+        $rules->add($rules->existsIn('bucket_id', 'Buckets'), ['errorField' => 'bucket_id']);
+        $rules->add($rules->existsIn('group_id', 'Groups'), ['errorField' => 'group_id']);
 
         return $rules;
     }

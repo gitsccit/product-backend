@@ -91,8 +91,8 @@ class ProductCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('parent_id')
+            ->allowEmptyString('parent_id');
 
         $validator
             ->scalar('url')
@@ -144,7 +144,7 @@ class ProductCategoriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['parent_id'], 'ParentProductCategories'), ['errorField' => 'parent_id']);
+        $rules->add($rules->existsIn('parent_id', 'ParentProductCategories'), ['errorField' => 'parent_id']);
 
         return $rules;
     }

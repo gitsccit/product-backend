@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\TagsTable&\Cake\ORM\Association\BelongsTo $Tags
+ *
  * @method \ProductBackend\Model\Entity\KitsTag newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitsTag newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitsTag[] newEntities(array $data, array $options = [])
@@ -63,8 +64,12 @@ class KitsTagsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('kit_id')
+            ->notEmptyString('kit_id');
+
+        $validator
+            ->nonNegativeInteger('tag_id')
+            ->notEmptyString('tag_id');
 
         $validator
             ->scalar('value')
@@ -83,8 +88,8 @@ class KitsTagsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
-        $rules->add($rules->existsIn(['tag_id'], 'Tags'), ['errorField' => 'tag_id']);
+        $rules->add($rules->existsIn('kit_id', 'Kits'), ['errorField' => 'kit_id']);
+        $rules->add($rules->existsIn('tag_id', 'Tags'), ['errorField' => 'tag_id']);
 
         return $rules;
     }

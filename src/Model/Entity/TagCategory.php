@@ -10,13 +10,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property string $filter
- * @property int|null $filter_sequence
- * @property string $support
- * @property string $support_text
- * @property int|null $support_sequence
  *
- * @property \ProductBackend\Model\Entity\Tag[] $tags
+ * @property \ProductBackend\Model\Entity\TagGroup[] $tag_groups
  */
 class TagCategory extends Entity
 {
@@ -27,15 +22,10 @@ class TagCategory extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'name' => true,
-        'filter' => true,
-        'filter_sequence' => true,
-        'support' => true,
-        'support_text' => true,
-        'support_sequence' => true,
-        'tags' => true,
+        'tag_groups' => true,
     ];
 }

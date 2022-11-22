@@ -17,21 +17,6 @@ class ActiveBackendDatabaseFixture extends TestFixture
      */
     public $table = 'active_backend_database';
     /**
-     * Fields
-     *
-     * @var array
-     */
-    // phpcs:disable
-    public $fields = [
-        'name' => ['type' => 'string', 'length' => 30, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
-        'timestamp' => ['type' => 'timestamp', 'length' => null, 'precision' => null, 'null' => false, 'default' => 'CURRENT_TIMESTAMP', 'comment' => ''],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8mb4_general_ci'
-        ],
-    ];
-    // phpcs:enable
-    /**
      * Init method
      *
      * @return void
@@ -41,7 +26,7 @@ class ActiveBackendDatabaseFixture extends TestFixture
         $this->records = [
             [
                 'name' => 'Lorem ipsum dolor sit amet',
-                'timestamp' => 1618931059,
+                'timestamp' => 1669071733,
             ],
         ];
         parent::init();

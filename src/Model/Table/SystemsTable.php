@@ -25,6 +25,7 @@ use ProductBackend\Model\Entity\System;
  * @property \ProductBackend\Model\Table\SystemItemsTable&\Cake\ORM\Association\HasMany $SystemItems
  * @property \ProductBackend\Model\Table\SystemPerspectivesTable&\Cake\ORM\Association\HasMany $SystemPerspectives
  * @property \ProductBackend\Model\Table\SystemPriceLevelsTable&\Cake\ORM\Association\HasMany $SystemPriceLevels
+ *
  * @method \ProductBackend\Model\Entity\System newEmptyEntity()
  * @method \ProductBackend\Model\Entity\System newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\System[] newEntities(array $data, array $options = [])
@@ -91,8 +92,12 @@ class SystemsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('kit_id')
+            ->notEmptyString('kit_id');
+
+        $validator
+            ->nonNegativeInteger('system_category_id')
+            ->allowEmptyString('system_category_id');
 
         $validator
             ->scalar('configurable')
@@ -183,11 +188,8 @@ class SystemsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
-        $rules->add(
-            $rules->existsIn(['system_category_id'], 'SystemCategories'),
-            ['errorField' => 'system_category_id']
-        );
+        $rules->add($rules->existsIn('kit_id', 'Kits'), ['errorField' => 'kit_id']);
+        $rules->add($rules->existsIn('system_category_id', 'SystemCategories'), ['errorField' => 'system_category_id']);
 
         return $rules;
     }
@@ -293,16 +295,15 @@ class SystemsTable extends Table
                             'id' => 'Tags.id',
                             'Tags.name',
                             'Tags.image_id',
-                            'value' => "IF(TagCategories.support_text = 'yes', KitsTags.value, '')",
-                            'category' => 'TagCategories.name',
+                            'value' => "IF(TagGroups.display_value = 'yes', KitsTags.value, NULL)",
+                            'group' => 'TagGroups.name',
                         ])
-                        ->innerJoinWith('TagCategories')
+                        ->innerJoinWith('TagGroups.TagCategories')
                         ->where([
-                            'TagCategories.support' => 'yes',
+                            'TagCategories.name' => 'Support',
                         ])
                         ->order([
-                            'TagCategories.support_sequence',
-                            'TagCategories.name',
+                            'TagCategoriesTagGroups.sort',
                             'Tags.sort',
                             'Tags.name',
                         ]);
@@ -312,17 +313,17 @@ class SystemsTable extends Table
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
                     $tags = new Collection($system['kit']['tags']);
-                    $tagCategories = $tags->groupBy('category')->toArray();
+                    $tagGroups = $tags->groupBy('group')->toArray();
                     $system['tags'] = [];
                     $tagCount = 7;
 
-                    while (count($system['tags']) < $tagCount && count($tagCategories) > 0) {
-                        foreach ($tagCategories as $tagCategory => $tags) {
+                    while (count($system['tags']) < $tagCount && count($tagGroups) > 0) {
+                        foreach ($tagGroups as $tagGroup => $tags) {
                             $system['tags'][] = array_shift($tags);
-                            $tagCategories[$tagCategory] = $tags;
+                            $tagGroups[$tagGroup] = $tags;
 
                             if (empty($tags)) {
-                                unset($tagCategories[$tagCategory]);
+                                unset($tagGroups[$tagGroup]);
                             }
 
                             if (count($system['tags']) === $tagCount) {

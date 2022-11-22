@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Entity;
 
-use Cake\Datasource\FactoryLocator;
-use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Entity;
 
 /**
@@ -38,7 +36,7 @@ class ProductCategory extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'parent_id' => true,
@@ -58,61 +56,4 @@ class ProductCategory extends Entity
         'raid_maps' => true,
         'spare_category_relations' => true,
     ];
-
-    public function loadProducts($count = 4)
-    {
-        $currentProductCount = count($this->products ?? []);
-
-        $this->products = FactoryLocator::get('Table')->get('ProductBackend.Products')->find('listing')
-            ->where(['Products.product_category_id' => $this->id])
-            ->limit($count - $currentProductCount)
-            ->all()
-            ->toList();
-
-        foreach ($this->children ?? $this->child_product_categories as $childCategory) {
-            $currentProductCount = count($this->products ?? []);
-
-            if ($currentProductCount < $count) {
-                $childCategory->loadProducts($count - $currentProductCount);
-                $this->products = array_merge($this->products, $childCategory->products);
-            }
-        }
-    }
-
-    public static function getBreadcrumbBase()
-    {
-        return [
-            [
-                'title' => 'Hardware',
-                'url' => '/hardware',
-            ],
-        ];
-    }
-
-    public function getBreadcrumbs()
-    {
-        if ($this->parent_id && !isset($this->parent_product_category)) {
-            $this->parent_product_category = FactoryLocator::get('Table')->get('ProductBackend.ProductCategories')
-                ->get($this->parent_id, ['finder' => 'listing']);
-
-            if (is_null($this->parent_product_category)) {
-                throw new NotFoundException();
-            }
-
-            $breadcrumbs = $this->parent_product_category->getBreadcrumbs();
-        }
-
-        if (!isset($breadcrumbs)) {
-            $breadcrumbs = ProductCategory::getBreadcrumbBase();
-        }
-
-        $parentCrumb = end($breadcrumbs);
-
-        $breadcrumbs[] = [
-            'title' => $this->name,
-            'url' => "$parentCrumb[url]/$this->url",
-        ];
-
-        return $breadcrumbs;
-    }
 }

@@ -11,10 +11,10 @@ use Cake\Validation\Validator;
  * SkuRuleGroups Model
  *
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\BelongsTo $SkuRules
- * @property \ProductBackend\Model\Table\SpecsTable&\Cake\ORM\Association\BelongsTo $Specs
  * @property \ProductBackend\Model\Table\SkuRuleAdditionalSkusTable&\Cake\ORM\Association\HasMany $SkuRuleAdditionalSkus
  * @property \ProductBackend\Model\Table\SkuRuleGroupSkusTable&\Cake\ORM\Association\HasMany $SkuRuleGroupSkus
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\HasMany $SkuRules
+ *
  * @method \ProductBackend\Model\Entity\SkuRuleGroup newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleGroup newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleGroup[] newEntities(array $data, array $options = [])
@@ -50,10 +50,6 @@ class SkuRuleGroupsTable extends Table
             'joinType' => 'INNER',
             'className' => 'ProductBackend.SkuRules',
         ]);
-        $this->belongsTo('Specs', [
-            'foreignKey' => 'spec_id',
-            'className' => 'ProductBackend.Specs',
-        ]);
         $this->hasMany('SkuRuleAdditionalSkus', [
             'foreignKey' => 'sku_rule_group_id',
             'className' => 'ProductBackend.SkuRuleAdditionalSkus',
@@ -77,12 +73,16 @@ class SkuRuleGroupsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('sku_rule_id')
+            ->notEmptyString('sku_rule_id');
 
         $validator
             ->scalar('method')
             ->notEmptyString('method');
+
+        $validator
+            ->nonNegativeInteger('spec_id')
+            ->allowEmptyString('spec_id');
 
         $validator
             ->scalar('value')
@@ -105,8 +105,7 @@ class SkuRuleGroupsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['sku_rule_id'], 'SkuRules'), ['errorField' => 'sku_rule_id']);
-        $rules->add($rules->existsIn(['spec_id'], 'Specs'), ['errorField' => 'spec_id']);
+        $rules->add($rules->existsIn('sku_rule_id', 'SkuRules'), ['errorField' => 'sku_rule_id']);
 
         return $rules;
     }

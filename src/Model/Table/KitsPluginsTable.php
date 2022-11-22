@@ -5,12 +5,14 @@ namespace ProductBackend\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 /**
  * KitsPlugins Model
  *
  * @property \ProductBackend\Model\Table\KitsTable&\Cake\ORM\Association\BelongsTo $Kits
  * @property \ProductBackend\Model\Table\PluginsTable&\Cake\ORM\Association\BelongsTo $Plugins
+ *
  * @method \ProductBackend\Model\Entity\KitsPlugin newEmptyEntity()
  * @method \ProductBackend\Model\Entity\KitsPlugin newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\KitsPlugin[] newEntities(array $data, array $options = [])
@@ -52,6 +54,25 @@ class KitsPluginsTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->nonNegativeInteger('kit_id')
+            ->notEmptyString('kit_id');
+
+        $validator
+            ->nonNegativeInteger('plugin_id')
+            ->notEmptyString('plugin_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
@@ -60,8 +81,8 @@ class KitsPluginsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['kit_id'], 'Kits'), ['errorField' => 'kit_id']);
-        $rules->add($rules->existsIn(['plugin_id'], 'Plugins'), ['errorField' => 'plugin_id']);
+        $rules->add($rules->existsIn('kit_id', 'Kits'), ['errorField' => 'kit_id']);
+        $rules->add($rules->existsIn('plugin_id', 'Plugins'), ['errorField' => 'plugin_id']);
 
         return $rules;
     }

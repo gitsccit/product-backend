@@ -18,6 +18,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\SystemCategoriesTable&\Cake\ORM\Association\HasMany $ChildSystemCategories
  * @property \ProductBackend\Model\Table\SystemCategoryPerspectivesTable&\Cake\ORM\Association\HasMany $SystemCategoryPerspectives
  * @property \ProductBackend\Model\Table\SystemsTable&\Cake\ORM\Association\HasMany $Systems
+ *
  * @method \ProductBackend\Model\Entity\SystemCategory newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SystemCategory newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SystemCategory[] newEntities(array $data, array $options = [])
@@ -79,8 +80,8 @@ class SystemCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('parent_id')
+            ->allowEmptyString('parent_id');
 
         $validator
             ->scalar('url')
@@ -95,14 +96,30 @@ class SystemCategoriesTable extends Table
             ->notEmptyString('name');
 
         $validator
+            ->scalar('short_description')
+            ->maxLength('short_description', 50)
+            ->requirePresence('short_description', 'create')
+            ->notEmptyString('short_description');
+
+        $validator
             ->scalar('description')
             ->maxLength('description', 250)
             ->requirePresence('description', 'create')
             ->notEmptyString('description');
 
         $validator
+            ->scalar('classification')
+            ->maxLength('classification', 50)
+            ->requirePresence('classification', 'create')
+            ->notEmptyString('classification');
+
+        $validator
             ->nonNegativeInteger('force_perspective')
             ->allowEmptyString('force_perspective');
+
+        $validator
+            ->nonNegativeInteger('banner_id')
+            ->allowEmptyString('banner_id');
 
         $validator
             ->scalar('spares_kits')
@@ -132,8 +149,8 @@ class SystemCategoriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['parent_id'], 'ParentSystemCategories'), ['errorField' => 'parent_id']);
-        $rules->add($rules->existsIn(['banner_id'], 'Banners'), ['errorField' => 'banner_id']);
+        $rules->add($rules->existsIn('parent_id', 'ParentSystemCategories'), ['errorField' => 'parent_id']);
+        $rules->add($rules->existsIn('banner_id', 'Banners'), ['errorField' => 'banner_id']);
 
         return $rules;
     }

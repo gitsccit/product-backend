@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\ShipRateShipRegionPricesTable&\Cake\ORM\Association\HasMany $ShipRateShipRegionPrices
  * @property \ProductBackend\Model\Table\ShipBoxesTable&\Cake\ORM\Association\BelongsToMany $ShipBoxes
+ *
  * @method \ProductBackend\Model\Entity\ShipRate newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ShipRate newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ShipRate[] newEntities(array $data, array $options = [])
@@ -61,10 +62,6 @@ class ShipRatesTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
         $validator
             ->scalar('name')
             ->maxLength('name', 30)

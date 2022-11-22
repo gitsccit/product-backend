@@ -15,7 +15,6 @@ use Cake\ORM\Entity;
  * @property int $sort
  * @property \Cake\I18n\FrozenTime $timestamp
  *
- * @property \ProductBackend\Model\Entity\Image $image
  * @property \ProductBackend\Model\Entity\Kit[] $kits
  */
 class Icon extends Entity
@@ -27,7 +26,7 @@ class Icon extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'name' => true,
@@ -35,7 +34,6 @@ class Icon extends Entity
         'style' => true,
         'sort' => true,
         'timestamp' => true,
-        'image' => true,
         'kits' => true,
     ];
 }

@@ -29,9 +29,9 @@ $card['tags'] = (new \Cake\Collection\Collection($card['tags']))->groupBy('categ
             <div class="row p-3 ps-md-0 h-100">
                 <div class="col-md-9">
                     <div class="row align-items-stretch h-100">
-                        <?php foreach (array_slice($card['tags'], 0, 4) as $tagCategory => $tags) : ?>
+                        <?php foreach (array_slice($card['tags'], 0, 4) as $tagGroup => $tags) : ?>
                             <div class="col-3 d-flex flex-column">
-                                <span class="fw-bolder"><?= $tagCategory ?></span>
+                                <span class="fw-bolder"><?= $tagGroup ?></span>
                                 <div class="d-flex flex-column justify-content-center flex-grow-1">
                                     <?php foreach ($tags as $tag) : ?>
                                         <div class="d-flex align-items-center">

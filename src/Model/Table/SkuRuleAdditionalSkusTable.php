@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\BelongsTo $SkuRules
  * @property \ProductBackend\Model\Table\SkuRuleGroupsTable&\Cake\ORM\Association\BelongsTo $SkuRuleGroups
+ *
  * @method \ProductBackend\Model\Entity\SkuRuleAdditionalSkus newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleAdditionalSkus newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleAdditionalSkus[] newEntities(array $data, array $options = [])
@@ -61,8 +62,8 @@ class SkuRuleAdditionalSkusTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('sku_rule_id')
+            ->allowEmptyString('sku_rule_id');
 
         $validator
             ->allowEmptyString('quantity');
@@ -72,6 +73,10 @@ class SkuRuleAdditionalSkusTable extends Table
             ->maxLength('sage_itemcode', 30)
             ->requirePresence('sage_itemcode', 'create')
             ->notEmptyString('sage_itemcode');
+
+        $validator
+            ->nonNegativeInteger('sku_rule_group_id')
+            ->allowEmptyString('sku_rule_group_id');
 
         $validator
             ->allowEmptyString('quantity_modifier');
@@ -92,8 +97,8 @@ class SkuRuleAdditionalSkusTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['sku_rule_id'], 'SkuRules'), ['errorField' => 'sku_rule_id']);
-        $rules->add($rules->existsIn(['sku_rule_group_id'], 'SkuRuleGroups'), ['errorField' => 'sku_rule_group_id']);
+        $rules->add($rules->existsIn('sku_rule_id', 'SkuRules'), ['errorField' => 'sku_rule_id']);
+        $rules->add($rules->existsIn('sku_rule_group_id', 'SkuRuleGroups'), ['errorField' => 'sku_rule_group_id']);
 
         return $rules;
     }

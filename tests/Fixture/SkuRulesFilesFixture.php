@@ -11,27 +11,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 class SkuRulesFilesFixture extends TestFixture
 {
     /**
-     * Fields
-     *
-     * @var array
-     */
-    // phpcs:disable
-    public $fields = [
-        'sku_rule_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'file_id' => ['type' => 'integer', 'length' => null, 'unsigned' => true, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        '_indexes' => [
-            'FK_sku_rules_files_sku_rules' => ['type' => 'index', 'columns' => ['sku_rule_id'], 'length' => []],
-        ],
-        '_constraints' => [
-            'FK_sku_rules_files_sku_rules' => ['type' => 'foreign', 'columns' => ['sku_rule_id'], 'references' => ['sku_rules', 'id'], 'update' => 'cascade', 'delete' => 'cascade', 'length' => []],
-        ],
-        '_options' => [
-            'engine' => 'InnoDB',
-            'collation' => 'utf8_general_ci'
-        ],
-    ];
-    // phpcs:enable
-    /**
      * Init method
      *
      * @return void

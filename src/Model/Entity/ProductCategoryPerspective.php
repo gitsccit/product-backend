@@ -13,7 +13,9 @@ use Cake\ORM\Entity;
  * @property int $product_category_id
  * @property string|null $url
  * @property string|null $name
+ * @property string|null $short_description
  * @property string|null $description
+ * @property string|null $classification
  * @property string|null $active
  * @property string|null $show_related_systems
  * @property int|null $children
@@ -30,14 +32,16 @@ class ProductCategoryPerspective extends Entity
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
         'perspective_id' => true,
         'product_category_id' => true,
         'url' => true,
         'name' => true,
+        'short_description' => true,
         'description' => true,
+        'classification' => true,
         'active' => true,
         'show_related_systems' => true,
         'children' => true,

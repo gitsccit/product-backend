@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -13,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\PriceLevelPerspectivesTable&\Cake\ORM\Association\HasMany $PriceLevelPerspectives
  * @property \ProductBackend\Model\Table\ProductPriceLevelsTable&\Cake\ORM\Association\HasMany $ProductPriceLevels
  * @property \ProductBackend\Model\Table\SystemPriceLevelsTable&\Cake\ORM\Association\HasMany $SystemPriceLevels
+ *
  * @method \ProductBackend\Model\Entity\PriceLevel newEmptyEntity()
  * @method \ProductBackend\Model\Entity\PriceLevel newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\PriceLevel[] newEntities(array $data, array $options = [])
@@ -66,10 +66,6 @@ class PriceLevelsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 30)
             ->requirePresence('name', 'create')
@@ -95,13 +91,5 @@ class PriceLevelsTable extends Table
     public static function defaultConnectionName(): string
     {
         return 'product_backend';
-    }
-
-    public function findConfigurationPrice(Query $query, array $options)
-    {
-        return $query
-            ->formatResults(function ($result) {
-                return $result;
-            });
     }
 }

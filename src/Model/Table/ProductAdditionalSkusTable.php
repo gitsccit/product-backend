@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  * ProductAdditionalSkus Model
  *
  * @property \ProductBackend\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
+ *
  * @method \ProductBackend\Model\Entity\ProductAdditionalSkus newEmptyEntity()
  * @method \ProductBackend\Model\Entity\ProductAdditionalSkus newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\ProductAdditionalSkus[] newEntities(array $data, array $options = [])
@@ -56,8 +57,8 @@ class ProductAdditionalSkusTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('product_id')
+            ->allowEmptyString('product_id');
 
         $validator
             ->notEmptyString('quantity');
@@ -88,7 +89,7 @@ class ProductAdditionalSkusTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
+        $rules->add($rules->existsIn('product_id', 'Products'), ['errorField' => 'product_id']);
 
         return $rules;
     }

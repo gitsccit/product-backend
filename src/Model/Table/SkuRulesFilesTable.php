@@ -5,12 +5,14 @@ namespace ProductBackend\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Validation\Validator;
 
 /**
  * SkuRulesFiles Model
  *
  * @property \ProductBackend\Model\Table\SkuRulesTable&\Cake\ORM\Association\BelongsTo $SkuRules
  * @property \ProductBackend\Model\Table\FilesTable&\Cake\ORM\Association\BelongsTo $Files
+ *
  * @method \ProductBackend\Model\Entity\SkuRulesFile newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRulesFile newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRulesFile[] newEntities(array $data, array $options = [])
@@ -52,6 +54,25 @@ class SkuRulesFilesTable extends Table
     }
 
     /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator): Validator
+    {
+        $validator
+            ->nonNegativeInteger('sku_rule_id')
+            ->notEmptyString('sku_rule_id');
+
+        $validator
+            ->nonNegativeInteger('file_id')
+            ->notEmptyFile('file_id');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
@@ -60,8 +81,8 @@ class SkuRulesFilesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['sku_rule_id'], 'SkuRules'), ['errorField' => 'sku_rule_id']);
-        $rules->add($rules->existsIn(['file_id'], 'Files'), ['errorField' => 'file_id']);
+        $rules->add($rules->existsIn('sku_rule_id', 'SkuRules'), ['errorField' => 'sku_rule_id']);
+        $rules->add($rules->existsIn('file_id', 'Files'), ['errorField' => 'file_id']);
 
         return $rules;
     }

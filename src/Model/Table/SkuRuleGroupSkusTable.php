@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  * SkuRuleGroupSkus Model
  *
  * @property \ProductBackend\Model\Table\SkuRuleGroupsTable&\Cake\ORM\Association\BelongsTo $SkuRuleGroups
+ *
  * @method \ProductBackend\Model\Entity\SkuRuleGroupSkus newEmptyEntity()
  * @method \ProductBackend\Model\Entity\SkuRuleGroupSkus newEntity(array $data, array $options = [])
  * @method \ProductBackend\Model\Entity\SkuRuleGroupSkus[] newEntities(array $data, array $options = [])
@@ -57,8 +58,8 @@ class SkuRuleGroupSkusTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('sku_rule_group_id')
+            ->notEmptyString('sku_rule_group_id');
 
         $validator
             ->scalar('sage_itemcode')
@@ -78,7 +79,7 @@ class SkuRuleGroupSkusTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['sku_rule_group_id'], 'SkuRuleGroups'), ['errorField' => 'sku_rule_group_id']);
+        $rules->add($rules->existsIn('sku_rule_group_id', 'SkuRuleGroups'), ['errorField' => 'sku_rule_group_id']);
 
         return $rules;
     }
