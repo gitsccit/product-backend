@@ -310,12 +310,12 @@ class SystemsTable extends Table
                 },
             ])
             ->select($this->Kits)
-            ->formatResults(function ($result) {
-                return $result->map(function ($system) {
+            ->formatResults(function ($result) use ($options) {
+                return $result->map(function ($system) use ($options) {
                     $tags = new Collection($system['kit']['tags']);
                     $tagGroups = $tags->groupBy('group_name')->toArray();
                     $system['tags'] = [];
-                    $tagCount = 7;
+                    $tagCount = $options['tagCount'] ?? 7;
 
                     while (count($system['tags']) < $tagCount && count($tagGroups) > 0) {
                         foreach ($tagGroups as $tagGroup => $tags) {
@@ -368,11 +368,33 @@ class SystemsTable extends Table
                 'power_estimate' => 'Kits.power_estimate',
             ])
             ->innerJoinWith('Kits')
+            ->contain([
+                'Kits.Tags' => function (Query $q) {
+                    return $q
+                        ->select([
+                            'Tags.id',
+                            'category_name' => 'TagCategories.name',
+                            'group_name' => 'TagGroups.name',
+                            'name' => 'Tags.name',
+                            'image_id' => 'Tags.image_id',
+                            'value' => "IF(TagGroups.display_value = 'yes', KitsTags.value, NULL)",
+                        ])
+                        ->innerJoinWith('TagGroups.TagCategories')
+                        ->order([
+                            'TagCategories.name',
+                            'TagCategoriesTagGroups.sort',
+                            'Tags.sort',
+                            'Tags.name',
+                        ]);
+                },
+            ])
             ->formatResults(function ($result) use ($options) {
                 return $result->map(function ($system) use ($options) {
                     $system['banner'] = Router::url("/api/system/banner/$system[url]", true);
                     $system['noise_level'] = $system['noise_level'] === 'yes';
                     $system['power_estimate'] = $system['power_estimate'] === 'yes';
+                    $system['tags'] = $system['kit']['tags'];
+                    unset($system['kit']);
                     $system['buckets'] = $this->Kits->Buckets
                         ->find('configuration', ['kitID' => $system['kit_id']])
                         ->find('filters')
