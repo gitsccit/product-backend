@@ -299,9 +299,6 @@ class SystemsTable extends Table
                             'group_name' => 'TagGroups.name',
                         ])
                         ->innerJoinWith('TagGroups.TagCategories')
-                        ->where([
-                            'TagCategories.name' => 'Support',
-                        ])
                         ->order([
                             'TagCategoriesTagGroups.sort',
                             'Tags.sort',
