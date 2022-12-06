@@ -82,7 +82,7 @@ class SystemCategoriesController extends AppController
             throw new NotFoundException();
         }
 
-        $systems = $this->SystemCategories->Systems->find('listing', ['tagCount' => 99])
+        $systems = $this->SystemCategories->Systems->find('listing')
             ->where(['Systems.system_category_id' => $systemCategory->id]);
 
         $filter = json_decode(base64_decode($this->request->getQuery('filter', '')), true) ?? [];

@@ -76,7 +76,7 @@ class SystemCategoriesController extends AppController
             return;
         }
 
-        $systems = $this->SystemCategories->Systems->find('listing')
+        $systems = $this->SystemCategories->Systems->find('listing', ['tagCount' => 99])
             ->where(['Systems.system_category_id' => $systemCategory->id]);
 
         if ($systems->count() === 0) {
