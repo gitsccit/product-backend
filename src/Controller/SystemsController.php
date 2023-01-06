@@ -227,7 +227,7 @@ class SystemsController extends AppController
         $configurationJson = json_encode($configuration);
 
         $system = $this->Systems->find('banner')->where(['Systems.id' => $systemID])->first();
-        $banner = $system->banner;
+        $banner = $system['banner'];
 
         $defaultOpportunityDetail = [
             'opportunity_detail_type_id' => 4,
