@@ -115,10 +115,8 @@ class SystemItemsTable extends Table
                 'SystemItems.system_id',
                 'SystemItems.item_id',
                 'SystemItems.quantity',
-                'name' => 'IF(GroupItems.product_id IS NULL, IFNULL(SystemPerspectives.name, Systems.name), IFNULL(ProductPerspectives.name, Products.name))',
                 'bucket' => 'Buckets.name',
             ])
-            ->innerJoinWith('GroupItems.Groups.Buckets')
             ->leftJoinWith('GroupItems.Products.ProductPerspectives', function (Query $q) use ($perspectiveID) {
                 return $q->where(['ProductPerspectives.perspective_id' => $perspectiveID]);
             })
