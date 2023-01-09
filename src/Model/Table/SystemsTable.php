@@ -471,6 +471,7 @@ class SystemsTable extends Table
 
         return $query
             ->select([
+                'Systems.id',
                 'image_id' => 'file_id',
             ])
             ->leftJoinWith("SystemItems.GroupItems.Products.Galleries.${imageType}GalleryImages", function ($q) use ($imageType) {

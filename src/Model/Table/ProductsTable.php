@@ -454,6 +454,7 @@ class ProductsTable extends Table
     {
         return $query
             ->select([
+                'Products.id',
                 'image_id' => 'ProductGalleryImages.file_id',
             ])
             ->leftJoinWith('Galleries.ProductGalleryImages')
