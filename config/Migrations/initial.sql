@@ -2014,7 +2014,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET character_set_client = utf8mb4 */;
 /*!50001 SET character_set_results = utf8mb4 */;
 /*!50001 SET collation_connection = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_browse_tags` AS
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`migration`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_browse_tags` AS
 select `view_kit_tags`.`kit_id`   AS `kit_id`,
        `view_kit_tags`.`category` AS `category`,
        `view_kit_tags`.`group`    AS `group`,
@@ -2039,7 +2039,7 @@ where (`view_kit_tags`.`category` = 'Support')
 /*!50001 SET character_set_client = utf8mb4 */;
 /*!50001 SET character_set_results = utf8mb4 */;
 /*!50001 SET collation_connection = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_card_tags` AS
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`migration`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_card_tags` AS
 select `view_kit_tags`.`kit_id` AS `kit_id`, `view_kit_tags`.`name` AS `name`, `view_kit_tags`.`value` AS `value`
 from `view_kit_tags`
 where (`view_kit_tags`.`category` = 'Support Badge')
@@ -2059,7 +2059,7 @@ where (`view_kit_tags`.`category` = 'Support Badge')
 /*!50001 SET character_set_client = utf8mb4 */;
 /*!50001 SET character_set_results = utf8mb4 */;
 /*!50001 SET collation_connection = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_tags` AS
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`migration`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_kit_tags` AS
 select `kt`.`kit_id`                                          AS `kit_id`,
        `tc`.`name`                                            AS `category`,
        `tg`.`name`                                            AS `group`,
@@ -2086,7 +2086,7 @@ order by `tc`.`name`, `tctg`.`sort`, `t`.`sort`, `t`.`name`
 /*!50001 SET character_set_client = utf8mb4 */;
 /*!50001 SET character_set_results = utf8mb4 */;
 /*!50001 SET collation_connection = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_product_browse_images` AS
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`migration`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_product_browse_images` AS
 select `p`.`id` AS `product_id`, `i`.`file_id` AS `image_id`
 from ((`products` `p` join `galleries` `g` on ((`g`.`id` = `p`.`gallery_id`))) join `gallery_images` `i`
       on ((`i`.`id` = `g`.`product_gallery_image_id`)))
@@ -2106,7 +2106,7 @@ from ((`products` `p` join `galleries` `g` on ((`g`.`id` = `p`.`gallery_id`))) j
 /*!50001 SET character_set_client = utf8mb4 */;
 /*!50001 SET character_set_results = utf8mb4 */;
 /*!50001 SET collation_connection = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_system_browse_images` AS
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`migration`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_system_browse_images` AS
 select `s`.`id` AS `system_id`, `i`.`file_id` AS `image_id`
 from ((((((`systems` `s` join `system_items` `si` on ((`si`.`system_id` = `s`.`id`))) join `group_items` `gi`
           on ((`gi`.`id` = `si`.`item_id`))) join `products` `p`
@@ -2132,7 +2132,7 @@ order by `pc`.`gallery_priority` desc, `p`.`cost` desc, `p`.`sort`
 /*!50001 SET character_set_client = utf8mb4 */;
 /*!50001 SET character_set_results = utf8mb4 */;
 /*!50001 SET collation_connection = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`scc`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_system_system_images` AS
+/*!50001 CREATE ALGORITHM = UNDEFINED */ /*!50013 DEFINER =`migration`@`%` SQL SECURITY DEFINER */ /*!50001 VIEW `view_system_system_images` AS
 select `s`.`id` AS `system_id`, `i`.`file_id` AS `image_id`
 from ((((((`systems` `s` join `system_items` `si` on ((`si`.`system_id` = `s`.`id`))) join `group_items` `gi`
           on ((`gi`.`id` = `si`.`item_id`))) join `products` `p`
