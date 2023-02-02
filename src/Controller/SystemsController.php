@@ -300,7 +300,12 @@ class SystemsController extends AppController
                 $result['cost'] = $cost;
             }
 
-            $kitOptionCode = $this->Systems->Kits->KitOptionCodes->find('partNumber', ['kitID' => $kitID])->first();
+            $kitOptionCode = $this->Systems->Kits->KitOptionCodes
+                ->find('partNumber', [
+                    'kitID' => $kitID,
+                    'itemIDs' => Hash::extract($configuration, '{n}.{n}.item_id'),
+                ])
+                ->first();
 
             if (isset($kitOptionCode['part_number'])) {
                 $result['part_number'] = $kitOptionCode['part_number'];

@@ -107,9 +107,12 @@ class KitOptionCodesTable extends Table
     public function findPartNumber(Query $query, array $options = []): Query
     {
         return $query
-            ->contain('KitOptionCodeItems', ['order' => 'position'])
+            ->contain('KitOptionCodeItems', function (Query $q) use ($options) {
+                return $q->whereInList('kit_item_id', $options['itemIDs']);
+            })
             ->where([
                 'kit_id' => $options['kitID'],
+                'positions' => count($options['itemIDs']),
             ])
             ->formatResults(function ($result) {
                 return $result->each(function ($kitOptionCode) {
