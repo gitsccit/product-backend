@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -101,5 +102,21 @@ class KitOptionCodesTable extends Table
     public static function defaultConnectionName(): string
     {
         return 'product_backend';
+    }
+
+    public function findPartNumber(Query $query, array $options = []): Query
+    {
+        return $query
+            ->contain('KitOptionCodeItems', ['order' => 'position'])
+            ->where([
+                'kit_id' => $options['kitID'],
+            ])
+            ->formatResults(function ($result) {
+                return $result->each(function ($kitOptionCode) {
+                    foreach ($kitOptionCode['kit_option_code_items'] as $kitOptionCodeItems) {
+                        $kitOptionCode['part_number'] = str_replace('_', $kitOptionCodeItems['part_number'], $kitOptionCode['part_number'], 1);
+                    }
+                });
+            });
     }
 }

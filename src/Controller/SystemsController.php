@@ -300,6 +300,12 @@ class SystemsController extends AppController
                 $result['cost'] = $cost;
             }
 
+            $kitOptionCode = $this->Systems->Kits->KitOptionCodes->find('partNumber', ['kitID' => $kitID])->first();
+
+            if (isset($kitOptionCode['part_number'])) {
+                $result['part_number'] = $kitOptionCode['part_number'];
+            }
+
             return $this->response->withStringBody(json_encode($result))->withType('application/json');
         }
     }
