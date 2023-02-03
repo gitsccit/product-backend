@@ -108,7 +108,7 @@ class KitOptionCodesTable extends Table
     {
         return $query
             ->contain('KitOptionCodeItems', function (Query $q) use ($options) {
-                return $q->whereInList('kit_item_id', $options['itemIDs']);
+                return $q->whereInList('kit_item_id', $options['itemIDs'])->order('position');
             })
             ->where([
                 'kit_id' => $options['kitID'],
@@ -117,7 +117,10 @@ class KitOptionCodesTable extends Table
             ->formatResults(function ($result) {
                 return $result->each(function ($kitOptionCode) {
                     foreach ($kitOptionCode['kit_option_code_items'] as $kitOptionCodeItems) {
-                        $kitOptionCode['part_number'] = str_replace('_', $kitOptionCodeItems['part_number'], $kitOptionCode['part_number'], 1);
+                        $pos = strpos($kitOptionCode['part_number'], '_');
+                        if ($pos !== false) {
+                            $kitOptionCode['part_number'] = substr_replace($kitOptionCode['part_number'], $kitOptionCodeItems['part_number'], $pos, 1);
+                        }
                     }
                 });
             });
