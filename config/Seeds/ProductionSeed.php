@@ -17,7 +17,7 @@ class ProductionSeed extends AbstractSeed
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->execute(file_get_contents('production.sql', true));
     }

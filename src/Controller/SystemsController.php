@@ -308,7 +308,7 @@ class SystemsController extends AppController
                 ->first();
 
             if (isset($kitOptionCode['part_number'])) {
-                $result['part_number'] = $kitOptionCode['part_number'];
+                $result['partNumber'] = $kitOptionCode['part_number'];
             }
 
             return $this->response->withStringBody(json_encode($result))->withType('application/json');

@@ -17,7 +17,7 @@ class StagingSeed extends AbstractSeed
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->execute(file_get_contents('staging.sql', true));
     }
