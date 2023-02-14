@@ -25,6 +25,18 @@ $currentWarehouse = $this->request->getQuery(
         font-size: 11px;
         max-width: 100%;
     }
+
+    .list-group-item {
+        background-color: var(--background-color-2);
+        color: var(--bs-secondary-color) !important;
+    }
+
+    .list-group-item.active {
+        color: var(--black) !important;
+        border-top: 0 !important;
+        background-color: var(--background-color-4);
+        border-color: var(--primary-color) !important;
+    }
 </style>
 
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'

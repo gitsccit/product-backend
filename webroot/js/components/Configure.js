@@ -18,13 +18,14 @@ class Configure extends React.Component {
     this.state = {
       system: props.system,
       buckets: buckets,
-      currentTab: 0,
       currentConfig: props.currentConfig,
       selectedFilters: selectedFilters,
       errors: [],
       warnings: [],
       additionalItems: [],
     };
+
+    this.bucketTopOffset = 35;
   }
 
   _getBucketImage(bucketID) {
@@ -61,12 +62,6 @@ class Configure extends React.Component {
 
     this.setState({
       selectedFilters: filters,
-    });
-  }
-
-  _changeTab(newTab) {
-    this.setState({
-      currentTab: newTab,
     });
   }
 
@@ -248,24 +243,8 @@ class Configure extends React.Component {
     return `<div class="text-start">${summary}</div>`;
   }
 
-  _bucketsScrolled(event) {
-    const containerRect = event.currentTarget.getBoundingClientRect();
-
-    for (const [index, bucket] of this.state.buckets.entries()) {
-      const bucketContainer = document.getElementById(bucket['id']);
-      const {bottom, height, top} = bucketContainer.getBoundingClientRect();
-
-      if (containerRect.bottom > top && top > containerRect.top && (top - containerRect.top < containerRect.height / 2) ||
-        (containerRect.bottom > bottom && bottom > top && (containerRect.bottom - bottom < containerRect.height / 2))) {
-        this._changeTab(index);
-        return;
-      }
-    }
-  }
-
   render() {
     let buckets = this.state.buckets;
-    let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
 
@@ -306,8 +285,8 @@ class Configure extends React.Component {
                         bucketTab ?
                           <>
                             {`${prompt} `}
-                            <a className="text-white text-decoration-underline" href="javascript:void(0)"
-                               onClick={() => this._changeTab(bucketTab)}>Go to</a>
+                            <a className="text-white text-decoration-underline"
+                               href={`#list-item-${bucket['id']}`}>Go to</a>
                           </>
                           : (
                             promptType === 'additionalItems' ?
@@ -334,7 +313,8 @@ class Configure extends React.Component {
           {
             !standaloneBucket &&
             <div className="col-md-3 col-lg-2">
-              <div id="buckets" className="bg-3 shadow-sm d-flex flex-column">
+              <div id="bucket-list" className="bg-3 shadow-sm d-flex flex-column list-group sticky-top"
+                   style={{top: this.bucketTopOffset}}>
                 <div className="p-2 bg-black text-white">
                   <span className="icon-sliders"></span>Configurator
                 </div>
@@ -346,16 +326,13 @@ class Configure extends React.Component {
                       borderColor = 'border-danger';
                     } else if (this.state.warnings.filter(warning => Array.isArray(warning) && error[0] === bucket['id']).length > 0) {
                       borderColor = 'border-warning';
-                    } else if (this.state.currentTab === index) {
-                      borderColor = 'border-primary';
                     }
 
                     return (
                       <a
                         key={bucket['id']}
-                        className={`p-2 border-3 border-end bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted')}
-                        href={`#${bucket['id']}`}
-                        onClick={() => this._changeTab(index)}>
+                        className={`p-2 border-3 border-end bg-on-hover-4 text-decoration-none list-group-item list-group-item-action ${borderColor}`}
+                        href={`#list-item-${bucket['id']}`}>
                         {bucket['category']}
                       </a>
                     );
@@ -365,9 +342,8 @@ class Configure extends React.Component {
             </div>
           }
           <div className={standaloneBucket ? 'col-12' : 'col-md-9 col-lg-10'}>
-            <div {...(standaloneBucket ? {} : {style: {height: 600, overflowY: 'auto', overflowX: 'hidden'}})} data-bs-spy="scroll" data-bs-target="#buckets"
-                 data-bs-offset="100"
-                 onScroll={this._bucketsScrolled.bind(this)}>
+            <div id="buckets" className="position-relative" data-bs-spy="scroll" data-bs-target="#bucket-list"
+                 tabIndex="0">
               {
                 buckets.map((bucket, bucketIndex) => {
                   let itemsInBucket = this.state.currentConfig[bucket['id']];
@@ -426,7 +402,7 @@ class Configure extends React.Component {
                   });
 
                   return (
-                    <div key={bucket['id']} id={bucket['id']}
+                    <div key={bucket['id']} id={`list-item-${bucket['id']}`}
                          className={"item-group-vertical" + (bucketIndex == buckets.length - 1 ? '' : ' mb-5')}>
                       <h3>{bucket['name']}</h3>
                       {

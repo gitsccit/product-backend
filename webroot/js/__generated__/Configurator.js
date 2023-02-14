@@ -365,7 +365,7 @@ class Configurator extends React.Component {
     }, "Invalid Configuration"))))), /*#__PURE__*/React.createElement("div", {
       className: "container py-5"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "border-bottom"
+      className: "border-bottom sticky-top bg-2"
     }, /*#__PURE__*/React.createElement("div", {
       className: "item-group -mx-4"
     }, tabs.map((tab, index) => /*#__PURE__*/React.createElement("a", {

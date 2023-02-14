@@ -1,5 +1,3 @@
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 class Configure extends React.Component {
   constructor(props) {
     super(props);
@@ -15,13 +13,13 @@ class Configure extends React.Component {
     this.state = {
       system: props.system,
       buckets: buckets,
-      currentTab: 0,
       currentConfig: props.currentConfig,
       selectedFilters: selectedFilters,
       errors: [],
       warnings: [],
       additionalItems: []
     };
+    this.bucketTopOffset = 35;
   }
 
   _getBucketImage(bucketID) {
@@ -57,12 +55,6 @@ class Configure extends React.Component {
 
     this.setState({
       selectedFilters: filters
-    });
-  }
-
-  _changeTab(newTab) {
-    this.setState({
-      currentTab: newTab
     });
   }
 
@@ -241,28 +233,8 @@ class Configure extends React.Component {
     return `<div class="text-start">${summary}</div>`;
   }
 
-  _bucketsScrolled(event) {
-    const containerRect = event.currentTarget.getBoundingClientRect();
-
-    for (const [index, bucket] of this.state.buckets.entries()) {
-      const bucketContainer = document.getElementById(bucket['id']);
-      const {
-        bottom,
-        height,
-        top
-      } = bucketContainer.getBoundingClientRect();
-
-      if (containerRect.bottom > top && top > containerRect.top && top - containerRect.top < containerRect.height / 2 || containerRect.bottom > bottom && bottom > top && containerRect.bottom - bottom < containerRect.height / 2) {
-        this._changeTab(index);
-
-        return;
-      }
-    }
-  }
-
   render() {
     let buckets = this.state.buckets;
-    let currentBucket = buckets[this.state.currentTab];
     let standaloneBucket = buckets.length === 1;
     let prompts = {};
 
@@ -295,8 +267,7 @@ class Configure extends React.Component {
           className: `my-1 p-3 ${bgColor} text-white`
         }, bucketTab ? /*#__PURE__*/React.createElement(React.Fragment, null, `${prompt} `, /*#__PURE__*/React.createElement("a", {
           className: "text-white text-decoration-underline",
-          href: "javascript:void(0)",
-          onClick: () => this._changeTab(bucketTab)
+          href: `#list-item-${bucket['id']}`
         }, "Go to")) : promptType === 'additionalItems' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
           className: "text-small mb-2"
         }, "Additional components have been added to support your selection:"), prompt) : prompt);
@@ -313,8 +284,11 @@ class Configure extends React.Component {
     }, !standaloneBucket && /*#__PURE__*/React.createElement("div", {
       className: "col-md-3 col-lg-2"
     }, /*#__PURE__*/React.createElement("div", {
-      id: "buckets",
-      className: "bg-3 shadow-sm d-flex flex-column"
+      id: "bucket-list",
+      className: "bg-3 shadow-sm d-flex flex-column list-group sticky-top",
+      style: {
+        top: this.bucketTopOffset
+      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "p-2 bg-black text-white"
     }, /*#__PURE__*/React.createElement("span", {
@@ -326,30 +300,22 @@ class Configure extends React.Component {
         borderColor = 'border-danger';
       } else if (this.state.warnings.filter(warning => Array.isArray(warning) && error[0] === bucket['id']).length > 0) {
         borderColor = 'border-warning';
-      } else if (this.state.currentTab === index) {
-        borderColor = 'border-primary';
       }
 
       return /*#__PURE__*/React.createElement("a", {
         key: bucket['id'],
-        className: `p-2 border-3 border-end bg-on-hover-4 text-decoration-none ${borderColor} ` + (this.state.currentTab === index ? 'bg-4 text-black' : 'text-muted'),
-        href: `#${bucket['id']}`,
-        onClick: () => this._changeTab(index)
+        className: `p-2 border-3 border-end bg-on-hover-4 text-decoration-none list-group-item list-group-item-action ${borderColor}`,
+        href: `#list-item-${bucket['id']}`
       }, bucket['category']);
     }))), /*#__PURE__*/React.createElement("div", {
       className: standaloneBucket ? 'col-12' : 'col-md-9 col-lg-10'
-    }, /*#__PURE__*/React.createElement("div", _extends({}, standaloneBucket ? {} : {
-      style: {
-        height: 600,
-        overflowY: 'auto',
-        overflowX: 'hidden'
-      }
-    }, {
+    }, /*#__PURE__*/React.createElement("div", {
+      id: "buckets",
+      className: "position-relative",
       "data-bs-spy": "scroll",
-      "data-bs-target": "#buckets",
-      "data-bs-offset": "100",
-      onScroll: this._bucketsScrolled.bind(this)
-    }), buckets.map((bucket, bucketIndex) => {
+      "data-bs-target": "#bucket-list",
+      tabIndex: "0"
+    }, buckets.map((bucket, bucketIndex) => {
       let itemsInBucket = this.state.currentConfig[bucket['id']];
       let selectedItemsInBucket = itemsInBucket.filter(item => item['selected_at']);
       let bucketQuantity = selectedItemsInBucket.reduce((a, b) => a + b['quantity'], 0);
@@ -404,7 +370,7 @@ class Configure extends React.Component {
       });
       return /*#__PURE__*/React.createElement("div", {
         key: bucket['id'],
-        id: bucket['id'],
+        id: `list-item-${bucket['id']}`,
         className: "item-group-vertical" + (bucketIndex == buckets.length - 1 ? '' : ' mb-5')
       }, /*#__PURE__*/React.createElement("h3", null, bucket['name']), !standaloneBucket && /*#__PURE__*/React.createElement("div", {
         className: "item-group flex-nowrap"
