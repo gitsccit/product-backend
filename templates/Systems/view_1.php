@@ -26,12 +26,12 @@ $currentWarehouse = $this->request->getQuery(
         max-width: 100%;
     }
 
-    .list-group-item {
+    .bucket-link {
         background-color: var(--background-color-2);
         color: var(--bs-secondary-color) !important;
     }
 
-    .list-group-item.active {
+    .bucket-link.active {
         color: var(--black) !important;
         border-top: 0 !important;
         background-color: var(--background-color-4);

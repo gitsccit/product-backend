@@ -331,7 +331,7 @@ class Configure extends React.Component {
                     return (
                       <a
                         key={bucket['id']}
-                        className={`p-2 border-3 border-end bg-on-hover-4 text-decoration-none list-group-item list-group-item-action ${borderColor}`}
+                        className={`bucket-link p-2 border-3 border-end bg-on-hover-4 text-decoration-none ${borderColor}`}
                         href={`#list-item-${bucket['id']}`}>
                         {bucket['category']}
                       </a>
