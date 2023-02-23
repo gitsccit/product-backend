@@ -183,14 +183,18 @@ class SystemCategoriesTable extends Table
             ->orderAsc('SystemCategories.sort')
             ->formatResults(function (ResultSet $result) {
                 $systemCategories = $result->extract('id')->toList();
-                $systems = $this->Systems
-                    ->find('active')
-                    ->find('image')
-                    ->distinct('system_category_id')
-                    ->whereInList('system_category_id', $systemCategories)
-                    ->all()
-                    ->indexBy('system_category_id')
-                    ->toArray();
+                $systems = [];
+
+                if (!empty($systemCategories)) {
+                    $systems = $this->Systems
+                        ->find('active')
+                        ->find('image')
+                        ->distinct('system_category_id')
+                        ->whereInList('system_category_id', $systemCategories)
+                        ->all()
+                        ->indexBy('system_category_id')
+                        ->toArray();
+                }
 
                 foreach ($result as $systemCategory) {
                     $systemCategory['image'] = $systems[$systemCategory['id']]['image'] ?? null;
