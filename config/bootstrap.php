@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 use Cake\Core\Configure;
+use Cake\Datasource\ConnectionManager;
+use Cake\ORM\TableRegistry;
 
 /*
  * Read configuration file and inject configuration into various
@@ -16,3 +18,14 @@ try {
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
+
+// switch connection to the mirrored DB
+$tableLocator = TableRegistry::getTableLocator();
+$activeDB = $tableLocator->get('ProductBackend.ActiveBackendDatabase')->find()->first()->name;
+$tableLocator->clear();
+$mirrorConfig = array_merge(ConnectionManager::getConfig('product_backend'), ['database' => $activeDB]);
+$mirrorReplicaConfig = array_merge(ConnectionManager::getConfig('product_backend_replica'), ['database' => $activeDB]);
+ConnectionManager::drop('product_backend');
+ConnectionManager::drop('product_backend_replica');
+ConnectionManager::setConfig('product_backend', $mirrorConfig);
+ConnectionManager::setConfig('product_backend_replica', $mirrorReplicaConfig);
