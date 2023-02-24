@@ -18,11 +18,11 @@ class AppController extends BaseController
         ]);
 
         if ($perspective = $this->request->getQuery('perspective')) {
-            $this->request->getSession()->write('store.perspective', $perspective);
+            $this->request->getSession()->write('store.perspective', trim($perspective));
         }
 
         if ($priceLevel = $this->request->getQuery('price-level')) {
-            $this->request->getSession()->write('store.price_level', $priceLevel);
+            $this->request->getSession()->write('store.price_level', trim($priceLevel));
         }
     }
 }
