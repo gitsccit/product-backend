@@ -550,7 +550,7 @@ class SystemsTable extends Table
                 return $result->map(function ($system) {
                     $gallery = [];
                     foreach ($system['buckets'] as $bucket) {
-                        if (in_array($bucket['name'], ['Barebones', 'Chassis'])) {
+                        if (in_array($bucket['name'], ['Barebone', 'Chassis'])) {
                             $gallery = array_merge($gallery, Hash::extract($bucket, 'groups.{n}.group_items.{n}.image'));
                         }
                     }
