@@ -550,7 +550,7 @@ class SystemsTable extends Table
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
                     $gallery = [];
-                    $groupItems = Hash::extract($bucket, 'buckets.{n}.groups.{n}.group_items.{n}');
+                    $groupItems = Hash::extract($system, 'buckets.{n}.groups.{n}.group_items.{n}');
                     foreach ($groupItems as $groupItem) {
                         if ($groupItem['shown_in_system_gallery']) {
                             $gallery[] = $groupItem['image'];
