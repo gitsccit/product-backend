@@ -456,6 +456,7 @@ class ProductsTable extends Table
             ->select([
                 'Products.id',
                 'image_id' => 'ProductGalleryImages.file_id',
+                'shown_in_system_gallery' => "Galleries.system_active = 'yes'",
             ])
             ->leftJoinWith('Galleries.ProductGalleryImages')
             ->formatResults(function (CollectionInterface $results) {

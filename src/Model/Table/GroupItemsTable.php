@@ -179,6 +179,7 @@ class GroupItemsTable extends Table
                         $unifiedItem['name'] = $item['name'];
                         $unifiedItem['url'] = $item['url'];
                         $unifiedItem['image_id'] = $item['image_id'];
+                        $unifiedItem['shown_in_system_gallery'] = $item['shown_in_system_gallery'];
                         $unifiedItem['status'] = $item['status'];
                         $unifiedItem['status_text'] = $item['status_text'];
                         $unifiedItem['warning'] = $item['warning'] ?? null;

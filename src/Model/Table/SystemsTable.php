@@ -473,6 +473,7 @@ class SystemsTable extends Table
             ->select([
                 'Systems.id',
                 'image_id' => 'file_id',
+                'shown_in_system_gallery' => "Galleries.system_active = 'yes'",
             ])
             ->leftJoinWith("SystemItems.GroupItems.Products.Galleries.${imageType}GalleryImages")
             ->leftJoinWith('SystemItems.GroupItems.Products.ProductCategories')
@@ -549,9 +550,10 @@ class SystemsTable extends Table
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
                     $gallery = [];
-                    foreach ($system['buckets'] as $bucket) {
-                        if (in_array($bucket['name'], ['Barebone', 'Chassis'])) {
-                            $gallery = array_merge($gallery, Hash::extract($bucket, 'groups.{n}.group_items.{n}.image'));
+                    $groupItems = Hash::extract($bucket, 'buckets.{n}.groups.{n}.group_items.{n}');
+                    foreach ($groupItems as $groupItem) {
+                        if ($groupItem['shown_in_system_gallery']) {
+                            $gallery[] = $groupItem['image'];
                         }
                     }
                     $system['gallery'] = $gallery;
