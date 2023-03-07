@@ -15,7 +15,7 @@ class AddedSystemActiveToGalleryImages extends AbstractMigration
     public function change(): void
     {
         $this->table('gallery_images')
-            ->addColumn('system_active', 'string', [
+            ->addColumn('system_active', 'enum', [
                 'after' => 'active',
                 'default' => 'no',
                 'null' => false,

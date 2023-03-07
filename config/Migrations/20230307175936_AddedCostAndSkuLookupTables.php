@@ -31,7 +31,7 @@ class AddedCostAndSkuLookupTables extends AbstractMigration
                 'limit' => 20,
                 'null' => false,
             ])
-            ->addColumn('active', 'string', [
+            ->addColumn('active', 'enum', [
                 'default' => 'no',
                 'null' => false,
                 'limit' => null,
@@ -53,7 +53,7 @@ class AddedCostAndSkuLookupTables extends AbstractMigration
                 'limit' => 20,
                 'null' => false,
             ])
-            ->addColumn('active', 'string', [
+            ->addColumn('active', 'enum', [
                 'default' => 'no',
                 'null' => false,
                 'limit' => null,
@@ -88,7 +88,7 @@ class AddedCostAndSkuLookupTables extends AbstractMigration
                 'precision' => 8,
                 'scale' => 2,
             ])
-            ->addColumn('cost_maintenance', 'string', [
+            ->addColumn('cost_maintenance', 'enum', [
                 'default' => 'manual',
                 'limit' => null,
                 'null' => false,
