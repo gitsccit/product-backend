@@ -472,8 +472,8 @@ class SystemsTable extends Table
         return $query
             ->select([
                 'Systems.id',
-                'image_id' => 'file_id',
-                'shown_in_system_gallery' => "Galleries.system_active = 'yes'",
+                'image_id' => "${imageType}GalleryImages.file_id",
+                'shown_in_system_gallery' => "${imageType}GalleryImages.system_active = 'yes'",
             ])
             ->leftJoinWith("SystemItems.GroupItems.Products.Galleries.${imageType}GalleryImages")
             ->leftJoinWith('SystemItems.GroupItems.Products.ProductCategories')
