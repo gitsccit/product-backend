@@ -3,8 +3,8 @@
 DB_NAME=product_backend$DB_NAME_SUFFIX
 ACTIVE_DB=${DB_NAME}_mirror_1
 
-MIRROR_1_EXISTS=$(mysqlshow -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" | grep -v Wildcard | grep -o "${DB_NAME}_mirror_1")
-MIRROR_2_EXISTS=$(mysqlshow -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" | grep -v Wildcard | grep -o "${DB_NAME}_mirror_2")
+MIRROR_1_EXISTS=$(mysqlshow -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" | grep -o "${DB_NAME}_mirror_1")
+MIRROR_2_EXISTS=$(mysqlshow -h "$DB_HOST" -u "$DB_USERNAME" -p"$DB_PASSWORD" | grep -o "${DB_NAME}_mirror_2")
 
 if [[ $STAGING != 'true' ]]; then
     if [[ ($MIRROR_1_EXISTS == "${DB_NAME}_mirror_1") || ($MIRROR_2_EXISTS == "${DB_NAME}_mirror_2") ]]; then
