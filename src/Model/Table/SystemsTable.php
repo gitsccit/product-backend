@@ -354,7 +354,6 @@ class SystemsTable extends Table
             ->find('basic', $options)
             ->find('baseConfiguration', $options)
             ->find('gallery', $options)
-            ->find('image', ['type' => 'System'])
             ->select([
                 'description' => 'IFNULL(SystemPerspectives.description, Systems.description)',
                 'meta_title' => 'IFNULL(SystemPerspectives.meta_title, Systems.meta_title)',
@@ -399,17 +398,6 @@ class SystemsTable extends Table
                         ->all()
                         ->toList();
 
-                    $filesApiHandler = new \FilesApiHandler();
-                    $imageIDs = array_filter(Hash::extract($system, 'buckets.{n}.groups.{n}.group_items.{n}.image_id'));
-                    $images = $filesApiHandler->getFileUrls($imageIDs, 100, 100);
-                    foreach ($system['buckets'] as &$bucket) {
-                        foreach ($bucket['groups'] as &$group) {
-                            foreach ($group['group_items'] as &$groupItem) {
-                                $groupItem['image'] = $images[$groupItem['image_id']] ?? null;
-                            }
-                        }
-                    }
-
                     if (Configure::read('ProductBackend.showStock')) {
                         $session = new Session();
                         $thinkAPI = Client::createFromUrl(Configure::read('Urls.thinkAPI'));
@@ -451,11 +439,10 @@ class SystemsTable extends Table
                         }
                     }
 
-                    $system['gallery'] = Hash::extract($system['gallery'], '{n}.image');
-
                     return $system;
                 });
-            });
+            })
+            ->find('image', ['type' => 'System']);
     }
 
     public function findBaseConfiguration(Query $query, array $options)
@@ -499,6 +486,16 @@ class SystemsTable extends Table
                 foreach ($imagePathIdMap as $imagePath => $imageID) {
                     $results = Hash::insert($results, str_replace('image_id', 'image', $imagePath), $images[$imageID] ?? null);
                     $results = Hash::remove($results, $imagePath);
+                }
+
+                foreach ($results as &$system) {
+                    $system['image'] = str_replace('100x100', '500x500', $system['image']);
+                    if (isset($system['gallery'])) {
+                        $system['gallery'] = Hash::extract($system['gallery'], '{n}.image');
+                        foreach ($system['gallery'] as &$image) {
+                            $image = str_replace('100x100', '500x500', $image);
+                        }
+                    }
                 }
 
                 return new Collection($results);
