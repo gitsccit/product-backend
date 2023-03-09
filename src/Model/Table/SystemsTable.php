@@ -473,7 +473,6 @@ class SystemsTable extends Table
             ->select([
                 'Systems.id',
                 'image_id' => "${imageType}GalleryImages.file_id",
-                'shown_in_system_gallery' => "${imageType}GalleryImages.system_active = 'yes'",
             ])
             ->leftJoinWith("SystemItems.GroupItems.Products.Galleries.${imageType}GalleryImages")
             ->leftJoinWith('SystemItems.GroupItems.Products.ProductCategories')
@@ -549,14 +548,17 @@ class SystemsTable extends Table
         return $query
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
-                    $gallery = [];
-                    $groupItems = Hash::extract($system, 'buckets.{n}.groups.{n}.group_items.{n}');
-                    foreach ($groupItems as $groupItem) {
-                        if ($groupItem['shown_in_system_gallery']) {
-                            $gallery[] = $groupItem['image'];
-                        }
-                    }
-                    $system['gallery'] = $gallery;
+                    $system['gallery'] = TableRegistry::getTableLocator()->get('ProductBackend.GalleryImages')
+                        ->find()
+                        ->innerJoinWith('Galleries.Products.GroupItems.SystemItems')
+                        ->where([
+                            'system_id' => $system['id'],
+                            'GalleryImages.system_active =' => 'yes',
+                        ])
+                        ->order([
+                            'GalleryImages.sort',
+                            'GalleryImages.id',
+                        ]);
 
                     return $system;
                 });
