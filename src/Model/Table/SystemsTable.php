@@ -353,6 +353,7 @@ class SystemsTable extends Table
         return $query
             ->find('basic', $options)
             ->find('baseConfiguration', $options)
+            ->find('gallery', $options)
             ->find('image', ['type' => 'System'])
             ->select([
                 'description' => 'IFNULL(SystemPerspectives.description, Systems.description)',
@@ -450,10 +451,11 @@ class SystemsTable extends Table
                         }
                     }
 
+                    $system['gallery'] = Hash::extract($system['gallery'], '{n}.image');
+
                     return $system;
                 });
-            })
-            ->find('gallery', $options);
+            });
     }
 
     public function findBaseConfiguration(Query $query, array $options)
@@ -496,6 +498,7 @@ class SystemsTable extends Table
 
                 foreach ($imagePathIdMap as $imagePath => $imageID) {
                     $results = Hash::insert($results, str_replace('image_id', 'image', $imagePath), $images[$imageID] ?? null);
+                    $results = Hash::remove($results, $imagePath);
                 }
 
                 return new Collection($results);
@@ -550,6 +553,9 @@ class SystemsTable extends Table
                 return $result->map(function ($system) {
                     $system['gallery'] = TableRegistry::getTableLocator()->get('ProductBackend.GalleryImages')
                         ->find()
+                        ->select([
+                            'image_id' => 'file_id',
+                        ])
                         ->innerJoinWith('Galleries.Products.GroupItems.SystemItems')
                         ->where([
                             'SystemItems.system_id' => $system['id'],
