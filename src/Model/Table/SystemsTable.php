@@ -552,13 +552,15 @@ class SystemsTable extends Table
                         ->find()
                         ->innerJoinWith('Galleries.Products.GroupItems.SystemItems')
                         ->where([
-                            'system_id' => $system['id'],
+                            'SystemItems.system_id' => $system['id'],
                             'GalleryImages.system_active =' => 'yes',
                         ])
                         ->order([
                             'GalleryImages.sort',
                             'GalleryImages.id',
-                        ]);
+                        ])
+                        ->all()
+                        ->toArray();
 
                     return $system;
                 });
