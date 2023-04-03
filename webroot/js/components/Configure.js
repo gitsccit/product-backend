@@ -373,8 +373,8 @@ class Configure extends React.Component {
                       return false;
                     });
 
-                    // ignore filter groups that are just ['All']
-                    if (filteredOptions.length > 1) {
+                    // ignore filter groups that are just ['All'] or only has one option
+                    if (filteredOptions.length > 2) {
                       filters.push([filterGroup, filteredOptions]);
                     }
                   });

@@ -121,19 +121,25 @@ class Summary extends React.Component {
                        onClick={() => this._saveConfiguration()}>Save
                       Configuration</a>
                   </div>
-                  <div>
-                    <span className="h5 mb-0 icon-mail"></span>
-                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
-                       data-bs-toggle="modal" data-bs-target="#email-modal"
-                       onClick={() => this._emailConfiguration()}>
-                      Email Configuration</a>
-                  </div>
-                  <div>
-                    <span className="h5 mb-0 icon-print"></span>
-                    <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
-                       data-bs-toggle="modal" data-bs-target="#specs-modal"
-                       onClick={() => this._viewSpecs()}>View Specs</a>
-                  </div>
+                  {
+                    !('cost' in this.props.system) &&
+                    <div>
+                      <span className="h5 mb-0 icon-mail"></span>
+                      <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
+                         data-bs-toggle="modal" data-bs-target="#email-modal"
+                         onClick={() => this._emailConfiguration()}>
+                        Email Configuration</a>
+                    </div>
+                  }
+                  {
+                    !('cost' in this.props.system) &&
+                    <div>
+                      <span className="h5 mb-0 icon-print"></span>
+                      <a className="text-primary text-decoration-none fw-normal" href="javascript:void(0)"
+                         data-bs-toggle="modal" data-bs-target="#specs-modal"
+                         onClick={() => this._viewSpecs()}>View Specs</a>
+                    </div>
+                  }
                 </div>
               </th>
             </tr>

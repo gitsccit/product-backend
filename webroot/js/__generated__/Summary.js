@@ -128,7 +128,7 @@ class Summary extends React.Component {
       "data-bs-toggle": "modal",
       "data-bs-target": "#save-modal",
       onClick: () => this._saveConfiguration()
-    }, "Save Configuration")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    }, "Save Configuration")), !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "h5 mb-0 icon-mail"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none fw-normal",
@@ -136,7 +136,7 @@ class Summary extends React.Component {
       "data-bs-toggle": "modal",
       "data-bs-target": "#email-modal",
       onClick: () => this._emailConfiguration()
-    }, "Email Configuration")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    }, "Email Configuration")), !('cost' in this.props.system) && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
       className: "h5 mb-0 icon-print"
     }), /*#__PURE__*/React.createElement("a", {
       className: "text-primary text-decoration-none fw-normal",

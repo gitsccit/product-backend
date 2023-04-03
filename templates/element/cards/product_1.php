@@ -4,13 +4,15 @@
  * @var array $card
  */
 
-$url = $this->Url->build("/product/$card[url]" . (isset($opportunityKey) ? "/$opportunityKey" : ''));
+$isApps = \Cake\Core\Configure::read('ProductBackend.showCost');
+$url = $isApps ? 'javascript:void(0)' : $this->Url->build("/product/$card[url]" . (isset($opportunityKey) ? "/$opportunityKey" : ''));
 ?>
 <div class="bg-3 my-3 shadow">
     <div class="row">
         <div class="col-lg-3">
             <div class="d-flex flex-column align-items-center bg-white h-100">
-                <a class="d-flex align-items-center justify-content-center p-5 w-100" href="<?= $url ?>"
+                <a class="d-flex align-items-center justify-content-center p-5 w-100<?= $isApps ? ' pe-none' : '' ?>"
+                   href="<?= $url ?>"
                    style="height: 150px">
                     <img class="mw-100 mh-100"
                          src="<?= $card['image'] ?>"
@@ -30,7 +32,7 @@ $url = $this->Url->build("/product/$card[url]" . (isset($opportunityKey) ? "/$op
             <div class="row p-3 ps-md-0 h-100">
                 <div class="col-lg-8">
                     <div class="d-flex flex-column justify-content-between h-100">
-                        <a class="h5 text-black text-on-hover-primary text-decoration-none fw-bold"
+                        <a class="h5 text-black text-on-hover-primary text-decoration-none fw-bold<?= $isApps ? ' pe-none' : '' ?>"
                            href="<?= $url ?>"><?= $card['name'] ?></a>
                         <p class="text-small"><?= $card['specs_overview'] ?></p>
                         <?php if ($manufacturer = $card['manufacturer']) : ?>

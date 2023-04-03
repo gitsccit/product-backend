@@ -342,9 +342,9 @@ class Configure extends React.Component {
           }
 
           return false;
-        }); // ignore filter groups that are just ['All']
+        }); // ignore filter groups that are just ['All'] or only has one option
 
-        if (filteredOptions.length > 1) {
+        if (filteredOptions.length > 2) {
           filters.push([filterGroup, filteredOptions]);
         }
       }); // add counts to filter options

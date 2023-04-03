@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ProductBackend\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\Http\Session;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
@@ -164,6 +165,10 @@ class ProductCategoriesTable extends Table
                 'product_count' => 'IFNULL(ProductCategoryPerspectives.children, ProductCategories.children)',
             ])
             ->leftJoinWith('ProductCategoryPerspectives', function (Query $query) use ($perspectiveID) {
+                if (Configure::read('ProductBackend.showCost')) {
+                    return $query;
+                }
+
                 return $query->where([
                     'ProductCategoryPerspectives.perspective_id' => $perspectiveID,
                 ]);
@@ -173,6 +178,7 @@ class ProductCategoriesTable extends Table
                 'IFNULL(ProductCategoryPerspectives.children, ProductCategories.children) >' => 0,
             ])
             ->orderAsc('ProductCategories.sort')
+            ->group('ProductCategories.id')
             ->formatResults(function (ResultSet $result) {
                 $productCategories = $result->extract('id')->toList();
                 $products = $this->Products
