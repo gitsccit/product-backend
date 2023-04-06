@@ -39,6 +39,11 @@ $currentWarehouse = $this->request->getQuery(
     }
 </style>
 
+<?php if (Configure::read('ProductBackend.showCost')): ?>
+    <a class="btn btn-secondary py-2" href="<?= $this->Url->build($this->request->referer()) ?>">
+        < Back
+    </a>
+<?php endif; ?>
 <div id="configurator" data-tabs='<?= json_encode($tabs, JSON_HEX_APOS) ?>'
      data-currency='<?= \Cake\I18n\Number::getDefaultCurrency() ?>'
      data-system='<?= json_encode($system, JSON_HEX_APOS) ?>'
@@ -59,4 +64,3 @@ $currentWarehouse = $this->request->getQuery(
 <?= $this->Html->script('ProductBackend.__generated__/StorageSetup'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Summary'); ?>
 <?= $this->Html->script('ProductBackend.__generated__/Configurator'); ?>
-

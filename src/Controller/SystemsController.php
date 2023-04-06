@@ -160,7 +160,7 @@ class SystemsController extends AppController
 
         $configKey = $configKey ?: random_string(6);
 
-        (new System($system))->loadConfiguration($configuration);
+        $system = (new System($system))->loadConfiguration($configuration);
 
         $tabs = TableRegistry::getTableLocator()->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
 

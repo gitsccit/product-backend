@@ -208,6 +208,8 @@ class System extends Entity
                 return $group;
             }, $bucket['groups']);
         }
+
+        return $this;
     }
 
     public function generateBannerImage($width = 700, $height = 220)
