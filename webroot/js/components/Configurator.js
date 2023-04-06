@@ -265,7 +265,7 @@ class Configurator extends React.Component {
           break;
       }
     }
-    let backUrl =  + `${this.props.baseUrl}/sales/quote/systems/${this.props.opportunityKey}`;
+    let backUrl =  `${this.props.baseUrl}/sales/quote/systems/${this.props.opportunityKey}`;
 
     return (
       <>

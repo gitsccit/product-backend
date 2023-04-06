@@ -279,7 +279,7 @@ class Configurator extends React.Component {
       }
     }
 
-    let backUrl = +`${this.props.baseUrl}/sales/quote/systems/${this.props.opportunityKey}`;
+    let backUrl = `${this.props.baseUrl}/sales/quote/systems/${this.props.opportunityKey}`;
     return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {
       className: "mb-3",
       method: "get"
