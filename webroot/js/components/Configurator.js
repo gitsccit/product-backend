@@ -273,7 +273,7 @@ class Configurator extends React.Component {
           ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) &&
           <form className="mb-3" method="get">
             <div className="item-group align-items-center">
-              <a className="btn btn-secondary py-2" href={backUrl}>
+              <a className="btn btn-secondary py-2" href="javascript:void(0)" onClick={() => lightbox(backUrl)}>
                 Back
               </a>
               {

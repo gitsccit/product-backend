@@ -287,7 +287,8 @@ class Configurator extends React.Component {
       className: "item-group align-items-center"
     }, /*#__PURE__*/React.createElement("a", {
       className: "btn btn-secondary py-2",
-      href: backUrl
+      href: "javascript:void(0)",
+      onClick: () => lightbox(backUrl)
     }, "Back"), 'currentWarehouse' in this.props && /*#__PURE__*/React.createElement("div", {
       className: "ms-auto col-lg-3"
     }, /*#__PURE__*/React.createElement("label", {
