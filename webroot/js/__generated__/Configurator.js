@@ -279,13 +279,17 @@ class Configurator extends React.Component {
       }
     }
 
+    let backUrl = +`${this.props.baseUrl}/sales/quote/systems/${this.props.opportunityKey}`;
     return /*#__PURE__*/React.createElement(React.Fragment, null, ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) && /*#__PURE__*/React.createElement("form", {
       className: "mb-3",
       method: "get"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "row"
-    }, 'currentWarehouse' in this.props && /*#__PURE__*/React.createElement("div", {
-      className: "col-lg-3"
+      className: "item-group align-items-center"
+    }, /*#__PURE__*/React.createElement("a", {
+      className: "btn btn-secondary py-2",
+      href: backUrl
+    }, "Back"), 'currentWarehouse' in this.props && /*#__PURE__*/React.createElement("div", {
+      className: "ms-auto col-lg-3"
     }, /*#__PURE__*/React.createElement("label", {
       className: "fw-bold"
     }, "Warehouse:"), /*#__PURE__*/React.createElement("select", {

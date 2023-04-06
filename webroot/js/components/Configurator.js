@@ -265,16 +265,20 @@ class Configurator extends React.Component {
           break;
       }
     }
+    let backUrl =  + `${this.props.baseUrl}/sales/quote/systems/${this.props.opportunityKey}`;
 
     return (
       <>
         {
           ('currentWarehouse' in this.props || 'currentPriceLevel' in this.props) &&
           <form className="mb-3" method="get">
-            <div className="row">
+            <div className="item-group align-items-center">
+              <a className="btn btn-secondary py-2" href={backUrl}>
+                Back
+              </a>
               {
                 'currentWarehouse' in this.props &&
-                <div className="col-lg-3">
+                <div className="ms-auto col-lg-3">
                   <label className="fw-bold">Warehouse:</label>
                   <select className="form-control form-control-sm" name="warehouse"
                           defaultValue={this.props.currentWarehouse}
