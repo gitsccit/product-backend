@@ -221,13 +221,13 @@ class System extends Entity
         imagefill($image, 0, 0, $color_transparent);
 
         $banner = $this['banner'];
-        $icons = $this['kit']['icons'];
+        $icons = $this['kit']['icons'] ?? [];
 
         $images = $filesApiHandler->getFileUrls([
             $banner['banner_id'] ?? null,
             $banner['tile_id'] ?? null,
             $this['image_id'] ?? null,
-            ...Hash::extract($icons ?? [], '{n}.image_id'),
+            ...Hash::extract($icons, '{n}.image_id'),
         ]);
 
         // add tile
