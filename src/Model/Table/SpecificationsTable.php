@@ -137,7 +137,7 @@ class SpecificationsTable extends Table
                 'Specifications.text_value',
             ]);
 
-        if ($options['onlyShowTechSpec'] ?? true) {
+        if ($options['onlyShowTechSpec'] ?? false) {
             $query->where([
                 'SpecificationFields.techspec' => 'yes',
             ]);
