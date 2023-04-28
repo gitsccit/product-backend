@@ -215,6 +215,12 @@ class System extends Entity
     public function generateBannerImage($width = 700, $height = 220)
     {
         $filesApiHandler = new \FilesApiHandler();
+        $images = $filesApiHandler->getFileUrls([
+            $banner['banner_id'] ?? null,
+            $banner['tile_id'] ?? null,
+            $this['image_id'],
+            ...Hash::extract($icons ?? [], '{n}.image_id'),
+        ]);
         $image = imagecreatetruecolor($width, $height);
         imagesavealpha($image, true);
         $color_transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
@@ -225,9 +231,9 @@ class System extends Entity
 
         // add tile
         if ($tileID = $banner['tile_id'] ?? null) {
-            $tile = @imagecreatefrompng($filesApiHandler->getFileUrl($tileID));
+            $tile = @imagecreatefrompng($images[$tileID]);
 
-            if ($tile === false) {
+            if (empty($tile)) {
                 $tile = $this->generate_system_banner_error(150, 25, "Error Loading tile $tileID");
             }
 
@@ -245,9 +251,9 @@ class System extends Entity
 
         // add background
         if ($bannerID = $banner['banner_id'] ?? null) {
-            $background = @imagecreatefrompng($filesApiHandler->getFileUrl($bannerID));
+            $background = @imagecreatefrompng($images[$bannerID]);
 
-            if ($background === false) {
+            if (empty($background)) {
                 $background = $this->generate_system_banner_error(500, 220, "Error Loading banner $bannerID");
             }
 
@@ -318,9 +324,9 @@ class System extends Entity
         $maxSystemImageWidth = floor($width * .4) - 30;
         $maxSystemImageHeight = floor($height) - 70;
 
-        $systemImage = @imagecreatefrompng($filesApiHandler->getFileUrl($this['image_id']));
+        $systemImage = isset($this['image_id']) ? @imagecreatefrompng($images[$this['image_id']]) : null;
 
-        if ($systemImage === false) {
+        if (empty($systemImage)) {
             $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $this[image_id]");
         }
 
@@ -336,7 +342,7 @@ class System extends Entity
 
         // add system shadow
         $shadow = @imagecreatefrompng(WWW_ROOT . 'img/shadow.png');
-        if ($shadow === false) {
+        if (empty($shadow)) {
             $shadow = $this->generate_system_banner_error(200, 150, "Error Loading shadow.png");
         }
 
@@ -355,9 +361,9 @@ class System extends Entity
             $maxIconHeight = 0;
 
             foreach ($icons as $index => $icon) {
-                $icon = @imagecreatefrompng($filesApiHandler->getFileUrl($icon['image_id']));
+                $icon = isset($icon['image_id']) ? @imagecreatefrompng($images[$icon['image_id']]) : null;
 
-                if ($icon === false) {
+                if (empty($icon)) {
                     $icon = $this->generate_system_banner_error(48, 48, "Error");
                 }
 
