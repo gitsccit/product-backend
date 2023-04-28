@@ -128,7 +128,7 @@ class SpecificationsTable extends Table
             ])
             ->innerJoinWith('SpecificationFields.SpecificationGroups')
             ->where([
-                'SpecificationFields.techspec' => 'yes',
+                'SpecificationFields.techspec' => ($options['showTechSpec'] ?? true) ? 'yes' : 'no',
             ])
             ->order([
                 'SpecificationGroups.sort',
