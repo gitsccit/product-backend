@@ -119,7 +119,7 @@ class SpecificationsTable extends Table
 
     public function findSpecifications(Query $query, array $options)
     {
-        return $query
+        $query
             ->select([
                 'id' => 'SpecificationFields.id',
                 'Specifications.product_id',
@@ -127,9 +127,6 @@ class SpecificationsTable extends Table
                 'value' => 'Specifications.text_value',
             ])
             ->innerJoinWith('SpecificationFields.SpecificationGroups')
-            ->where([
-                'SpecificationFields.techspec' => ($options['showTechSpec'] ?? true) ? 'yes' : 'no',
-            ])
             ->order([
                 'SpecificationGroups.sort',
                 'SpecificationGroups.name',
@@ -139,6 +136,14 @@ class SpecificationsTable extends Table
                 'Specifications.sort',
                 'Specifications.text_value',
             ]);
+
+        if ($options['onlyShowTechSpec'] ?? true) {
+            $query->where([
+                'SpecificationFields.techspec' => 'yes',
+            ]);
+        }
+
+        return $query;
     }
 
     public function findOverview(Query $query, array $options)
