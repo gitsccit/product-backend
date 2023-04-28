@@ -218,7 +218,7 @@ class System extends Entity
         $images = $filesApiHandler->getFileUrls([
             $banner['banner_id'] ?? null,
             $banner['tile_id'] ?? null,
-            $this['image_id'],
+            $this['image_id'] ?? null,
             ...Hash::extract($icons ?? [], '{n}.image_id'),
         ]);
         $image = imagecreatetruecolor($width, $height);
