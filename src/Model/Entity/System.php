@@ -215,12 +215,6 @@ class System extends Entity
     public function generateBannerImage($width = 700, $height = 220)
     {
         $filesApiHandler = new \FilesApiHandler();
-        $images = $filesApiHandler->getFileUrls([
-            $banner['banner_id'] ?? null,
-            $banner['tile_id'] ?? null,
-            $this['image_id'] ?? null,
-            ...Hash::extract($icons ?? [], '{n}.image_id'),
-        ]);
         $image = imagecreatetruecolor($width, $height);
         imagesavealpha($image, true);
         $color_transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
@@ -228,6 +222,13 @@ class System extends Entity
 
         $banner = $this['banner'];
         $icons = $this['kit']['icons'];
+
+        $images = $filesApiHandler->getFileUrls([
+            $banner['banner_id'] ?? null,
+            $banner['tile_id'] ?? null,
+            $this['image_id'] ?? null,
+            ...Hash::extract($icons ?? [], '{n}.image_id'),
+        ]);
 
         // add tile
         if ($tileID = $banner['tile_id'] ?? null) {
