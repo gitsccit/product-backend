@@ -201,11 +201,11 @@ class SystemsTable extends Table
 
         return $query
             ->select([
-                'price' => 'SystemPriceLevels.price',
+                'price' => 'IFNULL(pl1.price, pl2.price)',
             ])
-            ->innerJoinWith('SystemPriceLevels', function (Query $q) use ($priceLevelID) {
-                return $q->where(['SystemPriceLevels.price_level_id' => $priceLevelID]);
-            });
+            ->innerJoin(['SystemCategories' => 'system_categories'], 'Systems.system_category_id = SystemCategories.id')
+            ->leftJoin(['pl1' => 'system_price_levels'], ['Systems.id = pl1.system_id', 'SystemCategories.price_level_id = pl1.price_level_id'])
+            ->leftJoin(['pl2' => 'system_price_levels'], ['Systems.id = pl2.system_id', 'pl2.price_level_id' => $priceLevelID]);
     }
 
     public function findCost(Query $query, array $options)

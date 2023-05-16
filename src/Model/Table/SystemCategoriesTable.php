@@ -53,6 +53,10 @@ class SystemCategoriesTable extends Table
             'className' => 'ProductBackend.SystemCategories',
             'foreignKey' => 'parent_id',
         ]);
+        $this->belongsTo('PriceLevels', [
+            'foreignKey' => 'price_level_id',
+            'className' => 'ProductBackend.PriceLevels',
+        ]);
         $this->belongsTo('Banners', [
             'foreignKey' => 'banner_id',
             'className' => 'ProductBackend.Banners',
@@ -114,6 +118,10 @@ class SystemCategoriesTable extends Table
             ->notEmptyString('classification');
 
         $validator
+            ->nonNegativeInteger('price_level_id')
+            ->allowEmptyString('price_level_id');
+
+        $validator
             ->nonNegativeInteger('force_perspective')
             ->allowEmptyString('force_perspective');
 
@@ -150,6 +158,7 @@ class SystemCategoriesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('parent_id', 'ParentSystemCategories'), ['errorField' => 'parent_id']);
+        $rules->add($rules->existsIn('price_level_id', 'PriceLevels'), ['errorField' => 'price_level_id']);
         $rules->add($rules->existsIn('banner_id', 'Banners'), ['errorField' => 'banner_id']);
 
         return $rules;

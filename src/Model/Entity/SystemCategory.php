@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property string $short_description
  * @property string $description
  * @property string $classification
+ * @property int|null $price_level_id
  * @property int|null $force_perspective
  * @property int|null $banner_id
  * @property string $spares_kits
@@ -48,6 +49,7 @@ class SystemCategory extends Entity
         'short_description' => true,
         'description' => true,
         'classification' => true,
+        'price_level_id' => true,
         'force_perspective' => true,
         'banner_id' => true,
         'spares_kits' => true,
