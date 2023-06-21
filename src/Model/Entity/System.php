@@ -222,17 +222,11 @@ class System extends Entity
 
         $banner = $this['banner'];
         $icons = $this['kit']['icons'] ?? [];
-
-        $images = $filesApiHandler->getFileUrls([
-            $banner['banner_id'] ?? null,
-            $banner['tile_id'] ?? null,
-            $this['image_id'] ?? null,
-            ...Hash::extract($icons, '{n}.image_id'),
-        ]);
+        $tile = $filesApiHandler->getFileUrl($banner['tile_id'] ?? null);
 
         // add tile
         if ($tileID = $banner['tile_id'] ?? null) {
-            $tile = @imagecreatefrompng($images[$tileID]);
+            $tile = @imagecreatefrompng($tile);
 
             if (empty($tile)) {
                 $tile = $this->generate_system_banner_error(150, 25, "Error Loading tile $tileID");
@@ -252,7 +246,7 @@ class System extends Entity
 
         // add background
         if ($bannerID = $banner['banner_id'] ?? null) {
-            $background = @imagecreatefrompng($images[$bannerID]);
+            $background = @imagecreatefrompng($banner['image']);
 
             if (empty($background)) {
                 $background = $this->generate_system_banner_error(500, 220, "Error Loading banner $bannerID");
@@ -325,7 +319,7 @@ class System extends Entity
         $maxSystemImageWidth = floor($width * .4) - 30;
         $maxSystemImageHeight = floor($height) - 70;
 
-        $systemImage = isset($this['image_id']) ? @imagecreatefrompng($images[$this['image_id']]) : null;
+        $systemImage = isset($this['image']) ? @imagecreatefrompng($this['image']) : null;
 
         if (empty($systemImage)) {
             $systemImage = $this->generate_system_banner_error(200, 150, "Error Loading image $this[image_id]");
@@ -362,7 +356,7 @@ class System extends Entity
             $maxIconHeight = 0;
 
             foreach ($icons as $index => $icon) {
-                $icon = isset($icon['image_id']) ? @imagecreatefrompng($images[$icon['image_id']]) : null;
+                $icon = isset($icon['image']) ? @imagecreatefrompng($icon['image']) : null;
 
                 if (empty($icon)) {
                     $icon = $this->generate_system_banner_error(48, 48, "Error");

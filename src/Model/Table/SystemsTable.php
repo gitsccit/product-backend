@@ -508,9 +508,9 @@ class SystemsTable extends Table
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
-            ->find('active')
             ->find('image', ['type' => 'System'])
             ->select([
+                'system_category_id',
                 'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
                 'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
             ])
@@ -526,11 +526,12 @@ class SystemsTable extends Table
                     ]);
                 });
             })
+            ->leftJoinWith('SystemPerspectives', function (Query $q) use ($perspectiveID) {
+                return $q->where(['SystemPerspectives.perspective_id' => $perspectiveID]);
+            })
             ->contain([
-                'Kits.Icons', 'SystemCategories.Banners'
-            ])
-            ->where([
-                'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
+                'Kits.Icons',
+                'SystemCategories.Banners',
             ])
             ->formatResults(function ($result) {
                 return $result->map(function ($system) {
