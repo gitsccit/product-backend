@@ -104,9 +104,9 @@ class Summary extends React.Component {
         <div className="p-4 my-4 bg-white shadow-sm">
           <table className="table table-striped">
             <thead>
-            <tr className="d-flex">
+            <tr className="row">
               <th className="col-3">
-                <div className="row">
+                <div className="item-group">
                   <h5 className="mb-0 fw-bold">{this.props.system['name']}</h5>
                   <input className="form-control form-control-sm" type="text" value={this.state.name}
                          onChange={(event) => this._updateName(event)}/>
@@ -208,8 +208,8 @@ class Summary extends React.Component {
                     </div>
                     <a className="btn btn-primary py-2 mt-1" href="javascript:void(0)"
                        onClick={() => this._addToOrder()}>
-                      <span
-                        className="h5 icon-plus"></span>{this.props.subKitPath ? 'Save & Return' : 'Add To Order'}
+                      <span className="icon-plus me-1"></span>
+                      {this.props.subKitPath ? 'Save & Return' : `Add To ${'cost' in this.props.system ? 'Quote' : 'Order'}`}
                     </a>
                   </> :
                   <h4 className="text-primary text-md-center">

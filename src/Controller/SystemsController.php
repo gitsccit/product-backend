@@ -346,7 +346,6 @@ class SystemsController extends AppController
             $systemID = $data['system'];
             $opportunityKey = $data['opportunity_key'];
             $configKey = $data['config_key'];
-            $oldConfig = $session->read("configurations.$configKey");
             $response = $this->updateConfiguration();
 
             if (isset($data['sub_kit_path'])) {
@@ -375,10 +374,11 @@ class SystemsController extends AppController
                 $opportunity = $currentOpportunity;
                 $updatingExistingSystem = false;
 
-                foreach ($opportunity['opportunity_details'] as $opportunityDetail) {
+                foreach ($opportunity['opportunity_details'] as &$opportunityDetail) {
                     if ($opportunitySystem = $opportunityDetail['opportunity_system'] ?? null) {
-                        if ($opportunitySystem['opportunity_system_data']['data'] === json_encode($oldConfig)) {
-                            $opportunitySystem['opportunity_system_data']['data'] = json_encode($configuration);
+                        $config = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
+                        if ($config['created_at'] === $configuration['created_at']) {
+                            $opportunityDetail['opportunity_system']['opportunity_system_data']['data'] = json_encode($configuration);
                             $updatingExistingSystem = true;
 
                             break;

@@ -24,8 +24,6 @@ class Configure extends React.Component {
       warnings: [],
       additionalItems: [],
     };
-
-    this.bucketTopOffset = 35;
   }
 
   _getBucketImage(bucketID) {
@@ -313,8 +311,7 @@ class Configure extends React.Component {
           {
             !standaloneBucket &&
             <div className="col-md-3 col-lg-2">
-              <div id="bucket-list" className="bg-3 shadow-sm d-flex flex-column list-group sticky-top"
-                   style={{top: this.bucketTopOffset}}>
+              <div id="bucket-list" className="bg-4 shadow-sm d-flex flex-column list-group sticky-top">
                 <div className="p-2 bg-black text-white">
                   <span className="icon-sliders"></span>Configurator
                 </div>
@@ -412,7 +409,7 @@ class Configure extends React.Component {
                                style={{width: 100, height: 100}}>
                             <img style={{maxWidth: 75, maxHeight: 75}} src={this._getBucketImage(bucket['id'])}/>
                           </div>
-                          <div className="bg-3 p-3 d-flex flex-column justify-content-center flex-fill">
+                          <div className="bg-white p-3 d-flex flex-column justify-content-center flex-fill">
                             <div className="d-flex flex-wrap align-items-center">
                               <h6 className="mb-0 pe-2 me-2 border-end border-1 border-dark">{bucket['name']}</h6>
                               {
@@ -445,7 +442,7 @@ class Configure extends React.Component {
                       {
                         !standaloneBucket && filters.length > 0 &&
                         <div
-                          className="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3">
+                          className="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-white shadow-sm p-3">
                           <div className="row -mx-2 flex-fill">
                             {
                               filters.slice(0, 4).map(([filterGroup, options]) => {

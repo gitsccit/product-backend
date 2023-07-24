@@ -104,11 +104,11 @@ class Summary extends React.Component {
     }, /*#__PURE__*/React.createElement("table", {
       className: "table table-striped"
     }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
-      className: "d-flex"
+      className: "row"
     }, /*#__PURE__*/React.createElement("th", {
       className: "col-3"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "row"
+      className: "item-group"
     }, /*#__PURE__*/React.createElement("h5", {
       className: "mb-0 fw-bold"
     }, this.props.system['name']), /*#__PURE__*/React.createElement("input", {
@@ -214,8 +214,8 @@ class Summary extends React.Component {
       href: "javascript:void(0)",
       onClick: () => this._addToOrder()
     }, /*#__PURE__*/React.createElement("span", {
-      className: "h5 icon-plus"
-    }), this.props.subKitPath ? 'Save & Return' : 'Add To Order')) : /*#__PURE__*/React.createElement("h4", {
+      className: "icon-plus me-1"
+    }), this.props.subKitPath ? 'Save & Return' : `Add To ${'cost' in this.props.system ? 'Quote' : 'Order'}`)) : /*#__PURE__*/React.createElement("h4", {
       className: "text-primary text-md-center"
     }, "Invalid Configuration")))));
   }

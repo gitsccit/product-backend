@@ -19,7 +19,6 @@ class Configure extends React.Component {
       warnings: [],
       additionalItems: []
     };
-    this.bucketTopOffset = 35;
   }
 
   _getBucketImage(bucketID) {
@@ -285,10 +284,7 @@ class Configure extends React.Component {
       className: "col-md-3 col-lg-2"
     }, /*#__PURE__*/React.createElement("div", {
       id: "bucket-list",
-      className: "bg-3 shadow-sm d-flex flex-column list-group sticky-top",
-      style: {
-        top: this.bucketTopOffset
-      }
+      className: "bg-4 shadow-sm d-flex flex-column list-group sticky-top"
     }, /*#__PURE__*/React.createElement("div", {
       className: "p-2 bg-black text-white"
     }, /*#__PURE__*/React.createElement("span", {
@@ -387,7 +383,7 @@ class Configure extends React.Component {
         },
         src: this._getBucketImage(bucket['id'])
       })), /*#__PURE__*/React.createElement("div", {
-        className: "bg-3 p-3 d-flex flex-column justify-content-center flex-fill"
+        className: "bg-white p-3 d-flex flex-column justify-content-center flex-fill"
       }, /*#__PURE__*/React.createElement("div", {
         className: "d-flex flex-wrap align-items-center"
       }, /*#__PURE__*/React.createElement("h6", {
@@ -412,7 +408,7 @@ class Configure extends React.Component {
         },
         className: "mt-3"
       }))), !standaloneBucket && filters.length > 0 && /*#__PURE__*/React.createElement("div", {
-        className: "d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-3 p-3"
+        className: "d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between flex-fill bg-white shadow-sm p-3"
       }, /*#__PURE__*/React.createElement("div", {
         className: "row -mx-2 flex-fill"
       }, filters.slice(0, 4).map(([filterGroup, options]) => {

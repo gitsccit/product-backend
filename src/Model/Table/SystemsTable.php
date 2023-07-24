@@ -202,6 +202,7 @@ class SystemsTable extends Table
         return $query
             ->select([
                 'price' => 'IFNULL(pl1.price, pl2.price)',
+                'fpa' => 'IFNULL(pl1.fpa, pl2.fpa)',
             ])
             ->innerJoin(['SystemCategories' => 'system_categories'], 'Systems.system_category_id = SystemCategories.id')
             ->leftJoin(['pl1' => 'system_price_levels'], ['Systems.id = pl1.system_id', 'SystemCategories.price_level_id = pl1.price_level_id'])
@@ -595,7 +596,6 @@ class SystemsTable extends Table
         $fpa = 0;
         if ($selectedSystemIDs) {
             $fpa = $this->find('price', $options)
-                ->select(['fpa' => 'SystemPriceLevels.fpa'])
                 ->whereInList('Systems.id', $selectedSystemIDs)
                 ->all()
                 ->sumOf('fpa');

@@ -265,7 +265,7 @@ class Configurator extends React.Component {
           break;
       }
     }
-    let backUrl =  `${this.props.baseUrl}/sales/quotes/systems/${this.props.opportunityKey}`;
+    let backUrl = `${this.props.baseUrl}/sales/quotes/systems/${this.props.opportunityKey}`;
 
     return (
       <>
@@ -395,7 +395,7 @@ class Configurator extends React.Component {
           </div>
         </div>
         <div className="container py-5">
-          <div className="border-bottom sticky-top bg-2">
+          <div className="border-bottom bg-2">
             <div className="item-group -mx-4">
               {tabs.map((tab, index) => (
                 <a
