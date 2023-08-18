@@ -344,6 +344,7 @@ class SystemsController extends AppController
             $session = $this->request->getSession();
             $data = $this->request->getData();
             $systemID = $data['system'];
+            $quantity = $data['qty'];
             $opportunityKey = $data['opportunity_key'];
             $configKey = $data['config_key'];
             $response = $this->updateConfiguration();
@@ -355,6 +356,7 @@ class SystemsController extends AppController
             $configuration = $session->read("configurations.$configKey");
 
             $defaultOpportunityDetail = [
+                'quantity' => $quantity,
                 'opportunity_detail_type_id' => 4,
                 'opportunity_system' => [
                     'system_id' => $systemID,
@@ -379,6 +381,7 @@ class SystemsController extends AppController
                         $config = json_decode($opportunitySystem['opportunity_system_data']['data'], true);
                         if ($config['created_at'] === $configuration['created_at']) {
                             $opportunityDetail['opportunity_system']['opportunity_system_data']['data'] = json_encode($configuration);
+                            $opportunityDetail['quantity'] = $quantity;
                             $updatingExistingSystem = true;
 
                             break;

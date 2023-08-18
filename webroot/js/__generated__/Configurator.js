@@ -175,6 +175,7 @@ class Configurator extends React.Component {
       system: this.state.system['id'],
       opportunity_key: this.props.opportunityKey,
       config_key: this.props.configKey,
+      qty: this.state.quantity,
       ...(this.props.subKitPath ? {
         sub_kit_path: this.props.subKitPath
       } : {}),
