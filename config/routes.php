@@ -30,10 +30,12 @@ $routes->plugin('ProductBackend', ['path' => '/'], function (RouteBuilder $route
     $route->prefix('Api', function (RouteBuilder $route) {
         $route->connect('/hardware', ['controller' => 'ProductCategories', 'action' => 'index']);
         $route->connect('/hardware/*', ['controller' => 'ProductCategories', 'action' => 'view']);
+        $route->connect('/all-products', ['controller' => 'Products', 'action' => 'index']);
         $route->connect('/product/**', ['controller' => 'Products', 'action' => 'view']);
 
         $route->connect('/systems', ['controller' => 'SystemCategories', 'action' => 'index']);
         $route->connect('/systems/*', ['controller' => 'SystemCategories', 'action' => 'view']);
+        $route->connect('/all-systems', ['controller' => 'Systems', 'action' => 'index']);
         $route->connect('/system/banner/*', ['controller' => 'Systems', 'action' => 'banner']);
         $route->connect('/system/*', ['controller' => 'Systems', 'action' => 'view']);
     });
