@@ -18,10 +18,13 @@ class SystemsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Permissions'],
-        ];
-        $Systems = $this->paginate($this->Systems);
+        $systems = $this->Systems->find('listing');
+
+        if ($category = $this->request->getQuery('category', '')) {
+            $systems = $systems->where(['Systems.system_category_id' => $category]);
+        }
+
+        $Systems = $this->paginate($systems);
 
         $this->Crud->serialize(compact('Systems'));
     }

@@ -14,6 +14,19 @@ use Cake\Http\Exception\NotFoundException;
 class ProductsController extends AppController
 {
 
+    public function index()
+    {
+        $products = $this->Products->find('listing');
+
+        if ($category = $this->request->getQuery('category', '')) {
+            $products = $products->where(['Products.product_category_id' => $category]);
+        }
+
+        $Products = $this->paginate($products);
+
+        $this->Crud->serialize(compact('Products'));
+    }
+
     /**
      * View method
      *
