@@ -24,9 +24,9 @@ class SystemsController extends AppController
             $systems = $systems->where(['Systems.system_category_id' => $category]);
         }
 
-        $Systems = $this->paginate($systems);
+        $systems = $this->paginate($systems);
 
-        $this->Crud->serialize(compact('Systems'));
+        $this->Crud->serialize(compact('systems'));
     }
 
     /**

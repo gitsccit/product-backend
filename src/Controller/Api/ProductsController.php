@@ -22,9 +22,9 @@ class ProductsController extends AppController
             $products = $products->where(['Products.product_category_id' => $category]);
         }
 
-        $Products = $this->paginate($products);
+        $products = $this->paginate($products);
 
-        $this->Crud->serialize(compact('Products'));
+        $this->Crud->serialize(compact('products'));
     }
 
     /**
