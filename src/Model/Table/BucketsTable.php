@@ -163,6 +163,7 @@ class BucketsTable extends Table
         return $query
             ->select([
                 'Buckets.id',
+                'Buckets.tab_id',
                 'Buckets.name',
                 'category' => 'BucketCategories.name',
                 'Buckets.multiple',
