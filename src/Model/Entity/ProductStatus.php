@@ -25,7 +25,7 @@ class ProductStatus extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'warning' => true,
         'sowg' => true,

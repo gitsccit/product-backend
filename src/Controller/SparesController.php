@@ -35,9 +35,7 @@ class SparesController extends AppController
      */
     public function view($id = null)
     {
-        $spare = $this->Spares->get($id, [
-            'contain' => ['Products', 'SpareCategories'],
-        ]);
+        $spare = $this->Spares->get($id, contain: ['Products', 'SpareCategories']);
 
         $this->set(compact('spare'));
     }
@@ -73,9 +71,7 @@ class SparesController extends AppController
      */
     public function edit($id = null)
     {
-        $spare = $this->Spares->get($id, [
-            'contain' => [],
-        ]);
+        $spare = $this->Spares->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $spare = $this->Spares->patchEntity($spare, $this->request->getData());
             if ($this->Spares->save($spare)) {

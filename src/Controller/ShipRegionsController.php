@@ -32,9 +32,7 @@ class ShipRegionsController extends AppController
      */
     public function view($id = null)
     {
-        $shipRegion = $this->ShipRegions->get($id, [
-            'contain' => ['ShipRateShipRegionPrices', 'ShipRegionLocations'],
-        ]);
+        $shipRegion = $this->ShipRegions->get($id, contain: ['ShipRateShipRegionPrices', 'ShipRegionLocations']);
 
         $this->set(compact('shipRegion'));
     }
@@ -68,9 +66,7 @@ class ShipRegionsController extends AppController
      */
     public function edit($id = null)
     {
-        $shipRegion = $this->ShipRegions->get($id, [
-            'contain' => [],
-        ]);
+        $shipRegion = $this->ShipRegions->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $shipRegion = $this->ShipRegions->patchEntity($shipRegion, $this->request->getData());
             if ($this->ShipRegions->save($shipRegion)) {

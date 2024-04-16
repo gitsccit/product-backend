@@ -32,9 +32,7 @@ class SpecificationUnitGroupsController extends AppController
      */
     public function view($id = null)
     {
-        $specificationUnitGroup = $this->SpecificationUnitGroups->get($id, [
-            'contain' => ['SpecificationFields', 'SpecificationUnits'],
-        ]);
+        $specificationUnitGroup = $this->SpecificationUnitGroups->get($id, contain: ['SpecificationFields', 'SpecificationUnits']);
 
         $this->set(compact('specificationUnitGroup'));
     }
@@ -68,9 +66,7 @@ class SpecificationUnitGroupsController extends AppController
      */
     public function edit($id = null)
     {
-        $specificationUnitGroup = $this->SpecificationUnitGroups->get($id, [
-            'contain' => [],
-        ]);
+        $specificationUnitGroup = $this->SpecificationUnitGroups->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $specificationUnitGroup = $this->SpecificationUnitGroups->patchEntity($specificationUnitGroup, $this->request->getData());
             if ($this->SpecificationUnitGroups->save($specificationUnitGroup)) {

@@ -16,8 +16,8 @@ use Cake\ORM\Entity;
  * @property string|null $notes
  * @property string $show_stock
  * @property string $active
- * @property \Cake\I18n\FrozenTime $date_added
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $date_added
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\Customer $customer
  * @property \ProductBackend\Model\Entity\CustomerCategory $customer_category
@@ -34,7 +34,7 @@ class CustomerProduct extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'customer_id' => true,
         'customer_category_id' => true,
         'product_id' => true,

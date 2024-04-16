@@ -30,7 +30,7 @@ class TabPerspective extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'perspective_id' => true,
         'tab_id' => true,
         'name' => true,

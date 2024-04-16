@@ -177,7 +177,7 @@ class ProductCategoriesTable extends Table
                 'IFNULL(ProductCategoryPerspectives.active, ProductCategories.active) =' => 'yes',
                 'IFNULL(ProductCategoryPerspectives.children, ProductCategories.children) >' => 0,
             ])
-            ->orderAsc('ProductCategories.sort')
+            ->orderByAsc('ProductCategories.sort')
             ->group('ProductCategories.id')
             ->formatResults(function (ResultSet $result) {
                 $productCategories = $result->extract('id')->toList();

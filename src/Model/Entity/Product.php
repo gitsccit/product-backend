@@ -43,9 +43,9 @@ use Cake\ORM\Entity;
  * @property int $system_start
  * @property string $active
  * @property int $sort
- * @property \Cake\I18n\FrozenDate|null $date_eol
- * @property \Cake\I18n\FrozenTime|null $date_added
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\Date|null $date_eol
+ * @property \Cake\I18n\DateTime|null $date_added
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\ProductCategory $product_category
  * @property \ProductBackend\Model\Entity\Gallery $gallery
@@ -75,7 +75,7 @@ class Product extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'url' => true,
         'name' => true,
         'description' => true,
@@ -130,7 +130,7 @@ class Product extends Entity
         'specifications' => true,
     ];
 
-    protected $_hidden = [
+    protected array $_hidden = [
         '_matchingData',
     ];
 

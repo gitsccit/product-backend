@@ -15,7 +15,7 @@ use Cake\ORM\Entity;
  * @property float|null $value
  * @property float|null $fpa
  * @property float|null $price
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\PriceLevel $price_level
  * @property \ProductBackend\Model\Entity\System $system
@@ -31,7 +31,7 @@ class SystemPriceLevel extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'price_level_id' => true,
         'system_id' => true,
         'logic' => true,

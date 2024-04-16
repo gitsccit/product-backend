@@ -35,9 +35,7 @@ class ProductPriceLevelsController extends AppController
      */
     public function view($id = null)
     {
-        $productPriceLevel = $this->ProductPriceLevels->get($id, [
-            'contain' => ['PriceLevels', 'Products'],
-        ]);
+        $productPriceLevel = $this->ProductPriceLevels->get($id, contain: ['PriceLevels', 'Products']);
 
         $this->set(compact('productPriceLevel'));
     }
@@ -73,9 +71,7 @@ class ProductPriceLevelsController extends AppController
      */
     public function edit($id = null)
     {
-        $productPriceLevel = $this->ProductPriceLevels->get($id, [
-            'contain' => [],
-        ]);
+        $productPriceLevel = $this->ProductPriceLevels->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $productPriceLevel = $this->ProductPriceLevels->patchEntity($productPriceLevel, $this->request->getData());
             if ($this->ProductPriceLevels->save($productPriceLevel)) {

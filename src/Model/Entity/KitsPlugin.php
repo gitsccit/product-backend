@@ -25,7 +25,7 @@ class KitsPlugin extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'kit_id' => true,
         'plugin_id' => true,
         'kit' => true,

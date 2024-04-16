@@ -30,7 +30,7 @@ class KitBucket extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'kit_id' => true,
         'bucket_id' => true,
         'quantity' => true,

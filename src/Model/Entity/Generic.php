@@ -14,8 +14,8 @@ use Cake\ORM\Entity;
  * @property float $cost
  * @property string $cost_maintenance
  * @property string $prioritize
- * @property \Cake\I18n\FrozenTime $date_added
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $date_added
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\Product[] $products
  */
@@ -30,7 +30,7 @@ class Generic extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'product_id' => true,
         'sage_itemcode' => true,
         'cost' => true,

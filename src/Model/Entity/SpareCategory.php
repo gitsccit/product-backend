@@ -27,7 +27,7 @@ class SpareCategory extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'quantity' => true,
         'sort' => true,

@@ -27,7 +27,7 @@ class TagCategoriesTagGroup extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'tag_category_id' => true,
         'tag_group_id' => true,
         'sort' => true,

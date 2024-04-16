@@ -26,7 +26,7 @@ class ShipRegionLocation extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'ship_region_id' => true,
         'country' => true,
         'state' => true,

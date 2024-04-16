@@ -24,8 +24,8 @@ use Cake\ORM\Entity;
  * @property float|null $width
  * @property float|null $height
  * @property string $active
- * @property \Cake\I18n\FrozenTime $date_added
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $date_added
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\Location $location
  * @property \ProductBackend\Model\Entity\ShipBox $ship_box
@@ -49,7 +49,7 @@ class Kit extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'build_time' => true,
         'sage_itemcode' => true,

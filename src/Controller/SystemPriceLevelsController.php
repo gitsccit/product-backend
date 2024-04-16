@@ -35,9 +35,7 @@ class SystemPriceLevelsController extends AppController
      */
     public function view($id = null)
     {
-        $systemPriceLevel = $this->SystemPriceLevels->get($id, [
-            'contain' => ['PriceLevels', 'Systems'],
-        ]);
+        $systemPriceLevel = $this->SystemPriceLevels->get($id, contain: ['PriceLevels', 'Systems']);
 
         $this->set(compact('systemPriceLevel'));
     }
@@ -73,9 +71,7 @@ class SystemPriceLevelsController extends AppController
      */
     public function edit($id = null)
     {
-        $systemPriceLevel = $this->SystemPriceLevels->get($id, [
-            'contain' => [],
-        ]);
+        $systemPriceLevel = $this->SystemPriceLevels->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $systemPriceLevel = $this->SystemPriceLevels->patchEntity($systemPriceLevel, $this->request->getData());
             if ($this->SystemPriceLevels->save($systemPriceLevel)) {

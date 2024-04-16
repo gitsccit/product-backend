@@ -35,9 +35,7 @@ class GroupsController extends AppController
      */
     public function view($id = null)
     {
-        $group = $this->Groups->get($id, [
-            'contain' => ['BucketCategories', 'Buckets', 'GroupItems'],
-        ]);
+        $group = $this->Groups->get($id, contain: ['BucketCategories', 'Buckets', 'GroupItems']);
 
         $this->set(compact('group'));
     }
@@ -73,9 +71,7 @@ class GroupsController extends AppController
      */
     public function edit($id = null)
     {
-        $group = $this->Groups->get($id, [
-            'contain' => ['Buckets'],
-        ]);
+        $group = $this->Groups->get($id, contain: ['Buckets']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $group = $this->Groups->patchEntity($group, $this->request->getData());
             if ($this->Groups->save($group)) {

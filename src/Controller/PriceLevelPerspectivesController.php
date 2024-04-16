@@ -35,9 +35,7 @@ class PriceLevelPerspectivesController extends AppController
      */
     public function view($id = null)
     {
-        $priceLevelPerspective = $this->PriceLevelPerspectives->get($id, [
-            'contain' => ['Perspectives', 'PriceLevels'],
-        ]);
+        $priceLevelPerspective = $this->PriceLevelPerspectives->get($id, contain: ['Perspectives', 'PriceLevels']);
 
         $this->set(compact('priceLevelPerspective'));
     }
@@ -73,9 +71,7 @@ class PriceLevelPerspectivesController extends AppController
      */
     public function edit($id = null)
     {
-        $priceLevelPerspective = $this->PriceLevelPerspectives->get($id, [
-            'contain' => [],
-        ]);
+        $priceLevelPerspective = $this->PriceLevelPerspectives->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $priceLevelPerspective = $this->PriceLevelPerspectives->patchEntity($priceLevelPerspective, $this->request->getData());
             if ($this->PriceLevelPerspectives->save($priceLevelPerspective)) {

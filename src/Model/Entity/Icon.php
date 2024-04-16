@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property int|null $image_id
  * @property string $style
  * @property int $sort
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\Kit[] $kits
  */
@@ -28,7 +28,7 @@ class Icon extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'image_id' => true,
         'style' => true,

@@ -28,7 +28,7 @@ class CustomerBomDetailAdditionalSkus extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'customer_bom_detail_id' => true,
         'sage_itemcode' => true,
         'quantity' => true,

@@ -35,9 +35,7 @@ class CustomerCategoriesController extends AppController
      */
     public function view($id = null)
     {
-        $customerCategory = $this->CustomerCategories->get($id, [
-            'contain' => ['ParentCustomerCategories', 'Customers', 'CustomerBoms', 'ChildCustomerCategories', 'CustomerProducts'],
-        ]);
+        $customerCategory = $this->CustomerCategories->get($id, contain: ['ParentCustomerCategories', 'Customers', 'CustomerBoms', 'ChildCustomerCategories', 'CustomerProducts']);
 
         $this->set(compact('customerCategory'));
     }
@@ -73,9 +71,7 @@ class CustomerCategoriesController extends AppController
      */
     public function edit($id = null)
     {
-        $customerCategory = $this->CustomerCategories->get($id, [
-            'contain' => [],
-        ]);
+        $customerCategory = $this->CustomerCategories->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customerCategory = $this->CustomerCategories->patchEntity($customerCategory, $this->request->getData());
             if ($this->CustomerCategories->save($customerCategory)) {

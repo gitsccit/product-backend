@@ -29,7 +29,7 @@ class PluginPerspective extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'perspective_id' => true,
         'plugin_id' => true,
         'name' => true,

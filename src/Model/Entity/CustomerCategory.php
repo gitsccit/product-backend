@@ -32,7 +32,7 @@ class CustomerCategory extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'parent_id' => true,
         'customer_id' => true,
         'active' => true,

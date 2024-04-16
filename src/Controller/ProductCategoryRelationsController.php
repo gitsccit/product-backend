@@ -35,9 +35,7 @@ class ProductCategoryRelationsController extends AppController
      */
     public function view($id = null)
     {
-        $productCategoryRelation = $this->ProductCategoryRelations->get($id, [
-            'contain' => ['ProductCategories'],
-        ]);
+        $productCategoryRelation = $this->ProductCategoryRelations->get($id, contain: ['ProductCategories']);
 
         $this->set(compact('productCategoryRelation'));
     }
@@ -72,9 +70,7 @@ class ProductCategoryRelationsController extends AppController
      */
     public function edit($id = null)
     {
-        $productCategoryRelation = $this->ProductCategoryRelations->get($id, [
-            'contain' => [],
-        ]);
+        $productCategoryRelation = $this->ProductCategoryRelations->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $productCategoryRelation = $this->ProductCategoryRelations->patchEntity($productCategoryRelation, $this->request->getData());
             if ($this->ProductCategoryRelations->save($productCategoryRelation)) {

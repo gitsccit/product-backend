@@ -36,7 +36,7 @@ class RaidMap extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'product_category_id' => true,
         'device' => true,
         'interface' => true,

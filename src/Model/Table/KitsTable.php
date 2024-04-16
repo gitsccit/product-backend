@@ -224,7 +224,7 @@ class KitsTable extends Table
             ])
             ->innerJoinWith('Tags.TagGroups.TagCategories')
             ->group('Tags.id')
-            ->order([
+            ->orderBy([
                 'TagCategories.name',
                 'TagCategoriesTagGroups.sort',
                 'Tags.sort',
@@ -250,7 +250,7 @@ class KitsTable extends Table
                 'TagCategories.name' => 'Filter',
             ])
             ->group('Tags.id')
-            ->order([
+            ->orderBy([
                 'TagCategoriesTagGroups.sort',
                 'Tags.sort',
                 'Tags.name',
@@ -329,7 +329,7 @@ class KitsTable extends Table
 
         $rules = $this->KitRules->find()
             ->contain('KitRuleDetails', function (Query $q) {
-                return $q->order('KitRuleDetails.sort');
+                return $q->orderBy('KitRuleDetails.sort');
             })
             ->where(['KitRules.kit_id' => $kitID]);
 

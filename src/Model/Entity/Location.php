@@ -27,7 +27,7 @@ class Location extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'postal_code' => true,
         'country_code' => true,

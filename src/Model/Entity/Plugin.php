@@ -30,7 +30,7 @@ class Plugin extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'description' => true,
         'include' => true,

@@ -35,9 +35,7 @@ class SkuRulesFilesController extends AppController
      */
     public function view($id = null)
     {
-        $skuRulesFile = $this->SkuRulesFiles->get($id, [
-            'contain' => ['SkuRules', 'Files'],
-        ]);
+        $skuRulesFile = $this->SkuRulesFiles->get($id, contain: ['SkuRules', 'Files']);
 
         $this->set(compact('skuRulesFile'));
     }
@@ -73,9 +71,7 @@ class SkuRulesFilesController extends AppController
      */
     public function edit($id = null)
     {
-        $skuRulesFile = $this->SkuRulesFiles->get($id, [
-            'contain' => [],
-        ]);
+        $skuRulesFile = $this->SkuRulesFiles->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $skuRulesFile = $this->SkuRulesFiles->patchEntity($skuRulesFile, $this->request->getData());
             if ($this->SkuRulesFiles->save($skuRulesFile)) {

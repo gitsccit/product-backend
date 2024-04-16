@@ -29,7 +29,7 @@ class ShipBox extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'length' => true,
         'width' => true,

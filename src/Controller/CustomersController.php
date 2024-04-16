@@ -35,9 +35,7 @@ class CustomersController extends AppController
      */
     public function view($id = null)
     {
-        $customer = $this->Customers->get($id, [
-            'contain' => ['Perspectives', 'CustomerBoms', 'CustomerCategories', 'CustomerProducts'],
-        ]);
+        $customer = $this->Customers->get($id, contain: ['Perspectives', 'CustomerBoms', 'CustomerCategories', 'CustomerProducts']);
 
         $this->set(compact('customer'));
     }
@@ -72,9 +70,7 @@ class CustomersController extends AppController
      */
     public function edit($id = null)
     {
-        $customer = $this->Customers->get($id, [
-            'contain' => [],
-        ]);
+        $customer = $this->Customers->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->request->getData());
             if ($this->Customers->save($customer)) {

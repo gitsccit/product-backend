@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * ActiveBackendDatabase Entity
  *
  * @property string $name
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $timestamp
  */
 class ActiveBackendDatabase extends Entity
 {
@@ -22,7 +22,7 @@ class ActiveBackendDatabase extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'timestamp' => true,
     ];

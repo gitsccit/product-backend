@@ -35,9 +35,7 @@ class CustomerBomDetailsController extends AppController
      */
     public function view($id = null)
     {
-        $customerBomDetail = $this->CustomerBomDetails->get($id, [
-            'contain' => ['CustomerBoms', 'CustomerBomDetailAdditionalSkus'],
-        ]);
+        $customerBomDetail = $this->CustomerBomDetails->get($id, contain: ['CustomerBoms', 'CustomerBomDetailAdditionalSkus']);
 
         $this->set(compact('customerBomDetail'));
     }
@@ -72,9 +70,7 @@ class CustomerBomDetailsController extends AppController
      */
     public function edit($id = null)
     {
-        $customerBomDetail = $this->CustomerBomDetails->get($id, [
-            'contain' => [],
-        ]);
+        $customerBomDetail = $this->CustomerBomDetails->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customerBomDetail = $this->CustomerBomDetails->patchEntity($customerBomDetail, $this->request->getData());
             if ($this->CustomerBomDetails->save($customerBomDetail)) {

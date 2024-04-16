@@ -27,7 +27,7 @@ class ShipRate extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'description' => true,
         'sage_shipvia' => true,

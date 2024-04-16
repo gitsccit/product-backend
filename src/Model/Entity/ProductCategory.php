@@ -40,7 +40,7 @@ class ProductCategory extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'parent_id' => true,
         'url' => true,
         'name' => true,

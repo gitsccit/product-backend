@@ -30,7 +30,7 @@ class SkuRuleGroup extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'sku_rule_id' => true,
         'method' => true,
         'spec_id' => true,

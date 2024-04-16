@@ -30,7 +30,7 @@ class GroupItem extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'group_id' => true,
         'product_id' => true,
         'system_id' => true,

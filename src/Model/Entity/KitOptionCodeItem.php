@@ -28,7 +28,7 @@ class KitOptionCodeItem extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'kit_option_code_id' => true,
         'kit_item_id' => true,
         'position' => true,

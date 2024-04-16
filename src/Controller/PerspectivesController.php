@@ -32,9 +32,7 @@ class PerspectivesController extends AppController
      */
     public function view($id = null)
     {
-        $perspective = $this->Perspectives->get($id, [
-            'contain' => ['Customers', 'PriceLevelPerspectives', 'ProductCategoryPerspectives', 'ProductPerspectives', 'SystemCategoryPerspectives', 'SystemPerspectives'],
-        ]);
+        $perspective = $this->Perspectives->get($id, contain: ['Customers', 'PriceLevelPerspectives', 'ProductCategoryPerspectives', 'ProductPerspectives', 'SystemCategoryPerspectives', 'SystemPerspectives']);
 
         $this->set(compact('perspective'));
     }
@@ -68,9 +66,7 @@ class PerspectivesController extends AppController
      */
     public function edit($id = null)
     {
-        $perspective = $this->Perspectives->get($id, [
-            'contain' => [],
-        ]);
+        $perspective = $this->Perspectives->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $perspective = $this->Perspectives->patchEntity($perspective, $this->request->getData());
             if ($this->Perspectives->save($perspective)) {

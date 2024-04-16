@@ -31,7 +31,7 @@ class CustomerBomDetail extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'customer_bom_id' => true,
         'sequence' => true,
         'option' => true,

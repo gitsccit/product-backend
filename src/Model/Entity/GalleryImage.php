@@ -28,7 +28,7 @@ class GalleryImage extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'gallery_id' => true,
         'file_id' => true,
         'active' => true,

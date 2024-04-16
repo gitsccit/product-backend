@@ -35,9 +35,7 @@ class IconsController extends AppController
      */
     public function view($id = null)
     {
-        $icon = $this->Icons->get($id, [
-            'contain' => ['Images', 'Kits'],
-        ]);
+        $icon = $this->Icons->get($id, contain: ['Images', 'Kits']);
 
         $this->set(compact('icon'));
     }
@@ -73,9 +71,7 @@ class IconsController extends AppController
      */
     public function edit($id = null)
     {
-        $icon = $this->Icons->get($id, [
-            'contain' => ['Kits'],
-        ]);
+        $icon = $this->Icons->get($id, contain: ['Kits']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $icon = $this->Icons->patchEntity($icon, $this->request->getData());
             if ($this->Icons->save($icon)) {

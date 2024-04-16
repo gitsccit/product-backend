@@ -28,7 +28,7 @@ class Tag extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'tag_group_id' => true,
         'name' => true,
         'image_id' => true,
@@ -37,7 +37,7 @@ class Tag extends Entity
         'kits' => true,
     ];
 
-    protected $_hidden = [
+    protected array $_hidden = [
         '_joinData'
     ];
 }

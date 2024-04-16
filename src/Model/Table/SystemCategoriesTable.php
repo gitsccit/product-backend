@@ -189,7 +189,7 @@ class SystemCategoriesTable extends Table
                 'IFNULL(SystemCategoryPerspectives.active, SystemCategories.active) =' => 'yes',
                 'IFNULL(SystemCategoryPerspectives.children, SystemCategories.children) >' => 0,
             ])
-            ->orderAsc('SystemCategories.sort')
+            ->orderByAsc('SystemCategories.sort')
             ->formatResults(function (ResultSet $result) {
                 $systemCategories = $result->extract('id')->toList();
                 $systems = [];

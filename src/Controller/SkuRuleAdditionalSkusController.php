@@ -35,9 +35,7 @@ class SkuRuleAdditionalSkusController extends AppController
      */
     public function view($id = null)
     {
-        $skuRuleAdditionalSkus = $this->SkuRuleAdditionalSkus->get($id, [
-            'contain' => ['SkuRules', 'SkuRuleGroups'],
-        ]);
+        $skuRuleAdditionalSkus = $this->SkuRuleAdditionalSkus->get($id, contain: ['SkuRules', 'SkuRuleGroups']);
 
         $this->set(compact('skuRuleAdditionalSkus'));
     }
@@ -73,9 +71,7 @@ class SkuRuleAdditionalSkusController extends AppController
      */
     public function edit($id = null)
     {
-        $skuRuleAdditionalSkus = $this->SkuRuleAdditionalSkus->get($id, [
-            'contain' => [],
-        ]);
+        $skuRuleAdditionalSkus = $this->SkuRuleAdditionalSkus->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $skuRuleAdditionalSkus = $this->SkuRuleAdditionalSkus->patchEntity($skuRuleAdditionalSkus, $this->request->getData());
             if ($this->SkuRuleAdditionalSkus->save($skuRuleAdditionalSkus)) {

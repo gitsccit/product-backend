@@ -32,9 +32,7 @@ class GenericsController extends AppController
      */
     public function view($id = null)
     {
-        $generic = $this->Generics->get($id, [
-            'contain' => ['Products'],
-        ]);
+        $generic = $this->Generics->get($id, contain: ['Products']);
 
         $this->set(compact('generic'));
     }
@@ -69,9 +67,7 @@ class GenericsController extends AppController
      */
     public function edit($id = null)
     {
-        $generic = $this->Generics->get($id, [
-            'contain' => ['Products'],
-        ]);
+        $generic = $this->Generics->get($id, contain: ['Products']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $generic = $this->Generics->patchEntity($generic, $this->request->getData());
             if ($this->Generics->save($generic)) {

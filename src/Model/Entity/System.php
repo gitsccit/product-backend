@@ -31,8 +31,8 @@ use Cake\Utility\Hash;
  * @property string $category_browse
  * @property string $active
  * @property int $sort
- * @property \Cake\I18n\FrozenTime $date_added
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $date_added
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\Kit $kit
  * @property \ProductBackend\Model\Entity\SystemCategory $system_category
@@ -52,7 +52,7 @@ class System extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'kit_id' => true,
         'system_category_id' => true,
         'configurable' => true,
@@ -80,7 +80,7 @@ class System extends Entity
         'system_price_levels' => true,
     ];
 
-    protected $_hidden = [
+    protected array $_hidden = [
         '_matchingData',
     ];
 

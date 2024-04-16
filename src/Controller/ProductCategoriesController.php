@@ -191,9 +191,7 @@ class ProductCategoriesController extends AppController
      */
     public function edit($id = null)
     {
-        $productCategory = $this->ProductCategories->get($id, [
-            'contain' => [],
-        ]);
+        $productCategory = $this->ProductCategories->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $productCategory = $this->ProductCategories->patchEntity($productCategory, $this->request->getData());
             if ($this->ProductCategories->save($productCategory)) {

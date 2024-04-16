@@ -33,7 +33,7 @@ class SystemCategoryPerspective extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'perspective_id' => true,
         'system_category_id' => true,
         'url' => true,

@@ -35,9 +35,7 @@ class KitBucketsController extends AppController
      */
     public function view($id = null)
     {
-        $kitBucket = $this->KitBuckets->get($id, [
-            'contain' => ['Kits', 'Buckets'],
-        ]);
+        $kitBucket = $this->KitBuckets->get($id, contain: ['Kits', 'Buckets']);
 
         $this->set(compact('kitBucket'));
     }
@@ -73,9 +71,7 @@ class KitBucketsController extends AppController
      */
     public function edit($id = null)
     {
-        $kitBucket = $this->KitBuckets->get($id, [
-            'contain' => [],
-        ]);
+        $kitBucket = $this->KitBuckets->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $kitBucket = $this->KitBuckets->patchEntity($kitBucket, $this->request->getData());
             if ($this->KitBuckets->save($kitBucket)) {

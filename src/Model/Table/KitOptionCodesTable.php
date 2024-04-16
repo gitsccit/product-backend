@@ -108,7 +108,7 @@ class KitOptionCodesTable extends Table
     {
         return $query
             ->contain('KitOptionCodeItems', function (Query $q) use ($options) {
-                return $q->whereInList('kit_item_id', $options['itemIDs'])->order('position');
+                return $q->whereInList('kit_item_id', $options['itemIDs'])->orderBy('position');
             })
             ->where([
                 'kit_id' => $options['kitID'],

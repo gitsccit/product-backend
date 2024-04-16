@@ -162,7 +162,7 @@ class SystemsController extends AppController
 
         $system = (new System($system))->loadConfiguration($configuration);
 
-        $tabs = TableRegistry::getTableLocator()->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
+        $tabs = TableRegistry::getTableLocator()->get('ProductBackend.Tabs')->find()->orderBy('sort')->toArray();
 
         if (Configure::read('ProductBackend.showCost')) {
             $priceLevels = TableRegistry::getTableLocator()->get('ProductBackend.PriceLevels')
@@ -173,7 +173,7 @@ class SystemsController extends AppController
                     'PriceLevelPerspectives.perspective_id' => $session->read('store.perspective'),
                     'PriceLevelPerspectives.active' => 'yes',
                 ])
-                ->orderAsc('sort')
+                ->orderByAsc('sort')
                 ->all()
                 ->combine('id', 'name')
                 ->toArray();
