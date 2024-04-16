@@ -35,9 +35,7 @@ class BannersController extends AppController
      */
     public function view($id = null)
     {
-        $banner = $this->Banners->get($id, [
-            'contain' => ['Images', 'Tiles', 'SystemCategories', 'SystemCategoryPerspectives'],
-        ]);
+        $banner = $this->Banners->get($id, contain: ['Images', 'Tiles', 'SystemCategories', 'SystemCategoryPerspectives']);
 
         $this->set(compact('banner'));
     }
@@ -73,9 +71,7 @@ class BannersController extends AppController
      */
     public function edit($id = null)
     {
-        $banner = $this->Banners->get($id, [
-            'contain' => [],
-        ]);
+        $banner = $this->Banners->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $banner = $this->Banners->patchEntity($banner, $this->request->getData());
             if ($this->Banners->save($banner)) {

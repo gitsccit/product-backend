@@ -35,9 +35,7 @@ class BucketsController extends AppController
      */
     public function view($id = null)
     {
-        $bucket = $this->Buckets->get($id, [
-            'contain' => ['BucketCategories', 'Groups', 'KitBuckets', 'SystemRuleDetails'],
-        ]);
+        $bucket = $this->Buckets->get($id, contain: ['BucketCategories', 'Groups', 'KitBuckets', 'SystemRuleDetails']);
 
         $this->set(compact('bucket'));
     }
@@ -73,9 +71,7 @@ class BucketsController extends AppController
      */
     public function edit($id = null)
     {
-        $bucket = $this->Buckets->get($id, [
-            'contain' => ['Groups'],
-        ]);
+        $bucket = $this->Buckets->get($id, contain: ['Groups']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $bucket = $this->Buckets->patchEntity($bucket, $this->request->getData());
             if ($this->Buckets->save($bucket)) {

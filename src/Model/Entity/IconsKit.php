@@ -25,7 +25,7 @@ class IconsKit extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'icon_id' => true,
         'kit_id' => true,
         'icon' => true,

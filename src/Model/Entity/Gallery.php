@@ -28,7 +28,7 @@ class Gallery extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'product_gallery_image_id' => true,
         'browse_gallery_image_id' => true,
         'system_gallery_image_id' => true,

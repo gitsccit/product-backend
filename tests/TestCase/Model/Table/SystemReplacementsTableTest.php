@@ -23,7 +23,7 @@ class SystemReplacementsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.SystemReplacements',
         'plugin.ProductBackend.Systems',
     ];

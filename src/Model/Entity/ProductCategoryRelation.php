@@ -24,7 +24,7 @@ class ProductCategoryRelation extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'product_category_id' => true,
         'related_product_category_id' => true,
         'product_category' => true,

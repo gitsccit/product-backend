@@ -28,7 +28,7 @@ class Spare extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'product_id' => true,
         'spare_category_id' => true,
         'related_id' => true,

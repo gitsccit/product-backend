@@ -25,7 +25,7 @@ class ProductRulesProduct extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'product_rule_id' => true,
         'product_id' => true,
         'product_rule' => true,

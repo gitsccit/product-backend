@@ -35,9 +35,7 @@ class ProductAdditionalSkusController extends AppController
      */
     public function view($id = null)
     {
-        $productAdditionalSkus = $this->ProductAdditionalSkus->get($id, [
-            'contain' => ['Products'],
-        ]);
+        $productAdditionalSkus = $this->ProductAdditionalSkus->get($id, contain: ['Products']);
 
         $this->set(compact('productAdditionalSkus'));
     }
@@ -72,9 +70,7 @@ class ProductAdditionalSkusController extends AppController
      */
     public function edit($id = null)
     {
-        $productAdditionalSkus = $this->ProductAdditionalSkus->get($id, [
-            'contain' => [],
-        ]);
+        $productAdditionalSkus = $this->ProductAdditionalSkus->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $productAdditionalSkus = $this->ProductAdditionalSkus->patchEntity($productAdditionalSkus, $this->request->getData());
             if ($this->ProductAdditionalSkus->save($productAdditionalSkus)) {

@@ -23,7 +23,7 @@ class LocationsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.Locations',
         'plugin.ProductBackend.CustomerBoms',
     ];

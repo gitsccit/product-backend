@@ -23,7 +23,7 @@ class KitRulesTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.KitRules',
         'plugin.ProductBackend.Kits',
         'plugin.ProductBackend.KitRuleDetails',

@@ -26,7 +26,7 @@ class ShipRegion extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'ship_box_only' => true,
         'ship_rate_ship_region_prices' => true,

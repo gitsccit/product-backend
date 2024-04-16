@@ -28,7 +28,7 @@ class KitItem extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'kit_id' => true,
         'group_item_id' => true,
         'active' => true,

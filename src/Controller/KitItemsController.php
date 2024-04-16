@@ -35,9 +35,7 @@ class KitItemsController extends AppController
      */
     public function view($id = null)
     {
-        $kitItem = $this->KitItems->get($id, [
-            'contain' => ['Kits', 'GroupItems'],
-        ]);
+        $kitItem = $this->KitItems->get($id, contain: ['Kits', 'GroupItems']);
 
         $this->set(compact('kitItem'));
     }
@@ -73,9 +71,7 @@ class KitItemsController extends AppController
      */
     public function edit($id = null)
     {
-        $kitItem = $this->KitItems->get($id, [
-            'contain' => [],
-        ]);
+        $kitItem = $this->KitItems->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $kitItem = $this->KitItems->patchEntity($kitItem, $this->request->getData());
             if ($this->KitItems->save($kitItem)) {

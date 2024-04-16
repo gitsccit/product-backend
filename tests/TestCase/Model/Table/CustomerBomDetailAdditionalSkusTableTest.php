@@ -23,7 +23,7 @@ class CustomerBomDetailAdditionalSkusTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.CustomerBomDetailAdditionalSkus',
         'plugin.ProductBackend.CustomerBomDetails',
     ];

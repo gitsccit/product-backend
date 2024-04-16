@@ -32,9 +32,7 @@ class ShipRatesController extends AppController
      */
     public function view($id = null)
     {
-        $shipRate = $this->ShipRates->get($id, [
-            'contain' => ['ShipBoxes', 'ShipRateShipRegionPrices'],
-        ]);
+        $shipRate = $this->ShipRates->get($id, contain: ['ShipBoxes', 'ShipRateShipRegionPrices']);
 
         $this->set(compact('shipRate'));
     }
@@ -69,9 +67,7 @@ class ShipRatesController extends AppController
      */
     public function edit($id = null)
     {
-        $shipRate = $this->ShipRates->get($id, [
-            'contain' => ['ShipBoxes'],
-        ]);
+        $shipRate = $this->ShipRates->get($id, contain: ['ShipBoxes']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $shipRate = $this->ShipRates->patchEntity($shipRate, $this->request->getData());
             if ($this->ShipRates->save($shipRate)) {

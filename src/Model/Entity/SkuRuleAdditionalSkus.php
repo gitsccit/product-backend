@@ -30,7 +30,7 @@ class SkuRuleAdditionalSkus extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'sku_rule_id' => true,
         'quantity' => true,
         'sage_itemcode' => true,

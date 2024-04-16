@@ -251,7 +251,7 @@ class SystemsTable extends Table
                 return $q->where(['SystemPerspectives.perspective_id' => $perspectiveID]);
             })
             ->group(['Systems.id'])
-            ->order([
+            ->orderBy([
                 'Systems.sort' => 'ASC',
                 'IFNULL(SystemPerspectives.name, Systems.name)' => 'ASC',
             ]);
@@ -288,7 +288,7 @@ class SystemsTable extends Table
             ->find('active', $options)
             ->find('basic', $options)
             ->find('supportBadge', $options)
-            ->find('image', ['type' => 'Browse'])
+            ->find('image', type: 'Browse')
             ->contain([
                 'Kits.Tags' => function (Query $query) {
                     return $query
@@ -300,7 +300,7 @@ class SystemsTable extends Table
                             'group_name' => 'TagGroups.name',
                         ])
                         ->innerJoinWith('TagGroups.TagCategories')
-                        ->order([
+                        ->orderBy([
                             'TagCategoriesTagGroups.sort',
                             'Tags.sort',
                             'Tags.name',
@@ -378,7 +378,7 @@ class SystemsTable extends Table
                             'value' => "IF(TagGroups.display_value = 'yes', KitsTags.value, NULL)",
                         ])
                         ->innerJoinWith('TagGroups.TagCategories')
-                        ->order([
+                        ->orderBy([
                             'TagCategories.name',
                             'TagCategoriesTagGroups.sort',
                             'Tags.sort',
@@ -443,7 +443,7 @@ class SystemsTable extends Table
                     return $system;
                 });
             })
-            ->find('image', ['type' => 'System']);
+            ->find('image', type: 'System');
     }
 
     public function findBaseConfiguration(Query $query, array $options)
@@ -470,7 +470,7 @@ class SystemsTable extends Table
                 "${imageType}GalleryImages.id IS NOT NULL",
                 "${imageType}GalleryImages.active" => 'yes',
             ])
-            ->order([
+            ->orderBy([
                 'ProductCategories.gallery_priority' => 'DESC',
                 'Products.cost' => 'DESC',
                 'Products.sort',
@@ -509,7 +509,7 @@ class SystemsTable extends Table
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
-            ->find('image', ['type' => 'System'])
+            ->find('image', type: 'System')
             ->select([
                 'system_category_id',
                 'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
@@ -560,7 +560,7 @@ class SystemsTable extends Table
                             'SystemItems.system_id' => $system['id'],
                             'GalleryImages.system_active =' => 'yes',
                         ])
-                        ->order([
+                        ->orderBy([
                             'GalleryImages.sort',
                             'GalleryImages.id',
                         ])

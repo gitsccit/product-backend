@@ -23,7 +23,7 @@ class ShipRegionsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.ShipRegions',
         'plugin.ProductBackend.ShipRateShipRegionPrices',
         'plugin.ProductBackend.ShipRegionLocations',

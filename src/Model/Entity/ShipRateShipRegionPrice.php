@@ -27,7 +27,7 @@ class ShipRateShipRegionPrice extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'ship_rate_id' => true,
         'ship_region_id' => true,
         'price' => true,

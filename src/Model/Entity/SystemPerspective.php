@@ -37,7 +37,7 @@ class SystemPerspective extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'perspective_id' => true,
         'system_id' => true,
         'price_lock' => true,

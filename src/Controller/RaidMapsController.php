@@ -35,9 +35,7 @@ class RaidMapsController extends AppController
      */
     public function view($id = null)
     {
-        $raidMap = $this->RaidMaps->get($id, [
-            'contain' => ['ProductCategories', 'InterfaceSpecs', 'Interface2Specs', 'NameSpecs', 'RaidSpecs', 'PortsSpecs', 'DevicesSpecs', 'PergroupSpecs', 'CapacitySpecs', 'BackplaneSpecs'],
-        ]);
+        $raidMap = $this->RaidMaps->get($id, contain: ['ProductCategories', 'InterfaceSpecs', 'Interface2Specs', 'NameSpecs', 'RaidSpecs', 'PortsSpecs', 'DevicesSpecs', 'PergroupSpecs', 'CapacitySpecs', 'BackplaneSpecs']);
 
         $this->set(compact('raidMap'));
     }
@@ -81,9 +79,7 @@ class RaidMapsController extends AppController
      */
     public function edit($id = null)
     {
-        $raidMap = $this->RaidMaps->get($id, [
-            'contain' => [],
-        ]);
+        $raidMap = $this->RaidMaps->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $raidMap = $this->RaidMaps->patchEntity($raidMap, $this->request->getData());
             if ($this->RaidMaps->save($raidMap)) {

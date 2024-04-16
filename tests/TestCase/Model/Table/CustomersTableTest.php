@@ -23,7 +23,7 @@ class CustomersTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.Customers',
         'plugin.ProductBackend.Perspectives',
         'plugin.ProductBackend.CustomerBoms',

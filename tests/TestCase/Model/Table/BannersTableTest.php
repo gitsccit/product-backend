@@ -23,7 +23,7 @@ class BannersTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.Banners',
         'plugin.ProductBackend.SystemCategories',
         'plugin.ProductBackend.SystemCategoryPerspectives',

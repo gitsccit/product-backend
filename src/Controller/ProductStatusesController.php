@@ -32,9 +32,7 @@ class ProductStatusesController extends AppController
      */
     public function view($id = null)
     {
-        $productStatus = $this->ProductStatuses->get($id, [
-            'contain' => [],
-        ]);
+        $productStatus = $this->ProductStatuses->get($id, contain: []);
 
         $this->set(compact('productStatus'));
     }
@@ -68,9 +66,7 @@ class ProductStatusesController extends AppController
      */
     public function edit($id = null)
     {
-        $productStatus = $this->ProductStatuses->get($id, [
-            'contain' => [],
-        ]);
+        $productStatus = $this->ProductStatuses->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $productStatus = $this->ProductStatuses->patchEntity($productStatus, $this->request->getData());
             if ($this->ProductStatuses->save($productStatus)) {

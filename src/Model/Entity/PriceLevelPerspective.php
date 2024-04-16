@@ -27,7 +27,7 @@ class PriceLevelPerspective extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'perspective_id' => true,
         'price_level_id' => true,
         'active' => true,

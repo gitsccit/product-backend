@@ -32,7 +32,7 @@ class KitRuleDetail extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'kit_rule_id' => true,
         'logic' => true,
         'relation' => true,

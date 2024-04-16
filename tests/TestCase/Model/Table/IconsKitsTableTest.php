@@ -23,7 +23,7 @@ class IconsKitsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.IconsKits',
         'plugin.ProductBackend.Icons',
         'plugin.ProductBackend.Kits',

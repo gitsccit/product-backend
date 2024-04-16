@@ -25,7 +25,7 @@ class SkuRuleGroupSkus extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'sku_rule_group_id' => true,
         'sage_itemcode' => true,
         'sku_rule_group' => true,

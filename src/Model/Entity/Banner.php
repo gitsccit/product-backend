@@ -15,7 +15,7 @@ use Cake\ORM\Entity;
  * @property string $vertical
  * @property string $style
  * @property int $sort
- * @property \Cake\I18n\FrozenTime $timestamp
+ * @property \Cake\I18n\DateTime $timestamp
  *
  * @property \ProductBackend\Model\Entity\SystemCategory[] $system_categories
  * @property \ProductBackend\Model\Entity\SystemCategoryPerspective[] $system_category_perspectives
@@ -31,7 +31,7 @@ class Banner extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'image_id' => true,
         'tile_id' => true,
         'horizontal' => true,

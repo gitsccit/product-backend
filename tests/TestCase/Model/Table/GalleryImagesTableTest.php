@@ -23,7 +23,7 @@ class GalleryImagesTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.GalleryImages',
         'plugin.ProductBackend.Galleries',
         'plugin.ProductBackend.Files',

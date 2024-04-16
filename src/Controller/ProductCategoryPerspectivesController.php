@@ -35,9 +35,7 @@ class ProductCategoryPerspectivesController extends AppController
      */
     public function view($id = null)
     {
-        $productCategoryPerspective = $this->ProductCategoryPerspectives->get($id, [
-            'contain' => ['Perspectives', 'ProductCategories'],
-        ]);
+        $productCategoryPerspective = $this->ProductCategoryPerspectives->get($id, contain: ['Perspectives', 'ProductCategories']);
 
         $this->set(compact('productCategoryPerspective'));
     }
@@ -73,9 +71,7 @@ class ProductCategoryPerspectivesController extends AppController
      */
     public function edit($id = null)
     {
-        $productCategoryPerspective = $this->ProductCategoryPerspectives->get($id, [
-            'contain' => [],
-        ]);
+        $productCategoryPerspective = $this->ProductCategoryPerspectives->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $productCategoryPerspective = $this->ProductCategoryPerspectives->patchEntity($productCategoryPerspective, $this->request->getData());
             if ($this->ProductCategoryPerspectives->save($productCategoryPerspective)) {

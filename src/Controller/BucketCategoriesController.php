@@ -35,9 +35,7 @@ class BucketCategoriesController extends AppController
      */
     public function view($id = null)
     {
-        $bucketCategory = $this->BucketCategories->get($id, [
-            'contain' => ['ParentBucketCategories', 'ChildBucketCategories', 'Buckets', 'Groups'],
-        ]);
+        $bucketCategory = $this->BucketCategories->get($id, contain: ['ParentBucketCategories', 'ChildBucketCategories', 'Buckets', 'Groups']);
 
         $this->set(compact('bucketCategory'));
     }
@@ -72,9 +70,7 @@ class BucketCategoriesController extends AppController
      */
     public function edit($id = null)
     {
-        $bucketCategory = $this->BucketCategories->get($id, [
-            'contain' => [],
-        ]);
+        $bucketCategory = $this->BucketCategories->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $bucketCategory = $this->BucketCategories->patchEntity($bucketCategory, $this->request->getData());
             if ($this->BucketCategories->save($bucketCategory)) {

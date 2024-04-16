@@ -35,9 +35,7 @@ class GroupItemsController extends AppController
      */
     public function view($id = null)
     {
-        $groupItem = $this->GroupItems->get($id, [
-            'contain' => ['Groups', 'Products', 'Systems', 'KitItems', 'SystemRuleDetails'],
-        ]);
+        $groupItem = $this->GroupItems->get($id, contain: ['Groups', 'Products', 'Systems', 'KitItems', 'SystemRuleDetails']);
 
         $this->set(compact('groupItem'));
     }
@@ -74,9 +72,7 @@ class GroupItemsController extends AppController
      */
     public function edit($id = null)
     {
-        $groupItem = $this->GroupItems->get($id, [
-            'contain' => [],
-        ]);
+        $groupItem = $this->GroupItems->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $groupItem = $this->GroupItems->patchEntity($groupItem, $this->request->getData());
             if ($this->GroupItems->save($groupItem)) {

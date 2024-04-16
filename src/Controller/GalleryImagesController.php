@@ -35,9 +35,7 @@ class GalleryImagesController extends AppController
      */
     public function view($id = null)
     {
-        $galleryImage = $this->GalleryImages->get($id, [
-            'contain' => ['Galleries', 'Files'],
-        ]);
+        $galleryImage = $this->GalleryImages->get($id, contain: ['Galleries', 'Files']);
 
         $this->set(compact('galleryImage'));
     }
@@ -73,9 +71,7 @@ class GalleryImagesController extends AppController
      */
     public function edit($id = null)
     {
-        $galleryImage = $this->GalleryImages->get($id, [
-            'contain' => [],
-        ]);
+        $galleryImage = $this->GalleryImages->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $galleryImage = $this->GalleryImages->patchEntity($galleryImage, $this->request->getData());
             if ($this->GalleryImages->save($galleryImage)) {

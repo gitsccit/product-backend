@@ -28,7 +28,7 @@ class ProductReplacement extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'product_category_path' => true,
         'manufacturer' => true,

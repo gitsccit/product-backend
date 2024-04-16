@@ -35,9 +35,7 @@ class GenericsProductsController extends AppController
      */
     public function view($id = null)
     {
-        $genericsProduct = $this->GenericsProducts->get($id, [
-            'contain' => ['Generics', 'Products'],
-        ]);
+        $genericsProduct = $this->GenericsProducts->get($id, contain: ['Generics', 'Products']);
 
         $this->set(compact('genericsProduct'));
     }
@@ -73,9 +71,7 @@ class GenericsProductsController extends AppController
      */
     public function edit($id = null)
     {
-        $genericsProduct = $this->GenericsProducts->get($id, [
-            'contain' => [],
-        ]);
+        $genericsProduct = $this->GenericsProducts->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $genericsProduct = $this->GenericsProducts->patchEntity($genericsProduct, $this->request->getData());
             if ($this->GenericsProducts->save($genericsProduct)) {

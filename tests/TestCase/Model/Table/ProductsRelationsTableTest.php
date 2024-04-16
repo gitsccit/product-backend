@@ -23,7 +23,7 @@ class ProductsRelationsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.ProductsRelations',
         'plugin.ProductBackend.Products',
     ];

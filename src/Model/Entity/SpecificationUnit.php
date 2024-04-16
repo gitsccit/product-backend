@@ -29,7 +29,7 @@ class SpecificationUnit extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'specification_unit_group_id' => true,
         'symbol' => true,
         'name' => true,

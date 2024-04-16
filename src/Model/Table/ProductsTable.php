@@ -379,7 +379,7 @@ class ProductsTable extends Table
                 ]);
             })
             ->group(['Products.id'])
-            ->order([
+            ->orderBy([
                 'Products.sort' => 'ASC',
                 'IFNULL(ProductPerspectives.name, Products.name)' => 'ASC',
             ]);
@@ -437,7 +437,7 @@ class ProductsTable extends Table
                             'image_id' => 'file_id',
                         ])
                         ->where(['GalleryImages.active' => 'yes'])
-                        ->order('GalleryImages.sort');
+                        ->orderBy('GalleryImages.sort');
                 },
             ])
             ->formatResults(function ($result) {
@@ -499,7 +499,7 @@ class ProductsTable extends Table
                 'SpecificationFields.techspec' => 'yes',
             ])
             ->group(['SpecificationFields.id', 'Specifications.text_value'])
-            ->order([
+            ->orderBy([
                 'SpecificationGroups.sort',
                 'SpecificationGroups.name',
                 'SpecificationFields.sort',

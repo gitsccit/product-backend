@@ -28,7 +28,7 @@ class SkuRuleCategory extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'parent_id' => true,
         'name' => true,
         'sort' => true,

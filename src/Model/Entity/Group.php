@@ -27,7 +27,7 @@ class Group extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'method' => true,
         'sort' => true,
@@ -35,7 +35,7 @@ class Group extends Entity
         'buckets' => true,
     ];
 
-    protected $_hidden = [
+    protected array $_hidden = [
         '_joinData',
     ];
 }

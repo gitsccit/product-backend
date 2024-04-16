@@ -15,7 +15,7 @@ class CustomerBomDetailAdditionalSkusFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'customer_bom_detail_additional_skus';
+    public string $table = 'customer_bom_detail_additional_skus';
     /**
      * Init method
      *

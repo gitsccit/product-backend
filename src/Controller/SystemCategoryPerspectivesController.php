@@ -35,9 +35,7 @@ class SystemCategoryPerspectivesController extends AppController
      */
     public function view($id = null)
     {
-        $systemCategoryPerspective = $this->SystemCategoryPerspectives->get($id, [
-            'contain' => ['Perspectives', 'SystemCategories', 'Banners'],
-        ]);
+        $systemCategoryPerspective = $this->SystemCategoryPerspectives->get($id, contain: ['Perspectives', 'SystemCategories', 'Banners']);
 
         $this->set(compact('systemCategoryPerspective'));
     }
@@ -74,9 +72,7 @@ class SystemCategoryPerspectivesController extends AppController
      */
     public function edit($id = null)
     {
-        $systemCategoryPerspective = $this->SystemCategoryPerspectives->get($id, [
-            'contain' => [],
-        ]);
+        $systemCategoryPerspective = $this->SystemCategoryPerspectives->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $systemCategoryPerspective = $this->SystemCategoryPerspectives->patchEntity($systemCategoryPerspective, $this->request->getData());
             if ($this->SystemCategoryPerspectives->save($systemCategoryPerspective)) {

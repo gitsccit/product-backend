@@ -34,7 +34,7 @@ class SkuRule extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'sku_rule_category_id' => true,
         'name' => true,
         'scheduler_notes' => true,

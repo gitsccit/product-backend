@@ -15,7 +15,7 @@ class SkuRuleAdditionalSkusFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'sku_rule_additional_skus';
+    public string $table = 'sku_rule_additional_skus';
     /**
      * Init method
      *

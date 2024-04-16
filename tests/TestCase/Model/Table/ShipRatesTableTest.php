@@ -23,7 +23,7 @@ class ShipRatesTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.ShipRates',
         'plugin.ProductBackend.ShipRateShipRegionPrices',
         'plugin.ProductBackend.ShipBoxes',

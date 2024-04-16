@@ -25,7 +25,7 @@ class SpareCategoryRelation extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'spare_category_id' => true,
         'product_category_id' => true,
         'spare_category' => true,

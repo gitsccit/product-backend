@@ -35,9 +35,7 @@ class ManufacturersController extends AppController
      */
     public function view($id = null)
     {
-        $manufacturer = $this->Manufacturers->get($id, [
-            'contain' => ['Locations', 'Images', 'Products'],
-        ]);
+        $manufacturer = $this->Manufacturers->get($id, contain: ['Locations', 'Images', 'Products']);
 
         $this->set(compact('manufacturer'));
     }
@@ -73,9 +71,7 @@ class ManufacturersController extends AppController
      */
     public function edit($id = null)
     {
-        $manufacturer = $this->Manufacturers->get($id, [
-            'contain' => [],
-        ]);
+        $manufacturer = $this->Manufacturers->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $manufacturer = $this->Manufacturers->patchEntity($manufacturer, $this->request->getData());
             if ($this->Manufacturers->save($manufacturer)) {

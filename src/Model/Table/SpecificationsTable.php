@@ -127,7 +127,7 @@ class SpecificationsTable extends Table
                 'value' => 'Specifications.text_value',
             ])
             ->innerJoinWith('SpecificationFields.SpecificationGroups')
-            ->order([
+            ->orderBy([
                 'SpecificationGroups.sort',
                 'SpecificationGroups.name',
                 'SpecificationFields.sort',

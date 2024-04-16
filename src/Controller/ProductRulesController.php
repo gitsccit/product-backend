@@ -32,9 +32,7 @@ class ProductRulesController extends AppController
      */
     public function view($id = null)
     {
-        $productRule = $this->ProductRules->get($id, [
-            'contain' => ['Products'],
-        ]);
+        $productRule = $this->ProductRules->get($id, contain: ['Products']);
 
         $this->set(compact('productRule'));
     }
@@ -69,9 +67,7 @@ class ProductRulesController extends AppController
      */
     public function edit($id = null)
     {
-        $productRule = $this->ProductRules->get($id, [
-            'contain' => ['Products'],
-        ]);
+        $productRule = $this->ProductRules->get($id, contain: ['Products']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $productRule = $this->ProductRules->patchEntity($productRule, $this->request->getData());
             if ($this->ProductRules->save($productRule)) {

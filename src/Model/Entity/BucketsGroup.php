@@ -25,7 +25,7 @@ class BucketsGroup extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'bucket_id' => true,
         'group_id' => true,
         'bucket' => true,

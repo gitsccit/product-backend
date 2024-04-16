@@ -27,7 +27,7 @@ class SystemItem extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'system_id' => true,
         'item_id' => true,
         'quantity' => true,

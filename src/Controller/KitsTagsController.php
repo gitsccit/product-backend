@@ -35,9 +35,7 @@ class KitsTagsController extends AppController
      */
     public function view($id = null)
     {
-        $kitsTag = $this->KitsTags->get($id, [
-            'contain' => ['Kits', 'Tags'],
-        ]);
+        $kitsTag = $this->KitsTags->get($id, contain: ['Kits', 'Tags']);
 
         $this->set(compact('kitsTag'));
     }
@@ -73,9 +71,7 @@ class KitsTagsController extends AppController
      */
     public function edit($id = null)
     {
-        $kitsTag = $this->KitsTags->get($id, [
-            'contain' => [],
-        ]);
+        $kitsTag = $this->KitsTags->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $kitsTag = $this->KitsTags->patchEntity($kitsTag, $this->request->getData());
             if ($this->KitsTags->save($kitsTag)) {

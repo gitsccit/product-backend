@@ -15,7 +15,7 @@ class ProductAdditionalSkusFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'product_additional_skus';
+    public string $table = 'product_additional_skus';
     /**
      * Init method
      *

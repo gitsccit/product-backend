@@ -23,7 +23,7 @@ class TabsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.Tabs',
         'plugin.ProductBackend.Files',
         'plugin.ProductBackend.Plugins',

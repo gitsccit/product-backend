@@ -32,7 +32,7 @@ class Specification extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'product_id' => true,
         'specification_field_id' => true,
         'sequence' => true,

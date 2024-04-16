@@ -15,7 +15,7 @@ class ActiveBackendDatabaseFixture extends TestFixture
      *
      * @var string
      */
-    public $table = 'active_backend_database';
+    public string $table = 'active_backend_database';
     /**
      * Init method
      *

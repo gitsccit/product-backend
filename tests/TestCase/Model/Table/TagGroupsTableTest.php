@@ -23,7 +23,7 @@ class TagGroupsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.TagGroups',
         'plugin.ProductBackend.Tags',
         'plugin.ProductBackend.TagCategories',

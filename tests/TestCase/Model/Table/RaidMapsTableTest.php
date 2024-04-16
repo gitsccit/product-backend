@@ -23,7 +23,7 @@ class RaidMapsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.RaidMaps',
         'plugin.ProductBackend.ProductCategories',
         'plugin.ProductBackend.Specifications',

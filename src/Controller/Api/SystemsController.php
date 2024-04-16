@@ -47,7 +47,7 @@ class SystemsController extends AppController
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
 
-        $system['tabs'] = TableRegistry::getTableLocator()->get('ProductBackend.Tabs')->find()->order('sort')->toArray();
+        $system['tabs'] = TableRegistry::getTableLocator()->get('ProductBackend.Tabs')->find()->orderBy('sort')->toArray();
 
         $this->Crud->serialize(compact('system'));
     }

@@ -26,7 +26,7 @@ class SystemReplacement extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'system_category_path' => true,
         'replacement_system_id' => true,

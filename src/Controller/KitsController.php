@@ -35,9 +35,7 @@ class KitsController extends AppController
      */
     public function view($id = null)
     {
-        $kit = $this->Kits->get($id, [
-            'contain' => ['Locations', 'ShipBoxes', 'Icons', 'Tags', 'KitBuckets', 'KitItems', 'Systems'],
-        ]);
+        $kit = $this->Kits->get($id, contain: ['Locations', 'ShipBoxes', 'Icons', 'Tags', 'KitBuckets', 'KitItems', 'Systems']);
 
         $this->set(compact('kit'));
     }
@@ -75,9 +73,7 @@ class KitsController extends AppController
      */
     public function edit($id = null)
     {
-        $kit = $this->Kits->get($id, [
-            'contain' => ['Icons', 'Tags'],
-        ]);
+        $kit = $this->Kits->get($id, contain: ['Icons', 'Tags']);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $kit = $this->Kits->patchEntity($kit, $this->request->getData());
             if ($this->Kits->save($kit)) {

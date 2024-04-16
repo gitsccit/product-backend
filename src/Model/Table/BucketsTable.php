@@ -179,14 +179,14 @@ class BucketsTable extends Table
             ->contain('Groups', function (Query $q) use ($options, $kitID) {
                 return $q
                     ->contain('GroupItems', function (Query $q) use ($options, $kitID) {
-                        return $q->find('configuration', $options)->find('activeInKit', ['kitID' => $kitID]);
+                        return $q->find('configuration', $options)->find('activeInKit', kitID: $kitID);
                     })
-                    ->order([
+                    ->orderBy([
                         'Groups.sort',
                     ]);
             })
             ->where(['Kits.id' => $kitID])
-            ->order([
+            ->orderBy([
                 'BucketCategories.sort',
                 'BucketCategories.name',
             ])

@@ -31,7 +31,7 @@ class ProductPerspective extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'perspective_id' => true,
         'product_id' => true,
         'url' => true,

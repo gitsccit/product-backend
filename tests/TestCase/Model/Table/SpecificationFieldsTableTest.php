@@ -23,7 +23,7 @@ class SpecificationFieldsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.SpecificationFields',
         'plugin.ProductBackend.SpecificationGroups',
         'plugin.ProductBackend.SpecificationUnitGroups',

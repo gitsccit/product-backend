@@ -25,7 +25,7 @@ class GenericsProduct extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'generic_id' => true,
         'product_id' => true,
         'generic' => true,

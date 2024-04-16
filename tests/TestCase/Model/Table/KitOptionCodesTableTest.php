@@ -23,7 +23,7 @@ class KitOptionCodesTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.KitOptionCodes',
         'plugin.ProductBackend.Kits',
         'plugin.ProductBackend.KitOptionCodeItems',

@@ -23,7 +23,7 @@ class SpareCategoryRelationsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.SpareCategoryRelations',
         'plugin.ProductBackend.SpareCategories',
         'plugin.ProductBackend.ProductCategories',

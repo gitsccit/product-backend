@@ -23,7 +23,7 @@ class SystemPriceLevelsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.SystemPriceLevels',
         'plugin.ProductBackend.PriceLevels',
         'plugin.ProductBackend.Systems',

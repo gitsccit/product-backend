@@ -23,7 +23,7 @@ class GroupsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.Groups',
         'plugin.ProductBackend.GroupItems',
         'plugin.ProductBackend.Buckets',

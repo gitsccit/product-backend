@@ -35,9 +35,7 @@ class SpareCategoryRelationsController extends AppController
      */
     public function view($id = null)
     {
-        $spareCategoryRelation = $this->SpareCategoryRelations->get($id, [
-            'contain' => ['SpareCategories', 'ProductCategories'],
-        ]);
+        $spareCategoryRelation = $this->SpareCategoryRelations->get($id, contain: ['SpareCategories', 'ProductCategories']);
 
         $this->set(compact('spareCategoryRelation'));
     }
@@ -73,9 +71,7 @@ class SpareCategoryRelationsController extends AppController
      */
     public function edit($id = null)
     {
-        $spareCategoryRelation = $this->SpareCategoryRelations->get($id, [
-            'contain' => [],
-        ]);
+        $spareCategoryRelation = $this->SpareCategoryRelations->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $spareCategoryRelation = $this->SpareCategoryRelations->patchEntity($spareCategoryRelation, $this->request->getData());
             if ($this->SpareCategoryRelations->save($spareCategoryRelation)) {

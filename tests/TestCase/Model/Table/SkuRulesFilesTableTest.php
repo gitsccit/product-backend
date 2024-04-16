@@ -23,7 +23,7 @@ class SkuRulesFilesTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'plugin.ProductBackend.SkuRulesFiles',
         'plugin.ProductBackend.SkuRules',
         'plugin.ProductBackend.Files',
