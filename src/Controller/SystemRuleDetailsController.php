@@ -59,9 +59,9 @@ class SystemRuleDetailsController extends AppController
             }
             $this->Flash->error(__('The system rule detail could not be saved. Please, try again.'));
         }
-        $systemRules = $this->SystemRuleDetails->SystemRules->find('list', ['limit' => 200]);
-        $buckets = $this->SystemRuleDetails->Buckets->find('list', ['limit' => 200]);
-        $groupItems = $this->SystemRuleDetails->GroupItems->find('list', ['limit' => 200]);
+        $systemRules = $this->SystemRuleDetails->SystemRules->find(limit: 200)->all()->toList();
+        $buckets = $this->SystemRuleDetails->Buckets->find(limit: 200)->all()->toList();
+        $groupItems = $this->SystemRuleDetails->GroupItems->find(limit: 200)->all()->toList();
         $this->set(compact('systemRuleDetail', 'systemRules', 'buckets', 'groupItems'));
     }
 
@@ -86,9 +86,9 @@ class SystemRuleDetailsController extends AppController
             }
             $this->Flash->error(__('The system rule detail could not be saved. Please, try again.'));
         }
-        $systemRules = $this->SystemRuleDetails->SystemRules->find('list', ['limit' => 200]);
-        $buckets = $this->SystemRuleDetails->Buckets->find('list', ['limit' => 200]);
-        $groupItems = $this->SystemRuleDetails->GroupItems->find('list', ['limit' => 200]);
+        $systemRules = $this->SystemRuleDetails->SystemRules->find(limit: 200)->all()->toList();
+        $buckets = $this->SystemRuleDetails->Buckets->find(limit: 200)->all()->toList();
+        $groupItems = $this->SystemRuleDetails->GroupItems->find(limit: 200)->all()->toList();
         $this->set(compact('systemRuleDetail', 'systemRules', 'buckets', 'groupItems'));
     }
 

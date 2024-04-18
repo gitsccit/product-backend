@@ -116,7 +116,7 @@ class GroupItemsTable extends Table
         return $rules;
     }
 
-    public function findCost(Query $query, array $options = [])
+    public function findCost(Query $query, mixed ...$options)
     {
         if (Configure::read('ProductBackend.showCost')) {
             $query->select(['GroupItems.id', 'cost' => 'Products.cost'])->leftJoinWith('Products');
@@ -125,7 +125,7 @@ class GroupItemsTable extends Table
         return $query;
     }
 
-    public function findConfiguration(Query $query, array $options = [])
+    public function findConfiguration(Query $query, mixed ...$options)
     {
         return $query
             ->formatResults(function (CollectionInterface $result) use ($options) {
@@ -133,7 +133,7 @@ class GroupItemsTable extends Table
 
                 if ($productIDs = array_filter($result->extract('product_id')->toList())) {
                     $products = $this->Products
-                        ->find('basic', $options)
+                        ->find('basic', ...$options)
                         ->find('image')
                         ->contain('Specifications', function (Query $q) {
                             return $q->find('specifications');
@@ -146,8 +146,8 @@ class GroupItemsTable extends Table
 
                 if ($systemIDs = array_filter($result->extract('system_id')->toList())) {
                     $systems = $this->Systems
-                        ->find('active', $options)
-                        ->find('basic', $options)
+                        ->find('active', ...$options)
+                        ->find('basic', ...$options)
                         ->find('image')
                         ->whereInList('Systems.id', $systemIDs)
                         ->all()
@@ -203,7 +203,7 @@ class GroupItemsTable extends Table
             });
     }
 
-    public function findActiveInKit(Query $query, array $options = [])
+    public function findActiveInKit(Query $query, mixed ...$options)
     {
         $kitID = $options['kitID'];
 

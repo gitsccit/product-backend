@@ -57,8 +57,8 @@ class KitBucketsController extends AppController
             }
             $this->Flash->error(__('The kit bucket could not be saved. Please, try again.'));
         }
-        $kits = $this->KitBuckets->Kits->find('list', ['limit' => 200]);
-        $buckets = $this->KitBuckets->Buckets->find('list', ['limit' => 200]);
+        $kits = $this->KitBuckets->Kits->find(limit: 200)->all()->toList();
+        $buckets = $this->KitBuckets->Buckets->find(limit: 200)->all()->toList();
         $this->set(compact('kitBucket', 'kits', 'buckets'));
     }
 
@@ -81,8 +81,8 @@ class KitBucketsController extends AppController
             }
             $this->Flash->error(__('The kit bucket could not be saved. Please, try again.'));
         }
-        $kits = $this->KitBuckets->Kits->find('list', ['limit' => 200]);
-        $buckets = $this->KitBuckets->Buckets->find('list', ['limit' => 200]);
+        $kits = $this->KitBuckets->Kits->find(limit: 200)->all()->toList();
+        $buckets = $this->KitBuckets->Buckets->find(limit: 200)->all()->toList();
         $this->set(compact('kitBucket', 'kits', 'buckets'));
     }
 

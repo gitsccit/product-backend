@@ -73,7 +73,7 @@ class SystemsController extends AppController
             $options['warehouse'] = $warehouse;
         }
 
-        $rootSystem = $this->Systems->find('active', $options)
+        $rootSystem = $this->Systems->find('active', ...$options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
 
@@ -139,7 +139,7 @@ class SystemsController extends AppController
                     ]);
                 }
 
-                $systemUrl = $this->Systems->find('active', $options)
+                $systemUrl = $this->Systems->find('active', ...$options)
                     ->select(['url' => 'IFNULL(SystemPerspectives.url, Systems.url)'])
                     ->innerJoinWith('GroupItems')
                     ->where(['GroupItems.id' => $subKitLine['item_id']])
@@ -154,7 +154,7 @@ class SystemsController extends AppController
         }
 
         $options['store'] = $session->read("opportunities.$opportunityKey.store.id") ?? $session->read('store.id');
-        $system = $this->Systems->find('details', $options)
+        $system = $this->Systems->find('details', ...$options)
             ->where(['IFNULL(SystemPerspectives.url, Systems.url) =' => $systemUrl])
             ->first();
 
@@ -301,10 +301,10 @@ class SystemsController extends AppController
             }
 
             $kitOptionCode = $this->Systems->Kits->KitOptionCodes
-                ->find('partNumber', [
-                    'kitID' => $kitID,
-                    'itemIDs' => Hash::extract($configuration, '{n}.{n}.item_id'),
-                ])
+                ->find('partNumber',
+                    kitID: $kitID,
+                    itemIDs: Hash::extract($configuration, '{n}.{n}.item_id'),
+                )
                 ->first();
 
             if (isset($kitOptionCode['part_number'])) {

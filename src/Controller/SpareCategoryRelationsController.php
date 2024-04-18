@@ -57,8 +57,8 @@ class SpareCategoryRelationsController extends AppController
             }
             $this->Flash->error(__('The spare category relation could not be saved. Please, try again.'));
         }
-        $spareCategories = $this->SpareCategoryRelations->SpareCategories->find('list', ['limit' => 200]);
-        $productCategories = $this->SpareCategoryRelations->ProductCategories->find('list', ['limit' => 200]);
+        $spareCategories = $this->SpareCategoryRelations->SpareCategories->find(limit: 200)->all()->toList();
+        $productCategories = $this->SpareCategoryRelations->ProductCategories->find(limit: 200)->all()->toList();
         $this->set(compact('spareCategoryRelation', 'spareCategories', 'productCategories'));
     }
 
@@ -81,8 +81,8 @@ class SpareCategoryRelationsController extends AppController
             }
             $this->Flash->error(__('The spare category relation could not be saved. Please, try again.'));
         }
-        $spareCategories = $this->SpareCategoryRelations->SpareCategories->find('list', ['limit' => 200]);
-        $productCategories = $this->SpareCategoryRelations->ProductCategories->find('list', ['limit' => 200]);
+        $spareCategories = $this->SpareCategoryRelations->SpareCategories->find(limit: 200)->all()->toList();
+        $productCategories = $this->SpareCategoryRelations->ProductCategories->find(limit: 200)->all()->toList();
         $this->set(compact('spareCategoryRelation', 'spareCategories', 'productCategories'));
     }
 

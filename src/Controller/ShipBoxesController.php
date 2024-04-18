@@ -54,7 +54,7 @@ class ShipBoxesController extends AppController
             }
             $this->Flash->error(__('The ship box could not be saved. Please, try again.'));
         }
-        $shipRates = $this->ShipBoxes->ShipRates->find('list', ['limit' => 200]);
+        $shipRates = $this->ShipBoxes->ShipRates->find(limit: 200)->all()->toList();
         $this->set(compact('shipBox', 'shipRates'));
     }
 
@@ -77,7 +77,7 @@ class ShipBoxesController extends AppController
             }
             $this->Flash->error(__('The ship box could not be saved. Please, try again.'));
         }
-        $shipRates = $this->ShipBoxes->ShipRates->find('list', ['limit' => 200]);
+        $shipRates = $this->ShipBoxes->ShipRates->find(limit: 200)->all()->toList();
         $this->set(compact('shipBox', 'shipRates'));
     }
 

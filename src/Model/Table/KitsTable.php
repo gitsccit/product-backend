@@ -210,7 +210,7 @@ class KitsTable extends Table
         return $rules;
     }
 
-    public function findTags(Query $query, array $options)
+    public function findTags(Query $query, mixed ...$options)
     {
         return $query
             ->select([
@@ -232,7 +232,7 @@ class KitsTable extends Table
             ]);
     }
 
-    public function findFilter(Query $query, array $options)
+    public function findFilter(Query $query, mixed ...$options)
     {
         $kits = $options['kits'];
 
@@ -272,7 +272,7 @@ class KitsTable extends Table
     public function validateBucketItems(int $kitID, array $configuration)
     {
         $errors = [];
-        $buckets = $this->Buckets->find('configuration', ['kitID' => $kitID]);
+        $buckets = $this->Buckets->find('configuration', kitID: $kitID);
 
         foreach ($buckets as $bucket) {
             $selectedBucketItemIDs = Hash::extract($configuration[$bucket['id']] ?? [], '{n).item_id');
@@ -409,7 +409,7 @@ class KitsTable extends Table
         $selectedProductIDs = array_keys($selectedProductQuantities);
 
         $productIDsInKit = $this->KitItems->GroupItems
-            ->find('activeInKit', ['kitID' => $kitID])
+            ->find('activeInKit', kitID: $kitID)
             ->innerJoinWith('Groups.Buckets.Kits')
             ->where(['Kits.id' => $kitID])
             ->all()

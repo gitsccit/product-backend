@@ -57,7 +57,7 @@ class SpecificationUnitsController extends AppController
             }
             $this->Flash->error(__('The specification unit could not be saved. Please, try again.'));
         }
-        $specificationUnitGroups = $this->SpecificationUnits->SpecificationUnitGroups->find('list', ['limit' => 200]);
+        $specificationUnitGroups = $this->SpecificationUnits->SpecificationUnitGroups->find(limit: 200)->all()->toList();
         $this->set(compact('specificationUnit', 'specificationUnitGroups'));
     }
 
@@ -80,7 +80,7 @@ class SpecificationUnitsController extends AppController
             }
             $this->Flash->error(__('The specification unit could not be saved. Please, try again.'));
         }
-        $specificationUnitGroups = $this->SpecificationUnits->SpecificationUnitGroups->find('list', ['limit' => 200]);
+        $specificationUnitGroups = $this->SpecificationUnits->SpecificationUnitGroups->find(limit: 200)->all()->toList();
         $this->set(compact('specificationUnit', 'specificationUnitGroups'));
     }
 

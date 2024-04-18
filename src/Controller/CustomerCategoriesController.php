@@ -57,8 +57,8 @@ class CustomerCategoriesController extends AppController
             }
             $this->Flash->error(__('The customer category could not be saved. Please, try again.'));
         }
-        $parentCustomerCategories = $this->CustomerCategories->ParentCustomerCategories->find('list', ['limit' => 200]);
-        $customers = $this->CustomerCategories->Customers->find('list', ['limit' => 200]);
+        $parentCustomerCategories = $this->CustomerCategories->ParentCustomerCategories->find(limit: 200)->all()->toList();
+        $customers = $this->CustomerCategories->Customers->find(limit: 200)->all()->toList();
         $this->set(compact('customerCategory', 'parentCustomerCategories', 'customers'));
     }
 
@@ -81,8 +81,8 @@ class CustomerCategoriesController extends AppController
             }
             $this->Flash->error(__('The customer category could not be saved. Please, try again.'));
         }
-        $parentCustomerCategories = $this->CustomerCategories->ParentCustomerCategories->find('list', ['limit' => 200]);
-        $customers = $this->CustomerCategories->Customers->find('list', ['limit' => 200]);
+        $parentCustomerCategories = $this->CustomerCategories->ParentCustomerCategories->find(limit: 200)->all()->toList();
+        $customers = $this->CustomerCategories->Customers->find(limit: 200)->all()->toList();
         $this->set(compact('customerCategory', 'parentCustomerCategories', 'customers'));
     }
 

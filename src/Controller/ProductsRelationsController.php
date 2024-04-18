@@ -57,7 +57,7 @@ class ProductsRelationsController extends AppController
             }
             $this->Flash->error(__('The products relation could not be saved. Please, try again.'));
         }
-        $products = $this->ProductsRelations->Products->find('list', ['limit' => 200]);
+        $products = $this->ProductsRelations->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productsRelation', 'products'));
     }
 
@@ -80,7 +80,7 @@ class ProductsRelationsController extends AppController
             }
             $this->Flash->error(__('The products relation could not be saved. Please, try again.'));
         }
-        $products = $this->ProductsRelations->Products->find('list', ['limit' => 200]);
+        $products = $this->ProductsRelations->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productsRelation', 'products'));
     }
 

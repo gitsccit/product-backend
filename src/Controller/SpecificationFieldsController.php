@@ -57,8 +57,8 @@ class SpecificationFieldsController extends AppController
             }
             $this->Flash->error(__('The specification field could not be saved. Please, try again.'));
         }
-        $specificationGroups = $this->SpecificationFields->SpecificationGroups->find('list', ['limit' => 200]);
-        $specificationUnitGroups = $this->SpecificationFields->SpecificationUnitGroups->find('list', ['limit' => 200]);
+        $specificationGroups = $this->SpecificationFields->SpecificationGroups->find(limit: 200)->all()->toList();
+        $specificationUnitGroups = $this->SpecificationFields->SpecificationUnitGroups->find(limit: 200)->all()->toList();
         $this->set(compact('specificationField', 'specificationGroups', 'specificationUnitGroups'));
     }
 
@@ -81,8 +81,8 @@ class SpecificationFieldsController extends AppController
             }
             $this->Flash->error(__('The specification field could not be saved. Please, try again.'));
         }
-        $specificationGroups = $this->SpecificationFields->SpecificationGroups->find('list', ['limit' => 200]);
-        $specificationUnitGroups = $this->SpecificationFields->SpecificationUnitGroups->find('list', ['limit' => 200]);
+        $specificationGroups = $this->SpecificationFields->SpecificationGroups->find(limit: 200)->all()->toList();
+        $specificationUnitGroups = $this->SpecificationFields->SpecificationUnitGroups->find(limit: 200)->all()->toList();
         $this->set(compact('specificationField', 'specificationGroups', 'specificationUnitGroups'));
     }
 

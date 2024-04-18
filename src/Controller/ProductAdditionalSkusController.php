@@ -57,7 +57,7 @@ class ProductAdditionalSkusController extends AppController
             }
             $this->Flash->error(__('The product additional skus could not be saved. Please, try again.'));
         }
-        $products = $this->ProductAdditionalSkus->Products->find('list', ['limit' => 200]);
+        $products = $this->ProductAdditionalSkus->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productAdditionalSkus', 'products'));
     }
 
@@ -80,7 +80,7 @@ class ProductAdditionalSkusController extends AppController
             }
             $this->Flash->error(__('The product additional skus could not be saved. Please, try again.'));
         }
-        $products = $this->ProductAdditionalSkus->Products->find('list', ['limit' => 200]);
+        $products = $this->ProductAdditionalSkus->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productAdditionalSkus', 'products'));
     }
 

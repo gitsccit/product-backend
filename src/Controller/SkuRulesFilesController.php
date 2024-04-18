@@ -57,8 +57,8 @@ class SkuRulesFilesController extends AppController
             }
             $this->Flash->error(__('The sku rules file could not be saved. Please, try again.'));
         }
-        $skuRules = $this->SkuRulesFiles->SkuRules->find('list', ['limit' => 200]);
-        $files = $this->SkuRulesFiles->Files->find('list', ['limit' => 200]);
+        $skuRules = $this->SkuRulesFiles->SkuRules->find(limit: 200)->all()->toList();
+        $files = $this->SkuRulesFiles->Files->find(limit: 200)->all()->toList();
         $this->set(compact('skuRulesFile', 'skuRules', 'files'));
     }
 
@@ -81,8 +81,8 @@ class SkuRulesFilesController extends AppController
             }
             $this->Flash->error(__('The sku rules file could not be saved. Please, try again.'));
         }
-        $skuRules = $this->SkuRulesFiles->SkuRules->find('list', ['limit' => 200]);
-        $files = $this->SkuRulesFiles->Files->find('list', ['limit' => 200]);
+        $skuRules = $this->SkuRulesFiles->SkuRules->find(limit: 200)->all()->toList();
+        $files = $this->SkuRulesFiles->Files->find(limit: 200)->all()->toList();
         $this->set(compact('skuRulesFile', 'skuRules', 'files'));
     }
 

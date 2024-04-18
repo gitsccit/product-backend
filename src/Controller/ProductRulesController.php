@@ -54,7 +54,7 @@ class ProductRulesController extends AppController
             }
             $this->Flash->error(__('The product rule could not be saved. Please, try again.'));
         }
-        $products = $this->ProductRules->Products->find('list', ['limit' => 200]);
+        $products = $this->ProductRules->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productRule', 'products'));
     }
 
@@ -77,7 +77,7 @@ class ProductRulesController extends AppController
             }
             $this->Flash->error(__('The product rule could not be saved. Please, try again.'));
         }
-        $products = $this->ProductRules->Products->find('list', ['limit' => 200]);
+        $products = $this->ProductRules->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productRule', 'products'));
     }
 

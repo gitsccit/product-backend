@@ -117,7 +117,7 @@ class SpecificationsTable extends Table
         return $rules;
     }
 
-    public function findSpecifications(Query $query, array $options)
+    public function findSpecifications(Query $query, mixed ...$options)
     {
         $query
             ->select([
@@ -146,7 +146,7 @@ class SpecificationsTable extends Table
         return $query;
     }
 
-    public function findOverview(Query $query, array $options)
+    public function findOverview(Query $query, mixed ...$options)
     {
         return $query
             ->select([

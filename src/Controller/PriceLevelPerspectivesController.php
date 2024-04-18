@@ -57,8 +57,8 @@ class PriceLevelPerspectivesController extends AppController
             }
             $this->Flash->error(__('The price level perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->PriceLevelPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $priceLevels = $this->PriceLevelPerspectives->PriceLevels->find('list', ['limit' => 200]);
+        $perspectives = $this->PriceLevelPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $priceLevels = $this->PriceLevelPerspectives->PriceLevels->find(limit: 200)->all()->toList();
         $this->set(compact('priceLevelPerspective', 'perspectives', 'priceLevels'));
     }
 
@@ -81,8 +81,8 @@ class PriceLevelPerspectivesController extends AppController
             }
             $this->Flash->error(__('The price level perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->PriceLevelPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $priceLevels = $this->PriceLevelPerspectives->PriceLevels->find('list', ['limit' => 200]);
+        $perspectives = $this->PriceLevelPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $priceLevels = $this->PriceLevelPerspectives->PriceLevels->find(limit: 200)->all()->toList();
         $this->set(compact('priceLevelPerspective', 'perspectives', 'priceLevels'));
     }
 

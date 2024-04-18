@@ -339,7 +339,7 @@ class ProductsTable extends Table
         return $rules;
     }
 
-    public function findBasic(Query $query, array $options)
+    public function findBasic(Query $query, mixed ...$options)
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
@@ -385,30 +385,30 @@ class ProductsTable extends Table
             ]);
     }
 
-    public function findActive(Query $query, array $options)
+    public function findActive(Query $query, mixed ...$options)
     {
         return $query
-            ->find('basic', $options)
+            ->find('basic', ...$options)
             ->where([
                 'IFNULL(ProductPerspectives.active, Products.active) =' => 'yes',
             ]);
     }
 
-    public function findCompare(Query $query, array $options)
+    public function findCompare(Query $query, mixed ...$options)
     {
         return $query
-            ->find('basic', $options)
-            ->find('image', $options)
-            ->find('specificationGroups', $options)
+            ->find('basic', ...$options)
+            ->find('image', ...$options)
+            ->find('specificationGroups', ...$options)
             ->select($this->Manufacturers)
             ->contain(['Manufacturers']);
     }
 
-    public function findListing(Query $query, array $options)
+    public function findListing(Query $query, mixed ...$options)
     {
         return $query
-            ->find('active', $options)
-            ->find('image', $options)
+            ->find('active', ...$options)
+            ->find('image', ...$options)
             ->select([
                 'Products.description',
                 'show_related_systems' => "IFNULL(Products.show_related_systems, ProductCategories.show_related_systems) = 'yes'",
@@ -421,12 +421,12 @@ class ProductsTable extends Table
             ->innerJoinWith('ProductCategories');
     }
 
-    public function findDetails(Query $query, array $options)
+    public function findDetails(Query $query, mixed ...$options)
     {
         return $query
-            ->find('listing', $options)
-            ->find('relatedSystems', $options)
-            ->find('specificationGroups', $options)
+            ->find('listing', ...$options)
+            ->find('relatedSystems', ...$options)
+            ->find('specificationGroups', ...$options)
             ->select(['Products.gallery_id'])
             ->select($this->Galleries)
             ->contain([
@@ -450,7 +450,7 @@ class ProductsTable extends Table
             });
     }
 
-    public function findImage(Query $query, array $options)
+    public function findImage(Query $query, mixed ...$options)
     {
         return $query
             ->select([
@@ -475,7 +475,7 @@ class ProductsTable extends Table
             });
     }
 
-    public function findSpecifications(Query $query, array $options)
+    public function findSpecifications(Query $query, mixed ...$options)
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
@@ -526,7 +526,7 @@ class ProductsTable extends Table
             });
     }
 
-    public function findSpecificationGroups(Query $query, array $options)
+    public function findSpecificationGroups(Query $query, mixed ...$options)
     {
         return $query
             ->contain([
@@ -556,7 +556,7 @@ class ProductsTable extends Table
             });
     }
 
-    public function findRelatedSystems(Query $query, array $options)
+    public function findRelatedSystems(Query $query, mixed ...$options)
     {
         return $query
             ->contain('GroupItems.Groups.Buckets.KitBuckets.Kits.Systems', function (Query $q) {

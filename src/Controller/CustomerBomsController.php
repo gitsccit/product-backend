@@ -57,10 +57,10 @@ class CustomerBomsController extends AppController
             }
             $this->Flash->error(__('The customer bom could not be saved. Please, try again.'));
         }
-        $customers = $this->CustomerBoms->Customers->find('list', ['limit' => 200]);
-        $customerCategories = $this->CustomerBoms->CustomerCategories->find('list', ['limit' => 200]);
-        $locations = $this->CustomerBoms->Locations->find('list', ['limit' => 200]);
-        $images = $this->CustomerBoms->Images->find('list', ['limit' => 200]);
+        $customers = $this->CustomerBoms->Customers->find(limit: 200)->all()->toList();
+        $customerCategories = $this->CustomerBoms->CustomerCategories->find(limit: 200)->all()->toList();
+        $locations = $this->CustomerBoms->Locations->find(limit: 200)->all()->toList();
+        $images = $this->CustomerBoms->Images->find(limit: 200)->all()->toList();
         $this->set(compact('customerBom', 'customers', 'customerCategories', 'locations', 'images'));
     }
 
@@ -83,10 +83,10 @@ class CustomerBomsController extends AppController
             }
             $this->Flash->error(__('The customer bom could not be saved. Please, try again.'));
         }
-        $customers = $this->CustomerBoms->Customers->find('list', ['limit' => 200]);
-        $customerCategories = $this->CustomerBoms->CustomerCategories->find('list', ['limit' => 200]);
-        $locations = $this->CustomerBoms->Locations->find('list', ['limit' => 200]);
-        $images = $this->CustomerBoms->Images->find('list', ['limit' => 200]);
+        $customers = $this->CustomerBoms->Customers->find(limit: 200)->all()->toList();
+        $customerCategories = $this->CustomerBoms->CustomerCategories->find(limit: 200)->all()->toList();
+        $locations = $this->CustomerBoms->Locations->find(limit: 200)->all()->toList();
+        $images = $this->CustomerBoms->Images->find(limit: 200)->all()->toList();
         $this->set(compact('customerBom', 'customers', 'customerCategories', 'locations', 'images'));
     }
 

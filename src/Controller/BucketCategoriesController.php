@@ -57,7 +57,7 @@ class BucketCategoriesController extends AppController
             }
             $this->Flash->error(__('The bucket category could not be saved. Please, try again.'));
         }
-        $parentBucketCategories = $this->BucketCategories->ParentBucketCategories->find('list', ['limit' => 200]);
+        $parentBucketCategories = $this->BucketCategories->ParentBucketCategories->find(limit: 200)->all()->toList();
         $this->set(compact('bucketCategory', 'parentBucketCategories'));
     }
 
@@ -80,7 +80,7 @@ class BucketCategoriesController extends AppController
             }
             $this->Flash->error(__('The bucket category could not be saved. Please, try again.'));
         }
-        $parentBucketCategories = $this->BucketCategories->ParentBucketCategories->find('list', ['limit' => 200]);
+        $parentBucketCategories = $this->BucketCategories->ParentBucketCategories->find(limit: 200)->all()->toList();
         $this->set(compact('bucketCategory', 'parentBucketCategories'));
     }
 

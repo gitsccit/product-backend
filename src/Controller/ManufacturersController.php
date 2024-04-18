@@ -57,8 +57,8 @@ class ManufacturersController extends AppController
             }
             $this->Flash->error(__('The manufacturer could not be saved. Please, try again.'));
         }
-        $locations = $this->Manufacturers->Locations->find('list', ['limit' => 200]);
-        $images = $this->Manufacturers->Images->find('list', ['limit' => 200]);
+        $locations = $this->Manufacturers->Locations->find(limit: 200)->all()->toList();
+        $images = $this->Manufacturers->Images->find(limit: 200)->all()->toList();
         $this->set(compact('manufacturer', 'locations', 'images'));
     }
 
@@ -81,8 +81,8 @@ class ManufacturersController extends AppController
             }
             $this->Flash->error(__('The manufacturer could not be saved. Please, try again.'));
         }
-        $locations = $this->Manufacturers->Locations->find('list', ['limit' => 200]);
-        $images = $this->Manufacturers->Images->find('list', ['limit' => 200]);
+        $locations = $this->Manufacturers->Locations->find(limit: 200)->all()->toList();
+        $images = $this->Manufacturers->Images->find(limit: 200)->all()->toList();
         $this->set(compact('manufacturer', 'locations', 'images'));
     }
 

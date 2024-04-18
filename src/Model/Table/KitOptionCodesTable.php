@@ -104,7 +104,7 @@ class KitOptionCodesTable extends Table
         return 'product_backend';
     }
 
-    public function findPartNumber(Query $query, array $options = []): Query
+    public function findPartNumber(Query $query, mixed ...$options): Query
     {
         return $query
             ->contain('KitOptionCodeItems', function (Query $q) use ($options) {

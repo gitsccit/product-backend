@@ -57,9 +57,9 @@ class GroupItemsController extends AppController
             }
             $this->Flash->error(__('The group item could not be saved. Please, try again.'));
         }
-        $groups = $this->GroupItems->Groups->find('list', ['limit' => 200]);
-        $products = $this->GroupItems->Products->find('list', ['limit' => 200]);
-        $systems = $this->GroupItems->Systems->find('list', ['limit' => 200]);
+        $groups = $this->GroupItems->Groups->find(limit: 200)->all()->toList();
+        $products = $this->GroupItems->Products->find(limit: 200)->all()->toList();
+        $systems = $this->GroupItems->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('groupItem', 'groups', 'products', 'systems'));
     }
 
@@ -82,9 +82,9 @@ class GroupItemsController extends AppController
             }
             $this->Flash->error(__('The group item could not be saved. Please, try again.'));
         }
-        $groups = $this->GroupItems->Groups->find('list', ['limit' => 200]);
-        $products = $this->GroupItems->Products->find('list', ['limit' => 200]);
-        $systems = $this->GroupItems->Systems->find('list', ['limit' => 200]);
+        $groups = $this->GroupItems->Groups->find(limit: 200)->all()->toList();
+        $products = $this->GroupItems->Products->find(limit: 200)->all()->toList();
+        $systems = $this->GroupItems->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('groupItem', 'groups', 'products', 'systems'));
     }
 

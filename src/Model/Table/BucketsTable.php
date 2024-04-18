@@ -156,7 +156,7 @@ class BucketsTable extends Table
         return $rules;
     }
 
-    public function findConfiguration(Query $query, array $options)
+    public function findConfiguration(Query $query, mixed ...$options)
     {
         $kitID = $options['kitID'];
 
@@ -179,7 +179,7 @@ class BucketsTable extends Table
             ->contain('Groups', function (Query $q) use ($options, $kitID) {
                 return $q
                     ->contain('GroupItems', function (Query $q) use ($options, $kitID) {
-                        return $q->find('configuration', $options)->find('activeInKit', kitID: $kitID);
+                        return $q->find('configuration', ...$options)->find('activeInKit', kitID: $kitID);
                     })
                     ->orderBy([
                         'Groups.sort',
@@ -215,7 +215,7 @@ class BucketsTable extends Table
             });
     }
 
-    public function findFilters(Query $query, array $options)
+    public function findFilters(Query $query, mixed ...$options)
     {
         return $query
             ->formatResults(function (CollectionInterface $result) {

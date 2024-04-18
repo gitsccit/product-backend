@@ -57,8 +57,8 @@ class GroupsController extends AppController
             }
             $this->Flash->error(__('The group could not be saved. Please, try again.'));
         }
-        $bucketCategories = $this->Groups->BucketCategories->find('list', ['limit' => 200]);
-        $buckets = $this->Groups->Buckets->find('list', ['limit' => 200]);
+        $bucketCategories = $this->Groups->BucketCategories->find(limit: 200)->all()->toList();
+        $buckets = $this->Groups->Buckets->find(limit: 200)->all()->toList();
         $this->set(compact('group', 'bucketCategories', 'buckets'));
     }
 
@@ -81,8 +81,8 @@ class GroupsController extends AppController
             }
             $this->Flash->error(__('The group could not be saved. Please, try again.'));
         }
-        $bucketCategories = $this->Groups->BucketCategories->find('list', ['limit' => 200]);
-        $buckets = $this->Groups->Buckets->find('list', ['limit' => 200]);
+        $bucketCategories = $this->Groups->BucketCategories->find(limit: 200)->all()->toList();
+        $buckets = $this->Groups->Buckets->find(limit: 200)->all()->toList();
         $this->set(compact('group', 'bucketCategories', 'buckets'));
     }
 

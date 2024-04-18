@@ -57,7 +57,7 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $perspectives = $this->Customers->Perspectives->find('list', ['limit' => 200]);
+        $perspectives = $this->Customers->Perspectives->find(limit: 200)->all()->toList();
         $this->set(compact('customer', 'perspectives'));
     }
 
@@ -80,7 +80,7 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-        $perspectives = $this->Customers->Perspectives->find('list', ['limit' => 200]);
+        $perspectives = $this->Customers->Perspectives->find(limit: 200)->all()->toList();
         $this->set(compact('customer', 'perspectives'));
     }
 

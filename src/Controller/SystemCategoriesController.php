@@ -125,9 +125,9 @@ class SystemCategoriesController extends AppController
             return $this->index();
         }
 
-        $tagGroups = $this->SystemCategories->Systems->Kits->find('filter', [
-            'kits' => $systems->all()->extract('kit_id')->toList(),
-        ]);
+        $tagGroups = $this->SystemCategories->Systems->Kits->find('filter',
+            kits: $systems->all()->extract('kit_id')->toList(),
+        );
 
         $systems = $this->paginate($systems);
         $tagGroups = $tagGroups->all()->toList();

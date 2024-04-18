@@ -92,9 +92,9 @@ class ProductCategoriesController extends AppController
             return $this->index();
         }
 
-        $specifications = $this->ProductCategories->Products->find('specifications', [
-            'productCategoryID' => $productCategory->id,
-        ]);
+        $specifications = $this->ProductCategories->Products->find('specifications',
+            productCategoryID: $productCategory->id,
+        );
 
         if ($filter = json_decode(base64_decode($this->request->getQuery('filter', '')), true)) {
             $specs = array_replace(...array_values($filter));
@@ -178,7 +178,7 @@ class ProductCategoriesController extends AppController
             }
             $this->Flash->error(__('The product category could not be saved. Please, try again.'));
         }
-        $parentProductCategories = $this->ProductCategories->ParentProductCategories->find('list', ['limit' => 200]);
+        $parentProductCategories = $this->ProductCategories->ParentProductCategories->find(limit: 200)->all()->toList();
         $this->set(compact('productCategory', 'parentProductCategories'));
     }
 
@@ -201,7 +201,7 @@ class ProductCategoriesController extends AppController
             }
             $this->Flash->error(__('The product category could not be saved. Please, try again.'));
         }
-        $parentProductCategories = $this->ProductCategories->ParentProductCategories->find('list', ['limit' => 200]);
+        $parentProductCategories = $this->ProductCategories->ParentProductCategories->find(limit: 200)->all()->toList();
         $this->set(compact('productCategory', 'parentProductCategories'));
     }
 

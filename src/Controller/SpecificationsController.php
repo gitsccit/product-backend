@@ -57,9 +57,9 @@ class SpecificationsController extends AppController
             }
             $this->Flash->error(__('The specification could not be saved. Please, try again.'));
         }
-        $products = $this->Specifications->Products->find('list', ['limit' => 200]);
-        $specificationFields = $this->Specifications->SpecificationFields->find('list', ['limit' => 200]);
-        $specificationUnits = $this->Specifications->SpecificationUnits->find('list', ['limit' => 200]);
+        $products = $this->Specifications->Products->find(limit: 200)->all()->toList();
+        $specificationFields = $this->Specifications->SpecificationFields->find(limit: 200)->all()->toList();
+        $specificationUnits = $this->Specifications->SpecificationUnits->find(limit: 200)->all()->toList();
         $this->set(compact('specification', 'products', 'specificationFields', 'specificationUnits'));
     }
 
@@ -82,9 +82,9 @@ class SpecificationsController extends AppController
             }
             $this->Flash->error(__('The specification could not be saved. Please, try again.'));
         }
-        $products = $this->Specifications->Products->find('list', ['limit' => 200]);
-        $specificationFields = $this->Specifications->SpecificationFields->find('list', ['limit' => 200]);
-        $specificationUnits = $this->Specifications->SpecificationUnits->find('list', ['limit' => 200]);
+        $products = $this->Specifications->Products->find(limit: 200)->all()->toList();
+        $specificationFields = $this->Specifications->SpecificationFields->find(limit: 200)->all()->toList();
+        $specificationUnits = $this->Specifications->SpecificationUnits->find(limit: 200)->all()->toList();
         $this->set(compact('specification', 'products', 'specificationFields', 'specificationUnits'));
     }
 

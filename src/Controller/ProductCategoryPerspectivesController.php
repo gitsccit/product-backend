@@ -57,8 +57,8 @@ class ProductCategoryPerspectivesController extends AppController
             }
             $this->Flash->error(__('The product category perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->ProductCategoryPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $productCategories = $this->ProductCategoryPerspectives->ProductCategories->find('list', ['limit' => 200]);
+        $perspectives = $this->ProductCategoryPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $productCategories = $this->ProductCategoryPerspectives->ProductCategories->find(limit: 200)->all()->toList();
         $this->set(compact('productCategoryPerspective', 'perspectives', 'productCategories'));
     }
 
@@ -81,8 +81,8 @@ class ProductCategoryPerspectivesController extends AppController
             }
             $this->Flash->error(__('The product category perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->ProductCategoryPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $productCategories = $this->ProductCategoryPerspectives->ProductCategories->find('list', ['limit' => 200]);
+        $perspectives = $this->ProductCategoryPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $productCategories = $this->ProductCategoryPerspectives->ProductCategories->find(limit: 200)->all()->toList();
         $this->set(compact('productCategoryPerspective', 'perspectives', 'productCategories'));
     }
 

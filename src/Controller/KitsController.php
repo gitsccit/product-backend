@@ -57,10 +57,10 @@ class KitsController extends AppController
             }
             $this->Flash->error(__('The kit could not be saved. Please, try again.'));
         }
-        $locations = $this->Kits->Locations->find('list', ['limit' => 200]);
-        $shipBoxes = $this->Kits->ShipBoxes->find('list', ['limit' => 200]);
-        $icons = $this->Kits->Icons->find('list', ['limit' => 200]);
-        $tags = $this->Kits->Tags->find('list', ['limit' => 200]);
+        $locations = $this->Kits->Locations->find(limit: 200)->all()->toList();
+        $shipBoxes = $this->Kits->ShipBoxes->find(limit: 200)->all()->toList();
+        $icons = $this->Kits->Icons->find(limit: 200)->all()->toList();
+        $tags = $this->Kits->Tags->find(limit: 200)->all()->toList();
         $this->set(compact('kit', 'locations', 'shipBoxes', 'icons', 'tags'));
     }
 
@@ -83,10 +83,10 @@ class KitsController extends AppController
             }
             $this->Flash->error(__('The kit could not be saved. Please, try again.'));
         }
-        $locations = $this->Kits->Locations->find('list', ['limit' => 200]);
-        $shipBoxes = $this->Kits->ShipBoxes->find('list', ['limit' => 200]);
-        $icons = $this->Kits->Icons->find('list', ['limit' => 200]);
-        $tags = $this->Kits->Tags->find('list', ['limit' => 200]);
+        $locations = $this->Kits->Locations->find(limit: 200)->all()->toList();
+        $shipBoxes = $this->Kits->ShipBoxes->find(limit: 200)->all()->toList();
+        $icons = $this->Kits->Icons->find(limit: 200)->all()->toList();
+        $tags = $this->Kits->Tags->find(limit: 200)->all()->toList();
         $this->set(compact('kit', 'locations', 'shipBoxes', 'icons', 'tags'));
     }
 

@@ -57,9 +57,9 @@ class TagsController extends AppController
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
-        $tagCategories = $this->Tags->TagCategories->find('list', ['limit' => 200]);
-        $images = $this->Tags->Images->find('list', ['limit' => 200]);
-        $kits = $this->Tags->Kits->find('list', ['limit' => 200]);
+        $tagCategories = $this->Tags->TagCategories->find(limit: 200)->all()->toList();
+        $images = $this->Tags->Images->find(limit: 200)->all()->toList();
+        $kits = $this->Tags->Kits->find(limit: 200)->all()->toList();
         $this->set(compact('tag', 'tagCategories', 'images', 'kits'));
     }
 
@@ -82,9 +82,9 @@ class TagsController extends AppController
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
-        $tagCategories = $this->Tags->TagCategories->find('list', ['limit' => 200]);
-        $images = $this->Tags->Images->find('list', ['limit' => 200]);
-        $kits = $this->Tags->Kits->find('list', ['limit' => 200]);
+        $tagCategories = $this->Tags->TagCategories->find(limit: 200)->all()->toList();
+        $images = $this->Tags->Images->find(limit: 200)->all()->toList();
+        $kits = $this->Tags->Kits->find(limit: 200)->all()->toList();
         $this->set(compact('tag', 'tagCategories', 'images', 'kits'));
     }
 

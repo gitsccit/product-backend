@@ -57,9 +57,9 @@ class CustomerProductsController extends AppController
             }
             $this->Flash->error(__('The customer product could not be saved. Please, try again.'));
         }
-        $customers = $this->CustomerProducts->Customers->find('list', ['limit' => 200]);
-        $customerCategories = $this->CustomerProducts->CustomerCategories->find('list', ['limit' => 200]);
-        $products = $this->CustomerProducts->Products->find('list', ['limit' => 200]);
+        $customers = $this->CustomerProducts->Customers->find(limit: 200)->all()->toList();
+        $customerCategories = $this->CustomerProducts->CustomerCategories->find(limit: 200)->all()->toList();
+        $products = $this->CustomerProducts->Products->find(limit: 200)->all()->toList();
         $this->set(compact('customerProduct', 'customers', 'customerCategories', 'products'));
     }
 
@@ -82,9 +82,9 @@ class CustomerProductsController extends AppController
             }
             $this->Flash->error(__('The customer product could not be saved. Please, try again.'));
         }
-        $customers = $this->CustomerProducts->Customers->find('list', ['limit' => 200]);
-        $customerCategories = $this->CustomerProducts->CustomerCategories->find('list', ['limit' => 200]);
-        $products = $this->CustomerProducts->Products->find('list', ['limit' => 200]);
+        $customers = $this->CustomerProducts->Customers->find(limit: 200)->all()->toList();
+        $customerCategories = $this->CustomerProducts->CustomerCategories->find(limit: 200)->all()->toList();
+        $products = $this->CustomerProducts->Products->find(limit: 200)->all()->toList();
         $this->set(compact('customerProduct', 'customers', 'customerCategories', 'products'));
     }
 

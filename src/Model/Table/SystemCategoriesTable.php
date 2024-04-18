@@ -164,7 +164,7 @@ class SystemCategoriesTable extends Table
         return $rules;
     }
 
-    public function findListing(Query $query, $options)
+    public function findListing(Query $query, mixed ...$options)
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');

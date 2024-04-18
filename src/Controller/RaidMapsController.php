@@ -57,16 +57,16 @@ class RaidMapsController extends AppController
             }
             $this->Flash->error(__('The raid map could not be saved. Please, try again.'));
         }
-        $productCategories = $this->RaidMaps->ProductCategories->find('list', ['limit' => 200]);
-        $interfaceSpecs = $this->RaidMaps->InterfaceSpecs->find('list', ['limit' => 200]);
-        $interface2Specs = $this->RaidMaps->Interface2Specs->find('list', ['limit' => 200]);
-        $nameSpecs = $this->RaidMaps->NameSpecs->find('list', ['limit' => 200]);
-        $raidSpecs = $this->RaidMaps->RaidSpecs->find('list', ['limit' => 200]);
-        $portsSpecs = $this->RaidMaps->PortsSpecs->find('list', ['limit' => 200]);
-        $devicesSpecs = $this->RaidMaps->DevicesSpecs->find('list', ['limit' => 200]);
-        $pergroupSpecs = $this->RaidMaps->PergroupSpecs->find('list', ['limit' => 200]);
-        $capacitySpecs = $this->RaidMaps->CapacitySpecs->find('list', ['limit' => 200]);
-        $backplaneSpecs = $this->RaidMaps->BackplaneSpecs->find('list', ['limit' => 200]);
+        $productCategories = $this->RaidMaps->ProductCategories->find(limit: 200)->all()->toList();
+        $interfaceSpecs = $this->RaidMaps->InterfaceSpecs->find(limit: 200)->all()->toList();
+        $interface2Specs = $this->RaidMaps->Interface2Specs->find(limit: 200)->all()->toList();
+        $nameSpecs = $this->RaidMaps->NameSpecs->find(limit: 200)->all()->toList();
+        $raidSpecs = $this->RaidMaps->RaidSpecs->find(limit: 200)->all()->toList();
+        $portsSpecs = $this->RaidMaps->PortsSpecs->find(limit: 200)->all()->toList();
+        $devicesSpecs = $this->RaidMaps->DevicesSpecs->find(limit: 200)->all()->toList();
+        $pergroupSpecs = $this->RaidMaps->PergroupSpecs->find(limit: 200)->all()->toList();
+        $capacitySpecs = $this->RaidMaps->CapacitySpecs->find(limit: 200)->all()->toList();
+        $backplaneSpecs = $this->RaidMaps->BackplaneSpecs->find(limit: 200)->all()->toList();
         $this->set(compact('raidMap', 'productCategories', 'interfaceSpecs', 'interface2Specs', 'nameSpecs', 'raidSpecs', 'portsSpecs', 'devicesSpecs', 'pergroupSpecs', 'capacitySpecs', 'backplaneSpecs'));
     }
 
@@ -89,16 +89,16 @@ class RaidMapsController extends AppController
             }
             $this->Flash->error(__('The raid map could not be saved. Please, try again.'));
         }
-        $productCategories = $this->RaidMaps->ProductCategories->find('list', ['limit' => 200]);
-        $interfaceSpecs = $this->RaidMaps->InterfaceSpecs->find('list', ['limit' => 200]);
-        $interface2Specs = $this->RaidMaps->Interface2Specs->find('list', ['limit' => 200]);
-        $nameSpecs = $this->RaidMaps->NameSpecs->find('list', ['limit' => 200]);
-        $raidSpecs = $this->RaidMaps->RaidSpecs->find('list', ['limit' => 200]);
-        $portsSpecs = $this->RaidMaps->PortsSpecs->find('list', ['limit' => 200]);
-        $devicesSpecs = $this->RaidMaps->DevicesSpecs->find('list', ['limit' => 200]);
-        $pergroupSpecs = $this->RaidMaps->PergroupSpecs->find('list', ['limit' => 200]);
-        $capacitySpecs = $this->RaidMaps->CapacitySpecs->find('list', ['limit' => 200]);
-        $backplaneSpecs = $this->RaidMaps->BackplaneSpecs->find('list', ['limit' => 200]);
+        $productCategories = $this->RaidMaps->ProductCategories->find(limit: 200)->all()->toList();
+        $interfaceSpecs = $this->RaidMaps->InterfaceSpecs->find(limit: 200)->all()->toList();
+        $interface2Specs = $this->RaidMaps->Interface2Specs->find(limit: 200)->all()->toList();
+        $nameSpecs = $this->RaidMaps->NameSpecs->find(limit: 200)->all()->toList();
+        $raidSpecs = $this->RaidMaps->RaidSpecs->find(limit: 200)->all()->toList();
+        $portsSpecs = $this->RaidMaps->PortsSpecs->find(limit: 200)->all()->toList();
+        $devicesSpecs = $this->RaidMaps->DevicesSpecs->find(limit: 200)->all()->toList();
+        $pergroupSpecs = $this->RaidMaps->PergroupSpecs->find(limit: 200)->all()->toList();
+        $capacitySpecs = $this->RaidMaps->CapacitySpecs->find(limit: 200)->all()->toList();
+        $backplaneSpecs = $this->RaidMaps->BackplaneSpecs->find(limit: 200)->all()->toList();
         $this->set(compact('raidMap', 'productCategories', 'interfaceSpecs', 'interface2Specs', 'nameSpecs', 'raidSpecs', 'portsSpecs', 'devicesSpecs', 'pergroupSpecs', 'capacitySpecs', 'backplaneSpecs'));
     }
 

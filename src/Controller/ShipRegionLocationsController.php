@@ -57,7 +57,7 @@ class ShipRegionLocationsController extends AppController
             }
             $this->Flash->error(__('The ship region location could not be saved. Please, try again.'));
         }
-        $shipRegions = $this->ShipRegionLocations->ShipRegions->find('list', ['limit' => 200]);
+        $shipRegions = $this->ShipRegionLocations->ShipRegions->find(limit: 200)->all()->toList();
         $this->set(compact('shipRegionLocation', 'shipRegions'));
     }
 
@@ -80,7 +80,7 @@ class ShipRegionLocationsController extends AppController
             }
             $this->Flash->error(__('The ship region location could not be saved. Please, try again.'));
         }
-        $shipRegions = $this->ShipRegionLocations->ShipRegions->find('list', ['limit' => 200]);
+        $shipRegions = $this->ShipRegionLocations->ShipRegions->find(limit: 200)->all()->toList();
         $this->set(compact('shipRegionLocation', 'shipRegions'));
     }
 

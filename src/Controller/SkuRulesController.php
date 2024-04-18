@@ -57,7 +57,7 @@ class SkuRulesController extends AppController
             }
             $this->Flash->error(__('The sku rule could not be saved. Please, try again.'));
         }
-        $skuRuleCategories = $this->SkuRules->SkuRuleCategories->find('list', ['limit' => 200]);
+        $skuRuleCategories = $this->SkuRules->SkuRuleCategories->find(limit: 200)->all()->toList();
         $this->set(compact('skuRule', 'skuRuleCategories'));
     }
 
@@ -80,7 +80,7 @@ class SkuRulesController extends AppController
             }
             $this->Flash->error(__('The sku rule could not be saved. Please, try again.'));
         }
-        $skuRuleCategories = $this->SkuRules->SkuRuleCategories->find('list', ['limit' => 200]);
+        $skuRuleCategories = $this->SkuRules->SkuRuleCategories->find(limit: 200)->all()->toList();
         $this->set(compact('skuRule', 'skuRuleCategories'));
     }
 

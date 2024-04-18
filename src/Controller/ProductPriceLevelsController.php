@@ -57,8 +57,8 @@ class ProductPriceLevelsController extends AppController
             }
             $this->Flash->error(__('The product price level could not be saved. Please, try again.'));
         }
-        $priceLevels = $this->ProductPriceLevels->PriceLevels->find('list', ['limit' => 200]);
-        $products = $this->ProductPriceLevels->Products->find('list', ['limit' => 200]);
+        $priceLevels = $this->ProductPriceLevels->PriceLevels->find(limit: 200)->all()->toList();
+        $products = $this->ProductPriceLevels->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productPriceLevel', 'priceLevels', 'products'));
     }
 
@@ -81,8 +81,8 @@ class ProductPriceLevelsController extends AppController
             }
             $this->Flash->error(__('The product price level could not be saved. Please, try again.'));
         }
-        $priceLevels = $this->ProductPriceLevels->PriceLevels->find('list', ['limit' => 200]);
-        $products = $this->ProductPriceLevels->Products->find('list', ['limit' => 200]);
+        $priceLevels = $this->ProductPriceLevels->PriceLevels->find(limit: 200)->all()->toList();
+        $products = $this->ProductPriceLevels->Products->find(limit: 200)->all()->toList();
         $this->set(compact('productPriceLevel', 'priceLevels', 'products'));
     }
 

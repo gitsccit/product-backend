@@ -105,7 +105,7 @@ class SystemItemsTable extends Table
         return 'product_backend';
     }
 
-    public function findBasic(Query $query, array $options)
+    public function findBasic(Query $query, mixed ...$options)
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');

@@ -57,8 +57,8 @@ class KitItemsController extends AppController
             }
             $this->Flash->error(__('The kit item could not be saved. Please, try again.'));
         }
-        $kits = $this->KitItems->Kits->find('list', ['limit' => 200]);
-        $groupItems = $this->KitItems->GroupItems->find('list', ['limit' => 200]);
+        $kits = $this->KitItems->Kits->find(limit: 200)->all()->toList();
+        $groupItems = $this->KitItems->GroupItems->find(limit: 200)->all()->toList();
         $this->set(compact('kitItem', 'kits', 'groupItems'));
     }
 
@@ -81,8 +81,8 @@ class KitItemsController extends AppController
             }
             $this->Flash->error(__('The kit item could not be saved. Please, try again.'));
         }
-        $kits = $this->KitItems->Kits->find('list', ['limit' => 200]);
-        $groupItems = $this->KitItems->GroupItems->find('list', ['limit' => 200]);
+        $kits = $this->KitItems->Kits->find(limit: 200)->all()->toList();
+        $groupItems = $this->KitItems->GroupItems->find(limit: 200)->all()->toList();
         $this->set(compact('kitItem', 'kits', 'groupItems'));
     }
 

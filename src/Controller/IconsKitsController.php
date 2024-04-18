@@ -57,8 +57,8 @@ class IconsKitsController extends AppController
             }
             $this->Flash->error(__('The icons kit could not be saved. Please, try again.'));
         }
-        $icons = $this->IconsKits->Icons->find('list', ['limit' => 200]);
-        $kits = $this->IconsKits->Kits->find('list', ['limit' => 200]);
+        $icons = $this->IconsKits->Icons->find(limit: 200)->all()->toList();
+        $kits = $this->IconsKits->Kits->find(limit: 200)->all()->toList();
         $this->set(compact('iconsKit', 'icons', 'kits'));
     }
 
@@ -81,8 +81,8 @@ class IconsKitsController extends AppController
             }
             $this->Flash->error(__('The icons kit could not be saved. Please, try again.'));
         }
-        $icons = $this->IconsKits->Icons->find('list', ['limit' => 200]);
-        $kits = $this->IconsKits->Kits->find('list', ['limit' => 200]);
+        $icons = $this->IconsKits->Icons->find(limit: 200)->all()->toList();
+        $kits = $this->IconsKits->Kits->find(limit: 200)->all()->toList();
         $this->set(compact('iconsKit', 'icons', 'kits'));
     }
 

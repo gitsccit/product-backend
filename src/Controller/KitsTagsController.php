@@ -57,8 +57,8 @@ class KitsTagsController extends AppController
             }
             $this->Flash->error(__('The kits tag could not be saved. Please, try again.'));
         }
-        $kits = $this->KitsTags->Kits->find('list', ['limit' => 200]);
-        $tags = $this->KitsTags->Tags->find('list', ['limit' => 200]);
+        $kits = $this->KitsTags->Kits->find(limit: 200)->all()->toList();
+        $tags = $this->KitsTags->Tags->find(limit: 200)->all()->toList();
         $this->set(compact('kitsTag', 'kits', 'tags'));
     }
 
@@ -81,8 +81,8 @@ class KitsTagsController extends AppController
             }
             $this->Flash->error(__('The kits tag could not be saved. Please, try again.'));
         }
-        $kits = $this->KitsTags->Kits->find('list', ['limit' => 200]);
-        $tags = $this->KitsTags->Tags->find('list', ['limit' => 200]);
+        $kits = $this->KitsTags->Kits->find(limit: 200)->all()->toList();
+        $tags = $this->KitsTags->Tags->find(limit: 200)->all()->toList();
         $this->set(compact('kitsTag', 'kits', 'tags'));
     }
 

@@ -59,7 +59,7 @@ class CustomerPasswordsController extends AppController
             }
             $this->Flash->error(__('The customer password could not be saved. Please, try again.'));
         }
-        $customers = $this->CustomerPasswords->Customers->find('list', ['limit' => 200]);
+        $customers = $this->CustomerPasswords->Customers->find(limit: 200)->all()->toList();
         $this->set(compact('customerPassword', 'customers'));
     }
 
@@ -84,7 +84,7 @@ class CustomerPasswordsController extends AppController
             }
             $this->Flash->error(__('The customer password could not be saved. Please, try again.'));
         }
-        $customers = $this->CustomerPasswords->Customers->find('list', ['limit' => 200]);
+        $customers = $this->CustomerPasswords->Customers->find(limit: 200)->all()->toList();
         $this->set(compact('customerPassword', 'customers'));
     }
 

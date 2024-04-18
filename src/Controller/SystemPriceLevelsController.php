@@ -57,8 +57,8 @@ class SystemPriceLevelsController extends AppController
             }
             $this->Flash->error(__('The system price level could not be saved. Please, try again.'));
         }
-        $priceLevels = $this->SystemPriceLevels->PriceLevels->find('list', ['limit' => 200]);
-        $systems = $this->SystemPriceLevels->Systems->find('list', ['limit' => 200]);
+        $priceLevels = $this->SystemPriceLevels->PriceLevels->find(limit: 200)->all()->toList();
+        $systems = $this->SystemPriceLevels->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('systemPriceLevel', 'priceLevels', 'systems'));
     }
 
@@ -81,8 +81,8 @@ class SystemPriceLevelsController extends AppController
             }
             $this->Flash->error(__('The system price level could not be saved. Please, try again.'));
         }
-        $priceLevels = $this->SystemPriceLevels->PriceLevels->find('list', ['limit' => 200]);
-        $systems = $this->SystemPriceLevels->Systems->find('list', ['limit' => 200]);
+        $priceLevels = $this->SystemPriceLevels->PriceLevels->find(limit: 200)->all()->toList();
+        $systems = $this->SystemPriceLevels->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('systemPriceLevel', 'priceLevels', 'systems'));
     }
 

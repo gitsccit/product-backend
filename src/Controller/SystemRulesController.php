@@ -59,7 +59,7 @@ class SystemRulesController extends AppController
             }
             $this->Flash->error(__('The system rule could not be saved. Please, try again.'));
         }
-        $systems = $this->SystemRules->Systems->find('list', ['limit' => 200]);
+        $systems = $this->SystemRules->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('systemRule', 'systems'));
     }
 
@@ -84,7 +84,7 @@ class SystemRulesController extends AppController
             }
             $this->Flash->error(__('The system rule could not be saved. Please, try again.'));
         }
-        $systems = $this->SystemRules->Systems->find('list', ['limit' => 200]);
+        $systems = $this->SystemRules->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('systemRule', 'systems'));
     }
 

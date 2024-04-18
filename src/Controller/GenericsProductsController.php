@@ -57,8 +57,8 @@ class GenericsProductsController extends AppController
             }
             $this->Flash->error(__('The generics product could not be saved. Please, try again.'));
         }
-        $generics = $this->GenericsProducts->Generics->find('list', ['limit' => 200]);
-        $products = $this->GenericsProducts->Products->find('list', ['limit' => 200]);
+        $generics = $this->GenericsProducts->Generics->find(limit: 200)->all()->toList();
+        $products = $this->GenericsProducts->Products->find(limit: 200)->all()->toList();
         $this->set(compact('genericsProduct', 'generics', 'products'));
     }
 
@@ -81,8 +81,8 @@ class GenericsProductsController extends AppController
             }
             $this->Flash->error(__('The generics product could not be saved. Please, try again.'));
         }
-        $generics = $this->GenericsProducts->Generics->find('list', ['limit' => 200]);
-        $products = $this->GenericsProducts->Products->find('list', ['limit' => 200]);
+        $generics = $this->GenericsProducts->Generics->find(limit: 200)->all()->toList();
+        $products = $this->GenericsProducts->Products->find(limit: 200)->all()->toList();
         $this->set(compact('genericsProduct', 'generics', 'products'));
     }
 

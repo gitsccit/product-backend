@@ -57,8 +57,8 @@ class GalleryImagesController extends AppController
             }
             $this->Flash->error(__('The gallery image could not be saved. Please, try again.'));
         }
-        $galleries = $this->GalleryImages->Galleries->find('list', ['limit' => 200]);
-        $files = $this->GalleryImages->Files->find('list', ['limit' => 200]);
+        $galleries = $this->GalleryImages->Galleries->find(limit: 200)->all()->toList();
+        $files = $this->GalleryImages->Files->find(limit: 200)->all()->toList();
         $this->set(compact('galleryImage', 'galleries', 'files'));
     }
 
@@ -81,8 +81,8 @@ class GalleryImagesController extends AppController
             }
             $this->Flash->error(__('The gallery image could not be saved. Please, try again.'));
         }
-        $galleries = $this->GalleryImages->Galleries->find('list', ['limit' => 200]);
-        $files = $this->GalleryImages->Files->find('list', ['limit' => 200]);
+        $galleries = $this->GalleryImages->Galleries->find(limit: 200)->all()->toList();
+        $files = $this->GalleryImages->Files->find(limit: 200)->all()->toList();
         $this->set(compact('galleryImage', 'galleries', 'files'));
     }
 

@@ -57,8 +57,8 @@ class BannersController extends AppController
             }
             $this->Flash->error(__('The banner could not be saved. Please, try again.'));
         }
-        $images = $this->Banners->Images->find('list', ['limit' => 200]);
-        $tiles = $this->Banners->Tiles->find('list', ['limit' => 200]);
+        $images = $this->Banners->Images->find(limit: 200)->all()->toList();
+        $tiles = $this->Banners->Tiles->find(limit: 200)->all()->toList();
         $this->set(compact('banner', 'images', 'tiles'));
     }
 
@@ -81,8 +81,8 @@ class BannersController extends AppController
             }
             $this->Flash->error(__('The banner could not be saved. Please, try again.'));
         }
-        $images = $this->Banners->Images->find('list', ['limit' => 200]);
-        $tiles = $this->Banners->Tiles->find('list', ['limit' => 200]);
+        $images = $this->Banners->Images->find(limit: 200)->all()->toList();
+        $tiles = $this->Banners->Tiles->find(limit: 200)->all()->toList();
         $this->set(compact('banner', 'images', 'tiles'));
     }
 

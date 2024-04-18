@@ -57,7 +57,7 @@ class CustomerBomDetailsController extends AppController
             }
             $this->Flash->error(__('The customer bom detail could not be saved. Please, try again.'));
         }
-        $customerBoms = $this->CustomerBomDetails->CustomerBoms->find('list', ['limit' => 200]);
+        $customerBoms = $this->CustomerBomDetails->CustomerBoms->find(limit: 200)->all()->toList();
         $this->set(compact('customerBomDetail', 'customerBoms'));
     }
 
@@ -80,7 +80,7 @@ class CustomerBomDetailsController extends AppController
             }
             $this->Flash->error(__('The customer bom detail could not be saved. Please, try again.'));
         }
-        $customerBoms = $this->CustomerBomDetails->CustomerBoms->find('list', ['limit' => 200]);
+        $customerBoms = $this->CustomerBomDetails->CustomerBoms->find(limit: 200)->all()->toList();
         $this->set(compact('customerBomDetail', 'customerBoms'));
     }
 

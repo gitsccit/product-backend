@@ -194,7 +194,7 @@ class SystemsTable extends Table
         return $rules;
     }
 
-    public function findPrice(Query $query, array $options)
+    public function findPrice(Query $query, mixed ...$options)
     {
         $session = new Session();
         $priceLevelID = $options['priceLevel'] ?? $session->read('store.price_level');
@@ -209,12 +209,12 @@ class SystemsTable extends Table
             ->leftJoin(['pl2' => 'system_price_levels'], ['Systems.id = pl2.system_id', 'pl2.price_level_id' => $priceLevelID]);
     }
 
-    public function findCost(Query $query, array $options)
+    public function findCost(Query $query, mixed ...$options)
     {
         if (Configure::read('ProductBackend.showCost')) {
             $query
                 ->contain('SystemItems.GroupItems', function ($query) use ($options) {
-                    return $query->find('cost', $options);
+                    return $query->find('cost', ...$options);
                 })
                 ->formatResults(function ($result) {
                     return $result->map(function ($system) {
@@ -232,14 +232,14 @@ class SystemsTable extends Table
         return $query;
     }
 
-    public function findBasic(Query $query, array $options)
+    public function findBasic(Query $query, mixed ...$options)
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
-            ->find('price', $options)
-            ->find('cost', $options)
+            ->find('price', ...$options)
+            ->find('cost', ...$options)
             ->select([
                 'Systems.id',
                 'Systems.kit_id',
@@ -257,7 +257,7 @@ class SystemsTable extends Table
             ]);
     }
 
-    public function findActive(Query $query, array $options)
+    public function findActive(Query $query, mixed ...$options)
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
@@ -277,7 +277,7 @@ class SystemsTable extends Table
             ]);
     }
 
-    public function findListing(Query $query, array $options)
+    public function findListing(Query $query, mixed ...$options)
     {
         return $query
             ->select([
@@ -285,10 +285,10 @@ class SystemsTable extends Table
                 'name_line_2' => 'IFNULL(SystemPerspectives.name_line_2, Systems.name_line_2)',
                 'Systems.category_browse',
             ])
-            ->find('active', $options)
-            ->find('basic', $options)
-            ->find('supportBadge', $options)
-            ->find('image', type: 'Browse')
+            ->find('active', ...$options)
+            ->find('basic', ...$options)
+            ->find('supportBadge', ...$options)
+            ->find('image', imageType: 'Browse')
             ->contain([
                 'Kits.Tags' => function (Query $query) {
                     return $query
@@ -337,7 +337,7 @@ class SystemsTable extends Table
             });
     }
 
-    public function findSupportBadge(Query $query, array $options)
+    public function findSupportBadge(Query $query, mixed ...$options)
     {
         return $query
             ->select([
@@ -349,12 +349,12 @@ class SystemsTable extends Table
             });
     }
 
-    public function findDetails(Query $query, array $options)
+    public function findDetails(Query $query, mixed ...$options)
     {
         return $query
-            ->find('basic', $options)
-            ->find('baseConfiguration', $options)
-            ->find('gallery', $options)
+            ->find('basic', ...$options)
+            ->find('baseConfiguration', ...$options)
+            ->find('gallery', ...$options)
             ->select([
                 'description' => 'IFNULL(SystemPerspectives.description, Systems.description)',
                 'meta_title' => 'IFNULL(SystemPerspectives.meta_title, Systems.meta_title)',
@@ -394,7 +394,7 @@ class SystemsTable extends Table
                     $system['tags'] = $system['kit']['tags'];
                     unset($system['kit']);
                     $system['buckets'] = $this->Kits->Buckets
-                        ->find('configuration', ['kitID' => $system['kit_id']])
+                        ->find('configuration', kitID: $system['kit_id'])
                         ->find('filters')
                         ->all()
                         ->toList();
@@ -443,17 +443,17 @@ class SystemsTable extends Table
                     return $system;
                 });
             })
-            ->find('image', type: 'System');
+            ->find('image', imageType: 'System');
     }
 
-    public function findBaseConfiguration(Query $query, array $options)
+    public function findBaseConfiguration(Query $query, mixed ...$options)
     {
         return $query->contain('SystemItems');
     }
 
-    public function findImage(Query $query, array $options)
+    public function findImage(Query $query, mixed ...$options)
     {
-        $imageType = $options['type'] ?? 'Browse';
+        $imageType = $options['imageType'] ?? 'Browse';
 
         if (!in_array($imageType, ['Browse', 'System'])) {
             throw new \InvalidArgumentException('Image type must be one of `Browse` or `System`.');
@@ -503,13 +503,13 @@ class SystemsTable extends Table
             });
     }
 
-    public function findBanner(Query $query, array $options)
+    public function findBanner(Query $query, mixed ...$options)
     {
         $session = new Session();
         $perspectiveID = $options['perspective'] ?? $session->read('store.perspective');
 
         return $query
-            ->find('image', type: 'System')
+            ->find('image', imageType: 'System')
             ->select([
                 'system_category_id',
                 'name_line_1' => 'IFNULL(SystemPerspectives.name_line_1, Systems.name_line_1)',
@@ -545,7 +545,7 @@ class SystemsTable extends Table
             });
     }
 
-    public function findGallery(Query $query, array $options)
+    public function findGallery(Query $query, mixed ...$options)
     {
         return $query
             ->formatResults(function ($result) {
@@ -582,7 +582,7 @@ class SystemsTable extends Table
             return str_ends_with($key, 'qty');
         }, ARRAY_FILTER_USE_KEY));
 
-        $selectedItems = $this->GroupItems->find('configuration', $options)
+        $selectedItems = $this->GroupItems->find('configuration', ...$options)
             ->whereInList('GroupItems.id', array_unique($itemIDs))->all();
         $selectedSystemIDs = $selectedItems->filter(function ($item) {
             return $item['type'] === 'system';
@@ -595,7 +595,7 @@ class SystemsTable extends Table
 
         $fpa = 0;
         if ($selectedSystemIDs) {
-            $fpa = $this->find('price', $options)
+            $fpa = $this->find('price', ...$options)
                 ->whereInList('Systems.id', $selectedSystemIDs)
                 ->all()
                 ->sumOf('fpa');

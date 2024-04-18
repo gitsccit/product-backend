@@ -57,7 +57,7 @@ class CustomerBomDetailAdditionalSkusController extends AppController
             }
             $this->Flash->error(__('The customer bom detail additional skus could not be saved. Please, try again.'));
         }
-        $customerBomDetails = $this->CustomerBomDetailAdditionalSkus->CustomerBomDetails->find('list', ['limit' => 200]);
+        $customerBomDetails = $this->CustomerBomDetailAdditionalSkus->CustomerBomDetails->find(limit: 200)->all()->toList();
         $this->set(compact('customerBomDetailAdditionalSkus', 'customerBomDetails'));
     }
 
@@ -80,7 +80,7 @@ class CustomerBomDetailAdditionalSkusController extends AppController
             }
             $this->Flash->error(__('The customer bom detail additional skus could not be saved. Please, try again.'));
         }
-        $customerBomDetails = $this->CustomerBomDetailAdditionalSkus->CustomerBomDetails->find('list', ['limit' => 200]);
+        $customerBomDetails = $this->CustomerBomDetailAdditionalSkus->CustomerBomDetails->find(limit: 200)->all()->toList();
         $this->set(compact('customerBomDetailAdditionalSkus', 'customerBomDetails'));
     }
 

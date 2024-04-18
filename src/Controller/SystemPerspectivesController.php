@@ -57,8 +57,8 @@ class SystemPerspectivesController extends AppController
             }
             $this->Flash->error(__('The system perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->SystemPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $systems = $this->SystemPerspectives->Systems->find('list', ['limit' => 200]);
+        $perspectives = $this->SystemPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $systems = $this->SystemPerspectives->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('systemPerspective', 'perspectives', 'systems'));
     }
 
@@ -81,8 +81,8 @@ class SystemPerspectivesController extends AppController
             }
             $this->Flash->error(__('The system perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->SystemPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $systems = $this->SystemPerspectives->Systems->find('list', ['limit' => 200]);
+        $perspectives = $this->SystemPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $systems = $this->SystemPerspectives->Systems->find(limit: 200)->all()->toList();
         $this->set(compact('systemPerspective', 'perspectives', 'systems'));
     }
 

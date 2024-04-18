@@ -57,9 +57,9 @@ class SystemCategoryPerspectivesController extends AppController
             }
             $this->Flash->error(__('The system category perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->SystemCategoryPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $systemCategories = $this->SystemCategoryPerspectives->SystemCategories->find('list', ['limit' => 200]);
-        $banners = $this->SystemCategoryPerspectives->Banners->find('list', ['limit' => 200]);
+        $perspectives = $this->SystemCategoryPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $systemCategories = $this->SystemCategoryPerspectives->SystemCategories->find(limit: 200)->all()->toList();
+        $banners = $this->SystemCategoryPerspectives->Banners->find(limit: 200)->all()->toList();
         $this->set(compact('systemCategoryPerspective', 'perspectives', 'systemCategories', 'banners'));
     }
 
@@ -82,9 +82,9 @@ class SystemCategoryPerspectivesController extends AppController
             }
             $this->Flash->error(__('The system category perspective could not be saved. Please, try again.'));
         }
-        $perspectives = $this->SystemCategoryPerspectives->Perspectives->find('list', ['limit' => 200]);
-        $systemCategories = $this->SystemCategoryPerspectives->SystemCategories->find('list', ['limit' => 200]);
-        $banners = $this->SystemCategoryPerspectives->Banners->find('list', ['limit' => 200]);
+        $perspectives = $this->SystemCategoryPerspectives->Perspectives->find(limit: 200)->all()->toList();
+        $systemCategories = $this->SystemCategoryPerspectives->SystemCategories->find(limit: 200)->all()->toList();
+        $banners = $this->SystemCategoryPerspectives->Banners->find(limit: 200)->all()->toList();
         $this->set(compact('systemCategoryPerspective', 'perspectives', 'systemCategories', 'banners'));
     }
 

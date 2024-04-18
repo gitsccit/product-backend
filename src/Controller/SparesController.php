@@ -57,8 +57,8 @@ class SparesController extends AppController
             }
             $this->Flash->error(__('The spare could not be saved. Please, try again.'));
         }
-        $products = $this->Spares->Products->find('list', ['limit' => 200]);
-        $spareCategories = $this->Spares->SpareCategories->find('list', ['limit' => 200]);
+        $products = $this->Spares->Products->find(limit: 200)->all()->toList();
+        $spareCategories = $this->Spares->SpareCategories->find(limit: 200)->all()->toList();
         $this->set(compact('spare', 'products', 'spareCategories'));
     }
 
@@ -81,8 +81,8 @@ class SparesController extends AppController
             }
             $this->Flash->error(__('The spare could not be saved. Please, try again.'));
         }
-        $products = $this->Spares->Products->find('list', ['limit' => 200]);
-        $spareCategories = $this->Spares->SpareCategories->find('list', ['limit' => 200]);
+        $products = $this->Spares->Products->find(limit: 200)->all()->toList();
+        $spareCategories = $this->Spares->SpareCategories->find(limit: 200)->all()->toList();
         $this->set(compact('spare', 'products', 'spareCategories'));
     }
 

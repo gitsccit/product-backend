@@ -57,8 +57,8 @@ class IconsController extends AppController
             }
             $this->Flash->error(__('The icon could not be saved. Please, try again.'));
         }
-        $images = $this->Icons->Images->find('list', ['limit' => 200]);
-        $kits = $this->Icons->Kits->find('list', ['limit' => 200]);
+        $images = $this->Icons->Images->find(limit: 200)->all()->toList();
+        $kits = $this->Icons->Kits->find(limit: 200)->all()->toList();
         $this->set(compact('icon', 'images', 'kits'));
     }
 
@@ -81,8 +81,8 @@ class IconsController extends AppController
             }
             $this->Flash->error(__('The icon could not be saved. Please, try again.'));
         }
-        $images = $this->Icons->Images->find('list', ['limit' => 200]);
-        $kits = $this->Icons->Kits->find('list', ['limit' => 200]);
+        $images = $this->Icons->Images->find(limit: 200)->all()->toList();
+        $kits = $this->Icons->Kits->find(limit: 200)->all()->toList();
         $this->set(compact('icon', 'images', 'kits'));
     }
 

@@ -57,8 +57,8 @@ class ShipRateShipRegionPricesController extends AppController
             }
             $this->Flash->error(__('The ship rate ship region price could not be saved. Please, try again.'));
         }
-        $shipRates = $this->ShipRateShipRegionPrices->ShipRates->find('list', ['limit' => 200]);
-        $shipRegions = $this->ShipRateShipRegionPrices->ShipRegions->find('list', ['limit' => 200]);
+        $shipRates = $this->ShipRateShipRegionPrices->ShipRates->find(limit: 200)->all()->toList();
+        $shipRegions = $this->ShipRateShipRegionPrices->ShipRegions->find(limit: 200)->all()->toList();
         $this->set(compact('shipRateShipRegionPrice', 'shipRates', 'shipRegions'));
     }
 
@@ -81,8 +81,8 @@ class ShipRateShipRegionPricesController extends AppController
             }
             $this->Flash->error(__('The ship rate ship region price could not be saved. Please, try again.'));
         }
-        $shipRates = $this->ShipRateShipRegionPrices->ShipRates->find('list', ['limit' => 200]);
-        $shipRegions = $this->ShipRateShipRegionPrices->ShipRegions->find('list', ['limit' => 200]);
+        $shipRates = $this->ShipRateShipRegionPrices->ShipRates->find(limit: 200)->all()->toList();
+        $shipRegions = $this->ShipRateShipRegionPrices->ShipRegions->find(limit: 200)->all()->toList();
         $this->set(compact('shipRateShipRegionPrice', 'shipRates', 'shipRegions'));
     }
 
