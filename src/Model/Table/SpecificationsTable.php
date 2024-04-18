@@ -155,7 +155,7 @@ class SpecificationsTable extends Table
                          SEPARATOR ', ')",
             ])
             ->innerJoinWith('SpecificationFields.SpecificationGroups')
-            ->group('Specifications.product_id')
+            ->groupBy('Specifications.product_id')
             ->limit(10);
     }
 

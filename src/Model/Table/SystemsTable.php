@@ -250,7 +250,7 @@ class SystemsTable extends Table
             ->leftJoinWith('SystemPerspectives', function (Query $q) use ($perspectiveID) {
                 return $q->where(['SystemPerspectives.perspective_id' => $perspectiveID]);
             })
-            ->group(['Systems.id'])
+            ->groupBy(['Systems.id'])
             ->orderBy([
                 'Systems.sort' => 'ASC',
                 'IFNULL(SystemPerspectives.name, Systems.name)' => 'ASC',
@@ -640,7 +640,7 @@ class SystemsTable extends Table
                 })->leftJoinWith('SpecificationUnits');
             })
             ->where(['SpecificationFields.techspec' => 'yes'])
-            ->order(['BucketCategories.sort', 'SpecificationFields.sort', 'Specifications.sequence'])
+            ->orderBy(['BucketCategories.sort', 'SpecificationFields.sort', 'Specifications.sequence'])
             ->whereInList('GroupItems.id', array_unique($itemIDs))
             ->all()
             ->groupBy('category')

@@ -378,7 +378,7 @@ class ProductsTable extends Table
                     'ProductPriceLevels.price_level_id' => $priceLevelID,
                 ]);
             })
-            ->group(['Products.id'])
+            ->groupBy(['Products.id'])
             ->orderBy([
                 'Products.sort' => 'ASC',
                 'IFNULL(ProductPerspectives.name, Products.name)' => 'ASC',
@@ -498,7 +498,7 @@ class ProductsTable extends Table
                 'IFNULL(ProductPerspectives.active, Products.active) =' => 'yes',
                 'SpecificationFields.techspec' => 'yes',
             ])
-            ->group(['SpecificationFields.id', 'Specifications.text_value'])
+            ->groupBy(['SpecificationFields.id', 'Specifications.text_value'])
             ->orderBy([
                 'SpecificationGroups.sort',
                 'SpecificationGroups.name',
@@ -540,7 +540,7 @@ class ProductsTable extends Table
                         ])
                         ->innerJoinWith('SpecificationFields.SpecificationGroups')
                         ->where(['SpecificationFields.techspec' => 'yes'])
-                        ->order([
+                        ->orderBy([
                             'SpecificationGroups.sort',
                             'SpecificationFields.sort',
                             'Specifications.sequence',

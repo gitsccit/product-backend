@@ -223,7 +223,7 @@ class KitsTable extends Table
                 'value' => "IF(TagGroups.display_value = 'yes', KitsTags.value, NULL)",
             ])
             ->innerJoinWith('Tags.TagGroups.TagCategories')
-            ->group('Tags.id')
+            ->groupBy('Tags.id')
             ->orderBy([
                 'TagCategories.name',
                 'TagCategoriesTagGroups.sort',
@@ -249,7 +249,7 @@ class KitsTable extends Table
             ->where([
                 'TagCategories.name' => 'Filter',
             ])
-            ->group('Tags.id')
+            ->groupBy('Tags.id')
             ->orderBy([
                 'TagCategoriesTagGroups.sort',
                 'Tags.sort',
