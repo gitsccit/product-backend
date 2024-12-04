@@ -21,15 +21,15 @@ use Cake\Validation\Validator;
  * @property \ProductBackend\Model\Table\ManufacturersTable&\Cake\ORM\Association\BelongsTo $Manufacturers
  * @property \ProductBackend\Model\Table\ProductStatusesTable&\Cake\ORM\Association\BelongsTo $ProductStatuses
  * @property \ProductBackend\Model\Table\ShipBoxesTable&\Cake\ORM\Association\BelongsTo $ShipBoxes
- * @property \ProductBackend\Model\Table\LocationsTable&\Cake\ORM\Association\BelongsTo $Locations
- * @property \ProductBackend\Model\Table\LocationsTable&\Cake\ORM\Association\BelongsTo $Locations
+ * @property \ProductBackend\Model\Table\LocationsTable&\Cake\ORM\Association\BelongsTo $CountryOfOriginLocations
+ * @property \ProductBackend\Model\Table\LocationsTable&\Cake\ORM\Association\BelongsTo $ShipFromLocation
  * @property \ProductBackend\Model\Table\CustomerProductsTable&\Cake\ORM\Association\HasMany $CustomerProducts
- * @property \ProductBackend\Model\Table\GenericsTable&\Cake\ORM\Association\HasMany $Generics
+ * @property \ProductBackend\Model\Table\GenericsTable&\Cake\ORM\Association\HasMany $DefaultGeneric
  * @property \ProductBackend\Model\Table\GroupItemsTable&\Cake\ORM\Association\HasMany $GroupItems
  * @property \ProductBackend\Model\Table\ProductAdditionalSkusTable&\Cake\ORM\Association\HasMany $ProductAdditionalSkus
  * @property \ProductBackend\Model\Table\ProductPerspectivesTable&\Cake\ORM\Association\HasMany $ProductPerspectives
  * @property \ProductBackend\Model\Table\ProductPriceLevelsTable&\Cake\ORM\Association\HasMany $ProductPriceLevels
- * @property \ProductBackend\Model\Table\ProductRulesTable&\Cake\ORM\Association\HasMany $ProductRules
+ * @property \ProductBackend\Model\Table\ProductRulesTable&\Cake\ORM\Association\HasMany $DefaultProductRule
  * @property \ProductBackend\Model\Table\ProductsRelationsTable&\Cake\ORM\Association\HasMany $ProductsRelations
  * @property \ProductBackend\Model\Table\SparesTable&\Cake\ORM\Association\HasMany $Spares
  * @property \ProductBackend\Model\Table\SpecificationsTable&\Cake\ORM\Association\HasMany $Specifications
@@ -87,11 +87,11 @@ class ProductsTable extends Table
             'foreignKey' => 'ship_box_id',
             'className' => 'ProductBackend.ShipBoxes',
         ]);
-        $this->belongsTo('Locations', [
+        $this->belongsTo('CountryOfOriginLocations', [
             'foreignKey' => 'country_of_origin_id',
             'className' => 'ProductBackend.Locations',
         ]);
-        $this->belongsTo('Locations', [
+        $this->belongsTo('ShipFromLocation', [
             'foreignKey' => 'ship_from_id',
             'className' => 'ProductBackend.Locations',
         ]);
@@ -99,7 +99,7 @@ class ProductsTable extends Table
             'foreignKey' => 'product_id',
             'className' => 'ProductBackend.CustomerProducts',
         ]);
-        $this->hasMany('Generics', [
+        $this->hasMany('DefaultGeneric', [
             'foreignKey' => 'product_id',
             'className' => 'ProductBackend.Generics',
         ]);
@@ -119,7 +119,7 @@ class ProductsTable extends Table
             'foreignKey' => 'product_id',
             'className' => 'ProductBackend.ProductPriceLevels',
         ]);
-        $this->hasMany('ProductRules', [
+        $this->hasMany('DefaultProductRule', [
             'foreignKey' => 'product_id',
             'className' => 'ProductBackend.ProductRules',
         ]);
@@ -333,8 +333,8 @@ class ProductsTable extends Table
         $rules->add($rules->existsIn('manufacturer_id', 'Manufacturers'), ['errorField' => 'manufacturer_id']);
         $rules->add($rules->existsIn('status_id', 'ProductStatuses'), ['errorField' => 'status_id']);
         $rules->add($rules->existsIn('ship_box_id', 'ShipBoxes'), ['errorField' => 'ship_box_id']);
-        $rules->add($rules->existsIn('country_of_origin_id', 'Locations'), ['errorField' => 'country_of_origin_id']);
-        $rules->add($rules->existsIn('ship_from_id', 'Locations'), ['errorField' => 'ship_from_id']);
+        $rules->add($rules->existsIn('country_of_origin_id', 'CountryOfOriginLocation'), ['errorField' => 'country_of_origin_id']);
+        $rules->add($rules->existsIn('ship_from_id', 'ShipFromLocation'), ['errorField' => 'ship_from_id']);
 
         return $rules;
     }
@@ -378,7 +378,6 @@ class ProductsTable extends Table
                     'ProductPriceLevels.price_level_id' => $priceLevelID,
                 ]);
             })
-            ->groupBy(['Products.id'])
             ->orderBy([
                 'Products.sort' => 'ASC',
                 'IFNULL(ProductPerspectives.name, Products.name)' => 'ASC',
@@ -425,7 +424,6 @@ class ProductsTable extends Table
     {
         return $query
             ->find('listing', ...$options)
-            ->find('relatedSystems', ...$options)
             ->find('specificationGroups', ...$options)
             ->select(['Products.gallery_id'])
             ->select($this->Galleries)
@@ -550,25 +548,6 @@ class ProductsTable extends Table
             ->formatResults(function ($result) {
                 return $result->map(function ($product) {
                     $product['specification_groups'] = (new Collection($product['specifications']))->groupBy('category')->toArray();
-
-                    return $product;
-                });
-            });
-    }
-
-    public function findRelatedSystems(Query $query, mixed ...$options)
-    {
-        return $query
-            ->contain('GroupItems.Groups.Buckets.KitBuckets.Kits.Systems', function (Query $q) {
-                return $q->find('listing');
-            })
-            ->formatResults(function ($result) {
-                return $result->map(function ($product) {
-                    $product['related_systems'] = Hash::extract(
-                        $product,
-                        'group_items.{n}.group.buckets.{n}.kit_buckets.{n}.kit.systems.{n}'
-                    );
-                    unset($product['group_items']);
 
                     return $product;
                 });

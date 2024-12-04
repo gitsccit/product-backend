@@ -38,7 +38,7 @@ class ProductsController extends AppController
                 'Manufacturers',
                 'ProductStatuses',
                 'ShipBoxes',
-                'Locations',
+                'ShipFromLocation',
             ],
         ];
         $products = $this->paginate($this->Products);

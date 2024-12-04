@@ -178,13 +178,11 @@ class ProductCategoriesTable extends Table
                 'IFNULL(ProductCategoryPerspectives.children, ProductCategories.children) >' => 0,
             ])
             ->orderByAsc('ProductCategories.sort')
-            ->groupBy('ProductCategories.id')
             ->formatResults(function (ResultSet $result) {
                 $productCategories = $result->extract('id')->toList();
                 $products = $this->Products
                     ->find('active')
                     ->find('image')
-                    ->distinct('product_category_id')
                     ->whereInList('product_category_id', $productCategories)
                     ->all()
                     ->indexBy('product_category_id')

@@ -198,7 +198,6 @@ class SystemCategoriesTable extends Table
                     $systems = $this->Systems
                         ->find('active')
                         ->find('image')
-                        ->distinct('system_category_id')
                         ->whereInList('system_category_id', $systemCategories)
                         ->all()
                         ->indexBy('system_category_id')
