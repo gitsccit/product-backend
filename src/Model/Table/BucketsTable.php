@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ProductBackend\Model\Table;
 
 use Cake\Collection\CollectionInterface;
+use Cake\Datasource\ConnectionManager;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -159,6 +160,7 @@ class BucketsTable extends Table
     public function findConfiguration(Query $query, mixed ...$options)
     {
         $kitID = $options['kitID'];
+        ConnectionManager::get('product_backend')->getDriver()->enableAutoQuoting(true);
 
         return $query
             ->select([
@@ -226,7 +228,6 @@ class BucketsTable extends Table
                             'product_id',
                             Hash::extract($bucket, 'groups.{n}.group_items.{n}.original_id')
                         )
-                        ->groupBy(['SpecificationFields.id', 'Specifications.text_value'])
                         ->all()
                         ->groupBy('name')
                         ->toArray();
@@ -234,7 +235,9 @@ class BucketsTable extends Table
                     foreach ($filters as $name => $filter) {
                         $parsedFilter = ['All'];
                         foreach ($filter as $spec) {
-                            $parsedFilter[] = $spec['value'];
+                            if (!in_array($spec['value'], $parsedFilter)) {
+                                $parsedFilter[] = $spec['value'];
+                            }
                         }
                         $filters[$name] = $parsedFilter;
                     }
