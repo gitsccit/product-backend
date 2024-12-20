@@ -287,7 +287,6 @@ class SystemsTable extends Table
             ->find('active', ...$options)
             ->find('basic', ...$options)
             ->find('supportBadge', ...$options)
-            ->find('image', imageType: 'Browse')
             ->contain([
                 'Kits.Tags' => function (Query $query) {
                     return $query
@@ -333,7 +332,8 @@ class SystemsTable extends Table
 
                     return $system;
                 });
-            });
+            })
+            ->find('image', imageType: 'Browse');
     }
 
     public function findSupportBadge(Query $query, mixed ...$options)
@@ -489,7 +489,9 @@ class SystemsTable extends Table
                 }
 
                 foreach ($results as &$system) {
-                    $system['image'] = str_replace('100x100', '500x500', $system['image']);
+                    if (isset($system['image'])) {
+                        $system['image'] = str_replace('100x100', '500x500', $system['image']);
+                    }
                     if (isset($system['gallery'])) {
                         $system['gallery'] = Hash::extract($system['gallery'], '{n}.image');
                         foreach ($system['gallery'] as &$image) {
