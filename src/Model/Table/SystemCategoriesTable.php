@@ -8,6 +8,7 @@ use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -179,6 +180,9 @@ class SystemCategoriesTable extends Table
                 'SystemCategories.description',
                 'SystemCategories.short_description',
                 'product_count' => 'IFNULL(SystemCategoryPerspectives.children, SystemCategories.children)',
+                'image_id' => $this->Systems->find('image', fetchUrl: false)
+                    ->where(['Systems.system_category_id = SystemCategories.id'])
+                    ->limit(1),
             ])
             ->leftJoinWith('SystemCategoryPerspectives', function (Query $query) use ($perspectiveID) {
                 return $query->where([
@@ -191,21 +195,12 @@ class SystemCategoriesTable extends Table
             ])
             ->orderByAsc('SystemCategories.sort')
             ->formatResults(function (ResultSet $result) {
-                $systemCategories = $result->extract('id')->toList();
-                $systems = [];
-
-                if (!empty($systemCategories)) {
-                    $systems = $this->Systems
-                        ->find('active')
-                        ->find('image')
-                        ->whereInList('system_category_id', $systemCategories)
-                        ->all()
-                        ->indexBy('system_category_id')
-                        ->toArray();
-                }
+                $filesApiHandler = new \FilesApiHandler();
+                $imageIDs = array_unique($result->extract('image_id')->toList());
+                $images = $filesApiHandler->getFileUrls($imageIDs, 400, 400);
 
                 foreach ($result as $systemCategory) {
-                    $systemCategory['image'] = $systems[$systemCategory['id']]['image'] ?? null;
+                    $systemCategory['image'] = $images[$systemCategory['image_id']] ?? null;
                 }
 
                 $resultNested = $result->nest('id', 'parent_id')->indexBy('id')->toArray();

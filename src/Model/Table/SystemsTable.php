@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ProductBackend\Model\Table;
 
 use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Session;
@@ -453,6 +454,7 @@ class SystemsTable extends Table
     public function findImage(Query $query, mixed ...$options)
     {
         $imageType = $options['imageType'] ?? 'Browse';
+        $fetchUrl = $options['fetchUrl'] ?? true;
 
         if (!in_array($imageType, ['Browse', 'System'])) {
             throw new \InvalidArgumentException('Image type must be one of `Browse` or `System`.');
@@ -460,7 +462,6 @@ class SystemsTable extends Table
 
         return $query
             ->select([
-                'Systems.id',
                 'image_id' => "{$imageType}GalleryImages.file_id",
             ])
             ->leftJoinWith("SystemItems.GroupItems.Products.Galleries.{$imageType}GalleryImages")
@@ -474,7 +475,11 @@ class SystemsTable extends Table
                 'Products.cost' => 'DESC',
                 'Products.sort',
             ])
-            ->formatResults(function ($results) {
+            ->formatResults(function (CollectionInterface $results) use ($fetchUrl) {
+                if (!$fetchUrl) {
+                    return $results;
+                }
+
                 $filesApiHandler = new \FilesApiHandler();
                 $results = json_decode(json_encode($results), true);
                 $imagePathIdMap = array_filter(Hash::flatten($results), function ($key) {
