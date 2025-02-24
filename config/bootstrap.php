@@ -22,12 +22,15 @@ try {
 // switch connection to the mirrored DB
 if (PHP_SAPI !== 'cli') {
     $tableLocator = TableRegistry::getTableLocator();
-    $activeDB = $tableLocator->get('ProductBackend.ActiveBackendDatabase')->find()->first()->name;
-    $tableLocator->clear();
-    $mirrorConfig = array_merge(ConnectionManager::getConfig('product_backend'), ['database' => $activeDB]);
-    $mirrorReplicaConfig = array_merge(ConnectionManager::getConfig('product_backend_replica'), ['database' => $activeDB]);
-    ConnectionManager::drop('product_backend');
-    ConnectionManager::drop('product_backend_replica');
-    ConnectionManager::setConfig('product_backend', $mirrorConfig);
-    ConnectionManager::setConfig('product_backend_replica', $mirrorReplicaConfig);
+    $activeDB = $tableLocator->get('ProductBackend.ActiveBackendDatabase')->find()->first();
+    if ($activeDB) {
+        $activeDbName = $activeDB->name;
+        $tableLocator->clear();
+        $mirrorConfig = array_merge(ConnectionManager::getConfig('product_backend'), ['database' => $activeDbName]);
+        $mirrorReplicaConfig = array_merge(ConnectionManager::getConfig('product_backend_replica'), ['database' => $activeDbName]);
+        ConnectionManager::drop('product_backend');
+        ConnectionManager::drop('product_backend_replica');
+        ConnectionManager::setConfig('product_backend', $mirrorConfig);
+        ConnectionManager::setConfig('product_backend_replica', $mirrorReplicaConfig);
+    }
 }
